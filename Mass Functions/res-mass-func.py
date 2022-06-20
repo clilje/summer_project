@@ -22,8 +22,8 @@ def get_mass(filename):
     mass = np.array([])
     while g < len(filename):
         with h5py.File(str(filename[g])) as file:
-            if 'Subhalo'in file:
-                print(file['Subhalo'])
+            if 'Subhalo/SubhaloMass'in file:
+                #print(file['Subhalo'])
                 submass = np.array(file['Subhalo/SubhaloMass'])
                 mass = np.append(mass, submass)
             g +=1
@@ -71,9 +71,8 @@ mass504 = get_mass(files504)
 mass_function_504 = mass_func(mass504,interval, volume50)
 
 files501 = get_filenames(50, 1, 680)
-
 mass501 = get_mass(files501)
-mass_function_504 = mass_func(mass501,interval, volume50)
+mass_function_501 = mass_func(mass501,interval, volume50)
 
 files1003 = get_filenames(100, 3, 7)
 mass1003 = get_mass(files1003)
@@ -85,7 +84,7 @@ mass_function_1002 = mass_func(mass1002, interval, volume100)
 
 
 plt.loglog(mass_function_504[1], mass_function_504[0], "+", color="black", label="TNG50-4")
-#plt.loglog(mass_function_501[1], mass_function_501[0], "x", color="red", label="TNG50-1")
+plt.loglog(mass_function_501[1], mass_function_501[0], ".", color="red", label="TNG50-1")
 plt.loglog(mass_function_1003[1], mass_function_1003[0], "_", color="blue", label="TNG100-3")
 plt.loglog(mass_function_1002[1], mass_function_1002[0], "x", color="green", label="TNG100-2")
 
@@ -93,5 +92,5 @@ plt.loglog(mass_function_1002[1], mass_function_1002[0], "x", color="green", lab
 plt.xlabel(r'Mass in $10^{10}$ $M_{\odot}$$h^{-1}$')
 plt.ylabel(r'$dn/dlog_{10}(M)$ ($Mpc^{-3}$$h^{-1}$)')
 plt.legend()
-plt.savefig('resolutionmassfunc')
+plt.savefig('resolutionmassfunc4')
 plt.show()
