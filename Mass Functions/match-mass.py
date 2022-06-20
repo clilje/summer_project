@@ -111,10 +111,14 @@ print(len(massdark))
 Determining matching pairs and noting down their masses as corresponding data points
 """
 filenames_all = get_filenames(50, 1, 680)
-filenames_dark = get_filenames_dark(50, 1, 100)
+filenames_dark = get_filenames_dark(50, 1, 128)
 mass = get_mass(filenames_all)
 massdark = get_mass(filenames_dark)
 matchingarr = get_matching(50, 1)
+print(len(mass))
+print(len(massdark))
+print(len(matchingarr))
+print(matchingarr)
 i = 0
 orderdm = np.zeros(len(mass))
 while i<len(matchingarr):

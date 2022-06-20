@@ -4,7 +4,7 @@
 #SBATCH -p all  
 #SBATCH --job-name=test_mass
 ## Where job output is written to. CHANGE THIS TO YOUR OWN HOME DIR
-#SBATCH --output=/home/clilje/Internship/"Week 1"/job_%j
+#SBATCH --output=/home/clilje/summer_project/"Mass Functions"/"Job Results"/job_%j
 ## Resources requested
 #SBATCH --nodes=1
 #SBATCH --ntasks-per-node=1
