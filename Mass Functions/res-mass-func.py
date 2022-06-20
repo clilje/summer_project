@@ -22,9 +22,10 @@ def get_mass(filename):
     mass = np.array([])
     while g < len(filename):
         with h5py.File(str(filename[g])) as file:
-            print(file['Subhalo'])
-            submass = np.array(file['Subhalo/SubhaloMass'])
-            mass = np.append(mass, submass)
+            if 'Subhalo'in file:
+                print(file['Subhalo'])
+                submass = np.array(file['Subhalo/SubhaloMass'])
+                mass = np.append(mass, submass)
             g +=1
     return(mass)
 
