@@ -210,7 +210,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                 nindex = (np.where(dis<r))[0]
                 #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass4]
                 if len(nindex) !=0:
-                    data = np.hstack((partpos, np.atleast_2d(mass4).T))
+                    data = np.hstack((partpos[nindex], np.atleast_2d(mass4[nindex]).T))
 
                     fwriter.writerows(data)
                     print(len(data))
@@ -235,7 +235,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                 #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass5]
                 
                 if len(nindex) !=0:
-                    data = np.hstack((partpos, np.atleast_2d(mass5).T))
+                    data = np.hstack((partpos[nindex], np.atleast_2d(mass5[nindex]).T))
 
                     fwriter.writerows(data)
                     print(len(data))
@@ -267,12 +267,12 @@ halfmassradii = get_rad(filename_group)
 #distance to check in:
 filename_snap = get_filenames_snap(50, 4, 11)
 #print(filename_snap)
-particle_from_halo(0, pos[0], halfmassradii[0], 100, filename_snap)
-particle_from_halo(1, pos[1], halfmassradii[1], 100, filename_snap)
-particle_from_halo(2, pos[2], halfmassradii[2], 100, filename_snap)
-particle_from_halo(3, pos[3], halfmassradii[3], 100, filename_snap)
-particle_from_halo(4, pos[4], halfmassradii[4], 100, filename_snap)
-particle_from_halo(5, pos[5], halfmassradii[5], 100, filename_snap)
+particle_from_halo(0, pos[0], halfmassradii[0], 1000, filename_snap)
+particle_from_halo(1, pos[1], halfmassradii[1], 1000, filename_snap)
+particle_from_halo(2, pos[2], halfmassradii[2], 1000, filename_snap)
+particle_from_halo(3, pos[3], halfmassradii[3], 1000, filename_snap)
+particle_from_halo(4, pos[4], halfmassradii[4], 1000, filename_snap)
+particle_from_halo(5, pos[5], halfmassradii[5], 1000, filename_snap)
 
 """
 r = 100
