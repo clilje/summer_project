@@ -151,7 +151,9 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                 nindex = np.where(dis<r)
                 print(nindex)
                 #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], dmmass]
-                data = np.append(partpos, dmmass, axis = 1)
+                print(partpos)
+                print(dmmass.T)
+                data = np.append(partpos, dmmass.T, axis = 1)
                 print(data)
                 fwriter.writerows(data)
                 print(len(data))
