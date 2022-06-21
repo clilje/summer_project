@@ -61,8 +61,8 @@ def get_pos(filename):
                 subpos = np.array(file['Subhalo/SubhaloPos'])
                 pos = np.append(pos, subpos)
             g +=1
-        print(pos)
-        pos = np.reshape(pos, [int(len(pos)/3),3])
+        #print(pos)
+    pos = np.reshape(pos, [int(len(pos)/3),3])
     return(pos)
 
 
