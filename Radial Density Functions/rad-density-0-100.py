@@ -141,7 +141,8 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                             
                 #DMParticles
                 partpos = np.array(file['PartType1/Coordinates'])#
-                partpos = np.reshape(partpos, [int(len(partpos)/3),3])
+                print(np.shape(partpos))
+                #partpos = np.reshape(partpos, [int(len(partpos)/3),3])
                 #b = 0
                 c = 0
                 header = dict( file['Header'].attrs.items() )
