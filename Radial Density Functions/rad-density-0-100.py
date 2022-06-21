@@ -146,7 +146,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                 #b = 0
                 c = 0
                 header = dict( file['Header'].attrs.items() )
-                dmmass = np.ones(len(partpos))*header['MassTable'][1]  # 10^10 Msun/h
+                dmmass = np.ones(np.size(partpos, axis=0))*header['MassTable'][1]  # 10^10 Msun/h
                 #while b < len(partpos):
                 dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
                 print(dis)
@@ -155,7 +155,9 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                 #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], dmmass]
                 print(partpos)
                 print(dmmass.T)
-                data = np.append(partpos, dmmass.T, axis = 1)
+                data = np.hstack((partpos, np.atleast_2d(dmmass).T))
+ 
+                #data = np.append(partpos, dmmass.T, axis = 1)
                 print(data)
                 fwriter.writerows(data)
                 print(len(data))
