@@ -150,7 +150,8 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                 print(dis)
                 nindex = np.where(dis<r)
                 print(nindex)
-                data = [partpos[nindex][:,0], partpos[nindex][:,1], partpos[nindex][:, 2], dmmass]
+                #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], dmmass]
+                data = np.append(partpos, dmmass, axis = 1)
                 print(data)
                 fwriter.writerows(data)
                 print(len(data))
@@ -174,7 +175,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     #while b < len(partpos):
                     dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
                     nindex = np.where(dis<r)
-                    data = [partpos[nindex][:,0], partpos[nindex][:,1], partpos[nindex][:, 2], mass0]
+                    data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass0]
                     '''if dis <(r):
                             data = [partpos[b][0], partpos[b][1], partpos[b][2],mass0[b]]
                             fwriter.writerow(data)
@@ -195,7 +196,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     mass4 = np.array(file['PartType4/Masses'])
                     dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
                     nindex = np.where(dis<r)
-                    data = [partpos[nindex][:,0], partpos[nindex][:,1], partpos[nindex][:, 2], mass4]
+                    data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass4]
                     fwriter.writerows(data)
                     print(len(data))
                     c = len(data)
@@ -216,7 +217,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     mass5 = np.array(file['PartType5/Masses'])
                     dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
                     nindex = np.where(dis<r)
-                    data = [partpos[nindex][:,0], partpos[nindex][:,1], partpos[nindex][:, 2], mass5]
+                    data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass5]
                     fwriter.writerows(data)
                     print(len(data))
                     c = len(data)
@@ -247,12 +248,12 @@ print(halfmassradii)
 #distance to check in:
 filename_snap = get_filenames_snap(50, 4, 11)
 print(filename_snap)
-particle_from_halo(0, pos[0], halfmassradii[0], (3*halfmassradii[0]), filename_snap)
-particle_from_halo(1, pos[1], halfmassradii[1], (3*halfmassradii[1]), filename_snap)
-particle_from_halo(2, pos[2], halfmassradii[2], (3*halfmassradii[2]), filename_snap)
-particle_from_halo(3, pos[3], halfmassradii[3], (3*halfmassradii[3]), filename_snap)
-particle_from_halo(4, pos[4], halfmassradii[4], (3*halfmassradii[4]), filename_snap)
-particle_from_halo(5, pos[5], halfmassradii[5], (3*halfmassradii[5]), filename_snap)
+particle_from_halo(0, pos[0], halfmassradii[0], 100, filename_snap)
+particle_from_halo(1, pos[1], halfmassradii[1], 100, filename_snap)
+particle_from_halo(2, pos[2], halfmassradii[2], 100, filename_snap)
+particle_from_halo(3, pos[3], halfmassradii[3], 100, filename_snap)
+particle_from_halo(4, pos[4], halfmassradii[4], 100, filename_snap)
+particle_from_halo(5, pos[5], halfmassradii[5], 100, filename_snap)
 
 """
 r = 100
