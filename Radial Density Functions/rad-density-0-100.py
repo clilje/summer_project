@@ -188,6 +188,7 @@ filename_snap = get_filenames_snap(50, 4, 11)
 g = 0 
 while g < 20:    
     particle_from_halo(g, pos[g], halfmassradii[g], (halfmassradii[g]*3), filename_snap)
+    g += 1
     
 '''
 particle_from_halo(1, pos[1], halfmassradii[1], (halfmassradii[1]*3), filename_snap)
