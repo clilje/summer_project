@@ -164,6 +164,8 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     #print(len(data))
                     print(len(nindex))
                     c = len(data)
+                else:
+                    print("No DM found")
                 '''
                 if dis <(r):
                     data = [partpos[b][0], partpos[b][1], partpos[b][2],dmmass]
@@ -193,12 +195,13 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                             print(data)
                             c += 1
                         b += 1'''
-                    print(data)
+                    #print(data)
                     fwriter.writerows(data)
                     #print(len(data))
                     c = len(data)
                     print(c)
-            
+                else:
+                    print("No Gas found")
             
 
                 #Stellar and Wind particles
@@ -215,13 +218,15 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     fwriter.writerows(data)
                     print(len(data))
                     c = len(data)
-                '''while b < len(partpos):
+                    '''while b < len(partpos):
                     dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[b][0], partpos[b][1], partpos[b][2])
                     if dis <(r):
                         data = [partpos[b][0], partpos[b][1], partpos[b][2], mass4[b]]
                         fwriter.writerow(data)
                         c += 1
                     b += 1'''
+                else:
+                    print("No Stellar part found")
                 
                 #print(c)
                 
@@ -238,7 +243,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     data = np.hstack((partpos[nindex], np.atleast_2d(mass5[nindex]).T))
 
                     fwriter.writerows(data)
-                    print(len(data))
+                    #print(len(data))
                     c = len(data)
                     '''
                     while b < len(partpos):
@@ -249,6 +254,8 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                         c +=1
                     b += 1'''
                     print(c)
+                else:
+                    print("No DM found")
             g+= 1
 
     
@@ -267,12 +274,12 @@ halfmassradii = get_rad(filename_group)
 #distance to check in:
 filename_snap = get_filenames_snap(50, 4, 11)
 #print(filename_snap)
-particle_from_halo(0, pos[0], halfmassradii[0], 1000, filename_snap)
-particle_from_halo(1, pos[1], halfmassradii[1], 1000, filename_snap)
-particle_from_halo(2, pos[2], halfmassradii[2], 1000, filename_snap)
-particle_from_halo(3, pos[3], halfmassradii[3], 1000, filename_snap)
-particle_from_halo(4, pos[4], halfmassradii[4], 1000, filename_snap)
-particle_from_halo(5, pos[5], halfmassradii[5], 1000, filename_snap)
+particle_from_halo(0, pos[0], halfmassradii[0], (halfmassradii[0]*3), filename_snap)
+particle_from_halo(1, pos[1], halfmassradii[1], (halfmassradii[1]*3), filename_snap)
+particle_from_halo(2, pos[2], halfmassradii[2], (halfmassradii[2]*3), filename_snap)
+particle_from_halo(3, pos[3], halfmassradii[3], (halfmassradii[3]*3), filename_snap)
+particle_from_halo(4, pos[4], halfmassradii[4], (halfmassradii[4]*3), filename_snap)
+particle_from_halo(5, pos[5], halfmassradii[5], (halfmassradii[5]*3), filename_snap)
 
 """
 r = 100
