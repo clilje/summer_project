@@ -9,6 +9,18 @@ import csv
 Reading out the positions from the TNG group files.
 
 """
+"""
+Creating function to get filenames for given simulation.
+"""
+def get_filenames(sim_size, sim_res, num_files):
+    filename = []
+    i = 0
+    # Making a list of all possible filenames
+    while i < num_files:
+        filename.append("/disk01/rmcg/downloaded/tng/tng"+str(sim_size)+"-"+str(sim_res)+"/fof_subfind_snapshot_99/fof_subhalo_tab_099."+str(i)+".hdf5")
+        i += 1
+    return(filename)
+'''
 filename = []
 pos = np.array([])
 i = 0
@@ -17,6 +29,9 @@ while i < 11:
     filename.append("/disk01/rmcg/downloaded/tng/tng50-4/fof_subfind_snapshot_99/fof_subhalo_tab_099."+str(i)+".hdf5")
     i += 1
 #print(filename)
+
+'''
+'''
 g = 0
 
 # Getting position for each file
@@ -31,11 +46,48 @@ pos = np.reshape(pos, [int(len(pos)/3),3])
 #print(pos)
 print(np.shape(np.array(pos)))
 
+'''
+"""
+Function that gets Subhalo Position from given file list.
+"""
+        
+def get_pos(filename):
+    g = 0
+    pos = np.array([])
+    while g < len(filename):
+        with h5py.File(str(filename[g])) as file:
+            if 'Subhalo/SubhaloPos'in file:
+                #print(file['Subhalo'])
+                subpos = np.array(file['Subhalo/SubhaloPos'])
+                pos = np.append(pos, subpos)
+            g +=1
+        pos = np.reshape(pos, [int(len(pos)/3),3])
+    return(pos)
+
+
+"""
+Function that gets Subhalo Half Mass Radius from given file list.
+"""
+        
+def get_rad(filename):
+    g = 0
+    rad = np.array([])
+    while g < len(filename):
+        with h5py.File(str(filename[g])) as file:
+            if 'Subhalo/SubhaloHalfmassRad'in file:
+                #print(file['Subhalo'])
+                subrad = np.array(file['Subhalo/SubhaloHalfmassRad'])
+                rad = np.append(rad, subrad)
+            g +=1
+        #pos = np.reshape(pos, [int(len(pos)/3),3])
+    return(rad)
+
 
 """
 Reading out the particle data from TNG snapshot files
 
 """
+'''
 filenamesnap = []
 #particleprop = np.zeros(4)
 #particlepos = np.array([])
@@ -45,7 +97,16 @@ i = 0
 while i < 11:
     filenamesnap.append("/disk01/rmcg/downloaded/tng/tng50-4/snapshot_99/snap_099."+str(i)+".hdf5")
     i += 1
+'''
 
+def get_filenames_snap(sim_size, sim_res, num_files):
+    filename = []
+    i = 0
+    # Making a list of all possible filenames
+    while i < num_files:
+        filename.append("/disk01/rmcg/downloaded/tng/tng"+str(sim_size)+"-"+str(sim_res)+"/snapshot_99/snap_099."+str(i)+".hdf5")
+        i += 1
+    return(filename)
 
 
 """
@@ -59,11 +120,109 @@ def distancefromcentre(cx, cy, cz, x, y, z, ):
     y1 = math.pow((y-cy), 2)
     z1 = math.pow((z-cz), 2)
     return (math.sqrt((x1 + y1 + z1))) # distance between the centre and given point
-     
 
+
+def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesnap):
+    xhalo, yhalo, zhalo = pos
+    r = rad_to_check
+    g = 0
+    with open('50-1_snap_99_halo_'+str(num_halo)+'_rad_mass_100kpc.csv', 'w', encoding='UTF8', newline='') as f:
+        header = ['x','y','z','mass']
+        # Create a writer object
+        fwriter = csv.writer(f, delimiter=',')
+        #print(fwriter)
+        #print(header)
+        # Write the header
+        fwriter.writerow(header)
+        while g < len(filenamesnap):
+            print(filenamesnap[g])
+            with h5py.File(filenamesnap[g]) as file:
+                            
+                #DMParticles
+                partpos = file['PartType1/Coordinates']
+                b = 0
+                c = 0
+                header = dict( file['Header'].attrs.items() )
+                dmmass = header['MassTable'][1]  # 10^10 Msun/h
+                while b < len(partpos):
+                    dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[b][0], partpos[b][1], partpos[b][2])
+                    if dis <(r):
+                        data = [partpos[b][0], partpos[b][1], partpos[b][2],dmmass]
+                        fwriter.writerow(data)
+                        c += 1
+                    b += 1
+                print(c)
+                
+                
+                if c != 0:
+                    #GasParticles
+                    partpos = np.array(file['PartType0/Coordinates'])
+                    mass0 = np.array(file['PartType0/Masses'])
+                    b = 0
+                    c = 0
+                    while b < len(partpos):
+                        dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[b][0], partpos[b][1], partpos[b][2])
+                        if dis <(r):
+                            data = [partpos[b][0], partpos[b][1], partpos[b][2],mass0[b]]
+                            fwriter.writerow(data)
+                            print(data)
+                            c += 1
+                        b += 1
+                    print(c)
+                
+                
+
+                    #Stellar and Wind particles
+                    partpos = file['PartType4/Coordinates']
+                    b = 0
+                    c = 0
+                    mass4 = np.array(file['PartType4/Masses'])
+                    while b < len(partpos):
+                        dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[b][0], partpos[b][1], partpos[b][2])
+                        if dis <(r):
+                            data = [partpos[b][0], partpos[b][1], partpos[b][2], mass4[b]]
+                            fwriter.writerow(data)
+                            c += 1
+                        b += 1
+                    
+                    print(c)
+                    
+                    #Black Hole Particles
+                    partpos = file['PartType5/Coordinates']
+                    b = 0
+                    c = 0
+                    mass5 = np.array(file['PartType5/Masses'])
+                    
+                    while b < len(partpos):
+                        dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[b][0], partpos[b][1], partpos[b][2])
+                        if dis <(r):
+                            data = [partpos[b][0], partpos[b][1], partpos[b][2], mass5[0]]
+                            fwriter.writerow(data)
+                            c +=1
+                        b += 1
+                    print(c)
+                g+= 1
+
+    
+    
+    
+    
+filename_group = get_filenames(50, 1, 680)
+pos = get_pos(filename_group)
+halfmassradii = get_rad(filename_group)
 #First example for one Halo
-xhalo, yhalo, zhalo = pos[0]
+#xhalo, yhalo, zhalo = pos[0]
+hmrad = halfmassradii[0]
 #distance to check in:
+filename_snap = get_filenames_snap(50, 1, 680)
+particle_from_halo(0, pos[0], halfmassradii[0], (3*halfmassradii[0]), filename_snap)
+particle_from_halo(1, pos[1], halfmassradii[1], (3*halfmassradii[1]), filename_snap)
+particle_from_halo(2, pos[2], halfmassradii[2], (3*halfmassradii[2]), filename_snap)
+particle_from_halo(3, pos[3], halfmassradii[3], (3*halfmassradii[3]), filename_snap)
+particle_from_halo(4, pos[4], halfmassradii[4], (3*halfmassradii[4]), filename_snap)
+particle_from_halo(5, pos[5], halfmassradii[5], (3*halfmassradii[5]), filename_snap)
+
+"""
 r = 100
 g = 0
 
@@ -173,3 +332,4 @@ with open('snap_99_halo_0_rad_mass_100kpc.csv', 'w', encoding='UTF8', newline=''
                 b += 1
             print(c)
             g+= 1
+"""
