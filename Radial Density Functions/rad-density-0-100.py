@@ -147,7 +147,9 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                 dmmass = np.ones(len(partpos))*header['MassTable'][1]  # 10^10 Msun/h
                 #while b < len(partpos):
                 dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
+                print(dis)
                 nindex = np.where(dis<r)
+                print(nindex)
                 data = [partpos[nindex][:,0], partpos[nindex][:,1], partpos[nindex][:, 2], dmmass]
                 print(data)
                 fwriter.writerows(data)
@@ -234,13 +236,17 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
     
 
 filename_group = get_filenames(50, 4, 11)
+print(filename_group)
 pos = get_pos(filename_group)
+print(pos)
 halfmassradii = get_rad(filename_group)
+print(halfmassradii)
 #First example for one Halo
 #xhalo, yhalo, zhalo = pos[0]
-hmrad = halfmassradii[0]
+#hmrad = halfmassradii[0]
 #distance to check in:
 filename_snap = get_filenames_snap(50, 4, 11)
+print(filename_snap)
 particle_from_halo(0, pos[0], halfmassradii[0], (3*halfmassradii[0]), filename_snap)
 particle_from_halo(1, pos[1], halfmassradii[1], (3*halfmassradii[1]), filename_snap)
 particle_from_halo(2, pos[2], halfmassradii[2], (3*halfmassradii[2]), filename_snap)
