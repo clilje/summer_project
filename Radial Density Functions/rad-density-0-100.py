@@ -120,7 +120,7 @@ def distancefromcentre(cx, cy, cz, x, y, z, ):
     #x1 = np.power(np.subtract(x,cx), 2)
     #y1 = np.power(np.subtract(y,cy), 2)
     #z1 = np.power(np.subtract(z,cz), 2)
-    return (math.sqrt((np.power(np.subtract(x,cx), 2)+ np.power(np.subtract(y,cy), 2) + np.power(np.subtract(z,cz), 2)))) # distance between the centre and given point
+    return (np.sqrt((np.power(np.subtract(x,cx), 2)+ np.power(np.subtract(y,cy), 2) + np.power(np.subtract(z,cz), 2)))) # distance between the centre and given point
 
 
 def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesnap):
