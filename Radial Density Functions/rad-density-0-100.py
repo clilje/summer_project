@@ -150,12 +150,12 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                 #while b < len(partpos):
                 dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
                 #print(dis)
-                nindex = np.where(dis<r)
+                nindex = (np.where(dis<r))[0]
                 #print(nindex)
                 #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], dmmass]
                 #print(partpos)
                 #print(dmmass.T)
-                if len(nindex)==0:
+                if len(nindex) !=0:
                     data = np.hstack((partpos[nindex], np.atleast_2d(dmmass[nindex]).T))
  
                     #data = np.append(partpos, dmmass.T, axis = 1)
@@ -182,7 +182,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     #c = 0
                     #while b < len(partpos):
                     dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
-                    nindex = np.where(dis<r)
+                    nindex = (np.where(dis<r))[0]
                     if len(nindex)==0:
                         #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass0]
                         data = np.hstack((partpos[nindex], np.atleast_2d(mass0[nindex]).T))
@@ -207,7 +207,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     #c = 0
                     mass4 = np.array(file['PartType4/Masses'])
                     dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
-                    nindex = np.where(dis<r)
+                    nindex = (np.where(dis<r))[0]
                     #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass4]
                     if len(nindex)==0:
                         data = np.hstack((partpos, np.atleast_2d(mass4).T))
@@ -231,7 +231,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     #c = 0
                     mass5 = np.array(file['PartType5/Masses'])
                     dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
-                    nindex = np.where(dis<r)
+                    nindex = (np.where(dis<r))[0]
                     #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass5]
                     
                     if len(nindex)==0:
