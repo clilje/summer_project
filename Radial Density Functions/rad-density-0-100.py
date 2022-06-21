@@ -181,15 +181,18 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     #while b < len(partpos):
                     dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
                     nindex = np.where(dis<r)
-                    data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass0]
+                    #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass0]
+                    data = np.hstack((partpos, np.atleast_2d(mass0).T))
+
                     '''if dis <(r):
                             data = [partpos[b][0], partpos[b][1], partpos[b][2],mass0[b]]
                             fwriter.writerow(data)
                             print(data)
                             c += 1
                         b += 1'''
+                    print(data)
                     fwriter.writerows(data)
-                    print(len(data))
+                    #print(len(data))
                     c = len(data)
                     print(c)
                 
@@ -202,7 +205,9 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     mass4 = np.array(file['PartType4/Masses'])
                     dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
                     nindex = np.where(dis<r)
-                    data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass4]
+                    #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass4]
+                    data = np.hstack((partpos, np.atleast_2d(mass4).T))
+
                     fwriter.writerows(data)
                     print(len(data))
                     c = len(data)
@@ -223,7 +228,9 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     mass5 = np.array(file['PartType5/Masses'])
                     dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
                     nindex = np.where(dis<r)
-                    data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass5]
+                    #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass5]
+                    data = np.hstack((partpos, np.atleast_2d(mass5).T))
+
                     fwriter.writerows(data)
                     print(len(data))
                     c = len(data)
