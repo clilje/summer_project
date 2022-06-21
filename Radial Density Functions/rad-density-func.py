@@ -11,6 +11,54 @@ import math
 import csv
 import pandas as pd
 
+def get_filenames(sim_size, sim_res, num_files):
+    filename = []
+    i = 0
+    # Making a list of all possible filenames
+    while i < num_files:
+        filename.append("/disk01/rmcg/downloaded/tng/tng"+str(sim_size)+"-"+str(sim_res)+"/fof_subfind_snapshot_99/fof_subhalo_tab_099."+str(i)+".hdf5")
+        i += 1
+    return(filename)
+
+
+def get_pos(filename):
+    g = 0
+    pos = np.array([])
+    while g < len(filename):
+        with h5py.File(str(filename[g])) as file:
+            if 'Subhalo/SubhaloPos'in file:
+                #print(file['Subhalo'])
+                subpos = np.array(file['Subhalo/SubhaloPos'])
+                pos = np.append(pos, subpos)
+            g +=1
+        #print(pos)
+    pos = np.reshape(pos, [int(len(pos)/3),3])
+    return(pos)
+
+
+"""
+Function that gets Subhalo Half Mass Radius from given file list.
+"""
+        
+def get_rad(filename):
+    g = 0
+    rad = np.array([])
+    while g < len(filename):
+        with h5py.File(str(filename[g])) as file:
+            if 'Subhalo/SubhaloHalfmassRad'in file:
+                #print(file['Subhalo'])
+                subrad = np.array(file['Subhalo/SubhaloHalfmassRad'])
+                rad = np.append(rad, subrad)
+            g +=1
+        #pos = np.reshape(pos, [int(len(pos)/3),3])
+    return(rad)
+
+def distancefromcentre(cx, cy, cz, x, y, z, ):
+     
+    x1 = math.pow((x-cx), 2)
+    y1 = math.pow((y-cy), 2)
+    z1 = math.pow((z-cz), 2)
+    return (math.sqrt((x1 + y1 + z1))) # distance between the centre and given point
 
 
 def radial_density(dis,mass,interval):

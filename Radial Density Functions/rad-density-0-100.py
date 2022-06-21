@@ -117,10 +117,10 @@ Get associated Particles within 10^5 Parsec for each Halo
 
 def distancefromcentre(cx, cy, cz, x, y, z, ):
      
-    x1 = math.pow((x-cx), 2)
-    y1 = math.pow((y-cy), 2)
-    z1 = math.pow((z-cz), 2)
-    return (math.sqrt((x1 + y1 + z1))) # distance between the centre and given point
+    #x1 = np.power(np.subtract(x,cx), 2)
+    #y1 = np.power(np.subtract(y,cy), 2)
+    #z1 = np.power(np.subtract(z,cz), 2)
+    return (math.sqrt((np.power(np.subtract(x,cx), 2)+ np.power(np.subtract(y,cy), 2) + np.power(np.subtract(z,cz), 2)))) # distance between the centre and given point
 
 
 def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesnap):
@@ -144,14 +144,20 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                 b = 0
                 c = 0
                 header = dict( file['Header'].attrs.items() )
-                dmmass = header['MassTable'][1]  # 10^10 Msun/h
-                while b < len(partpos):
-                    dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[b][0], partpos[b][1], partpos[b][2])
-                    if dis <(r):
-                        data = [partpos[b][0], partpos[b][1], partpos[b][2],dmmass]
-                        fwriter.writerow(data)
-                        c += 1
-                    b += 1
+                dmmass = np.ones(len(partpos))*header['MassTable'][1]  # 10^10 Msun/h
+                #while b < len(partpos):
+                dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
+                nindex = np.where(dis<r)
+                data = [partpos[nindex], dmmass]
+                print(data)
+                fwriter.writerows(data)
+                '''
+                if dis <(r):
+                    data = [partpos[b][0], partpos[b][1], partpos[b][2],dmmass]
+                    fwriter.writerow(data)
+                    c += 1'''
+                    
+                #b += 1
                 print(c)
                 
                 
