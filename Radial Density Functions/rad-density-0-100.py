@@ -141,7 +141,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                             
                 #DMParticles
                 partpos = np.array(file['PartType1/Coordinates'])#
-                print(np.shape(partpos))
+                #print(np.shape(partpos))
                 #partpos = np.reshape(partpos, [int(len(partpos)/3),3])
                 #b = 0
                 c = 0
@@ -149,19 +149,19 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                 dmmass = np.ones(np.size(partpos, axis=0))*header['MassTable'][1]  # 10^10 Msun/h
                 #while b < len(partpos):
                 dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
-                print(dis)
+                #print(dis)
                 nindex = np.where(dis<r)
-                print(nindex)
+                #print(nindex)
                 #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], dmmass]
-                print(partpos)
-                print(dmmass.T)
-                if np.any(nindex)==False:
+                #print(partpos)
+                #print(dmmass.T)
+                if len(nindex)==0:
                     data = np.hstack((partpos[nindex], np.atleast_2d(dmmass[nindex]).T))
  
                     #data = np.append(partpos, dmmass.T, axis = 1)
-                    print(data)
+                    #print(data)
                     fwriter.writerows(data)
-                    print(len(data))
+                    #print(len(data))
                     print(len(nindex))
                     c = len(data)
                 '''
@@ -183,7 +183,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     #while b < len(partpos):
                     dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
                     nindex = np.where(dis<r)
-                    if np.any(nindex)==False:
+                    if len(nindex)==0:
                         #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass0]
                         data = np.hstack((partpos[nindex], np.atleast_2d(mass0[nindex]).T))
 
@@ -209,7 +209,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
                     nindex = np.where(dis<r)
                     #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass4]
-                    if np.any(nindex)==False:
+                    if len(nindex)==0:
                         data = np.hstack((partpos, np.atleast_2d(mass4).T))
 
                         fwriter.writerows(data)
@@ -234,7 +234,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     nindex = np.where(dis<r)
                     #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass5]
                     
-                    if np.any(nindex)==False:
+                    if len(nindex)==0:
                         data = np.hstack((partpos, np.atleast_2d(mass5).T))
 
                         fwriter.writerows(data)
@@ -256,17 +256,17 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
     
 
 filename_group = get_filenames(50, 4, 11)
-print(filename_group)
+#print(filename_group)
 pos = get_pos(filename_group)
-print(pos)
+#print(pos)
 halfmassradii = get_rad(filename_group)
-print(halfmassradii)
+#print(halfmassradii)
 #First example for one Halo
 #xhalo, yhalo, zhalo = pos[0]
 #hmrad = halfmassradii[0]
 #distance to check in:
 filename_snap = get_filenames_snap(50, 4, 11)
-print(filename_snap)
+#print(filename_snap)
 particle_from_halo(0, pos[0], halfmassradii[0], 100, filename_snap)
 particle_from_halo(1, pos[1], halfmassradii[1], 100, filename_snap)
 particle_from_halo(2, pos[2], halfmassradii[2], 100, filename_snap)
