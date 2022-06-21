@@ -183,7 +183,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     #while b < len(partpos):
                     dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
                     nindex = (np.where(dis<r))[0]
-                    if len(nindex)==0:
+                    if len(nindex) !=0:
                         #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass0]
                         data = np.hstack((partpos[nindex], np.atleast_2d(mass0[nindex]).T))
 
@@ -209,7 +209,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
                     nindex = (np.where(dis<r))[0]
                     #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass4]
-                    if len(nindex)==0:
+                    if len(nindex) !=0:
                         data = np.hstack((partpos, np.atleast_2d(mass4).T))
 
                         fwriter.writerows(data)
@@ -234,7 +234,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     nindex = (np.where(dis<r))[0]
                     #data = [partpos[nindex][:, 0], partpos[nindex][:, 1], partpos[nindex][:, 2], mass5]
                     
-                    if len(nindex)==0:
+                    if len(nindex) !=0:
                         data = np.hstack((partpos, np.atleast_2d(mass5).T))
 
                         fwriter.writerows(data)
