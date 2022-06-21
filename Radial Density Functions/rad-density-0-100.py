@@ -124,7 +124,7 @@ def distancefromcentre(cx, cy, cz, x, y, z, ):
 
 
 def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesnap):
-    xhalo, yhalo, zhalo = pos
+    xhalo, yhalo, zhalo = position
     r = rad_to_check
     g = 0
     with open('50-1_snap_99_halo_'+str(num_halo)+'_rad_mass_100kpc.csv', 'w', encoding='UTF8', newline='') as f:
@@ -207,7 +207,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
     
     
     
-    
+
 filename_group = get_filenames(50, 1, 680)
 pos = get_pos(filename_group)
 halfmassradii = get_rad(filename_group)
