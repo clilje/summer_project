@@ -12,6 +12,20 @@ import csv
 import pandas as pd
 
 def get_filenames(sim_size, sim_res, num_files):
+    """
+    
+
+    Parameters
+    ----------
+    sim_size : Size of Edge of simulation box in kpc.
+    sim_res : Resolution of simulation, integer from 1 to 4
+    num_files : number of files in given simulation folder
+
+    Returns
+    -------
+    List of filnames in string formats
+
+    """
     filename = []
     i = 0
     # Making a list of all possible filenames
@@ -22,6 +36,18 @@ def get_filenames(sim_size, sim_res, num_files):
 
 
 def get_pos(filename):
+    """
+    
+
+    Parameters
+    ----------
+    filename : Array of group file names in string format from which to extract the subhalo position.
+
+    Returns
+    -------
+    Array of arrays containing x,y,z position of subhalo centres.
+
+    """
     g = 0
     pos = np.array([])
     while g < len(filename):
@@ -35,12 +61,19 @@ def get_pos(filename):
     pos = np.reshape(pos, [int(len(pos)/3),3])
     return(pos)
 
-
-"""
-Function that gets Subhalo Half Mass Radius from given file list.
-"""
-        
 def get_rad(filename):
+    """
+    
+
+    Parameters
+    ----------
+    filename : The names of the group files in which to look for halfmass radii.
+
+    Returns
+    -------
+    Array containing the halfmass radius for each Subhalo in the order they are saved in the files by TNG.
+
+    """
     g = 0
     rad = np.array([])
     while g < len(filename):
@@ -54,11 +87,47 @@ def get_rad(filename):
     return(rad)
 
 def distancefromcentre(cx, cy, cz, x, y, z, ):
+    """
     
+
+    Parameters
+    ----------
+    cx : Halo centre x-coord float
+    cy : Halo centre y-coord float
+    cz : Halo centre z-coord float
+    x : Particle Position x-coord
+    y : Particle Position y-coord
+    z : Particle Position z-coord
+
+    Returns
+    -------
+    Distance between particle and halo centre
+
+    """
     return (np.sqrt((np.power(np.subtract(x,cx), 2)+ np.power(np.subtract(y,cy), 2) + np.power(np.subtract(z,cz), 2)))) # distance between the centre and given point
 
 
 def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, haloz):
+    """
+    
+
+    Parameters
+    ----------
+    partx : Particles in halo x coordinates (array)
+    party : Particles in halo y coordinates (array)
+    partz : Particles in halo z coordinates (array)
+    mass : Particle mass (array)
+    interval : Interval of radii over which mass is binned and density calculated
+    virrad : Half Mass Radius of halo
+    halox : halo centre x coordinate
+    haloy : halo centre y coordinate
+    haloz : halo centre z coordinate
+
+    Returns
+    -------
+    list with densities at certain radii and radii at which density is calculated.
+
+    """
     density = []
     rad_lowerbound = []
     lowerbound = interval
@@ -96,16 +165,10 @@ densities = []
 radii = []
 while g < numhalos:
     print("hi")
-    #with open('HaloParticles/50-1_snap_99_halo_'+str(g)+'_rad_mass_100kpc.csv', 'r') as datafile:
-    #csvFile = csv.reader(datafile)
-    #data_csv = list(csvFile)
     data_csv = pd.read_csv('HaloParticles/50-1_snap_99_halo_'+str(g)+'_rad_mass_100kpc.csv')
     print("mid")
     print(data_csv)
     print("bye")
-    #data_transposed = np.array(data_csv).T
-    #print((data_transposed[0][1:].dtype, data_transposed[1][1:].dtype, data_transposed[2][1:].dtype,data_transposed[3][1:].dtype, interval.dtype, radius[g].dtype, positions[g][0].dtype, positions[g][1].dtype, positions[g][2].dtype))
-    #print((data_transposed[0][1:].astype(float), data_transposed[1][1:].astype(float), data_transposed[2][1:].astype(float),data_transposed[3][1:].astype(float), interval, radius[g], positions[g][0], positions[g][1], positions[g][2]))
     rad_den = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
     print(rad_den)
     densities.append(list(rad_den[0]))

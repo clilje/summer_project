@@ -5,10 +5,21 @@ import math
 import csv
 
 
-"""
-Creating function to get filenames for given simulation.
-"""
 def get_filenames(sim_size, sim_res, num_files):
+    """
+    
+
+    Parameters
+    ----------
+    sim_size : Size of Edge of simulation box in kpc.
+    sim_res : Resolution of simulation, integer from 1 to 4
+    num_files : number of files in given simulation folder
+
+    Returns
+    -------
+    List of filnames in string formats
+
+    """
     filename = []
     i = 0
     # Making a list of all possible filenames
@@ -17,11 +28,20 @@ def get_filenames(sim_size, sim_res, num_files):
         i += 1
     return(filename)
 
-"""
-Function that gets Subhalo Position from given file list.
-"""
         
 def get_pos(filename):
+    """
+    
+
+    Parameters
+    ----------
+    filename : Array of group file names in string format from which to extract the subhalo position.
+
+    Returns
+    -------
+    Array of arrays containing x,y,z position of subhalo centres.
+
+    """
     g = 0
     pos = np.array([])
     
@@ -38,11 +58,19 @@ def get_pos(filename):
     return(pos)
 
 
-"""
-Function that gets Subhalo Half Mass Radius from given file list.
-"""
-        
 def get_rad(filename):
+    """
+    
+
+    Parameters
+    ----------
+    filename : The names of the group files in which to look for halfmass radii.
+
+    Returns
+    -------
+    Array containing the halfmass radius for each Subhalo in the order they are saved in the files by TNG.
+
+    """
     g = 0
     rad = np.array([])
     
@@ -60,6 +88,20 @@ def get_rad(filename):
 
 
 def get_filenames_snap(sim_size, sim_res, num_files):
+    """
+    
+
+    Parameters
+    ----------
+    sim_size : Size of Edge of simulation box in kpc.
+    sim_res : Resolution of simulation, integer from 1 to 4
+    num_files : number of files in given simulation folder
+
+    Returns
+    -------
+    List of filnames in string formats for each snapshot
+
+    """
     filename = []
     i = 0
     # Making a list of all possible filenames
@@ -70,23 +112,51 @@ def get_filenames_snap(sim_size, sim_res, num_files):
     return(filename)
 
 
-"""
-Get associated Particles within 10^5 Parsec for each Halo
-"""
-
-
-def distancefromcentre(cx, cy, cz, x, y, z, ):
+def distancefromcentre(cx, cy, cz, x, y, z):
+    """
     
+
+    Parameters
+    ----------
+    cx : Halo centre x-coord float
+    cy : Halo centre y-coord float
+    cz : Halo centre z-coord float
+    x : Particle Position x-coord
+    y : Particle Position y-coord
+    z : Particle Position z-coord
+
+    Returns
+    -------
+    Distance between particle and halo centre
+
+    """
     return (np.sqrt((np.power(np.subtract(x,cx), 2)+ np.power(np.subtract(y,cy), 2) + np.power(np.subtract(z,cz), 2)))) # distance between the centre and given point
 
 
 def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesnap):
+    """
+    
+
+    Parameters
+    ----------
+    num_halo : Number of halo, index style
+    position : position of centre of halo, three coordinates
+    halfmassrad : halfmass radius of halo
+    rad_to_check : radius to find particles within
+    filenamesnap : names of files in which particles are stored
+
+    Returns
+    -------
+    No direct output
+    File is written with associated halo positions.
+
+    """
     xhalo, yhalo, zhalo = position
     r = rad_to_check
     g = 0
     
     
-    with open('HaloParticles/50-1_snap_99_halo_'+str(num_halo)+'_rad_mass_100kpc.csv', 'w', encoding='UTF8', newline='') as f:
+    with open('HaloParticles/50-4_snap_99_halo_'+str(num_halo)+'_rad_mass_100kpc.csv', 'w', encoding='UTF8', newline='') as f:
         
         header = ['x','y','z','mass']
         # Create a writer object
@@ -114,7 +184,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                 if len(nindex) !=0:
                     data = np.hstack((partpos[nindex], np.atleast_2d(dmmass[nindex]).T))
                     fwriter.writerows(data)
-                    print(len(nindex))
+                    print("Number of DM Particles"+str(len(nindex)))
                     c = len(data)
                 else:
                     print("No DM found")
@@ -132,7 +202,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     data = np.hstack((partpos[nindex], np.atleast_2d(mass0[nindex]).T))
                     fwriter.writerows(data)
                     c = len(data)
-                    print(c)
+                    print("Number of Gas Particles"+str(c))
                 else:
                     print("No Gas found")
             
@@ -148,11 +218,11 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                 if len(nindex) !=0:
                     data = np.hstack((partpos[nindex], np.atleast_2d(mass4[nindex]).T))
                     fwriter.writerows(data)
-                    print(len(data))
                     c = len(data)
+                    print("Number of Stellar Particles"+str(c))
                     
                 else:
-                    print("No Stellar part found")
+                    print("No Stellar particles found")
                 
                 
                 #Black Hole Particles
@@ -167,7 +237,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
                     data = np.hstack((partpos[nindex], np.atleast_2d(mass5[nindex]).T))
                     fwriter.writerows(data)
                     c = len(data)
-                    print(c)
+                    print("Number of BH Particles"+str(c))
                 else:
                     print("No BH found")
             g+= 1
@@ -177,7 +247,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
     
 
 filename_group = get_filenames(50, 4, 11)
-print('hi')
+#print('hi')
 pos = get_pos(filename_group)
 
 halfmassradii = get_rad(filename_group)
@@ -186,6 +256,7 @@ filename_snap = get_filenames_snap(50, 4, 11)
 
 
 g = 0 
+#while g < len(halfmassradii)
 while g < 20:    
     particle_from_halo(g, pos[g], halfmassradii[g], (halfmassradii[g]*3), filename_snap)
     g += 1
