@@ -86,10 +86,10 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
     
 
 
-interval = np.logspace(0.1, 2, 50)
-files = get_filenames(50, 4, 11)
-positions = get_pos(files)
-radius = get_rad(files)
+#interval = np.logspace(0.1, 2, 50)
+#files = get_filenames(50, 4, 11)
+#positions = get_pos(files)
+#radius = get_rad(files)
 g = 0
 numhalos = 2
 rad_den = np.zeros(numhalos)
@@ -97,7 +97,7 @@ while g < numhalos:
     #with open('HaloParticles/50-1_snap_99_halo_'+str(g)+'_rad_mass_100kpc.csv', 'r') as datafile:
     #csvFile = csv.reader(datafile)
     #data_csv = list(csvFile)
-    data_csv = pd.read_csv('HaloParticles/50-1_snap_99_halo_'+str(g)+'_rad_mass_100kpc.csv', dtype=np.float64)
+    data_csv = pd.read_csv('HaloParticles/50-1_snap_99_halo_'+str(g)+'_rad_mass_100kpc.csv')
     print(data_csv)
     #data_transposed = np.array(data_csv).T
     #print((data_transposed[0][1:].dtype, data_transposed[1][1:].dtype, data_transposed[2][1:].dtype,data_transposed[3][1:].dtype, interval.dtype, radius[g].dtype, positions[g][0].dtype, positions[g][1].dtype, positions[g][2].dtype))
@@ -151,6 +151,7 @@ with open('snap_99_halo_5_rad_mass_100kpc.csv', 'r') as datafile:
     data_transposed = np.array(data_csv).T
     rad_den5 = radial_density(data_transposed[0][1:], data_transposed[1][1:], interval)
 """
+"""
 plt.loglog(rad_den[0][1], rad_den[0][0], "+", color="black", label="Halo_0_099")
 plt.loglog(rad_den[1][1], rad_den[1][0], "+", color="blue", label="Halo_1_099")
 #plt.loglog(rad_den2[1], rad_den2[0], "+", color="red", label="Halo_2_099")
@@ -162,3 +163,4 @@ plt.ylabel(r'$\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3}$)')
 plt.legend()
 plt.savefig('rad-den-all5')
 plt.show()
+"""
