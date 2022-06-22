@@ -65,7 +65,7 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
     i = 0
     dis = distancefromcentre(halox, haloy, haloz, partx, party, partz)
     virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
-    virindex = np.where(np.logical_and(dis.astype(float)>float(virrad+10), dis.astype(float)<float(virrad-10)))[0]
+    virindex = np.where(np.logical_and(dis.astype(float)>float(virrad-10), dis.astype(float)<float(virrad+10)))[0]
     mass = mass.astype(float)
     virM = np.sum(mass[virindex])
     virdensity = virM/virV
