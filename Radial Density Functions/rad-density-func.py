@@ -98,6 +98,7 @@ while g < numhalos:
         csvFile = csv.reader(datafile)
         data_csv = list(csvFile)
         data_transposed = np.array(data_csv).T
+        print((data_transposed[0][1:], data_transposed[1][1:], data_transposed[2][1:],data_transposed[3][1:], interval, radius[g], positions[g][0], positions[g][1], positions[g][2]))
         rad_den[g] = radial_density(data_transposed[0][1:], data_transposed[1][1:], data_transposed[2][1:],data_transposed[3][1:], interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
     g += 1 
     
