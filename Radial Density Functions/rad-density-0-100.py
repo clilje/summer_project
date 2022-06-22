@@ -177,7 +177,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
     
 
 filename_group = get_filenames(50, 4, 11)
-
+print('hi')
 pos = get_pos(filename_group)
 
 halfmassradii = get_rad(filename_group)
