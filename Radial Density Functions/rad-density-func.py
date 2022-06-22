@@ -97,9 +97,9 @@ while g < numhalos:
     with open('HaloParticles/50-1_snap_99_halo_'+str(g)+'_rad_mass_100kpc.csv', 'r') as datafile:
         csvFile = csv.reader(datafile)
         data_csv = list(csvFile)
-        data_transposed = np.array(data_csv).astype(float).T
-        print((data_transposed[0][1:], data_transposed[1][1:], data_transposed[2][1:],data_transposed[3][1:], interval, radius[g], positions[g][0], positions[g][1], positions[g][2]))
-        rad_den[g] = radial_density(data_transposed[0][1:], data_transposed[1][1:], data_transposed[2][1:],data_transposed[3][1:], interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
+        data_transposed = np.array(data_csv).T
+        print((data_transposed[0][1:].astype(float), data_transposed[1][1:].astype(float), data_transposed[2][1:].astype(float),data_transposed[3][1:].astype(float), interval, radius[g], positions[g][0], positions[g][1], positions[g][2]))
+        rad_den[g] = radial_density(data_transposed[0][1:].astype(float), data_transposed[1][1:].astype(float), data_transposed[2][1:].astype(float),data_transposed[3][1:].astype(float), interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
     g += 1 
     
 with open('snap_99_halo_1_rad_mass_100kpc.csv', 'r') as datafile:
