@@ -163,9 +163,8 @@ with open('snap_99_halo_5_rad_mass_100kpc.csv', 'r') as datafile:
     data_transposed = np.array(data_csv).T
     rad_den5 = radial_density(data_transposed[0][1:], data_transposed[1][1:], interval)
 """
-"""
-plt.loglog(rad_den[0][1], rad_den[0][0], "+", color="black", label="Halo_0_099")
-plt.loglog(rad_den[1][1], rad_den[1][0], "+", color="blue", label="Halo_1_099")
+plt.loglog(radii[0], densities[0], "+", color="black", label="Halo_0_099")
+plt.loglog(radii[1], densities[1], "+", color="blue", label="Halo_1_099")
 #plt.loglog(rad_den2[1], rad_den2[0], "+", color="red", label="Halo_2_099")
 #plt.loglog(rad_den3[1], rad_den3[0], "+", color="green", label="Halo_3_099")
 #plt.loglog(rad_den4[1], rad_den4[0], "+", color="cyan", label="Halo_4_099")
@@ -173,6 +172,6 @@ plt.loglog(rad_den[1][1], rad_den[1][0], "+", color="blue", label="Halo_1_099")
 plt.xlabel(r'Radius ($ckpc/h}$)')
 plt.ylabel(r'$\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3}$)')
 plt.legend()
-plt.savefig('rad-den-all5')
+plt.savefig('rad-den-all2')
 plt.show()
-"""
+
