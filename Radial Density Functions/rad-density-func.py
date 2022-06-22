@@ -92,8 +92,8 @@ positions = get_pos(files)
 radius = get_rad(files)
 g = 0
 numhalos = 2
-densities = np.array([])
-radii = np.array([])
+densities = []
+radii = []
 while g < numhalos:
     print("hi")
     #with open('HaloParticles/50-1_snap_99_halo_'+str(g)+'_rad_mass_100kpc.csv', 'r') as datafile:
@@ -108,11 +108,12 @@ while g < numhalos:
     #print((data_transposed[0][1:].astype(float), data_transposed[1][1:].astype(float), data_transposed[2][1:].astype(float),data_transposed[3][1:].astype(float), interval, radius[g], positions[g][0], positions[g][1], positions[g][2]))
     rad_den = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
     print(rad_den)
-    densities = np.append(densities, rad_den[0], axis=0)
-    radii = np.append(radii,rad_den[1], axis=0)
+    densities.append(list(rad_den[0]))
+    radii.append(list(rad_den[1]))
     print('finish')
     g += 1 
-
+densities = np.array(densities)
+radii = np.array(radii)
 print(densities)
 print(radii)
     
