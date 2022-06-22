@@ -108,8 +108,8 @@ while g < numhalos:
     #print((data_transposed[0][1:].astype(float), data_transposed[1][1:].astype(float), data_transposed[2][1:].astype(float),data_transposed[3][1:].astype(float), interval, radius[g], positions[g][0], positions[g][1], positions[g][2]))
     rad_den = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
     print(rad_den)
-    densities += rad_den[0]
-    radii += rad_den[1]
+    densities = np.append(densities, rad_den[0], axis=0)
+    radii = np.append(radii,rad_den[1], axis=0)
     print('finish')
     g += 1 
 
