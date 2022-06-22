@@ -86,10 +86,10 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
     
 
 
-#interval = np.logspace(0.1, 2, 50)
-#files = get_filenames(50, 4, 11)
-#positions = get_pos(files)
-#radius = get_rad(files)
+interval = np.logspace(0.1, 2, 50)
+files = get_filenames(50, 4, 11)
+positions = get_pos(files)
+radius = get_rad(files)
 g = 0
 numhalos = 2
 rad_den = np.zeros(numhalos)
@@ -105,8 +105,10 @@ while g < numhalos:
     #data_transposed = np.array(data_csv).T
     #print((data_transposed[0][1:].dtype, data_transposed[1][1:].dtype, data_transposed[2][1:].dtype,data_transposed[3][1:].dtype, interval.dtype, radius[g].dtype, positions[g][0].dtype, positions[g][1].dtype, positions[g][2].dtype))
     #print((data_transposed[0][1:].astype(float), data_transposed[1][1:].astype(float), data_transposed[2][1:].astype(float),data_transposed[3][1:].astype(float), interval, radius[g], positions[g][0], positions[g][1], positions[g][2]))
-    #rad_den[g] = radial_density(data_transposed[0][1:].astype(float), data_transposed[1][1:].astype(float), data_transposed[2][1:].astype(float),data_transposed[3][1:].astype(float), interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
+    rad_den[g] = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
     g += 1 
+
+print(rad_den)
     
 '''
     
