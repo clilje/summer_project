@@ -98,8 +98,9 @@ while g < numhalos:
         csvFile = csv.reader(datafile)
         data_csv = list(csvFile)
         data_transposed = np.array(data_csv).T
-        print((data_transposed[0][1:].astype(float), data_transposed[1][1:].astype(float), data_transposed[2][1:].astype(float),data_transposed[3][1:].astype(float), interval, radius[g], positions[g][0], positions[g][1], positions[g][2]))
-        rad_den[g] = radial_density(data_transposed[0][1:].astype(float), data_transposed[1][1:].astype(float), data_transposed[2][1:].astype(float),data_transposed[3][1:].astype(float), interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
+        print((data_transposed[0][1:].dtype, data_transposed[1][1:].dtype, data_transposed[2][1:].dtype,data_transposed[3][1:].dtype, interval.dtype, radius[g].dtype, positions[g][0].dtype, positions[g][1].dtype, positions[g][2].dtype))
+        #print((data_transposed[0][1:].astype(float), data_transposed[1][1:].astype(float), data_transposed[2][1:].astype(float),data_transposed[3][1:].astype(float), interval, radius[g], positions[g][0], positions[g][1], positions[g][2]))
+        #rad_den[g] = radial_density(data_transposed[0][1:].astype(float), data_transposed[1][1:].astype(float), data_transposed[2][1:].astype(float),data_transposed[3][1:].astype(float), interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
     g += 1 
     
 with open('snap_99_halo_1_rad_mass_100kpc.csv', 'r') as datafile:
