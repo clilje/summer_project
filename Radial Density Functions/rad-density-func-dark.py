@@ -175,8 +175,8 @@ interval = np.logspace(0.1, 2.5, 100)
 files = get_filenames(50, 4, 4)
 positions = get_pos(files)
 radius = get_rad(files)
-g = 0
-numhalos = 5
+g = 5
+numhalos = 10
 densities = []
 radii = []
 halo_number = []
@@ -200,7 +200,7 @@ colors = iter(hsv(np.linspace(0,1,6)))
 b = 0
 while b < (len(radii)):
     print('loop')
-    plt.loglog(radii[b], densities[b], "+", label="Halo_dark"+str(halo_number[b])+"_099", color=next(colors))
+    plt.loglog(radii[b], densities[b], "+", label="Halo_dark"+str(halo_number[b+5])+"_099", color=next(colors))
     b += 1
 
 plt.xlabel(r'Radius ($ckpc/(h*R_{HalfMass}})}$)')
