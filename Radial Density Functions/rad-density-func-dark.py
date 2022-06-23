@@ -223,7 +223,7 @@ radii = np.array(radii)
 
 '''
 hsv = plt.get_cmap('gnuplot')
-colors = iter(hsv(np.linspace(0,1,5)))
+colors = iter(hsv(np.linspace(0,1,15)))
 b = 0
 while b < (len(radii)):
     print('loop')
