@@ -150,6 +150,7 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
     mass = mass.astype(float)
     virM = np.sum(mass[virindex])
     virdensity = virM/virV
+    print(virindex)
     print(virV)
     print(virM)
     print(virdensity)
