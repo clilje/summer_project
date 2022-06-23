@@ -150,6 +150,9 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
     mass = mass.astype(float)
     virM = np.sum(mass[virindex])
     virdensity = virM/virV
+    print(virV)
+    print(virM)
+    print(virdensity)
     
     while i < (len(lowerbound)-1):
         #print(lowerbound[i])
@@ -164,19 +167,8 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
         rad_lowerbound = np.append(rad_lowerbound, lowerbound[i]/virrad)
         i += 1
     return(density, rad_lowerbound)
-'''   
-matcharr = get_matching(50, 4)
-darkindex = np.zeros(20)
-i = 0
-while i<20:
-    if matcharr[i] == -1:
-        print("No match for Halo: "+str(i))
-        darkindex[i]=-1
-    else:
-        darkindex[i] = matcharr[i]
-    i +=1
-print(matcharr)
-'''
+
+
 interval = np.logspace(0.1, 2.5, 100)
 files = get_filenames(50, 4, 4)
 positions = get_pos(files)
@@ -200,29 +192,7 @@ while g < (numhalos):
         halo_number.append(g)
     g += 1
     
-'''
-interval = np.logspace(0.1, 2.5, 100)
-files = get_filenames(50, 4, 11)
-positions = get_pos(files)
-radius = get_rad(files)
-g = 5
-numhalos = 10
-densities = []
-radii = []
-'''
-'''
-while g < numhalos:
-    data_csv = pd.read_csv('HaloParticles/50-1_snap_99_halo_'+str(g)+'_pos_mass_dark.csv')
-    rad_den = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
-    print(rad_den)
-    densities.append(list(rad_den[0]))
-    radii.append(list(rad_den[1]))
-    g += 1 
 
-densities = np.array(densities)
-radii = np.array(radii)
-
-'''
 hsv = plt.get_cmap('gnuplot')
 colors = iter(hsv(np.linspace(0,1,15)))
 b = 0
