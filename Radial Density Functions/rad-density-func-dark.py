@@ -195,8 +195,8 @@ while g < (numhalos):
     g += 1
     
 
-hsv = plt.get_cmap('gnuplot')
-colors = iter(hsv(np.linspace(0,1,15)))
+hsv = plt.get_cmap('hsv')
+colors = iter(hsv(np.linspace(0,1,6)))
 b = 0
 while b < (len(radii)):
     print('loop')
