@@ -145,8 +145,8 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
     lowerbound = interval
     i = 0
     dis = distancefromcentre(halox, haloy, haloz, partx, party, partz)
-    virV = (4/3)*math.pi*(np.power((virrad+100),3)-np.power((virrad-100),3))
-    virindex = np.where(np.logical_and(dis.astype(float)>float(virrad-100), dis.astype(float)<float(virrad+100)))[0]
+    virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
+    virindex = np.where(np.logical_and(dis.astype(float)>float(virrad-10), dis.astype(float)<float(virrad+10)))[0]
     mass = mass.astype(float)
     virM = np.sum(mass[virindex])
     virdensity = virM/virV
@@ -169,6 +169,7 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
         i += 1
     return(density, rad_lowerbound)
 
+matchingarr = get_matching(50, 4)
 
 interval = np.logspace(0.1, 2.5, 100)
 files = get_filenames(50, 4, 4)
@@ -186,7 +187,7 @@ while g < (numhalos):
     path = Path('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass_dark.csv')
     if path.is_file():
         data_csv = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass_dark.csv')
-        rad_den = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
+        rad_den = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], interval, radius[matchingarr[g]], positions[matchingarr[g]][0], positions[matchingarr[g]][1], positions[matchingarr[g]][2])
         print(rad_den)
         densities.append(list(rad_den[0]))
         radii.append(list(rad_den[1]))
