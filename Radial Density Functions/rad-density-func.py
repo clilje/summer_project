@@ -167,6 +167,7 @@ radii = []
 while g < numhalos:
     data_csv = pd.read_csv('HaloParticles/50-1_snap_99_halo_'+str(g)+'_rad_mass_100kpc.csv')
     rad_den = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
+    print(rad_den)
     densities.append(list(rad_den[0]))
     radii.append(list(rad_den[1]))
     g += 1 
@@ -174,7 +175,7 @@ while g < numhalos:
 densities = np.array(densities)
 radii = np.array(radii)
 
-    
+print(densities)
 
 hsv = plt.get_cmap('gnuplot')
 colors = iter(hsv(np.linspace(0,1,5)))
