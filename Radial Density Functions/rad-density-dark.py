@@ -317,8 +317,9 @@ while i<20:
         print("No match for Halo: "+str(i))
         darkindex[i]=-1
     else:
-        darkindex[i] = matcharr[i]
+        particle_from_halo(i, pos[matcharr[i]], halfmassradii[matcharr[i]], (halfmassradii[matcharr[i]]*3), filename_snap)
     i +=1
+'''
 print(matcharr)
 g = 0 
 baryonic_halo_number = 0
@@ -328,4 +329,4 @@ while g < (np.max(darkindex)+1):
         particle_from_halo(baryonic_halo_number, pos[g], halfmassradii[g], (halfmassradii[g]*3), filename_snap)
     g += 1
     baryonic_halo_number += 1
-    
+   ''' 

@@ -196,7 +196,6 @@ while g < (np.max(darkindex)+1):
         densities.append(list(rad_den[0]))
         radii.append(list(rad_den[1]))
         halo_number.append(g)
-    halo_number.append('NaN')
     g += 1
     
 '''
