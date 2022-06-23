@@ -161,7 +161,7 @@ files = get_filenames(50, 4, 11)
 positions = get_pos(files)
 radius = get_rad(files)
 g = 5
-numhalos = 5
+numhalos = 10
 densities = []
 radii = []
 while g < numhalos:
@@ -177,8 +177,8 @@ radii = np.array(radii)
     
 
 hsv = plt.get_cmap('gnuplot')
-colors = iter(hsv(np.linspace(0,1,11)))
-b = 0
+colors = iter(hsv(np.linspace(0,1,5)))
+b = 5
 while b < len(radii):
     plt.loglog(radii[b], densities[b], "+", label="Halo_"+str(b)+"_099", color=next(colors))
     b += 1
