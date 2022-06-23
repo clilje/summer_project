@@ -177,7 +177,7 @@ while i<20:
 print(matcharr)
 
 interval = np.logspace(0.1, 2.5, 100)
-files = get_filenames(50, 4, 11)
+files = get_filenames(50, 4, 4)
 positions = get_pos(files)
 radius = get_rad(files)
 g = 0
