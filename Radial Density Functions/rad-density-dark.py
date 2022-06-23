@@ -321,9 +321,11 @@ while i<20:
     i +=1
 print(matcharr)
 g = 0 
+baryonic_halo_number = 0
 #while g < len(halfmassradii)
 while g < (np.max(darkindex)+1): 
     if (g in darkindex):
-        particle_from_halo(g, pos[g], halfmassradii[g], (halfmassradii[g]*3), filename_snap)
+        particle_from_halo(baryonic_halo_number, pos[g], halfmassradii[g], (halfmassradii[g]*3), filename_snap)
     g += 1
+    baryonic_halo_number += 1
     
