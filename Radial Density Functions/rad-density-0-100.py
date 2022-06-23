@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import csv
+from pathlib import Path
 
 
 def get_filenames(sim_size, sim_res, num_files):
@@ -166,79 +167,79 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
         while g < len(filenamesnap):
             
             print(filenamesnap[g])
-            
-            
-            with h5py.File(filenamesnap[g]) as file:
-                            
-                #DMParticles
-                partpos = np.array(file['PartType1/Coordinates'])#
-                c = 0
-                header = dict( file['Header'].attrs.items() )
-                dmmass = np.ones(np.size(partpos, axis=0))*header['MassTable'][1]  # 10^10 Msun/h
-                
-                dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
-                
-                nindex = (np.where(dis<r))[0]
-                
-                if len(nindex) !=0:
-                    data = np.hstack((partpos[nindex], np.atleast_2d(dmmass[nindex]).T))
-                    fwriter.writerows(data)
-                    print("Number of DM Particles"+str(len(nindex)))
-                    c = len(data)
-                else:
-                    print("No DM found")
-                
-                
-                #GasParticles
-                partpos = np.array(file['PartType0/Coordinates'])
-                mass0 = np.array(file['PartType0/Masses'])
-                
-                dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
-                
-                nindex = (np.where(dis<r))[0]
-                
-                if len(nindex) != 0:
-                    data = np.hstack((partpos[nindex], np.atleast_2d(mass0[nindex]).T))
-                    fwriter.writerows(data)
-                    c = len(data)
-                    print("Number of Gas Particles"+str(c))
-                else:
-                    print("No Gas found")
-            
-
-                #Stellar and Wind particles
-                partpos = np.array(file['PartType4/Coordinates'])
-                mass4 = np.array(file['PartType4/Masses'])
-                
-                dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
-                
-                nindex = (np.where(dis<r))[0]
-                
-                if len(nindex) !=0:
-                    data = np.hstack((partpos[nindex], np.atleast_2d(mass4[nindex]).T))
-                    fwriter.writerows(data)
-                    c = len(data)
-                    print("Number of Stellar Particles"+str(c))
+            path = Path(filenamesnap[g])
+            if path.is_file():
+                with h5py.File(filenamesnap[g]) as file:
+                                    
+                    #DMParticles
+                    partpos = np.array(file['PartType1/Coordinates'])#
+                    c = 0
+                    header = dict( file['Header'].attrs.items() )
+                    dmmass = np.ones(np.size(partpos, axis=0))*header['MassTable'][1]  # 10^10 Msun/h
                     
-                else:
-                    print("No Stellar particles found")
+                    dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
+                    
+                    nindex = (np.where(dis<r))[0]
+                    
+                    if len(nindex) !=0:
+                        data = np.hstack((partpos[nindex], np.atleast_2d(dmmass[nindex]).T))
+                        fwriter.writerows(data)
+                        print("Number of DM Particles"+str(len(nindex)))
+                        c = len(data)
+                    else:
+                        print("No DM found")
+                    
+                    
+                    #GasParticles
+                    partpos = np.array(file['PartType0/Coordinates'])
+                    mass0 = np.array(file['PartType0/Masses'])
+                    
+                    dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
+                    
+                    nindex = (np.where(dis<r))[0]
+                    
+                    if len(nindex) != 0:
+                        data = np.hstack((partpos[nindex], np.atleast_2d(mass0[nindex]).T))
+                        fwriter.writerows(data)
+                        c = len(data)
+                        print("Number of Gas Particles"+str(c))
+                    else:
+                        print("No Gas found")
                 
-                
-                #Black Hole Particles
-                partpos = file['PartType5/Coordinates']
-                mass5 = np.array(file['PartType5/Masses'])
-                
-                dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
-                
-                nindex = (np.where(dis<r))[0]
-                
-                if len(nindex) !=0:
-                    data = np.hstack((partpos[nindex], np.atleast_2d(mass5[nindex]).T))
-                    fwriter.writerows(data)
-                    c = len(data)
-                    print("Number of BH Particles"+str(c))
-                else:
-                    print("No BH found")
+    
+                    #Stellar and Wind particles
+                    partpos = np.array(file['PartType4/Coordinates'])
+                    mass4 = np.array(file['PartType4/Masses'])
+                    
+                    dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
+                    
+                    nindex = (np.where(dis<r))[0]
+                    
+                    if len(nindex) !=0:
+                        data = np.hstack((partpos[nindex], np.atleast_2d(mass4[nindex]).T))
+                        fwriter.writerows(data)
+                        c = len(data)
+                        print("Number of Stellar Particles"+str(c))
+                        
+                    else:
+                        print("No Stellar particles found")
+                    
+                    
+                    #Black Hole Particles
+                    partpos = file['PartType5/Coordinates']
+                    mass5 = np.array(file['PartType5/Masses'])
+                    
+                    dis = distancefromcentre(xhalo, yhalo, zhalo, partpos[:, 0], partpos[:, 1], partpos[:, 2])
+                    
+                    nindex = (np.where(dis<r))[0]
+                    
+                    if len(nindex) !=0:
+                        data = np.hstack((partpos[nindex], np.atleast_2d(mass5[nindex]).T))
+                        fwriter.writerows(data)
+                        c = len(data)
+                        print("Number of BH Particles"+str(c))
+                    else:
+                        print("No BH found")
             g+= 1
 
     
@@ -256,7 +257,7 @@ filename_snap = get_filenames_snap(50, 1, 680)
 
 g = 0 
 #while g < len(halfmassradii)
-while g < 5:    
+while g < 1:    
     particle_from_halo(g, pos[g], halfmassradii[g], (halfmassradii[g]*3), filename_snap)
     g += 1
     

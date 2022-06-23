@@ -229,8 +229,10 @@ with open('snap_99_halo_5_rad_mass_100kpc.csv', 'r') as datafile:
 """
 hsv = plt.get_cmap('hsv')
 colors = iter(hsv(np.linspace(0,1,11)))
-for b in radii:
+b = 0
+while b < len(radii):
     plt.loglog(radii[b], densities[b], "+", label="Halo_"+str(b)+"_099", color=next(colors))
+    b += 1
 #plt.loglog(radii[1], densities[1], "+", color="blue", label="Halo_1_099")
 #plt.loglog(rad_den2[1], rad_den2[0], "+", color="red", label="Halo_2_099")
 #plt.loglog(rad_den3[1], rad_den3[0], "+", color="green", label="Halo_3_099")
