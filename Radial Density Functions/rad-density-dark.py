@@ -205,7 +205,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
     g = 0
     
     
-    with open('HaloParticles/50-1_snap_99_halo_'+str(num_halo)+'_pos_mass.csv', 'w', encoding='UTF8', newline='') as f:
+    with open('HaloParticles/50-1_snap_99_halo_'+str(num_halo)+'_pos_mass_dark.csv', 'w', encoding='UTF8', newline='') as f:
         
         header = ['x','y','z','mass']
         # Create a writer object
@@ -314,7 +314,7 @@ darkindex = np.zeros(20)
 i = 0
 while i<20:
     if matcharr[i] == -1:
-        print("No match for Halo"+str(i))
+        print("No match for Halo: "+str(i))
         darkindex[i]=-1
     else:
         darkindex[i] = matcharr[i]
