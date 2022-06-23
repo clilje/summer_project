@@ -178,9 +178,9 @@ radii = np.array(radii)
 
 hsv = plt.get_cmap('gnuplot')
 colors = iter(hsv(np.linspace(0,1,5)))
-b = 5
-while b < (len(radii)+5):
-    plt.loglog(radii[b], densities[b], "+", label="Halo_"+str(b)+"_099", color=next(colors))
+b = 0
+while b < (len(radii)):
+    plt.loglog(radii[b], densities[b], "+", label="Halo_"+str(b+5)+"_099", color=next(colors))
     b += 1
 
 plt.xlabel(r'Radius ($ckpc/(h*R_{HalfMass}})}$)')
