@@ -181,7 +181,7 @@ densities = []
 radii = []
 halo_number = []
 
-g = 0 
+
 #while g < len(halfmassradii)
 while g < (numhalos): 
     path = Path('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass_dark.csv')
@@ -200,7 +200,7 @@ colors = iter(hsv(np.linspace(0,1,6)))
 b = 0
 while b < (len(radii)):
     print('loop')
-    plt.loglog(radii[b], densities[b], "+", label="Halo_dark"+str(halo_number[b+5])+"_099", color=next(colors))
+    plt.loglog(radii[b], densities[b], "+", label="Halo_dark"+str(halo_number[b])+"_099", color=next(colors))
     b += 1
 
 plt.xlabel(r'Radius ($ckpc/(h*R_{HalfMass}})}$)')
