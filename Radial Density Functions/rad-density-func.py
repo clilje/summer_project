@@ -130,7 +130,7 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
     """
     density = []
     rad_lowerbound = []
-    lowerbound = interval
+    lowerbound = np.logspace(0.1, (3*virrad), 50)
     i = 0
     dis = distancefromcentre(halox, haloy, haloz, partx, party, partz)
     virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
@@ -160,7 +160,7 @@ files = get_filenames(50, 4, 11)
 positions = get_pos(files)
 radius = get_rad(files)
 g = 0
-numhalos = 2
+numhalos = 10
 densities = []
 radii = []
 while g < numhalos:
@@ -226,14 +226,17 @@ with open('snap_99_halo_5_rad_mass_100kpc.csv', 'r') as datafile:
     data_transposed = np.array(data_csv).T
     rad_den5 = radial_density(data_transposed[0][1:], data_transposed[1][1:], interval)
 """
-plt.loglog(radii[0], densities[0], "+", color="black", label="Halo_0_099")
-plt.loglog(radii[1], densities[1], "+", color="blue", label="Halo_1_099")
+hsv = plt.get_cmap('hsv')
+colors = iter(hsv(np.linspace(0,1,11)))
+for b in radii:
+    plt.loglog(radii[b], densities[b], "+", label="Halo_"+str(b)+"_099", color=next(colors))
+#plt.loglog(radii[1], densities[1], "+", color="blue", label="Halo_1_099")
 #plt.loglog(rad_den2[1], rad_den2[0], "+", color="red", label="Halo_2_099")
 #plt.loglog(rad_den3[1], rad_den3[0], "+", color="green", label="Halo_3_099")
 #plt.loglog(rad_den4[1], rad_den4[0], "+", color="cyan", label="Halo_4_099")
 #plt.loglog(rad_den5[1], rad_den5[0], "+", color="pink", label="Halo_5_099")
-plt.xlabel(r'Radius ($ckpc/h}$)')
-plt.ylabel(r'$\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3}$)')
+plt.xlabel(r'Radius ($ckpc/(h*R_{HalfMass}})}$)')
+plt.ylabel(r'$\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} \rho_{HalfMass}$)')
 plt.legend()
 plt.savefig('rad-den-all2')
 plt.show()
