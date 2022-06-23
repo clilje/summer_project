@@ -130,7 +130,8 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
     """
     density = []
     rad_lowerbound = []
-    lowerbound = np.logspace(0.1, (3*virrad), 50)
+    #lowerbound = np.logspace(0.1, (3*virrad), 50)
+    lowerbound = interval
     i = 0
     dis = distancefromcentre(halox, haloy, haloz, partx, party, partz)
     virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
@@ -139,7 +140,7 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
     virM = np.sum(mass[virindex])
     virdensity = virM/virV
     
-    while i < (len(interval)-1):
+    while i < (len(lowerbound)-1):
         #print(lowerbound[i])
         dr = (lowerbound[i+1]-lowerbound[i])
         dV = (4/3)*math.pi*(np.power(lowerbound[i+1],3)-np.power(lowerbound[i],3))
@@ -155,7 +156,7 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
     
 
 
-interval = np.logspace(0.1, 2, 50)
+interval = np.logspace(0.1, 3, 100)
 files = get_filenames(50, 4, 11)
 positions = get_pos(files)
 radius = get_rad(files)
@@ -238,6 +239,6 @@ for b in radii:
 plt.xlabel(r'Radius ($ckpc/(h*R_{HalfMass}})}$)')
 plt.ylabel(r'$\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} \rho_{HalfMass}$)')
 plt.legend()
-plt.savefig('rad-den-all2')
+plt.savefig('rad-den-all10')
 plt.show()
 
