@@ -160,7 +160,7 @@ interval = np.logspace(0.1, 2.5, 100)
 files = get_filenames(50, 4, 11)
 positions = get_pos(files)
 radius = get_rad(files)
-g = 0
+g = 5
 numhalos = 5
 densities = []
 radii = []
@@ -176,7 +176,7 @@ radii = np.array(radii)
 
     
 
-hsv = plt.get_cmap('tab20c')
+hsv = plt.get_cmap('gnuplot')
 colors = iter(hsv(np.linspace(0,1,11)))
 b = 0
 while b < len(radii):
@@ -186,6 +186,6 @@ while b < len(radii):
 plt.xlabel(r'Radius ($ckpc/(h*R_{HalfMass}})}$)')
 plt.ylabel(r'$\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$)')
 plt.legend()
-plt.savefig('rad-den-first5')
+plt.savefig('rad-den-second5')
 plt.show()
 
