@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import math
 import csv
 import pandas as pd
+from pathlib import Path
 
 def get_filenames(sim_size, sim_res, num_files):
     """
@@ -163,7 +164,7 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
         rad_lowerbound = np.append(rad_lowerbound, lowerbound[i]/virrad)
         i += 1
     return(density, rad_lowerbound)
-    
+'''   
 matcharr = get_matching(50, 4)
 darkindex = np.zeros(20)
 i = 0
@@ -175,7 +176,7 @@ while i<20:
         darkindex[i] = matcharr[i]
     i +=1
 print(matcharr)
-
+'''
 interval = np.logspace(0.1, 2.5, 100)
 files = get_filenames(50, 4, 4)
 positions = get_pos(files)
@@ -188,8 +189,9 @@ halo_number = []
 
 g = 0 
 #while g < len(halfmassradii)
-while g < (np.max(darkindex)+1): 
-    if (g in darkindex):
+while g < (numhalos): 
+    path = Path('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass_dark.csv')
+    if path.is_file():
         data_csv = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass_dark.csv')
         rad_den = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
         print(rad_den)
