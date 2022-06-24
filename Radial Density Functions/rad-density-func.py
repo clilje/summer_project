@@ -187,6 +187,6 @@ while b < (len(radii)):
 plt.xlabel(r'Radius ($ckpc/(h*R_{HalfMass}})}$)')
 plt.ylabel(r'$\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$)')
 plt.legend()
-plt.savefig('rad-den-halo4-50-1')
+plt.savefig('rad-den-halo-4-50-1')
 plt.show()
 
