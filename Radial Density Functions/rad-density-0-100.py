@@ -156,7 +156,7 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
     g = 0
     
     
-    with open('HaloParticles/50-1_snap_99_halo_'+str(num_halo)+'_pos_mass_long.csv', 'w', encoding='UTF8', newline='') as f:
+    with open('HaloParticles/50-4_snap_99_halo_'+str(num_halo)+'_pos_mass.csv', 'w', encoding='UTF8', newline='') as f:
         
         header = ['x','y','z','mass']
         # Create a writer object
@@ -246,17 +246,17 @@ def particle_from_halo(num_halo, position, halfmassrad, rad_to_check, filenamesn
     
     
 
-filename_group = get_filenames(50, 1, 680)
+filename_group = get_filenames(50, 4, 1)
 
 pos = get_pos(filename_group)
 
 halfmassradii = get_rad(filename_group)
 
-filename_snap = get_filenames_snap(50, 1, 680)
+filename_snap = get_filenames_snap(50, 4, 11)
 
 
-g = 4
+g = 0
 #while g < len(halfmassradii)
-while g < 5:    
+while g <30:    
     particle_from_halo(g, pos[g], halfmassradii[g], (halfmassradii[g]*3), filename_snap)
     g += 1
