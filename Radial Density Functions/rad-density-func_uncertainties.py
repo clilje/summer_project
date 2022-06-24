@@ -181,6 +181,7 @@ while g < numhalos:
 densities = np.array(densities)
 radii = np.array(radii)
 uncertainties = np.array(uncertainties)
+uncertainties[uncertainties == np.nan] = 0
 
 hsv = plt.get_cmap('gnuplot')
 colors = iter(hsv(np.linspace(0,1,8)))
