@@ -150,10 +150,11 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
         
         dn = len(nindex)
         #mass = mass.astype(float)
+        print(dn)
         M = np.sum(mass[nindex])
         density = np.append(density, (M/(dV))/virdensity)
         rad_lowerbound = np.append(rad_lowerbound, lowerbound[i]/virrad)
-        uncertainties = np.append(uncertainties, (np.average(mass[nindex])/dV)/np.sqrt(dn))
+        uncertainties = np.append(uncertainties, (density)/np.sqrt(dn))
         i += 1
     return(density, rad_lowerbound, uncertainties)
     
