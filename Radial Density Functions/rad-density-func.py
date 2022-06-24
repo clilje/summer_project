@@ -161,7 +161,7 @@ files = get_filenames(50, 4, 11)
 positions = get_pos(files)
 radius = get_rad(files)
 g = 4
-numhalos = 1
+numhalos = 5
 densities = []
 radii = []
 while g < numhalos:
