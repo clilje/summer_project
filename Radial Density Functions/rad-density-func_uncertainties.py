@@ -182,13 +182,13 @@ densities = np.array(densities)
 radii = np.array(radii)
 uncertainties = np.array(uncertainties)
 uncertainties[uncertainties == np.nan] = 0
-
+print(uncertainties)
 hsv = plt.get_cmap('gnuplot')
 colors = iter(hsv(np.linspace(0,1,8)))
 b = 0
 while b < (len(radii)):
     print('loop')
-    plt.errorbar((radii[b]), (densities[b]), yerr=(uncertainties), fmt='+', label="Halo_"+str(b+1)+"_099", color=next(colors))
+    plt.errorbar((radii[b]), (densities[b]), yerr=(uncertainties[b]), fmt='+', label="Halo_"+str(b+1)+"_099", color=next(colors))
     b += 1
 
 plt.xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
