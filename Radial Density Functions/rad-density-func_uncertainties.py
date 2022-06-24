@@ -153,7 +153,7 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
         M = np.sum(mass[nindex])
         density = np.append(density, (M/(dV))/virdensity)
         rad_lowerbound = np.append(rad_lowerbound, lowerbound[i]/virrad)
-        uncertainties = np.append(uncertainties, np.round((np.average(M)/dV)/dn,7))
+        uncertainties = np.append(uncertainties, (np.average(M)/dV)/np.sqrt(dn))
         i += 1
     return(density, rad_lowerbound, uncertainties)
     
@@ -164,7 +164,7 @@ files = get_filenames(50, 4, 11)
 positions = get_pos(files)
 radius = get_rad(files)
 g = 1
-numhalos = 7
+numhalos = 5
 densities = []
 uncertainties = []
 radii = []
@@ -184,11 +184,11 @@ uncertainties = np.array(uncertainties)
 uncertainties[uncertainties == np.nan] = 0
 print(uncertainties)
 hsv = plt.get_cmap('gnuplot')
-colors = iter(hsv(np.linspace(0,1,8)))
+colors = iter(hsv(np.linspace(0,1,6)))
 b = 0
 while b < (len(radii)):
     print('loop')
-    plt.errorbar((radii[b]), (densities[b]), yerr=(uncertainties[b]), fmt='+', label="Halo_"+str(b+1)+"_099", color=next(colors))
+    plt.errorbar((radii[b]), (densities[b]), yerr=(uncertainties[b]), fmt='.', label="Halo_"+str(b+1)+"_099", color=next(colors))
     b += 1
 
 plt.xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
@@ -196,6 +196,6 @@ plt.ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{
 plt.legend()
 plt.gca().set_yscale('log')
 plt.gca().set_xscale('log')
-plt.savefig('rad-den-halos-50-4-errorbars')
+plt.savefig('halos-50-4-errorbars')
 plt.show()
 
