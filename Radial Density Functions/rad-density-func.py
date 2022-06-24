@@ -160,12 +160,12 @@ interval = np.logspace(0.1, 2.5, 100)
 files = get_filenames(50, 4, 11)
 positions = get_pos(files)
 radius = get_rad(files)
-g = 5
-numhalos = 10
+g = 0
+numhalos = 1
 densities = []
 radii = []
 while g < numhalos:
-    data_csv = pd.read_csv('HaloParticles/50-1_snap_99_halo_'+str(g)+'_rad_mass_100kpc.csv')
+    data_csv = pd.read_csv('HaloParticles/50-1_snap_99_halo_'+str(g)+'_pos_mass.csv')
     rad_den = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
     print(rad_den)
     densities.append(list(rad_den[0]))
@@ -181,12 +181,12 @@ colors = iter(hsv(np.linspace(0,1,5)))
 b = 0
 while b < (len(radii)):
     print('loop')
-    plt.loglog(radii[b], densities[b], "+", label="Halo_"+str(b+5)+"_099", color=next(colors))
+    plt.loglog(radii[b], densities[b], "+", label="Halo_"+str(b)+"_099", color=next(colors))
     b += 1
 
 plt.xlabel(r'Radius ($ckpc/(h*R_{HalfMass}})}$)')
 plt.ylabel(r'$\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$)')
 plt.legend()
-plt.savefig('rad-den-next5')
+plt.savefig('rad-den-halo0-50-1')
 plt.show()
 
