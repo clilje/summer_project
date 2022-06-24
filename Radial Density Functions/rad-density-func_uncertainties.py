@@ -130,12 +130,14 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
     """
     density = []
     rad_lowerbound = []
+    uncertainties = []
     #lowerbound = np.logspace(0.1, (3*virrad), 50)
     lowerbound = interval
     i = 0
     dis = distancefromcentre(halox, haloy, haloz, partx, party, partz)
     virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
     virindex = np.where(np.logical_and(dis.astype(float)>float(virrad-10), dis.astype(float)<float(virrad+10)))[0]
+    
     mass = mass.astype(float)
     virM = np.sum(mass[virindex])
     virdensity = virM/virV
@@ -144,49 +146,53 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
         #print(lowerbound[i])
         dr = (lowerbound[i+1]-lowerbound[i])
         dV = (4/3)*math.pi*(np.power(lowerbound[i+1],3)-np.power(lowerbound[i],3))
-        
         nindex = np.where(np.logical_and(dis.astype(float)>float(lowerbound[i]), dis.astype(float)<float(lowerbound[(i+1)])))[0]
+        
         dn = len(nindex)
         #mass = mass.astype(float)
         M = np.sum(mass[nindex])
         density = np.append(density, (M/(dV))/virdensity)
         rad_lowerbound = np.append(rad_lowerbound, lowerbound[i]/virrad)
+        uncertainties = np.append(uncertainties, (np.average(M)/dV)/dn)
         i += 1
-    return(density, rad_lowerbound)
+    return(density, rad_lowerbound, uncertainties)
     
 
 
 interval = np.logspace(0.1, 2.5, 100)
-files = get_filenames(50, 1, 680)
+files = get_filenames(50, 4, 11)
 positions = get_pos(files)
 radius = get_rad(files)
 g = 0
-numhalos = 1
+numhalos = 7
 densities = []
+uncertainties = []
 radii = []
 while g < numhalos:
-    data_csv = pd.read_csv('HaloParticles/50-1_snap_99_halo_'+str(g)+'_pos_mass_long.csv')
+    data_csv = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass_dark.csv')
     rad_den = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
     print(rad_den)
     densities.append(list(rad_den[0]))
     radii.append(list(rad_den[1]))
+    uncertainties.append(list(rad_den[2]))
+
     g += 1 
 
 densities = np.array(densities)
 radii = np.array(radii)
-
+uncertainties = np.array(uncertainties)
 
 hsv = plt.get_cmap('gnuplot')
 colors = iter(hsv(np.linspace(0,1,5)))
 b = 0
 while b < (len(radii)):
     print('loop')
-    plt.loglog(radii[b], densities[b], "+", label="Halo_"+str(b)+"_099", color=next(colors))
+    plt.errorbar(plt.log(radii[b]), plt.log(densities[b]), yerr=uncertainties, fmt="+", label="Halo_"+str(b)+"_099", color=next(colors))
     b += 1
 
 plt.xlabel(r'Radius ($ckpc/(h*R_{HalfMass}})}$)')
 plt.ylabel(r'$\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$)')
 plt.legend()
-plt.savefig('rad-den-halo-0-50-1-new')
+plt.savefig('rad-den-halos-50-4-errorbars')
 plt.show()
 
