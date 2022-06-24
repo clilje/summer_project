@@ -30,7 +30,7 @@ def get_filenames(sim_size, sim_res, num_files):
     i = 0
     # Making a list of all possible filenames
     while i < num_files:
-        filename.append("/disk01/rmcg/downloaded/tng/tng"+str(sim_size)+"-"+str(sim_res)+"-dark/fof_subfind_snapshot_99/fof_subhalo_tab_099."+str(i)+".hdf5")
+        filename.append("/disk01/rmcg/downloaded/tng/tng"+str(sim_size)+"-"+str(sim_res)+"/fof_subfind_snapshot_99/fof_subhalo_tab_099."+str(i)+".hdf5")
         i += 1
     return(filename)
 
@@ -160,16 +160,16 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
 
 
 interval = np.logspace(0.1, 2.5, 100)
-files = get_filenames(50, 4, 4)
+files = get_filenames(50, 4, 11)
 positions = get_pos(files)
 radius = get_rad(files)
-g = 0
+g = 1
 numhalos = 7
 densities = []
 uncertainties = []
 radii = []
 while g < numhalos:
-    data_csv = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass_dark.csv')
+    data_csv = pd.read_csv('HaloParticles/50-1_snap_99_halo_'+str(g)+'_pos_mass.csv')
     rad_den = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
     print(rad_den)
     densities.append(list(rad_den[0]))
@@ -187,7 +187,7 @@ colors = iter(hsv(np.linspace(0,1,5)))
 b = 0
 while b < (len(radii)):
     print('loop')
-    plt.errorbar(plt.log(radii[b]), plt.log(densities[b]), yerr=uncertainties, fmt="+", label="Halo_"+str(b)+"_099", color=next(colors))
+    plt.errorbar(plt.log(radii[b]), plt.log(densities[b]), yerr=uncertainties, fmt="+", label="Halo_"+str(b+1)+"_099", color=next(colors))
     b += 1
 
 plt.xlabel(r'Radius ($ckpc/(h*R_{HalfMass}})}$)')
