@@ -107,7 +107,7 @@ def distancefromcentre(cx, cy, cz, x, y, z, ):
     return (np.sqrt((np.power(np.subtract(x,cx), 2)+ np.power(np.subtract(y,cy), 2) + np.power(np.subtract(z,cz), 2)))) # distance between the centre and given point
 
 
-def radial_density(partx, party, partz, mass, binsize, max_radius, virrad, halox, haloy, haloz):
+def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, haloz):
     """
     
 
@@ -148,8 +148,8 @@ def radial_density(partx, party, partz, mass, binsize, max_radius, virrad, halox
     radius_lowerbound = 0
     bin_lowerbound = 0
     
-    while radius_lowerbound < max_radius:
-        
+    while bin_lowerbound < len[dis]:
+        print(bin_lowerbound+binsize)
         index_in_bin = bin_index[bin_lowerbound:(bin_lowerbound+binsize)]
         radius_upperbound = dis[(bin_lowerbound+binsize)]
         
@@ -196,7 +196,7 @@ uncertainties = []
 radii = []
 while g < numhalos:
     data_csv = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass.csv')
-    rad_den = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], 10, 3*radius[g], radius[g], positions[g][0], positions[g][1], positions[g][2])
+    rad_den = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], 10, radius[g], positions[g][0], positions[g][1], positions[g][2])
     print(rad_den)
     densities.append(list(rad_den[0]))
     radii.append(list(rad_den[1]))
