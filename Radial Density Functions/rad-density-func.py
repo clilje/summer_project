@@ -157,7 +157,7 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
 
 
 interval = np.logspace(0.1, 2.5, 100)
-files = get_filenames(50, 4, 11)
+files = get_filenames(50, 1, 680)
 positions = get_pos(files)
 radius = get_rad(files)
 g = 4
@@ -187,6 +187,6 @@ while b < (len(radii)):
 plt.xlabel(r'Radius ($ckpc/(h*R_{HalfMass}})}$)')
 plt.ylabel(r'$\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$)')
 plt.legend()
-plt.savefig('rad-den-halo-4-50-1')
+plt.savefig('rad-den-halo-4-50-1-new')
 plt.show()
 
