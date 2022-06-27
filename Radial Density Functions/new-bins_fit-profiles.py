@@ -234,7 +234,9 @@ plt.gca().set_xscale('log')
 plt.savefig('bin-halo-50-4-errorbars-test-24')
 plt.show()
 """
-
+print(np.shape(radii))
+print(np.shape(densities))
+print(np.shape(uncertainties))
 
 fitp, fitcov = scopt.curve_fit(nfw, radii, densities, p0=np.ones(2), sigma=uncertainties)
 print ('Fitted value for NFW', fitp)
