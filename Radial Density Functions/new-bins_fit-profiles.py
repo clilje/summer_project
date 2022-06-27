@@ -229,8 +229,8 @@ nfwfitcovlist = []
 i =0
 while i<2:
     print(i)
-    g = 0
-    while g < 3:
+    g = 10
+    while g < 12:
         nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[rho_s[i],r_s[g]], sigma=uncertainties[0])
         print(nfwfitp)
         nfwfitplist.append(nfwfitp)
@@ -255,11 +255,11 @@ print ('Fitted value for Burkert', burkertfitp)
 print ('Uncertainties for Burkert', np.sqrt(np.diag(burkertfitcov)))
 
 
-dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, radii[0], densities[0], p0=[0.001,0.1], sigma=uncertainties[0])
+dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, radii[0], densities[0], p0=[0.01,100], sigma=uncertainties[0])
 print ('Fitted value for Dehnen Two Parameters', dehnen_twoparamfitp)
 print ('Uncertainties for Dehnen Two Parameters', np.sqrt(np.diag(dehnen_twoparamfitcov)))
 
-dehnen_threeparamfitp, dehnen_threeparamfitcov = scopt.curve_fit(dehnen_threeparam, radii[0], densities[0], p0=[0.001,0.1,3], sigma=uncertainties[0])
+dehnen_threeparamfitp, dehnen_threeparamfitcov = scopt.curve_fit(dehnen_threeparam, radii[0], densities[0], p0=[0.01,100,3], sigma=uncertainties[0])
 print ('Fitted value for Dehnen Three Parameters', dehnen_threeparamfitp)
 print ('Uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(dehnen_threeparamfitcov)))
 
