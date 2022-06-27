@@ -155,9 +155,9 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
     while (bin_lowerbound+binsize) < len(dis):
         #print(bin_lowerbound+binsize)
         index_in_bin = bin_index[bin_lowerbound:(bin_lowerbound+binsize)]
-        #print(index_in_bin)
-        #print(index_in_bin[-1])
-        #print(dis[])
+        print(index_in_bin)
+        print(index_in_bin[-1])
+        print(dis[index_in_bin])
         radius_upperbound = dis[index_in_bin][-1]
         print(dis[index_in_bin])
         print(index_in_bin)
