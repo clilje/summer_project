@@ -220,7 +220,7 @@ uncertainties[uncertainties == np.nan] = 0
 #print(np.shape(radii))
 #print(np.shape(densities))
 #print(np.shape(uncertainties))
-
+"""
 rho_s = np.logspace(-3, 3, 20)
 r_s = np.logspace(-3, 3,20)
 n = np.logspace(-1, 2,20)
@@ -238,28 +238,28 @@ while i<2:
         nfwfitcovlist.append(nfwfitcov)
         g+=1
     i+=1
-
+"""
 #print(nfwfitplist[np.argsort(nfwfitcovlist)])
-#nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[0.001,0.001], sigma=uncertainties[0])
+nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[0.001,0.001])
 
 #print(min(nfwfitcov))
 print ('Fitted value for NFW', nfwfitp)
 print ('Uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
 
-einastofitp, einastofitcov = scopt.curve_fit(einasto, radii[0], densities[0], p0=[0.1,1,5], sigma=uncertainties[0])
+einastofitp, einastofitcov = scopt.curve_fit(einasto, radii[0], densities[0], p0=[0.1,1,5])
 print ('Fitted value for Einasto', einastofitp)
 print ('Uncertainties for Einasto', np.sqrt(np.diag(einastofitcov)))
 
-burkertfitp, burkertfitcov = scopt.curve_fit(burkert,radii[0], densities[0], p0=[0.01,1], sigma=uncertainties[0])
+burkertfitp, burkertfitcov = scopt.curve_fit(burkert,radii[0], densities[0], p0=[0.01,1])
 print ('Fitted value for Burkert', burkertfitp)
 print ('Uncertainties for Burkert', np.sqrt(np.diag(burkertfitcov)))
 
 
-dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, radii[0], densities[0], p0=[0.01,100], sigma=uncertainties[0])
+dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, radii[0], densities[0], p0=[0.01,50])
 print ('Fitted value for Dehnen Two Parameters', dehnen_twoparamfitp)
 print ('Uncertainties for Dehnen Two Parameters', np.sqrt(np.diag(dehnen_twoparamfitcov)))
 
-dehnen_threeparamfitp, dehnen_threeparamfitcov = scopt.curve_fit(dehnen_threeparam, radii[0], densities[0], p0=[0.01,100,3], sigma=uncertainties[0])
+dehnen_threeparamfitp, dehnen_threeparamfitcov = scopt.curve_fit(dehnen_threeparam, radii[0], densities[0], p0=[0.01,2,3])
 print ('Fitted value for Dehnen Three Parameters', dehnen_threeparamfitp)
 print ('Uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(dehnen_threeparamfitcov)))
 
