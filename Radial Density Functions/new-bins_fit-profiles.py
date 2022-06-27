@@ -227,7 +227,7 @@ nfwfitplist = np.array([])
 nfwfitcovlist = np.array([])
 i =0
 while i<len(rho_s):
-    nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[rho_s,r_s], sigma=uncertainties[0])
+    nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[rho_s[i],r_s[i]], sigma=uncertainties[0])
     nfwfitplist = np.append(nfwfitplist, nfwfitplist)
     nfwfitcovlist = np.append(nfwfitcovlist, nfwfitcovlist)
     i+=1
