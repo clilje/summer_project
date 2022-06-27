@@ -220,9 +220,9 @@ uncertainties[uncertainties == np.nan] = 0
 #print(np.shape(radii))
 #print(np.shape(densities))
 #print(np.shape(uncertainties))
-rho_s = np.logspace(-3, 1, 50)
-r_s = np.logspace(-3, 2,50)
-n = np.logspace(-1, 2,50)
+rho_s = np.logspace(-3, 3, 20)
+r_s = np.logspace(-3, 3,20)
+n = np.logspace(-1, 2,20)
 nfwfitplist = []
 nfwfitcovlist = []
 i =0
@@ -239,7 +239,7 @@ while i<len(rho_s):
     i+=1
     
 #print(nfwfitplist[np.argsort(nfwfitcovlist)])
-
+print(min(nfwfitcov))
 print ('Fitted value for NFW', nfwfitplist)
 print ('Uncertainties for NFW', np.sqrt(np.diag(nfwfitcovlist)))
 
