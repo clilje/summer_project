@@ -16,20 +16,20 @@ import scipy.stats
 
 
 
-def nfw(density_0, scale_radius, r):
+def nfw(r, density_0, scale_radius):
     return(density_0/((r/scale_radius)*np.power((1+(r/scale_radius)),2)))
 
-def einasto(density_e, r_e, n, r):
+def einasto(r, density_e, r_e, n):
     d_n = (3*n)-(1/3)+(0.0079/n)
     return(density_e*np.exp((-1*d_n)*(np.power((r/r_e),(1/n))-1)))
 
-def burkert(density_0, r_s, r):
+def burkert(r, density_0, r_s):
     return((density_0*np.power(r_s,3))/((r+r_s)*(np.power(r,2)+np.power(r_s,2))))
 
-def dehnen_twoparam(density_s, r_s,r):
+def dehnen_twoparam(r, density_s, r_s):
     return(((2**6)*density_s)/((np.power((r/r_s),(7/9)))*np.power((1+(np.power((r/r_s),(4/9)))),6)))
 
-def dehnen_threeparam(density_s, r_s, gamma, r):
+def dehnen_threeparam(r, density_s, r_s, gamma):
     return(((2**6)*density_s)/((np.power((r/r_s),gamma))*np.power((1+(np.power((r/r_s),((3-gamma)/5)))),6)))
 
 
@@ -238,24 +238,24 @@ print(np.shape(radii))
 print(np.shape(densities))
 print(np.shape(uncertainties))
 
-fitp, fitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=np.zeros(2), sigma=uncertainties[0])
+fitp, fitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[0.1,3000], sigma=uncertainties[0])
 print ('Fitted value for NFW', fitp)
 print ('Uncertainties for NFW', np.sqrt(np.diag(fitcov)))
 
-fitp, fitcov = scopt.curve_fit(einasto, radii[0], densities[0], p0=np.zeros(3), sigma=uncertainties[0])
+fitp, fitcov = scopt.curve_fit(einasto, radii[0], densities[0], p0=[0.1,3000,1], sigma=uncertainties[0])
 print ('Fitted value for Einasto', fitp)
 print ('Uncertainties for Einasto', np.sqrt(np.diag(fitcov)))
 
-fitp, fitcov = scopt.curve_fit(burkert,radii[0], densities[0], p0=np.zeros(2), sigma=uncertainties[0])
+fitp, fitcov = scopt.curve_fit(burkert,radii[0], densities[0], p0=[0.1,3000], sigma=uncertainties[0])
 print ('Fitted value for Burkert', fitp)
 print ('Uncertainties for Burkert', np.sqrt(np.diag(fitcov)))
 
 
-fitp, fitcov = scopt.curve_fit(dehnen_twoparam, radii[0], densities[0], p0=np.zeros(2), sigma=uncertainties[0])
+fitp, fitcov = scopt.curve_fit(dehnen_twoparam, radii[0], densities[0], p0=[0.1,3000], sigma=uncertainties[0])
 print ('Fitted value for Dehnen Two Parameters', fitp)
 print ('Uncertainties for Dehnen Two Parameters', np.sqrt(np.diag(fitcov)))
 
-fitp, fitcov = scopt.curve_fit(dehnen_threeparam, radii[0], densities[0], p0=np.zeros(3), sigma=uncertainties[0])
+fitp, fitcov = scopt.curve_fit(dehnen_threeparam, radii[0], densities[0], p0=[0.1,3000,1], sigma=uncertainties[0])
 print ('Fitted value for Dehnen Three Parameters', fitp)
 print ('Uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(fitcov)))
 
