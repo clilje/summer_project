@@ -226,7 +226,7 @@ r_s = np.logspace(-3, 3,20)
 n = np.logspace(-1, 2,20)
 nfwfitplist = []
 nfwfitcovlist = []
-nfwchisquare = []
+nfwresidualsquare = []
 i =0
 while i<len(rho_s):
     print(i)
@@ -237,13 +237,14 @@ while i<len(rho_s):
         nfwfitplist.append(nfwfitp)
         #print(nfwfitcov)
         nfwfitcovlist.append(nfwfitcov)
-        nfwchisquare.append(scipy.stats.chisquare(densities[0], nfw(radii[0], nfwfitp[0], nfwfitp[1])))
+        nfwexpected = nfw(radii[0], nfwfitp[0], nfwfitp[1])
+        nfwresidualsquare.append(np.sum(np.power((radii[0]-nfwexpected),2)))
         h = 0
         while h<len(n):
             h +=1
         g+=1
     i+=1
-print(nfwchisquare)
+print(nfwresidualsquare)
 """
 #print(nfwfitplist[np.argsort(nfwfitcovlist)])
 nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[0.001,0.001], sigma=uncertainties[0])
