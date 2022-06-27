@@ -197,8 +197,8 @@ interval = np.logspace(0.1, 2.5, 100)
 files = get_filenames(50, 4, 11)
 positions = get_pos(files)
 radius = get_rad(files)
-g = 0
-numhalos = 1
+g = 1
+numhalos = 2
 densities = []
 uncertainties = []
 radii = []
@@ -217,45 +217,97 @@ radii = np.array(radii)
 uncertainties = np.array(uncertainties)
 uncertainties[uncertainties == np.nan] = 0
 
-"""
-hsv = plt.get_cmap('gnuplot')
-colors = iter(hsv(np.linspace(0,1,5)))
-b = 20
-while b < 24:
-    print('loop')
-    plt.errorbar((radii[b]), (densities[b]), yerr=(uncertainties[b]), fmt='.', label="Halo_"+str(b)+"_099", color=next(colors))
-    b += 1
-
-plt.xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
-plt.ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
-plt.legend()
-plt.gca().set_yscale('log')
-plt.gca().set_xscale('log')
-plt.savefig('bin-halo-50-4-errorbars-test-24')
-plt.show()
-"""
 print(np.shape(radii))
 print(np.shape(densities))
 print(np.shape(uncertainties))
 
-fitp, fitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[1,50], sigma=uncertainties[0])
-print ('Fitted value for NFW', fitp)
-print ('Uncertainties for NFW', np.sqrt(np.diag(fitcov)))
+nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[1,500], sigma=uncertainties[0])
+print ('Fitted value for NFW', nfwfitp)
+print ('Uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
 
-fitp, fitcov = scopt.curve_fit(einasto, radii[0], densities[0], p0=[0.01,1000,4], sigma=uncertainties[0])
-print ('Fitted value for Einasto', fitp)
-print ('Uncertainties for Einasto', np.sqrt(np.diag(fitcov)))
+einastofitp, einastofitcov = scopt.curve_fit(einasto, radii[0], densities[0], p0=[0.01,500,4], sigma=uncertainties[0])
+print ('Fitted value for Einasto', einastofitp)
+print ('Uncertainties for Einasto', np.sqrt(np.diag(einastofitcov)))
 
-fitp, fitcov = scopt.curve_fit(burkert,radii[0], densities[0], p0=[0.01,100], sigma=uncertainties[0])
-print ('Fitted value for Burkert', fitp)
-print ('Uncertainties for Burkert', np.sqrt(np.diag(fitcov)))
+burkertfitp, burkertfitcov = scopt.curve_fit(burkert,radii[0], densities[0], p0=[0.01,500], sigma=uncertainties[0])
+print ('Fitted value for Burkert', burkertfitp)
+print ('Uncertainties for Burkert', np.sqrt(np.diag(burkertfitcov)))
 
 
-fitp, fitcov = scopt.curve_fit(dehnen_twoparam, radii[0], densities[0], p0=[0.01,100], sigma=uncertainties[0])
-print ('Fitted value for Dehnen Two Parameters', fitp)
-print ('Uncertainties for Dehnen Two Parameters', np.sqrt(np.diag(fitcov)))
+dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, radii[0], densities[0], p0=[0.01,500], sigma=uncertainties[0])
+print ('Fitted value for Dehnen Two Parameters', dehnen_twoparamfitp)
+print ('Uncertainties for Dehnen Two Parameters', np.sqrt(np.diag(dehnen_twoparamfitcov)))
 
-fitp, fitcov = scopt.curve_fit(dehnen_threeparam, radii[0], densities[0], p0=[0.01,500,0.01], sigma=uncertainties[0])
-print ('Fitted value for Dehnen Three Parameters', fitp)
-print ('Uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(fitcov)))
+dehnen_threeparamfitp, dehnen_threeparamfitcov = scopt.curve_fit(dehnen_threeparam, radii[0], densities[0], p0=[0.01,500,0.01], sigma=uncertainties[0])
+print ('Fitted value for Dehnen Three Parameters', dehnen_threeparamfitp)
+print ('Uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(dehnen_threeparamfitcov)))
+
+
+
+
+hsv = plt.get_cmap('gnuplot')
+colors = iter(hsv(np.linspace(0,1,11)))
+X = (0.1,1.5,50)
+fig, axs = plt.subplots(3, 2)
+#b = 20
+#while b < 24:
+#print('loop')
+axs[0,0].errorbar((radii[1]), (densities[1]), yerr=(uncertainties[1]), fmt='.', label="Halo_"+str(1)+"_099", color=next(colors))
+#b += 1
+axs[0,0].xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
+axs[0,0].ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
+axs[0,0].legend()
+axs[0,0].gca().set_yscale('log')
+axs[0,0].gca().set_xscale('log')
+axs[0,0].set_title("Data from TNG")
+
+axs[0,1].errorbar(X, nfw(X, nfwfitp[0], nfwfitp[1]), fmt='.', label="NFW fit Halo_"+str(1)+"_099", color=next(colors))
+axs[0,1].errorbar((radii[1]), (densities[1]), yerr=(uncertainties[1]), fmt='.', label="Halo_"+str(1)+"_099", color=next(colors))
+axs[0,1].xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
+axs[0,1].ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
+axs[0,1].legend()
+axs[0,1].gca().set_yscale('log')
+axs[0,1].gca().set_xscale('log')
+axs[0,1].set_title('NFW fit for Data')
+
+axs[1,0].errorbar(X, einasto(X, einastofitp[0], einastofitp[1]), fmt='.', label="Einasto fit Halo_"+str(1)+"_099", color=next(colors))
+axs[1,0].errorbar((radii[1]), (densities[1]), yerr=(uncertainties[1]), fmt='.', label="Halo_"+str(1)+"_099", color=next(colors))
+axs[1,0].xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
+axs[1,0].ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
+axs[1,0].legend()
+axs[1,0].gca().set_yscale('log')
+axs[1,0].gca().set_xscale('log')
+axs[1,0].set_title('Einasto fit for Data')
+
+
+axs[1,1].errorbar(X, burkert(X, burkertfitp[0], burkertfitp[1]), fmt='.', label="Bukert fit Halo_"+str(1)+"_099", color=next(colors))
+axs[1,1].errorbar((radii[1]), (densities[1]), yerr=(uncertainties[1]), fmt='.', label="Halo_"+str(1)+"_099", color=next(colors))
+axs[1,1].xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
+axs[1,1].ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
+axs[1,1].legend()
+axs[1,1].gca().set_yscale('log')
+axs[1,1].gca().set_xscale('log')
+axs[1,1].set_title('Burkert fit for Data')
+
+axs[2,0].errorbar(X, dehnen_twoparam(X, dehnen_twoparamfitp[0], dehnen_twoparamfitp[1]), fmt='.', label="Dehnen-2 fit Halo_"+str(1)+"_099", color=next(colors))
+axs[2,0].errorbar((radii[1]), (densities[1]), yerr=(uncertainties[1]), fmt='.', label="Halo_"+str(1)+"_099", color=next(colors))
+axs[2,0].xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
+axs[2,0].ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
+axs[2,0].legend()
+axs[2,0].gca().set_yscale('log')
+axs[2,0].gca().set_xscale('log')
+axs[2,0].set_title('Denhen-2 fit for Data')
+
+
+axs[2,1].errorbar(X, dehnen_threeparam(X, dehnen_threeparamfitp[0], dehnen_threeparamfitp[1]), fmt='.', label="Dehnen-3 fit Halo_"+str(1)+"_099", color=next(colors))
+axs[2,1].errorbar((radii[1]), (densities[1]), yerr=(uncertainties[1]), fmt='.', label="Halo_"+str(1)+"_099", color=next(colors))
+axs[2,1].xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
+axs[2,1].ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
+axs[2,1].legend()
+axs[2,1].gca().set_yscale('log')
+axs[2,1].gca().set_xscale('log')
+axs[2,1].set_title('Denhen-3 fit for Data')
+
+fig.savefig('bin-halo-50-4-errorbars-test-24')
+fig.show()
 
