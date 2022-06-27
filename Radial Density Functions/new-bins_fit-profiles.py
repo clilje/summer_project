@@ -238,24 +238,24 @@ print(np.shape(radii))
 print(np.shape(densities))
 print(np.shape(uncertainties))
 
-fitp, fitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[0.1,3000], sigma=uncertainties[0])
+fitp, fitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[0.01,100], sigma=uncertainties[0])
 print ('Fitted value for NFW', fitp)
 print ('Uncertainties for NFW', np.sqrt(np.diag(fitcov)))
 
-fitp, fitcov = scopt.curve_fit(einasto, radii[0], densities[0], p0=[0.1,3000,1], sigma=uncertainties[0])
+fitp, fitcov = scopt.curve_fit(einasto, radii[0], densities[0], p0=[0.01,1000,4], sigma=uncertainties[0])
 print ('Fitted value for Einasto', fitp)
 print ('Uncertainties for Einasto', np.sqrt(np.diag(fitcov)))
 
-fitp, fitcov = scopt.curve_fit(burkert,radii[0], densities[0], p0=[0.1,3000], sigma=uncertainties[0])
+fitp, fitcov = scopt.curve_fit(burkert,radii[0], densities[0], p0=[0.01,100], sigma=uncertainties[0])
 print ('Fitted value for Burkert', fitp)
 print ('Uncertainties for Burkert', np.sqrt(np.diag(fitcov)))
 
 
-fitp, fitcov = scopt.curve_fit(dehnen_twoparam, radii[0], densities[0], p0=[0.1,3000], sigma=uncertainties[0])
+fitp, fitcov = scopt.curve_fit(dehnen_twoparam, radii[0], densities[0], p0=[0.01,100], sigma=uncertainties[0])
 print ('Fitted value for Dehnen Two Parameters', fitp)
 print ('Uncertainties for Dehnen Two Parameters', np.sqrt(np.diag(fitcov)))
 
-fitp, fitcov = scopt.curve_fit(dehnen_threeparam, radii[0], densities[0], p0=[0.1,3000,1], sigma=uncertainties[0])
+fitp, fitcov = scopt.curve_fit(dehnen_threeparam, radii[0], densities[0], p0=[0.01,100,1], sigma=uncertainties[0])
 print ('Fitted value for Dehnen Three Parameters', fitp)
 print ('Uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(fitcov)))
 
