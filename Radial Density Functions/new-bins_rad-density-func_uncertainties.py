@@ -187,7 +187,7 @@ uncertainties = []
 radii = []
 while g < numhalos:
     data_csv = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass.csv')
-    rad_den = radial_density(data_csv['x'].to_numpy(), data_csv['y'].to_numpy(), data_csv['z'].to_numpy(),data_csv['mass'].to_numpy(), 25, radius[g], positions[g][0], positions[g][1], positions[g][2])
+    rad_den = radial_density(data_csv['x'].to_numpy(), data_csv['y'].to_numpy(), data_csv['z'].to_numpy(),data_csv['mass'].to_numpy(), 50, radius[g], positions[g][0], positions[g][1], positions[g][2])
     print(rad_den)
     densities.append(list(rad_den[0]))
     radii.append(list(rad_den[1]))
@@ -200,7 +200,7 @@ radii = np.array(radii)
 uncertainties = np.array(uncertainties)
 uncertainties[uncertainties == np.nan] = 0
 hsv = plt.get_cmap('gnuplot')
-colors = iter(hsv(np.linspace(0,1,30)))
+colors = iter(hsv(np.linspace(0,1,5)))
 b = 0
 while b < 4:
     print('loop')
@@ -213,84 +213,4 @@ plt.legend()
 plt.gca().set_yscale('log')
 plt.gca().set_xscale('log')
 plt.savefig('bin-halo-50-4-errorbars-test-4')
-plt.show()
-
-while b < 8:
-    print('loop')
-    plt.errorbar((radii[b]), (densities[b]), yerr=(uncertainties[b]), fmt='.', label="Halo_"+str(b)+"_099", color=next(colors))
-    b += 1
-
-plt.xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
-plt.ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
-plt.legend()
-plt.gca().set_yscale('log')
-plt.gca().set_xscale('log')
-plt.savefig('bin-halo-50-4-errorbars-test-8')
-plt.show()
-
-
-while b < 12:
-    print('loop')
-    plt.errorbar((radii[b]), (densities[b]), yerr=(uncertainties[b]), fmt='.', label="Halo_"+str(b)+"_099", color=next(colors))
-    b += 1
-
-plt.xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
-plt.ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
-plt.legend()
-plt.gca().set_yscale('log')
-plt.gca().set_xscale('log')
-plt.savefig('bin-halo-50-4-errorbars-test-12')
-plt.show()
-
-
-while b < 16:
-    print('loop')
-    plt.errorbar((radii[b]), (densities[b]), yerr=(uncertainties[b]), fmt='.', label="Halo_"+str(b)+"_099", color=next(colors))
-    b += 1
-
-plt.xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
-plt.ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
-plt.legend()
-plt.gca().set_yscale('log')
-plt.gca().set_xscale('log')
-plt.savefig('bin-halo-50-4-errorbars-test-16')
-plt.show()
-
-while b < 20:
-    print('loop')
-    plt.errorbar((radii[b]), (densities[b]), yerr=(uncertainties[b]), fmt='.', label="Halo_"+str(b)+"_099", color=next(colors))
-    b += 1
-
-plt.xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
-plt.ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
-plt.legend()
-plt.gca().set_yscale('log')
-plt.gca().set_xscale('log')
-plt.savefig('bin-halo-50-4-errorbars-test-20')
-plt.show()
-
-while b < 24:
-    print('loop')
-    plt.errorbar((radii[b]), (densities[b]), yerr=(uncertainties[b]), fmt='.', label="Halo_"+str(b)+"_099", color=next(colors))
-    b += 1
-
-plt.xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
-plt.ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
-plt.legend()
-plt.gca().set_yscale('log')
-plt.gca().set_xscale('log')
-plt.savefig('bin-halo-50-4-errorbars-test-24')
-plt.show()
-
-while b < 28:
-    print('loop')
-    plt.errorbar((radii[b]), (densities[b]), yerr=(uncertainties[b]), fmt='.', label="Halo_"+str(b)+"_099", color=next(colors))
-    b += 1
-
-plt.xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
-plt.ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
-plt.legend()
-plt.gca().set_yscale('log')
-plt.gca().set_xscale('log')
-plt.savefig('bin-halo-50-4-errorbars-test-28')
 plt.show()
