@@ -194,8 +194,8 @@ uncertainties = np.array(uncertainties)
 uncertainties[uncertainties == np.nan] = 0
 hsv = plt.get_cmap('gnuplot')
 colors = iter(hsv(np.linspace(0,1,5)))
-b = 12
-while b < 16:
+b = 16
+while b < 20:
     print('loop')
     plt.errorbar((radii[b]), (densities[b]), yerr=(uncertainties[b]), fmt='.', label="Halo_"+str(b)+"_099", color=next(colors))
     b += 1
@@ -205,5 +205,5 @@ plt.ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{
 plt.legend()
 plt.gca().set_yscale('log')
 plt.gca().set_xscale('log')
-plt.savefig('bin-halo-50-4-errorbars-test-16')
+plt.savefig('bin-halo-50-4-errorbars-test-20')
 plt.show()
