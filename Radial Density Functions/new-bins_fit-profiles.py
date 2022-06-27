@@ -221,7 +221,7 @@ print(np.shape(radii))
 print(np.shape(densities))
 print(np.shape(uncertainties))
 
-nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[0,1], sigma=uncertainties[0])
+nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[0.02,10], sigma=uncertainties[0])
 print ('Fitted value for NFW', nfwfitp)
 print ('Uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
 
@@ -234,18 +234,18 @@ print ('Fitted value for Burkert', burkertfitp)
 print ('Uncertainties for Burkert', np.sqrt(np.diag(burkertfitcov)))
 
 
-dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, radii[0], densities[0], p0=[-0.1,10], sigma=uncertainties[0])
+dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, radii[0], densities[0], p0=[-0.01,10], sigma=uncertainties[0])
 print ('Fitted value for Dehnen Two Parameters', dehnen_twoparamfitp)
 print ('Uncertainties for Dehnen Two Parameters', np.sqrt(np.diag(dehnen_twoparamfitcov)))
 
-dehnen_threeparamfitp, dehnen_threeparamfitcov = scopt.curve_fit(dehnen_threeparam, radii[0], densities[0], p0=[-0.1,10,3], sigma=uncertainties[0])
+dehnen_threeparamfitp, dehnen_threeparamfitcov = scopt.curve_fit(dehnen_threeparam, radii[0], densities[0], p0=[-0.01,10,3], sigma=uncertainties[0])
 print ('Fitted value for Dehnen Three Parameters', dehnen_threeparamfitp)
 print ('Uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(dehnen_threeparamfitcov)))
 
 
 
 
-hsv = plt.get_cmap('gnuplot')
+hsv = plt.get_cmap('gist_ncar')
 colors = iter(hsv(np.linspace(0,1,11)))
 X = (0.1,1.5,50)
 fig, axs = plt.subplots(3, 2)
@@ -262,7 +262,7 @@ axs[0,0].set_xscale('log')
 axs[0,0].set_title("Data from TNG")
 
 axs[0,1].errorbar(X, nfw(X, nfwfitp[0], nfwfitp[1]), fmt='.', label="NFW fit Halo_"+str(1)+"_099", color=next(colors))
-axs[0,1].errorbar((radii[0]), (densities[0]), yerr=(uncertainties[0]), fmt='.', label="Halo_"+str(1)+"_099", color=next(colors))
+axs[0,1].errorbar((radii[0]), (densities[0]), yerr=(uncertainties[0]), fmt='+', label="Halo_"+str(1)+"_099", color=next(colors))
 axs[0,1].set_xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
 axs[0,1].set_ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
 axs[0,1].legend()
@@ -271,7 +271,7 @@ axs[0,1].set_xscale('log')
 axs[0,1].set_title('NFW fit for Data')
 
 axs[1,0].errorbar(X, einasto(X, einastofitp[0], einastofitp[1], einastofitp[2]), fmt='.', label="Einasto fit Halo_"+str(1)+"_099", color=next(colors))
-axs[1,0].errorbar((radii[0]), (densities[0]), yerr=(uncertainties[0]), fmt='.', label="Halo_"+str(1)+"_099", color=next(colors))
+axs[1,0].errorbar((radii[0]), (densities[0]), yerr=(uncertainties[0]), fmt='+', label="Halo_"+str(1)+"_099", color=next(colors))
 axs[1,0].set_xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
 axs[1,0].set_ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
 axs[1,0].legend()
@@ -281,7 +281,7 @@ axs[1,0].set_title('Einasto fit for Data')
 
 
 axs[1,1].errorbar(X, burkert(X, burkertfitp[0], burkertfitp[1]), fmt='.', label="Bukert fit Halo_"+str(1)+"_099", color=next(colors))
-axs[1,1].errorbar((radii[0]), (densities[0]), yerr=(uncertainties[0]), fmt='.', label="Halo_"+str(1)+"_099", color=next(colors))
+axs[1,1].errorbar((radii[0]), (densities[0]), yerr=(uncertainties[0]), fmt='+', label="Halo_"+str(1)+"_099", color=next(colors))
 axs[1,1].set_xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
 axs[1,1].set_ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
 axs[1,1].legend()
@@ -290,7 +290,7 @@ axs[1,1].set_xscale('log')
 axs[1,1].set_title('Burkert fit for Data')
 
 axs[2,0].errorbar(X, dehnen_twoparam(X, dehnen_twoparamfitp[0], dehnen_twoparamfitp[1]), fmt='.', label="Dehnen-2 fit Halo_"+str(1)+"_099", color=next(colors))
-axs[2,0].errorbar((radii[0]), (densities[0]), yerr=(uncertainties[0]), fmt='.', label="Halo_"+str(1)+"_099", color=next(colors))
+axs[2,0].errorbar((radii[0]), (densities[0]), yerr=(uncertainties[0]), fmt='+', label="Halo_"+str(1)+"_099", color=next(colors))
 axs[2,0].set_xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
 axs[2,0].set_ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
 axs[2,0].legend()
