@@ -238,7 +238,7 @@ while i<len(rho_s):
         #print(nfwfitcov)
         nfwfitcovlist.append(nfwfitcov)
         nfwexpected = nfw(radii[0], nfwfitp[0], nfwfitp[1])
-        nfwresidualsquare.append(np.sum(np.power((radii[0]-nfwexpected),2)))
+        nfwresidualsquare.append(np.sum(np.power((densities[0]-nfwexpected),2)))
         h = 0
         while h<len(n):
             h +=1
