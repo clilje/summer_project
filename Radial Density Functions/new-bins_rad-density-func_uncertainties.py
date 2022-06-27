@@ -155,7 +155,7 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
     while (bin_lowerbound+binsize) < len(dis):
         #print(bin_lowerbound+binsize)
         index_in_bin = bin_index[bin_lowerbound:(bin_lowerbound+binsize)]
-        radius_upperbound = dis[(bin_lowerbound+binsize)]
+        radius_upperbound = dis[index_in_bin[-1]]
         print(dis[index_in_bin])
         print(index_in_bin)
         dV = (4/3)*math.pi*(np.power(radius_upperbound,3)-np.power(radius_lowerbound,3))
