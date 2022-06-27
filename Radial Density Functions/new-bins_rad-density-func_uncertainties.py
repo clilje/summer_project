@@ -180,7 +180,7 @@ uncertainties = []
 radii = []
 while g < numhalos:
     data_csv = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass.csv')
-    rad_den = radial_density(data_csv['x'].to_numpy(), data_csv['y'].to_numpy(), data_csv['z'].to_numpy(),data_csv['mass'].to_numpy(), 50, radius[g], positions[g][0], positions[g][1], positions[g][2])
+    rad_den = radial_density(data_csv['x'].to_numpy(), data_csv['y'].to_numpy(), data_csv['z'].to_numpy(),data_csv['mass'].to_numpy(), 40, radius[g], positions[g][0], positions[g][1], positions[g][2])
     print(rad_den)
     densities.append(list(rad_den[0]))
     radii.append(list(rad_den[1]))
@@ -194,8 +194,8 @@ uncertainties = np.array(uncertainties)
 uncertainties[uncertainties == np.nan] = 0
 hsv = plt.get_cmap('gnuplot')
 colors = iter(hsv(np.linspace(0,1,5)))
-b = 8
-while b < 12:
+b = 12
+while b < 16:
     print('loop')
     plt.errorbar((radii[b]), (densities[b]), yerr=(uncertainties[b]), fmt='.', label="Halo_"+str(b)+"_099", color=next(colors))
     b += 1
@@ -205,5 +205,5 @@ plt.ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{
 plt.legend()
 plt.gca().set_yscale('log')
 plt.gca().set_xscale('log')
-plt.savefig('bin-halo-50-4-errorbars-test-12')
+plt.savefig('bin-halo-50-4-errorbars-test-16')
 plt.show()
