@@ -138,7 +138,6 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
     
     virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
     virindex = np.where(np.logical_and(dis.astype(float)>float(virrad-10), dis.astype(float)<float(virrad+10)))[0]
-    print(virindex)
     mass = np.array(mass)
     virM = np.sum(mass[virindex])
     virdensity = virM/virV
@@ -154,8 +153,6 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
     
     while (bin_lowerbound+binsize) < len(dis):
         index_in_bin = bin_index[bin_lowerbound:(bin_lowerbound+binsize)]
-        print(index_in_bin)
-        print(dis[index_in_bin])
         radius_upperbound = dis[index_in_bin][-1]
         dV = (4/3)*math.pi*(np.power(radius_upperbound,3)-np.power(radius_lowerbound,3))
         
@@ -164,10 +161,6 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
         density = np.append(density, subdensity)
         
         rad_lowerbound = np.append(rad_lowerbound, radius_lowerbound/virrad)
-        print(radius_lowerbound)
-        print(radius_upperbound)
-        print(density)
-        print(M)
         dn = len(index_in_bin)
         uncertainties = np.append(uncertainties, subdensity/np.sqrt(dn))
         radius_lowerbound = radius_upperbound
@@ -201,8 +194,8 @@ uncertainties = np.array(uncertainties)
 uncertainties[uncertainties == np.nan] = 0
 hsv = plt.get_cmap('gnuplot')
 colors = iter(hsv(np.linspace(0,1,5)))
-b = 4
-while b < 8:
+b = 8
+while b < 12:
     print('loop')
     plt.errorbar((radii[b]), (densities[b]), yerr=(uncertainties[b]), fmt='.', label="Halo_"+str(b)+"_099", color=next(colors))
     b += 1
@@ -212,5 +205,5 @@ plt.ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{
 plt.legend()
 plt.gca().set_yscale('log')
 plt.gca().set_xscale('log')
-plt.savefig('bin-halo-50-4-errorbars-test-8')
+plt.savefig('bin-halo-50-4-errorbars-test-12')
 plt.show()
