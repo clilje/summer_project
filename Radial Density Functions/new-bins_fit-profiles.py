@@ -245,9 +245,9 @@ print ('Uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(dehnen_three
 
 
 
-hsv = plt.get_cmap('gist_ncar')
+hsv = plt.get_cmap('hsv')
 colors = iter(hsv(np.linspace(0,1,11)))
-X = (0.1,1.5,50)
+X = np.logspace(0.1,1.5,50)
 fig, axs = plt.subplots(3, 2)
 #b = 20
 #while b < 24:
