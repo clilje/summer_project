@@ -138,9 +138,9 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
     
     virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
     virindex = np.where(np.logical_and(dis.astype(float)>float(virrad-10), dis.astype(float)<float(virrad+10)))[0]
-    
+    print(virindex)
     #mass = mass.astype(float)
-    virM = np.sum(mass[virindex])
+    virM = np.sum(mass[virindex.astype(int)])
     virdensity = virM/virV
     
     
