@@ -228,10 +228,13 @@ nfwfitcovlist = np.array([])
 i =0
 while i<len(rho_s):
     print(i)
-    nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[rho_s[i],r_s[i]], sigma=uncertainties[0])
-    print(nfwfitp)
-    nfwfitplist = np.append(nfwfitplist, nfwfitplist)
-    nfwfitcovlist = np.append(nfwfitcovlist, nfwfitcovlist)
+    g = 0
+    while g < len(r_s):
+        nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[rho_s[i],r_s[g]], sigma=uncertainties[0])
+    #print(nfwfitp)
+        nfwfitplist = np.append(nfwfitplist, nfwfitp)
+        nfwfitcovlist = np.append(nfwfitcovlist, nfwfitcov)
+        g+=1
     i+=1
 
 print ('Fitted value for NFW', nfwfitplist)
