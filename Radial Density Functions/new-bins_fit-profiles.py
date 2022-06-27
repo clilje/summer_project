@@ -223,19 +223,22 @@ uncertainties[uncertainties == np.nan] = 0
 rho_s = np.logspace(-3, 0.1, 20)
 r_s = np.logspace(-1, 2,20)
 n = np.logspace(-1, 2,20)
-nfwfitplist = np.array([])
-nfwfitcovlist = np.array([])
+nfwfitplist = []
+nfwfitcovlist = []
 i =0
 while i<len(rho_s):
     print(i)
     g = 0
     while g < len(r_s):
         nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[rho_s[i],r_s[g]], sigma=uncertainties[0])
-    #print(nfwfitp)
-        nfwfitplist = np.append(nfwfitplist, nfwfitp)
-        nfwfitcovlist = np.append(nfwfitcovlist, nfwfitcov)
+        #print(nfwfitp)
+        nfwfitplist.append(nfwfitp)
+        print(nfwfitcov)
+        nfwfitcovlist.append(nfwfitcov)
         g+=1
     i+=1
+    
+print(nfwfitplist[np.argsort(nfwfitcovlist)])
 
 print ('Fitted value for NFW', nfwfitplist)
 print ('Uncertainties for NFW', np.sqrt(np.diag(nfwfitcovlist)))
