@@ -220,52 +220,60 @@ uncertainties[uncertainties == np.nan] = 0
 #print(np.shape(radii))
 #print(np.shape(densities))
 #print(np.shape(uncertainties))
-"""
+
 rho_s = np.logspace(-3, 3, 20)
 r_s = np.logspace(-3, 3,20)
 n = np.logspace(-1, 2,20)
 nfwfitplist = []
 nfwfitcovlist = []
+nfwchisquare = []
 i =0
-while i<2:
+while i<len(rho_s):
     print(i)
-    g = 10
-    while g < 12:
+    g = 0
+    while g < len(r_s):
         nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[rho_s[i],r_s[g]], sigma=uncertainties[0])
-        print(nfwfitp)
+        #print(nfwfitp)
         nfwfitplist.append(nfwfitp)
-        print(nfwfitcov)
+        #print(nfwfitcov)
         nfwfitcovlist.append(nfwfitcov)
+        nfwchisquare.append(scipy.stats.chisquare(densities[0], nfw(radii[0], nfwfitp[0], nfwfitp[1])))
+        h = 0
+        while h<len(n):
+            h +=1
         g+=1
     i+=1
+print(nfwchisquare)
 """
 #print(nfwfitplist[np.argsort(nfwfitcovlist)])
-nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[0.001,0.001])
+nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[0.001,0.001], sigma=uncertainties[0])
 
 #print(min(nfwfitcov))
 print ('Fitted value for NFW', nfwfitp)
 print ('Uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
 
-einastofitp, einastofitcov = scopt.curve_fit(einasto, radii[0], densities[0], p0=[0.1,1,5])
+einastofitp, einastofitcov = scopt.curve_fit(einasto, radii[0], densities[0], p0=[0.1,1,5], sigma=uncertainties[0])
 print ('Fitted value for Einasto', einastofitp)
 print ('Uncertainties for Einasto', np.sqrt(np.diag(einastofitcov)))
 
-burkertfitp, burkertfitcov = scopt.curve_fit(burkert,radii[0], densities[0], p0=[0.01,1])
+burkertfitp, burkertfitcov = scopt.curve_fit(burkert,radii[0], densities[0], p0=[0.01,1], sigma=uncertainties[0])
 print ('Fitted value for Burkert', burkertfitp)
 print ('Uncertainties for Burkert', np.sqrt(np.diag(burkertfitcov)))
 
 
-dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, radii[0], densities[0], p0=[0.01,50])
+dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, radii[0], densities[0], p0=[0.01,50], sigma=uncertainties[0])
 print ('Fitted value for Dehnen Two Parameters', dehnen_twoparamfitp)
 print ('Uncertainties for Dehnen Two Parameters', np.sqrt(np.diag(dehnen_twoparamfitcov)))
 
-dehnen_threeparamfitp, dehnen_threeparamfitcov = scopt.curve_fit(dehnen_threeparam, radii[0], densities[0], p0=[0.01,2,3])
+dehnen_threeparamfitp, dehnen_threeparamfitcov = scopt.curve_fit(dehnen_threeparam, radii[0], densities[0], p0=[0.01,2,3], sigma=uncertainties[0])
 print ('Fitted value for Dehnen Three Parameters', dehnen_threeparamfitp)
 print ('Uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(dehnen_threeparamfitcov)))
 
 
 
+"""
 
+'''
 hsv = plt.get_cmap('hsv')
 colors = iter(hsv(np.linspace(0,1,11)))
 X = np.logspace(-2,1,50)
@@ -275,6 +283,8 @@ fig, axs = plt.subplots(3, 2, figsize=(15,15))
 #print('loop')
 axs[0,0].errorbar((radii[0]), (densities[0]), yerr=(uncertainties[0]), fmt='.', label="Halo_"+str(1)+"_099", color='green')
 #b += 1
+
+
 axs[0,0].set_xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
 axs[0,0].set_ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
 axs[0,0].legend()
@@ -331,4 +341,4 @@ axs[2,1].set_title('Denhen-3 fit for Data')
 
 fig.savefig('fit-profiles')
 fig.show()
-
+'''
