@@ -190,13 +190,13 @@ files = get_filenames(50, 4, 11)
 positions = get_pos(files)
 radius = get_rad(files)
 g = 1
-numhalos = 7
+numhalos = 4
 densities = []
 uncertainties = []
 radii = []
 while g < numhalos:
     data_csv = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass.csv')
-    rad_den = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], 10, radius[g], positions[g][0], positions[g][1], positions[g][2])
+    rad_den = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], 20, radius[g], positions[g][0], positions[g][1], positions[g][2])
     print(rad_den)
     densities.append(list(rad_den[0]))
     radii.append(list(rad_den[1]))
@@ -222,5 +222,5 @@ plt.ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{
 plt.legend()
 plt.gca().set_yscale('log')
 plt.gca().set_xscale('log')
-plt.savefig('bin-changehalos-50-4-errorbars')
+plt.savefig('bin-halo-50-4-errorbars')
 plt.show()
