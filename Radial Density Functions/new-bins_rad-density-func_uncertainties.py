@@ -139,8 +139,8 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
     virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
     virindex = np.where(np.logical_and(dis.astype(float)>float(virrad-10), dis.astype(float)<float(virrad+10)))[0]
     print(virindex)
-    #mass = mass.astype(float)
-    virM = np.sum(mass[virindex.astype(int)])
+    mass = np.array(mass)
+    virM = np.sum(mass[virindex])
     virdensity = virM/virV
     
     
@@ -207,7 +207,7 @@ uncertainties = []
 radii = []
 while g < numhalos:
     data_csv = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass.csv')
-    rad_den = radial_density(data_csv['x'].values.tolist(), data_csv['y'].values.tolist(), data_csv['z'].values.tolist(),data_csv['mass'].values.tolist(), 15, radius[g], positions[g][0], positions[g][1], positions[g][2])
+    rad_den = radial_density(data_csv['x'].to_numpy(), data_csv['y'].to_numpy(), data_csv['z'].to_numpy(),data_csv['mass'].to_numpy(), 15, radius[g], positions[g][0], positions[g][1], positions[g][2])
     print(rad_den)
     densities.append(list(rad_den[0]))
     radii.append(list(rad_den[1]))
