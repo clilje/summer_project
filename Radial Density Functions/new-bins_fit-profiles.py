@@ -217,13 +217,23 @@ radii = np.array(radii)
 uncertainties = np.array(uncertainties)
 uncertainties[uncertainties == np.nan] = 0
 
-print(np.shape(radii))
-print(np.shape(densities))
-print(np.shape(uncertainties))
+#print(np.shape(radii))
+#print(np.shape(densities))
+#print(np.shape(uncertainties))
+rho_s = np.logspace(-2, 1, 20)
+r_s = np.logspace(-1, 2,20)
+n = np.logspace(-1, 2,20)
+nfwfitplist = np.array([])
+nfwfitcovlist = np.array([])
+i =0
+while i<len(rho_s):
+    nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[rho_s,r_s], sigma=uncertainties[0])
+    nfwfitplist = np.append(nfwfitplist, nfwfitplist)
+    nfwfitcovlist = np.append(nfwfitcovlist, nfwfitcovlist)
+    i+=1
 
-nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[0.002,1], sigma=uncertainties[0])
-print ('Fitted value for NFW', nfwfitp)
-print ('Uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
+print ('Fitted value for NFW', nfwfitplist)
+print ('Uncertainties for NFW', np.sqrt(np.diag(nfwfitcovlist)))
 
 einastofitp, einastofitcov = scopt.curve_fit(einasto, radii[0], densities[0], p0=[0.1,1,5], sigma=uncertainties[0])
 print ('Fitted value for Einasto', einastofitp)
@@ -247,7 +257,7 @@ print ('Uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(dehnen_three
 
 hsv = plt.get_cmap('hsv')
 colors = iter(hsv(np.linspace(0,1,11)))
-X = np.logspace(-2,1.2,50)
+X = np.logspace(-2,1,50)
 fig, axs = plt.subplots(3, 2, figsize=(15,15))
 #b = 20
 #while b < 24:
