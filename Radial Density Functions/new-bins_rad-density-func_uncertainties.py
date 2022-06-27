@@ -148,7 +148,9 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
     radius_lowerbound = 0
     bin_lowerbound = 0
     print(bin_index)
+    print(np.shape(bin_index))
     print(dis[bin_index])
+    print(np.shape(dis[bin_index]))
     
     while (bin_lowerbound+binsize) < len(dis):
         print(bin_lowerbound+binsize)
