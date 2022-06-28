@@ -16,25 +16,6 @@ import scipy.stats
 
 
 
-def nfw(r, density_0, scale_radius):
-    return(density_0/((r/scale_radius)*np.power((1+(r/scale_radius)),2)))
-
-def einasto(r, density_e, r_e, n):
-    d_n = (3*n)-(1/3)+(0.0079/n)
-    return(density_e*np.exp((-1*d_n)*(np.power((r/r_e),(1/n))-1)))
-
-def burkert(r, density_0, r_s):
-    return((density_0*np.power(r_s,3))/((r+r_s)*(np.power(r,2)+np.power(r_s,2))))
-
-def dehnen_twoparam(r, density_s, r_s):
-    return(((2**6)*density_s)/((np.power((r/r_s),(7/9)))*np.power((1+(np.power((r/r_s),(4/9)))),6)))
-
-def dehnen_threeparam(r, density_s, r_s, gamma):
-    return(((2**6)*density_s)/((np.power((r/r_s),gamma))*np.power((1+(np.power((r/r_s),((3-gamma)/5)))),6)))
-
-
-
-
 def get_filenames(sim_size, sim_res, num_files):
     """
     
@@ -246,6 +227,29 @@ while i<len(rho_s):
     i+=1
 print(nfwresidualsquare)
 """
+
+
+
+
+def nfw(r, density_0, scale_radius):
+    return(density_0/((r/scale_radius)*np.power((1+(r/scale_radius)),2)))
+
+def einasto(r, density_e, r_e, n):
+    d_n = (3*n)-(1/3)+(0.0079/n)
+    return(density_e*np.exp((-1*d_n)*(np.power((r/r_e),(1/n))-1)))
+
+def burkert(r, density_0, r_s):
+    return((density_0*np.power(r_s,3))/((r+r_s)*(np.power(r,2)+np.power(r_s,2))))
+
+def dehnen_twoparam(r, density_s, r_s):
+    return(((2**6)*density_s)/((np.power((r/r_s),(7/9)))*np.power((1+(np.power((r/r_s),(4/9)))),6)))
+
+def dehnen_threeparam(r, density_s, r_s, gamma):
+    return(((2**6)*density_s)/((np.power((r/r_s),gamma))*np.power((1+(np.power((r/r_s),((3-gamma)/5)))),6)))
+
+
+
+
 #print(nfwfitplist[np.argsort(nfwfitcovlist)])
 nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[100,10], sigma=uncertainties[0])
 
@@ -262,7 +266,7 @@ print ('Fitted value for Burkert', burkertfitp)
 print ('Uncertainties for Burkert', np.sqrt(np.diag(burkertfitcov)))
 
 
-dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, radii[0], densities[0], p0=[100,50], sigma=uncertainties[0])
+dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, radii[0], densities[0], p0=[100000,50], sigma=uncertainties[0])
 print ('Fitted value for Dehnen Two Parameters', dehnen_twoparamfitp)
 print ('Uncertainties for Dehnen Two Parameters', np.sqrt(np.diag(dehnen_twoparamfitcov)))
 
