@@ -251,7 +251,7 @@ def dehnen_threeparam(r, density_s, r_s, gamma):
 
 
 #print(nfwfitplist[np.argsort(nfwfitcovlist)])
-nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[0.2,1,6], sigma=uncertainties[0])
+nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[0.2,1.6], sigma=uncertainties[0])
 
 #print(min(nfwfitcov))
 print ('Fitted value for NFW', nfwfitp)
