@@ -159,7 +159,7 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
         subdensity = (M/(dV))
         density = np.append(density, subdensity)
         
-        rad_lowerbound = np.append(rad_lowerbound, (radius_upperbound-radius_lowerbound)/2)
+        rad_lowerbound = np.append(rad_lowerbound, (radius_upperbound+radius_lowerbound)/2)
         dn = len(index_in_bin)
         uncertainties = np.append(uncertainties, subdensity/np.sqrt(dn))
         radius_lowerbound = radius_upperbound
