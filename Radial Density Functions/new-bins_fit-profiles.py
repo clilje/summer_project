@@ -137,9 +137,6 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
     density = []
     rad_lowerbound = []
     uncertainties = []
-    #lowerbound = np.logspace(0.1, (3*virrad), 50)
-    #lowerbound = interval
-    #i = 0
     dis = distancefromcentre(halox, haloy, haloz, partx, party, partz)
     
     virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
@@ -152,10 +149,6 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
     bin_index = np.argsort(dis)
     radius_lowerbound = 0
     bin_lowerbound = 0
-    #print(bin_index)
-    #print(np.shape(bin_index))
-    #print(dis[bin_index])
-    #print(np.shape(dis[bin_index]))
     
     while (bin_lowerbound+binsize) < len(dis):
         index_in_bin = bin_index[bin_lowerbound:(bin_lowerbound+binsize)]
@@ -166,7 +159,7 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
         subdensity = (M/(dV))
         density = np.append(density, subdensity)
         
-        rad_lowerbound = np.append(rad_lowerbound, radius_lowerbound)
+        rad_lowerbound = np.append(rad_lowerbound, (radius_upperbound-radius_lowerbound)/2)
         dn = len(index_in_bin)
         uncertainties = np.append(uncertainties, subdensity/np.sqrt(dn))
         radius_lowerbound = radius_upperbound
@@ -181,8 +174,10 @@ positions = get_pos(files)
 radius = get_rad(files)
 print(positions)
 print(radius)
-g = 1
-numhalos = 2
+radius = 33.25  
+positions = [[0],[6854.98,2489764]]
+g = 2
+numhalos = 3
 densities = []
 uncertainties = []
 radii = []
@@ -202,37 +197,6 @@ densities = np.array(densities)
 radii = np.array(radii)
 uncertainties = np.array(uncertainties)
 uncertainties[uncertainties == np.nan] = 0
-
-#print(np.shape(radii))
-#print(np.shape(densities))
-#print(np.shape(uncertainties))
-"""
-rho_s = np.logspace(-3, 3, 20)
-r_s = np.logspace(-3, 3,20)
-n = np.logspace(-1, 2,20)
-nfwfitplist = []
-nfwfitcovlist = []
-nfwresidualsquare = []
-i =0
-while i<len(rho_s):
-    print(i)
-    g = 0
-    while g < len(r_s):
-        nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[rho_s[i],r_s[g]], sigma=uncertainties[0])
-        #print(nfwfitp)
-        nfwfitplist.append(nfwfitp)
-        #print(nfwfitcov)
-        nfwfitcovlist.append(nfwfitcov)
-        nfwexpected = nfw(radii[0], nfwfitp[0], nfwfitp[1])
-        nfwresidualsquare.append(np.sum(np.power((densities[0]-nfwexpected),2)))
-        h = 0
-        while h<len(n):
-            h +=1
-        g+=1
-    i+=1
-print(nfwresidualsquare)
-"""
-
 
 
 
@@ -254,8 +218,6 @@ def dehnen_threeparam(r, density_s, r_s, gamma):
 
 
 
-
-#print(nfwfitplist[np.argsort(nfwfitcovlist)])
 nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0]*h, densities[0]/(10*(h**2)), p0=[0.001,20], sigma=uncertainties[0])
 print ('Fitted value for NFW', nfwfitp)
 print ('Uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
@@ -281,15 +243,12 @@ print ('Uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(dehnen_three
 
 
 
-hsv = plt.get_cmap('hsv')
-colors = iter(hsv(np.linspace(0,1,11)))
-X = np.logspace(-2,1,50)
+
 fig, axs = plt.subplots(3, 2, figsize=(15,15))
-#b = 20
-#while b < 24:
-#print('loop')
+
+
 axs[0,0].errorbar((radii[0])*(h/hmrad), (densities[0])/(10*(h**2)*hmden), yerr=(uncertainties[0]), fmt='.', label="Halo_"+str(1)+"_099", color='green')
-#b += 1
+
 
 
 axs[0,0].set_xlabel(r'(Radius ($kpc/(R_{HalfMass}})}$))')
@@ -346,6 +305,7 @@ axs[2,1].set_yscale('log')
 axs[2,1].set_xscale('log')
 axs[2,1].set_title('Denhen-3 fit for Data')
 
-fig.savefig('fit-profiles')
+fig.tight_layout()
+fig.savefig('fit-profiles-halo-2')
 fig.show()
 
