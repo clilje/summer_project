@@ -336,6 +336,7 @@ axs[2,0].set_title('Denhen-2 fit for Data')
 
 
 axs[2,1].errorbar(radii[0]/hmrad, dehnen_threeparam(radii[0], dehnen_threeparamfitp[0], dehnen_threeparamfitp[1], dehnen_threeparamfitp[2])/hmden, fmt='-', label="Dehnen-3 fit Halo_"+str(1)+"_099", color='blue')
+print(radii[0])
 axs[2,1].errorbar((radii[0])*(h/hmrad), (densities[0])/(10*(h**2)*hmden), yerr=(uncertainties[0]), fmt='.', label="Halo_"+str(1)+"_099", color='green')
 axs[2,1].set_xlabel(r'(Radius ($kpc/(R_{HalfMass}})}$))')
 axs[2,1].set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{HalfMass})^{-1}$))')
