@@ -251,7 +251,7 @@ def dehnen_threeparam(r, density_s, r_s, gamma):
 
 
 #print(nfwfitplist[np.argsort(nfwfitcovlist)])
-nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[100,10], sigma=uncertainties[0])
+nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[0.00001,10], sigma=uncertainties[0])
 
 #print(min(nfwfitcov))
 print ('Fitted value for NFW', nfwfitp)
@@ -261,23 +261,23 @@ einastofitp, einastofitcov = scopt.curve_fit(einasto, radii[0], densities[0], p0
 print ('Fitted value for Einasto', einastofitp)
 print ('Uncertainties for Einasto', np.sqrt(np.diag(einastofitcov)))
 
-burkertfitp, burkertfitcov = scopt.curve_fit(burkert,radii[0], densities[0], p0=[0.1,1], sigma=uncertainties[0])
+burkertfitp, burkertfitcov = scopt.curve_fit(burkert,radii[0], densities[0], p0=[10,10], sigma=uncertainties[0])
 print ('Fitted value for Burkert', burkertfitp)
 print ('Uncertainties for Burkert', np.sqrt(np.diag(burkertfitcov)))
 
 
-dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, radii[0], densities[0], p0=[100000,50], sigma=uncertainties[0])
+dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, radii[0], densities[0], p0=[0.0001,50], sigma=uncertainties[0])
 print ('Fitted value for Dehnen Two Parameters', dehnen_twoparamfitp)
 print ('Uncertainties for Dehnen Two Parameters', np.sqrt(np.diag(dehnen_twoparamfitcov)))
 
-dehnen_threeparamfitp, dehnen_threeparamfitcov = scopt.curve_fit(dehnen_threeparam, radii[0], densities[0], p0=[100,2,3], sigma=uncertainties[0])
+dehnen_threeparamfitp, dehnen_threeparamfitcov = scopt.curve_fit(dehnen_threeparam, radii[0], densities[0], p0=[0.0001,2,3], sigma=uncertainties[0])
 print ('Fitted value for Dehnen Three Parameters', dehnen_threeparamfitp)
 print ('Uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(dehnen_threeparamfitcov)))
 
 
 
 
-'''
+
 hsv = plt.get_cmap('hsv')
 colors = iter(hsv(np.linspace(0,1,11)))
 X = np.logspace(-2,1,50)
@@ -345,4 +345,4 @@ axs[2,1].set_title('Denhen-3 fit for Data')
 
 fig.savefig('fit-profiles')
 fig.show()
-'''
+
