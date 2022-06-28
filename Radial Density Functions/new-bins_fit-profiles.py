@@ -179,6 +179,8 @@ interval = np.logspace(0.1, 2.5, 100)
 files = get_filenames(50, 4, 11)
 positions = get_pos(files)
 radius = get_rad(files)
+print(positions)
+print(radius)
 g = 1
 numhalos = 2
 densities = []
