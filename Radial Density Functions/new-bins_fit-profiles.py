@@ -181,13 +181,13 @@ radii = []
 while g < numhalos:
     data_csv = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass.csv')
     rad_den = radial_density(data_csv['x'].to_numpy(), data_csv['y'].to_numpy(), data_csv['z'].to_numpy(),data_csv['mass'].to_numpy(), 40, radius[g], positions[g][0], positions[g][1], positions[g][2])
-    print(rad_den)
+    #print(rad_den)
     hmrad = radius[g]
     densities.append(list(rad_den[0]))
     radii.append(list(rad_den[1]))
     uncertainties.append(list(rad_den[2]))
     hmden = rad_den[3]
-    print(hmrad,hmden)
+    #print(hmrad,hmden)
     g += 1 
 
 densities = np.array(densities)
@@ -219,7 +219,7 @@ nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0]*h, densities[0]/(10*(h**2)), 
 print ('Fitted value for NFW', nfwfitp)
 print ('Uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
 
-einastofitp, einastofitcov = scopt.curve_fit(einasto, radii[0]*h, densities[0]/(10*(h**2)), p0=[0.00001,100,0.4], sigma=uncertainties[0])
+einastofitp, einastofitcov = scopt.curve_fit(einasto, radii[0]*h, densities[0]/(10*(h**2)), p0=[0.001,10,4], sigma=uncertainties[0])
 print ('Fitted value for Einasto', einastofitp)
 print ('Uncertainties for Einasto', np.sqrt(np.diag(einastofitcov)))
 
