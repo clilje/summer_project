@@ -172,10 +172,7 @@ interval = np.logspace(0.1, 2.5, 100)
 files = get_filenames(50, 4, 11)
 positions = get_pos(files)
 radius = get_rad(files)
-print(positions)
-print(radius)
-radius = 33.25  
-positions = [[0],[6854.98,2489764]]
+
 g = 2
 numhalos = 3
 densities = []
