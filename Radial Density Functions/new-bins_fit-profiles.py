@@ -219,7 +219,7 @@ nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0]*h, densities[0]/(10*(h**2)), 
 print ('Fitted value for NFW', nfwfitp)
 print ('Uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
 
-einastofitp, einastofitcov = scopt.curve_fit(einasto, radii[0]*h, densities[0]/(10*(h**2)), p0=[0.0001,200,5], sigma=uncertainties[0])
+einastofitp, einastofitcov = scopt.curve_fit(einasto, radii[0]*h, densities[0]/(10*(h**2)), p0=[0.00001,100,0.4], sigma=uncertainties[0])
 print ('Fitted value for Einasto', einastofitp)
 print ('Uncertainties for Einasto', np.sqrt(np.diag(einastofitcov)))
 
