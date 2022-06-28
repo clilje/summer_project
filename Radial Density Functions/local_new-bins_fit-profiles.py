@@ -166,7 +166,7 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
         subdensity = (M/(dV))
         density = np.append(density, subdensity)
         
-        rad_lowerbound = np.append(rad_lowerbound, radius_lowerbound)
+        rad_lowerbound = np.append(rad_lowerbound, radius_upperbound)
         dn = len(index_in_bin)
         uncertainties = np.append(uncertainties, subdensity/np.sqrt(dn))
         radius_lowerbound = radius_upperbound
@@ -252,11 +252,12 @@ def dehnen_twoparam(r, density_s, r_s):
 def dehnen_threeparam(r, density_s, r_s, gamma):
     return(((2**6)*density_s)/((np.power((r/r_s),gamma))*np.power((1+(np.power((r/r_s),((3-gamma)/5)))),6)))
 
+#radii[0][0]= 0.001
+print(radii)
 
-
-
+#nfwfitp = [0.001,20]
 #print(nfwfitplist[np.argsort(nfwfitcovlist)])
-nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0]*h, densities[0]/(10*(h**2)), p0=[0.001,20], sigma=uncertainties[0])
+nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0]*h, densities[0]/(10*(h**2)), p0=[0.001,20], sigma=uncertainties[0], maxfev=1000)
 print ('Fitted value for NFW', nfwfitp)
 print ('Uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
 
