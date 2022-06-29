@@ -146,9 +146,9 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
     list with densities at certain radii and radii at which density is calculated.
 
     """
-    density = []
-    rad_lowerbound = []
-    uncertainties = []
+    density = np.array([])
+    rad_lowerbound = np.array([])
+    uncertainties = np.array([])
     #lowerbound = np.logspace(0.1, (3*virrad), 50)
     #lowerbound = interval
     #i = 0
@@ -233,15 +233,15 @@ while c < 4:
 hsv = plt.get_cmap('hsv')
 colors = iter(hsv(np.linspace(0,1,6)))
 fig, axs = plt.subplots(2, 2, figsize=(15,15))
-radii = np.array(radii, dtype=('float64'))
-densities = np.array(densities, dtype=('float64'))
-uncertainties = np.array(uncertainties, dtype=('float64'))
-radii_dark = np.array(radii_dark, dtype=('float64'))
-densities_dark = np.array(densities_dark, dtype=('float64'))
-uncertainties_dark = np.array(uncertainties_dark, dtype=('float64'))
+#radii = np.array(radii, dtype=('float64'))
+#densities = np.array(densities, dtype=('float64'))
+#uncertainties = np.array(uncertainties, dtype=('float64'))
+#radii_dark = np.array(radii_dark, dtype=('float64'))
+#densities_dark = np.array(densities_dark, dtype=('float64'))
+#uncertainties_dark = np.array(uncertainties_dark, dtype=('float64'))
 
-axs[0,0].errorbar((radii[0])*(h/hmrad), (densities[0])/(10*(h**2)*hmden), yerr=(uncertainties[0]), fmt='.', label="Halo_"+str(halo_number[0])+"_099", color='black')
-axs[0,0].errorbar((radii_dark[0])*(h/hmrad_dark), (densities_dark[0])/(10*(h**2)*hmden_dark), yerr=(uncertainties_dark[0]), fmt='.', label="Halo_"+str(halo_number[0])+"_099_dark", color='red')
+axs[0,0].errorbar(np.array(radii[0])*(h/hmrad), np.array(densities[0])/(10*(h**2)*hmden), yerr=np.array(uncertainties[0]), fmt='.', label="Halo_"+str(halo_number[0])+"_099", color='black')
+axs[0,0].errorbar(np.array(radii_dark[0])*(h/hmrad_dark), np.array(densities_dark[0])/(10*(h**2)*hmden_dark), yerr=np.array(uncertainties_dark[0]), fmt='.', label="Halo_"+str(halo_number[0])+"_099_dark", color='red')
 axs[0,0].set_xlabel(r'(Radius ($kpc/(R_{HalfMass}})}$))')
 axs[0,0].set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{HalfMass})^{-1}$))')
 axs[0,0].legend()
@@ -249,8 +249,8 @@ axs[0,0].set_yscale('log')
 axs[0,0].set_xscale('log')
 axs[0,0].set_title("Halo"+str(halo_number[0]))
 
-axs[0,1].errorbar((radii[1])*(h/hmrad), (densities[1])/(10*(h**2)*hmden), yerr=(uncertainties[1]), fmt='.', label="Halo_"+str(halo_number[1])+"_099", color='black')
-axs[0,1].errorbar((radii_dark[1])*(h/hmrad_dark), (densities_dark[1])/(10*(h**2)*hmden_dark), yerr=(uncertainties_dark[1]), fmt='.', label="Halo_"+str(halo_number[1])+"_099_dark", color='red')
+axs[0,1].errorbar(np.array(radii[1])*(h/hmrad), np.array(densities[1])/(10*(h**2)*hmden), yerr=np.array(uncertainties[1]), fmt='.', label="Halo_"+str(halo_number[1])+"_099", color='black')
+axs[0,1].errorbar(np.array(radii_dark[1])*(h/hmrad_dark), np.array(densities_dark[1])/(10*(h**2)*hmden_dark), yerr=np.array(uncertainties_dark[1]), fmt='.', label="Halo_"+str(halo_number[1])+"_099_dark", color='red')
 axs[0,1].set_xlabel(r'(Radius ($kpc/(R_{HalfMass}})}$))')
 axs[0,1].set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{HalfMass})^{-1}$))')
 axs[0,1].legend()
@@ -258,8 +258,8 @@ axs[0,1].set_yscale('log')
 axs[0,1].set_xscale('log')
 axs[0,1].set_title("Halo"+str(halo_number[1]))
 
-axs[1,0].errorbar((radii[2])*(h/hmrad), (densities[2])/(10*(h**2)*hmden), yerr=(uncertainties[2]), fmt='.', label="Halo_"+str(halo_number[2])+"_099", color='black')
-axs[1,0].errorbar((radii_dark[2])*(h/hmrad_dark), (densities_dark[2])/(10*(h**2)*hmden_dark), yerr=(uncertainties_dark[2]), fmt='.', label="Halo_"+str(halo_number[2])+"_099_dark", color='red')
+axs[1,0].errorbar(np.array(radii[2])*(h/hmrad), np.array(densities[2])/(10*(h**2)*hmden), yerr=np.array(uncertainties[2]), fmt='.', label="Halo_"+str(halo_number[2])+"_099", color='black')
+axs[1,0].errorbar(np.array(radii_dark[2])*(h/hmrad_dark), np.array(densities_dark[2])/(10*(h**2)*hmden_dark), yerr=np.array(uncertainties_dark[2]), fmt='.', label="Halo_"+str(halo_number[2])+"_099_dark", color='red')
 axs[1,0].set_xlabel(r'(Radius ($kpc/(R_{HalfMass}})}$))')
 axs[1,0].set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{HalfMass})^{-1}$))')
 axs[1,0].legend()
@@ -267,8 +267,8 @@ axs[1,0].set_yscale('log')
 axs[1,0].set_xscale('log')
 axs[1,0].set_title("Halo"+str(halo_number[2]))
 
-axs[1,1].errorbar((radii[3])*(h/hmrad), (densities[3])/(10*(h**2)*hmden), yerr=(uncertainties[3]), fmt='.', label="Halo_"+str(halo_number[3])+"_099", color='black')
-axs[1,1].errorbar((radii_dark[3])*(h/hmrad_dark), (densities_dark[3])/(10*(h**2)*hmden_dark), yerr=(uncertainties_dark[3]), fmt='.', label="Halo_"+str(halo_number[3])+"_099_dark", color='red')
+axs[1,1].errorbar(np.array(radii[3])*(h/hmrad), np.array(densities[3])/(10*(h**2)*hmden), yerr=np.array(uncertainties[3]), fmt='.', label="Halo_"+str(halo_number[3])+"_099", color='black')
+axs[1,1].errorbar(np.array(radii_dark[3])*(h/hmrad_dark), np.array(densities_dark[3])/(10*(h**2)*hmden_dark), yerr=np.array(uncertainties_dark[3]), fmt='.', label="Halo_"+str(halo_number[3])+"_099_dark", color='red')
 axs[1,1].set_xlabel(r'(Radius ($kpc/(R_{HalfMass}})}$))')
 axs[1,1].set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{HalfMass})^{-1}$))')
 axs[1,1].legend()
