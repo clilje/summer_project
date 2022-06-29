@@ -191,8 +191,8 @@ positions = get_pos(files)
 radius = get_rad(files)
 positions_dark = get_pos(files_dark)
 radius_dark = get_rad(files_dark)
-
-
+print(positions, radius)
+print(positions_dark, radius_dark)
 g = 2
 c = 0
 numhalos = 10
@@ -212,7 +212,7 @@ while c < 4:
         data_csv = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass.csv')
         rad_den_dark = radial_density(data_csv_dark['x'].to_numpy(), data_csv_dark['y'].to_numpy(), data_csv_dark['z'].to_numpy(), data_csv_dark['mass'].to_numpy(), 20, radius_dark[matchingarr[g]], positions_dark[matchingarr[g]][0], positions_dark[matchingarr[g]][1], positions_dark[matchingarr[g]][2])
         rad_den = radial_density(data_csv['x'].to_numpy(), data_csv['y'].to_numpy(), data_csv['z'].to_numpy(), data_csv['mass'].to_numpy(), 20, radius[g], positions[g][0], positions[g][1], positions[g][2])
-        print(rad_den)
+        #print(rad_den)
         hmrad = radius[g]
         densities.append(list(rad_den[0]))
         radii.append(list(rad_den[1]))
@@ -233,13 +233,12 @@ while c < 4:
 hsv = plt.get_cmap('hsv')
 colors = iter(hsv(np.linspace(0,1,6)))
 fig, axs = plt.subplots(2, 2, figsize=(15,15))
-"""
-b = 0
-while b < (len(radii)):
-    print('loop')
-    plt.loglog(radii[b], densities[b], "+", label="Halo_dark"+str(halo_number[b])+"_099", color=next(colors))
-    b += 1
-"""
+radii = np.array(radii)
+densities = np.array(densities)
+uncertainties = np.array(uncertainties)
+radii_dark = np.array(radii_dark)
+densities_dark = np.array(densities_dark)
+uncertainties_dark = np.array(uncertainties_dark)
 
 axs[0,0].errorbar((radii[0])*(h/hmrad), (densities[0])/(10*(h**2)*hmden), yerr=(uncertainties[0]), fmt='.', label="Halo_"+str(halo_number[0])+"_099", color='black')
 axs[0,0].errorbar((radii_dark[0])*(h/hmrad_dark), (densities_dark[0])/(10*(h**2)*hmden_dark), yerr=(uncertainties_dark[0]), fmt='.', label="Halo_"+str(halo_number[0])+"_099_dark", color='red')
