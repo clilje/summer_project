@@ -193,7 +193,7 @@ positions_dark = get_pos(files_dark)
 radius_dark = get_rad(files_dark)
 print(positions, radius)
 print(positions_dark, radius_dark)
-g = 2
+g = 1
 c = 0
 numhalos = 10
 densities = []
@@ -210,9 +210,8 @@ while c < 4:
     if path.is_file():
         data_csv_dark = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass_dark.csv')
         data_csv = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass.csv')
-        rad_den_dark = radial_density(data_csv_dark['x'].to_numpy(), data_csv_dark['y'].to_numpy(), data_csv_dark['z'].to_numpy(), data_csv_dark['mass'].to_numpy(), 20, radius_dark[matchingarr[g]], positions_dark[matchingarr[g]][0], positions_dark[matchingarr[g]][1], positions_dark[matchingarr[g]][2])
-        rad_den = radial_density(data_csv['x'].to_numpy(), data_csv['y'].to_numpy(), data_csv['z'].to_numpy(), data_csv['mass'].to_numpy(), 20, radius[g], positions[g][0], positions[g][1], positions[g][2])
-        #print(rad_den)
+        rad_den_dark = radial_density(data_csv_dark['x'].to_numpy(), data_csv_dark['y'].to_numpy(), data_csv_dark['z'].to_numpy(), data_csv_dark['mass'].to_numpy(), 10, radius_dark[matchingarr[g]], positions_dark[matchingarr[g]][0], positions_dark[matchingarr[g]][1], positions_dark[matchingarr[g]][2])
+        rad_den = radial_density(data_csv['x'].to_numpy(), data_csv['y'].to_numpy(), data_csv['z'].to_numpy(), data_csv['mass'].to_numpy(), 10, radius[g], positions[g][0], positions[g][1], positions[g][2])
         hmrad = radius[g]
         densities.append(list(rad_den[0]))
         radii.append(list(rad_den[1]))
@@ -279,6 +278,6 @@ axs[1,1].set_title("Halo"+str(halo_number[3]))
 
 fig.tight_layout()
 
-fig.savefig('rad-den-dark-comparison')
+fig.savefig('rad-den-dark-comparison-smaller-bins')
 fig.show()
 
