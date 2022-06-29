@@ -328,6 +328,7 @@ with open('50-4_mass_difference.csv', 'w', encoding='UTF8', newline='') as f:
     while x <len(mass_difference):
         data = [halo_number[x],hmclara[x],mclara[x],masses[x],mass_difference[x]]
         fwriter.writerow(data)
+        x +=1
 """
 
 hsv = plt.get_cmap('hsv')
