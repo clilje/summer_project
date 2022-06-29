@@ -220,7 +220,7 @@ densities_dark = []
 radii_dark = []
 uncertainties_dark = []
 halo_number = []
-enhancement = []
+enhance = []
 
 while c < 4: 
     path = Path('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass_dark.csv')
@@ -243,7 +243,7 @@ while c < 4:
         print(hmrad,hmden)
         halo_number.append(g)
         
-        enhancement.append(enhancement([positions[g][0], positions[g][1], positions[g][2]],[data_csv['x'].to_numpy(), data_csv['y'].to_numpy(), data_csv['z'].to_numpy()],data_csv['mass'].to_numpy(),10,[positions_dark[matchingarr[g]][0], positions_dark[matchingarr[g]][1], positions_dark[matchingarr[g]][2]],[data_csv_dark['x'].to_numpy(), data_csv_dark['y'].to_numpy(), data_csv_dark['z'].to_numpy()], data_csv_dark['mass'].to_numpy()))
+        enhance.append(enhancement([positions[g][0], positions[g][1], positions[g][2]],[data_csv['x'].to_numpy(), data_csv['y'].to_numpy(), data_csv['z'].to_numpy()],data_csv['mass'].to_numpy(),10,[positions_dark[matchingarr[g]][0], positions_dark[matchingarr[g]][1], positions_dark[matchingarr[g]][2]],[data_csv_dark['x'].to_numpy(), data_csv_dark['y'].to_numpy(), data_csv_dark['z'].to_numpy()], data_csv_dark['mass'].to_numpy()))
         
         c+=1
     g += 1
@@ -296,6 +296,6 @@ axs[1,1].set_title("Halo"+str(halo_number[3]))
 
 fig.tight_layout()
 
-fig.savefig('rad-den-dark-comparison-smaller-bins')
+fig.savefig('rad-den-enhancement')
 fig.show()
 
