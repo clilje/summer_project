@@ -249,7 +249,7 @@ print ('Fitted value for Dehnen Three Parameters', dehnen_threeparamfitp)
 print ('Uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(dehnen_threeparamfitcov)))
 
 
-with open('HaloFits/50-4_snap_99_halo_'+str(g-1)+'_fit_param.csv', 'a', encoding='UTF8', newline='') as f:
+with open('HaloFits/50-4_snap_99_halo_'+str(g-1)+'_fit_param.csv', 'w', encoding='UTF8', newline='') as f:
     
     header = ['Halo Number','NFW Scale Density','NFW Scale Radius','NFW Scale Density Uncertainty',
               'NFW Scale Radius Uncertainty','NFW ChiSquare','Burkert Scale Density','Burkert Scale Radius',
