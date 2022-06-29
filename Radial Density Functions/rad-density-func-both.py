@@ -123,6 +123,8 @@ def distancefromcentre(cx, cy, cz, x, y, z, ):
 
     """
     return (np.sqrt((np.power(np.subtract(x,cx), 2)+ np.power(np.subtract(y,cy), 2) + np.power(np.subtract(z,cz), 2)))) # distance between the centre and given point
+
+
 def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, haloz):
     """
     
@@ -183,7 +185,6 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
 
 matchingarr = get_matching(50, 4)
 
-interval = np.logspace(0.1, 2.5, 100)
 files_dark = get_filenames(50, 4, 4, True)
 files = get_filenames(50, 4, 4, False)
 positions = get_pos(files)
@@ -209,8 +210,8 @@ while c < 4:
     if path.is_file():
         data_csv_dark = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass_dark.csv')
         data_csv = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass.csv')
-        rad_den_dark = radial_density(data_csv_dark['x'], data_csv_dark['y'], data_csv_dark['z'],data_csv_dark['mass'], interval, radius_dark[matchingarr[g]], positions_dark[matchingarr[g]][0], positions_dark[matchingarr[g]][1], positions_dark[matchingarr[g]][2])
-        rad_den = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
+        rad_den_dark = radial_density(data_csv_dark['x'], data_csv_dark['y'], data_csv_dark['z'],data_csv_dark['mass'], 20, radius_dark[matchingarr[g]], positions_dark[matchingarr[g]][0], positions_dark[matchingarr[g]][1], positions_dark[matchingarr[g]][2])
+        rad_den = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], 20, radius[g], positions[g][0], positions[g][1], positions[g][2])
         print(rad_den)
         hmrad = radius[g]
         densities.append(list(rad_den[0]))
