@@ -172,8 +172,8 @@ interval = np.logspace(0.1, 2.5, 100)
 files = get_filenames(50, 4, 11)
 positions = get_pos(files)
 radius = get_rad(files)
-print(positions[2])
-print(radius[2])
+#print(positions[2])
+#print(radius[2])
 halonumber = []
 g = 5
 numhalos = 6
@@ -218,8 +218,8 @@ def dehnen_threeparam(r, density_s, r_s, gamma):
     return(((2**6)*density_s)/((np.power((r/r_s),gamma))*np.power((1+(np.power((r/r_s),((3-gamma)/5)))),6)))
 
 nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0]*h, densities[0]/(10*(h**2)), p0=[0.001,20], sigma=uncertainties[0])
-nfwchi_square_test_statistic, nfwp_value = scipy.stats.chisquare((densities[0])/(10*(h**2)*hmden), nfw(radii[0], nfwfitp[0], nfwfitp[1])/hmden)
-print ('ChiSquare and P values for NFW', nfwchi_square_test_statistic, nfwp_value)
+nfwchi_square_test_statistic =  np.sum((np.square(((densities[0])/(10*(h**2)*hmden))-(nfw(radii[0], nfwfitp[0], nfwfitp[1])/hmden)))/(nfw(radii[0], nfwfitp[0], nfwfitp[1])/hmden))
+print ('ChiSquare and P values for NFW', nfwchi_square_test_statistic,)
 print ('Fitted value for NFW', nfwfitp)
 print ('Uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
 
