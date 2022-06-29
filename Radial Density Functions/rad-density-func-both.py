@@ -185,8 +185,8 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
 
 matchingarr = get_matching(50, 4)
 
-files_dark = get_filenames(50, 4, 4, True)
-files = get_filenames(50, 4, 10, False)
+files_dark = get_filenames(50, 4, 3, True)
+files = get_filenames(50, 4, 9, False)
 positions = get_pos(files)
 radius = get_rad(files)
 positions_dark = get_pos(files_dark)
