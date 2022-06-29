@@ -153,6 +153,8 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
     #lowerbound = interval
     #i = 0
     dis = distancefromcentre(halox, haloy, haloz, partx, party, partz)
+    index= np.argsort(dis)
+    print(dis[index])
     
     virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
     virindex = np.where(np.logical_and(dis.astype(float)>float(virrad-10), dis.astype(float)<float(virrad+10)))[0]
