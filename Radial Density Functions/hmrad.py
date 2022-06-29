@@ -264,50 +264,22 @@ def halfmass(partx, party, partz, mass, binsize, hmrad, halox, haloy, haloz):
     return(hmM)
 
 
-#matchingarr = get_matching(50, 4)
-
-#files_dark = get_filenames(50, 4, 4, True)
 files = get_filenames(50, 4, 9, False)
 positions = get_pos(files)
 radius = get_rad(files)
 masses = get_mass(files)
-#positions_dark = get_pos(files_dark)
-#radius_dark = get_rad(files_dark)
-#print(positions, radius)
-#print(positions_dark, radius_dark)
 g = 0
 c = 0
-numhalos = 29
-#densities = []
-#radii = []
-#uncertainties = []
-#densities_dark = []
-#radii_dark = []
-#uncertainties_dark = []
+numhalos = 30
 halo_number = []
 hmclara = []
 
 
 while c < numhalos: 
-    #path = Path('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass_dark.csv')
-    #if path.is_file():
-    #data_csv_dark = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass_dark.csv')
     data_csv = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass.csv')
-    #rad_den_dark = radial_density(data_csv_dark['x'].to_numpy(), data_csv_dark['y'].to_numpy(), data_csv_dark['z'].to_numpy(), data_csv_dark['mass'].to_numpy(), 10, radius_dark[matchingarr[g]], positions_dark[matchingarr[g]][0], positions_dark[matchingarr[g]][1], positions_dark[matchingarr[g]][2])
-    #rad_den = radial_density(data_csv['x'].to_numpy(), data_csv['y'].to_numpy(), data_csv['z'].to_numpy(), data_csv['mass'].to_numpy(), 10, radius[g], positions[g][0], positions[g][1], positions[g][2])
     hmrad = radius[g]
     hmMass = halfmass(data_csv['x'].to_numpy(), data_csv['y'].to_numpy(), data_csv['z'].to_numpy(), data_csv['mass'].to_numpy(), 10, radius[g], positions[g][0], positions[g][1], positions[g][2])
-    #densities.append(list(rad_den[0]))
-    #radii.append(list(rad_den[1]))
-    #uncertainties.append(list(rad_den[2]))
-    #hmden = rad_den[3]
-    
-    #hmrad_dark = radius_dark[matchingarr[g]]
-    #densities_dark.append(list(rad_den_dark[0]))
-    #radii_dark.append(list(rad_den_dark[1]))
-    #uncertainties_dark.append(list(rad_den_dark[2]))
-    #hmden_dark = rad_den_dark[3]
-    #print(hmrad,hmden)
+
     halo_number.append(g)
     hmclara.append(hmMass)
     c+=1
@@ -315,7 +287,7 @@ while c < numhalos:
     
 hmclara = np.array(hmclara)
 mclara = 2*hmclara
-mass_difference = masses[:len(hmclara)]-hmclara
+mass_difference = masses[:len(hmclara)]-mclara
 
 with open('50-4_mass_difference.csv', 'w', encoding='UTF8', newline='') as f:
     
@@ -325,56 +297,9 @@ with open('50-4_mass_difference.csv', 'w', encoding='UTF8', newline='') as f:
     # Write the header
     fwriter.writerow(header)
     x = 0
-    while x <len(mass_difference):
+    while x <numhalos:
         data = [halo_number[x],hmclara[x],mclara[x],masses[x],mass_difference[x]]
         fwriter.writerow(data)
         x +=1
-"""
 
-hsv = plt.get_cmap('hsv')
-colors = iter(hsv(np.linspace(0,1,6)))
-fig, axs = plt.subplots(2, 2, figsize=(15,15))
-
-axs[0,0].errorbar(np.array(radii[0])*(h/hmrad), np.array(densities[0])/(10*(h**2)*hmden), yerr=np.array(uncertainties[0]), fmt='.', label="Halo_"+str(halo_number[0])+"_099", color='black')
-axs[0,0].errorbar(np.array(radii_dark[0])*(h/hmrad_dark), np.array(densities_dark[0])/(10*(h**2)*hmden_dark), yerr=np.array(uncertainties_dark[0]), fmt='.', label="Halo_"+str(halo_number[0])+"_099_dark", color='red')
-axs[0,0].set_xlabel(r'(Radius ($kpc/(R_{HalfMass}})}$))')
-axs[0,0].set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{HalfMass})^{-1}$))')
-axs[0,0].legend()
-axs[0,0].set_yscale('log')
-axs[0,0].set_xscale('log')
-axs[0,0].set_title("Halo"+str(halo_number[0]))
-
-axs[0,1].errorbar(np.array(radii[1])*(h/hmrad), np.array(densities[1])/(10*(h**2)*hmden), yerr=np.array(uncertainties[1]), fmt='.', label="Halo_"+str(halo_number[1])+"_099", color='black')
-axs[0,1].errorbar(np.array(radii_dark[1])*(h/hmrad_dark), np.array(densities_dark[1])/(10*(h**2)*hmden_dark), yerr=np.array(uncertainties_dark[1]), fmt='.', label="Halo_"+str(halo_number[1])+"_099_dark", color='red')
-axs[0,1].set_xlabel(r'(Radius ($kpc/(R_{HalfMass}})}$))')
-axs[0,1].set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{HalfMass})^{-1}$))')
-axs[0,1].legend()
-axs[0,1].set_yscale('log')
-axs[0,1].set_xscale('log')
-axs[0,1].set_title("Halo"+str(halo_number[1]))
-
-axs[1,0].errorbar(np.array(radii[2])*(h/hmrad), np.array(densities[2])/(10*(h**2)*hmden), yerr=np.array(uncertainties[2]), fmt='.', label="Halo_"+str(halo_number[2])+"_099", color='black')
-axs[1,0].errorbar(np.array(radii_dark[2])*(h/hmrad_dark), np.array(densities_dark[2])/(10*(h**2)*hmden_dark), yerr=np.array(uncertainties_dark[2]), fmt='.', label="Halo_"+str(halo_number[2])+"_099_dark", color='red')
-axs[1,0].set_xlabel(r'(Radius ($kpc/(R_{HalfMass}})}$))')
-axs[1,0].set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{HalfMass})^{-1}$))')
-axs[1,0].legend()
-axs[1,0].set_yscale('log')
-axs[1,0].set_xscale('log')
-axs[1,0].set_title("Halo"+str(halo_number[2]))
-
-axs[1,1].errorbar(np.array(radii[3])*(h/hmrad), np.array(densities[3])/(10*(h**2)*hmden), yerr=np.array(uncertainties[3]), fmt='.', label="Halo_"+str(halo_number[3])+"_099", color='black')
-axs[1,1].errorbar(np.array(radii_dark[3])*(h/hmrad_dark), np.array(densities_dark[3])/(10*(h**2)*hmden_dark), yerr=np.array(uncertainties_dark[3]), fmt='.', label="Halo_"+str(halo_number[3])+"_099_dark", color='red')
-axs[1,1].set_xlabel(r'(Radius ($kpc/(R_{HalfMass}})}$))')
-axs[1,1].set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{HalfMass})^{-1}$))')
-axs[1,1].legend()
-axs[1,1].set_yscale('log')
-axs[1,1].set_xscale('log')
-axs[1,1].set_title("Halo"+str(halo_number[3]))
-
-
-fig.tight_layout()
-
-fig.savefig('rad-den-dark-comparison-smaller-bins')
-fig.show()
-
-"""
+print('done')
