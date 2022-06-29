@@ -39,7 +39,7 @@ def get_filenames(sim_size, sim_res, num_files, dark):
             i += 1
     else:
         while i < num_files:
-            filename.append("/disk01/rmcg/downloaded/tng/tng"+str(sim_size)+"-"+str(sim_res)+"-dark/fof_subfind_snapshot_99/fof_subhalo_tab_099."+str(i)+".hdf5")
+            filename.append("/disk01/rmcg/downloaded/tng/tng"+str(sim_size)+"-"+str(sim_res)+"/fof_subfind_snapshot_99/fof_subhalo_tab_099."+str(i)+".hdf5")
             i += 1
     return(filename)
 
@@ -185,7 +185,7 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
 
 matchingarr = get_matching(50, 4)
 
-files_dark = get_filenames(50, 4, 3, True)
+files_dark = get_filenames(50, 4, 4, True)
 files = get_filenames(50, 4, 9, False)
 positions = get_pos(files)
 radius = get_rad(files)
