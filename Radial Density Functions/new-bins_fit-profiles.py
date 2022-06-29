@@ -217,21 +217,21 @@ def dehnen_twoparam(r, density_s, r_s):
 def dehnen_threeparam(r, density_s, r_s, gamma):
     return(((2**6)*density_s)/((np.power((r/r_s),gamma))*np.power((1+(np.power((r/r_s),((3-gamma)/5)))),6)))
 
-nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0]*h, densities[0]/(10*(h**2)), p0=[0.001,20], sigma=uncertainties[0])
+nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0]*h, densities[0]/(10*(h**2)), p0=[0.001,100], sigma=uncertainties[0])
 nfwchi_square_test_statistic =  np.sum((np.square(((densities[0])/(10*(h**2)*hmden))-(nfw(radii[0], nfwfitp[0], nfwfitp[1])/hmden)))/(nfw(radii[0], nfwfitp[0], nfwfitp[1])/hmden))
 nfwp_value = scipy.stats.distributions.chi2.sf(nfwchi_square_test_statistic,(len(densities[0])-1))
 print ('ChiSquare and P values for NFW', nfwchi_square_test_statistic)
 print ('Fitted value for NFW', nfwfitp)
 print ('Uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
 
-einastofitp, einastofitcov = scopt.curve_fit(einasto, radii[0]*h, densities[0]/(10*(h**2)), p0=[0.001,10,4], sigma=uncertainties[0])
+einastofitp, einastofitcov = scopt.curve_fit(einasto, radii[0]*h, densities[0]/(10*(h**2)), p0=[0.0001,1000,4], sigma=uncertainties[0])
 einastochi_square_test_statistic =  np.sum((np.square(((densities[0])/(10*(h**2)*hmden))-(einasto(radii[0], einastofitp[0], einastofitp[1],einastofitp[2])/hmden)))/(einasto(radii[0], einastofitp[0], einastofitp[1],einastofitp[2])/hmden))
 einastop_value = scipy.stats.distributions.chi2.sf(einastochi_square_test_statistic,(len(densities[0])-1))
 print ('ChiSquare and P values for Einasto', einastochi_square_test_statistic, einastop_value)
 print ('Fitted value for Einasto', einastofitp)
 print ('Uncertainties for Einasto', np.sqrt(np.diag(einastofitcov)))
 
-burkertfitp, burkertfitcov = scopt.curve_fit(burkert,radii[0]*h, densities[0]/(10*(h**2)), p0=[0.1,10], sigma=uncertainties[0])
+burkertfitp, burkertfitcov = scopt.curve_fit(burkert,radii[0]*h, densities[0]/(10*(h**2)), p0=[0.1,100], sigma=uncertainties[0])
 burkertchi_square_test_statistic =  np.sum((np.square(((densities[0])/(10*(h**2)*hmden))-(burkert(radii[0], burkertfitp[0], burkertfitp[1])/hmden)))/(burkert(radii[0], burkertfitp[0], burkertfitp[1])/hmden))
 burkertp_value = scipy.stats.distributions.chi2.sf(burkertchi_square_test_statistic,(len(densities[0])-1))
 print ('ChiSquare and P values for Burkert', burkertchi_square_test_statistic, burkertp_value)
@@ -239,14 +239,14 @@ print ('Fitted value for Burkert', burkertfitp)
 print ('Uncertainties for Burkert', np.sqrt(np.diag(burkertfitcov)))
 
 
-dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, radii[0]*h, densities[0]/(10*(h**2)), p0=[0.01,30], sigma=uncertainties[0])
+dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, radii[0]*h, densities[0]/(10*(h**2)), p0=[0.01,300], sigma=uncertainties[0])
 dehnentwochi_square_test_statistic =  np.sum((np.square(((densities[0])/(10*(h**2)*hmden))-(dehnen_twoparam(radii[0], dehnen_twoparamfitp[0], dehnen_twoparamfitp[1])/hmden)))/(dehnen_twoparam(radii[0], dehnen_twoparamfitp[0], dehnen_twoparamfitp[1])/hmden))
 dehnentwop_value = scipy.stats.distributions.chi2.sf(dehnentwochi_square_test_statistic,(len(densities[0])-1))
 print ('ChiSquare and P values for dehnentwo', dehnentwochi_square_test_statistic, dehnentwop_value)
 print ('Fitted value for Dehnen Two Parameters', dehnen_twoparamfitp)
 print ('Uncertainties for Dehnen Two Parameters', np.sqrt(np.diag(dehnen_twoparamfitcov)))
 
-dehnen_threeparamfitp, dehnen_threeparamfitcov = scopt.curve_fit(dehnen_threeparam, radii[0]*h, densities[0]/(10*(h**2)), p0=[0.01,25,0.02], sigma=uncertainties[0])
+dehnen_threeparamfitp, dehnen_threeparamfitcov = scopt.curve_fit(dehnen_threeparam, radii[0]*h, densities[0]/(10*(h**2)), p0=[0.01,250,0.02], sigma=uncertainties[0])
 dehnenthreechi_square_test_statistic =  np.sum((np.square(((densities[0])/(10*(h**2)*hmden))-(dehnen_threeparam(radii[0],dehnen_threeparamfitp[0],dehnen_threeparamfitp[1],dehnen_threeparamfitp[2])/hmden)))/(dehnen_threeparam(radii[0], dehnen_threeparamfitp[0], dehnen_threeparamfitp[1],dehnen_threeparamfitp[2])/hmden))
 dehnenthreep_value = scipy.stats.distributions.chi2.sf(einastochi_square_test_statistic,(len(densities[0])-1))
 print ('ChiSquare and P values for dehnentwo', dehnenthreechi_square_test_statistic, dehnenthreep_value)
