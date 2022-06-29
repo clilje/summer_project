@@ -281,7 +281,7 @@ axs[1,0].text(0.1,0.2,'$\eta$='+str(enhance[2]), transform=axs[1,0].transAxes)
 axs[1,0].legend()
 axs[1,0].set_yscale('log')
 axs[1,0].set_xscale('log')
-axs[1,0].set_title("Halo"+str(halo_number[2]),horizontalalignment='center', verticalalignment='center', transform=axs[0,0].transAxes)
+axs[1,0].set_title("Halo"+str(halo_number[2]))
 
 axs[1,1].errorbar(np.array(radii[3])*(h/hmrad), np.array(densities[3])/(10*(h**2)*hmden), yerr=np.array(uncertainties[3]), fmt='.', label="Halo_"+str(halo_number[3])+"_099", color='black')
 axs[1,1].errorbar(np.array(radii_dark[3])*(h/hmrad_dark), np.array(densities_dark[3])/(10*(h**2)*hmden_dark), yerr=np.array(uncertainties_dark[3]), fmt='.', label="Halo_"+str(halo_number[3])+"_099_dark", color='red')
