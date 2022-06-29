@@ -175,8 +175,8 @@ radius = get_rad(files)
 #print(positions[2])
 #print(radius[2])
 halonumber = []
-g = 5
-numhalos = 6
+g = 7
+numhalos = 8
 densities = []
 uncertainties = []
 radii = []
