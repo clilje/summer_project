@@ -248,7 +248,7 @@ while c < 4:
         c+=1
     g += 1
     
-
+print(enhance)
 hsv = plt.get_cmap('hsv')
 colors = iter(hsv(np.linspace(0,1,6)))
 fig, axs = plt.subplots(2, 2, figsize=(15,15))
@@ -258,7 +258,7 @@ axs[0,0].errorbar(np.array(radii_dark[0])*(h/hmrad_dark), np.array(densities_dar
 axs[0,0].set_xlabel(r'(Radius ($kpc/(R_{HalfMass}})}$))')
 axs[0,0].set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{HalfMass})^{-1}$))')
 axs[0,0].legend()
-axs[0,0].text(0,0,'$\eta$='+str(enhancement[0]))
+axs[0,0].text(0,0,'$\eta$='+str(enhance[0]))
 axs[0,0].set_yscale('log')
 axs[0,0].set_xscale('log')
 axs[0,0].set_title("Halo"+str(halo_number[0]))
@@ -269,7 +269,7 @@ axs[0,1].set_xlabel(r'(Radius ($kpc/(R_{HalfMass}})}$))')
 axs[0,1].set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{HalfMass})^{-1}$))')
 axs[0,1].legend()
 axs[0,1].set_yscale('log')
-axs[0,1].text(0,0,'$\eta$='+str(enhancement[1]))
+axs[0,1].text(0,0,'$\eta$='+str(enhance[1]))
 axs[0,1].set_xscale('log')
 axs[0,1].set_title("Halo"+str(halo_number[1]))
 
@@ -278,7 +278,7 @@ axs[1,0].errorbar(np.array(radii_dark[2])*(h/hmrad_dark), np.array(densities_dar
 axs[1,0].set_xlabel(r'(Radius ($kpc/(R_{HalfMass}})}$))')
 axs[1,0].set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{HalfMass})^{-1}$))')
 axs[1,0].legend()
-axs[1,0].text(0,0,'$\eta$='+str(enhancement[2]))
+axs[1,0].text(0,0,'$\eta$='+str(enhance[2]))
 axs[1,0].set_yscale('log')
 axs[1,0].set_xscale('log')
 axs[1,0].set_title("Halo"+str(halo_number[2]))
@@ -288,7 +288,7 @@ axs[1,1].errorbar(np.array(radii_dark[3])*(h/hmrad_dark), np.array(densities_dar
 axs[1,1].set_xlabel(r'(Radius ($kpc/(R_{HalfMass}})}$))')
 axs[1,1].set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{HalfMass})^{-1}$))')
 axs[1,1].legend()
-axs[1,1].text(0,0,'$\eta$='+str(enhancement[3]))
+axs[1,1].text(0,0,'$\eta$='+str(enhance[3]))
 axs[1,1].set_yscale('log')
 axs[1,1].set_xscale('log')
 axs[1,1].set_title("Halo"+str(halo_number[3]))
