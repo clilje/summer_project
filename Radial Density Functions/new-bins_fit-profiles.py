@@ -175,8 +175,8 @@ radius = get_rad(files)
 #print(positions[2])
 #print(radius[2])
 halonumber = []
-g = 7
-numhalos = 8
+g = 17
+numhalos = 18
 densities = []
 uncertainties = []
 radii = []
@@ -347,5 +347,5 @@ axs[2,1].set_xscale('log')
 axs[2,1].set_title('Denhen-3 fit for Data')
 
 fig.tight_layout()
-fig.savefig('fit-profiles-halo-5')
+fig.savefig('fit-profiles-halo-17')
 fig.show()
