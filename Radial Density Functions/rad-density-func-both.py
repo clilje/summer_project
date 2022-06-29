@@ -154,8 +154,8 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
     #i = 0
     dis = distancefromcentre(halox, haloy, haloz, partx, party, partz)
     index= np.argsort(dis)
-    print(dis[index])
-    
+    print(dis[index][:10])
+    print(len(dis))
     virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
     virindex = np.where(np.logical_and(dis.astype(float)>float(virrad-10), dis.astype(float)<float(virrad+10)))[0]
     mass = np.array(mass)
@@ -234,12 +234,6 @@ while c < 4:
 hsv = plt.get_cmap('hsv')
 colors = iter(hsv(np.linspace(0,1,6)))
 fig, axs = plt.subplots(2, 2, figsize=(15,15))
-#radii = np.array(radii, dtype=('float64'))
-#densities = np.array(densities, dtype=('float64'))
-#uncertainties = np.array(uncertainties, dtype=('float64'))
-#radii_dark = np.array(radii_dark, dtype=('float64'))
-#densities_dark = np.array(densities_dark, dtype=('float64'))
-#uncertainties_dark = np.array(uncertainties_dark, dtype=('float64'))
 
 axs[0,0].errorbar(np.array(radii[0])*(h/hmrad), np.array(densities[0])/(10*(h**2)*hmden), yerr=np.array(uncertainties[0]), fmt='.', label="Halo_"+str(halo_number[0])+"_099", color='black')
 axs[0,0].errorbar(np.array(radii_dark[0])*(h/hmrad_dark), np.array(densities_dark[0])/(10*(h**2)*hmden_dark), yerr=np.array(uncertainties_dark[0]), fmt='.', label="Halo_"+str(halo_number[0])+"_099_dark", color='red')
