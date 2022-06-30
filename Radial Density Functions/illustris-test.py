@@ -8,7 +8,7 @@ import sys
 sys.path.insert(1, '/home/clilje/summer_project')
 from illustris_python import groupcat,lhalotree,snapshot,sublink,util
 #from localhost.Ubuntu.home.clara.summer_project import illustris_python as il
-sys.path.insert(1, '/')
+#sys.path.insert(1, '/')
 
 basePath = '/disk01/rmcg/downloaded/tng/tng50-1'
 fields = ['SubhaloMass','SubhaloSFRinRad']
