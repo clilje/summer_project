@@ -42,10 +42,12 @@ with open('50-1-subhalo-info.csv', 'w', encoding='UTF8', newline='') as subfile:
     fwriter.writerow(header)
     data = np.vstack([num_halo, subhalos['SubhaloPos'][:, 0],subhalos['SubhaloPos'][:, 1],subhalos['SubhaloPos'][:, 2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass']]).transpose()
     fwriter.writerows(data)
+    
 
-
+gasparts = snapshot.loadHalo(basePath, snapnum, 0, 'gas', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
+print(gasparts['Coordinates'])
 x = 0
-while x < len(num_halo):
+while x <= (len(num_halo)):
     with open('HaloParticles50-1/snap_99_halo_'+str(num_halo)+'.csv', 'w', encoding='UTF8', newline='') as f:
         header = ['ID','Type','x','y','z','mass','vx','vy','vz']
         # Create a writer object
