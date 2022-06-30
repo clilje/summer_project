@@ -14,5 +14,5 @@ basePath = '/disk01/rmcg/downloaded/tng/tng50-1'
 fields = ['SubhaloMass','SubhaloSFRinRad']
 subhalos = groupcat.loadSubhalos(basePath,99,fields=fields)
 #tree = sublink.loadtre()
-subhalos.keys()
-subhalos['SubhaloMass'].shape
+print(subhalos.keys())
+print(subhalos['SubhaloMass'].shape)
