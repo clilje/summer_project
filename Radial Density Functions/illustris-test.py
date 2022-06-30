@@ -23,9 +23,6 @@ dm_pos = snapshot.loadSubset(basePath,99,'dm',['Coordinates']);
 
 plt.hist2d(dm_pos[:,0], dm_pos[:,1], norm=mpl.colors.LogNorm(), bins=64);
 
-plt.xlim([0,75000])
-
-plt.ylim([0,75000])
 
 plt.xlabel('x [ckpc/h]')
 
