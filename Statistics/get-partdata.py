@@ -33,14 +33,14 @@ else:
    basePath = '/disk01/rmcg/downloaded/tng/tng'+str(size)+'-'+str(res) 
 fields = ['SubhaloPos','SubhaloHalfmassRad','SubhaloMass']
 subhalos = groupcat.loadSubhalos(basePath,99,fields=fields)
-num_halo = np.arange((np.array(subhalos['SubhaloMass'])))
+num_halo = np.arange(len(np.array(subhalos['SubhaloMass'])))
 
 with open('50-1-subhalo-info.csv', 'w', encoding='UTF8', newline='') as subfile:
-    header = ['SubhaloIndex','SubhaloPos','SubhaloHalfmassRad','SubhaloMass']
+    header = ['SubhaloIndex','SubhaloPosX','SubhaloPosY','SubhaloPosZ','SubhaloHalfmassRad','SubhaloMass']
     fwriter = csv.writer(subfile, delimiter=',')
     # Write the header
     fwriter.writerow(header)
-    data = np.vstack([num_halo, subhalos['SubhaloPos'], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass']]).transpose()
+    data = np.vstack([num_halo, subhalos['SubhaloPos'][0],subhalos['SubhaloPos'][1],subhalos['SubhaloPos'][2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass']]).transpose()
     fwriter.writerows(data)
 
 
