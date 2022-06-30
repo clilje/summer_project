@@ -40,7 +40,7 @@ with open('50-1-subhalo-info.csv', 'w', encoding='UTF8', newline='') as subfile:
     fwriter = csv.writer(subfile, delimiter=',')
     # Write the header
     fwriter.writerow(header)
-    data = np.vstack([num_halo, subhalos['SubhaloPos'][0],subhalos['SubhaloPos'][1],subhalos['SubhaloPos'][2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass']]).transpose()
+    data = np.vstack([num_halo, subhalos['SubhaloPos'][:, 0],subhalos['SubhaloPos'][:, 1],subhalos['SubhaloPos'][:, 2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass']]).transpose()
     fwriter.writerows(data)
 
 
@@ -60,13 +60,13 @@ while x < len(num_halo):
         dmmass = [(groupcat.loadHeader(basePath, snapnum)['MassTable'][1]).astype('float')]*len(dmparts['ParticleIDs'])
         
 
-        gasdata = np.vstack([gasparts['ParticleIDs'],['gas']*len(gasparts['ParticleIDs']), gasparts['Coordinates'][0],gasparts['Coordinates'][1],gasparts['Coordinates'][2], gasparts['Masses'], gasparts['Velocities'][0],gasparts['Velocities'][1],gasparts['Velocities'][2]]).transpose()
+        gasdata = np.vstack([gasparts['ParticleIDs'],['gas']*len(gasparts['ParticleIDs']), gasparts['Coordinates'][:, 0],gasparts['Coordinates'][:, 1],gasparts['Coordinates'][:, 2], gasparts['Masses'], gasparts['Velocities'][:, 0],gasparts['Velocities'][:, 1],gasparts['Velocities'][:, 2]]).transpose()
         fwriter.writerows(gasdata)
-        stardata = np.vstack([starparts['ParticleIDs'],['stars']*len(starparts['ParticleIDs']), starparts['Coordinates'][0],starparts['Coordinates'][1],starparts['Coordinates'][2], starparts['Masses'], starparts['Velocities'][0],starparts['Velocities'][1],starparts['Velocities'][2]]).transpose()
+        stardata = np.vstack([starparts['ParticleIDs'],['stars']*len(starparts['ParticleIDs']), starparts['Coordinates'][:, 0],starparts['Coordinates'][:, 1],starparts['Coordinates'][:, 2], starparts['Masses'], starparts['Velocities'][:, 0],starparts['Velocities'][:, 1],starparts['Velocities'][:, 2]]).transpose()
         fwriter.writerows(stardata)
-        bhdata = np.vstack([bhparts['ParticleIDs'],['bh']*len(bhparts['ParticleIDs']), bhparts['Coordinates'][0],bhparts['Coordinates'][1],bhparts['Coordinates'][2], bhparts['Masses'], bhparts['Velocities'][0],bhparts['Velocities'][1],bhparts['Velocities'][2]]).transpose()
+        bhdata = np.vstack([bhparts['ParticleIDs'],['bh']*len(bhparts['ParticleIDs']), bhparts['Coordinates'][:, 0],bhparts['Coordinates'][:, 1],bhparts['Coordinates'][:, 2], bhparts['Masses'], bhparts['Velocities'][:, 0],bhparts['Velocities'][:, 1],bhparts['Velocities'][:, 2]]).transpose()
         fwriter.writerows(bhdata)
-        dmdata = np.vstack([dmparts['ParticleIDs'],['dm']*len(dmparts['ParticleIDs']), dmparts['Coordinates'][0],dmparts['Coordinates'][1],dmparts['Coordinates'][2], dmparts['Masses'], dmparts['Velocities'][0],dmparts['Velocities'][1],dmparts['Velocities'][2]]).transpose()
+        dmdata = np.vstack([dmparts['ParticleIDs'],['dm']*len(dmparts['ParticleIDs']), dmparts['Coordinates'][:, 0],dmparts['Coordinates'][:, 1],dmparts['Coordinates'][:, 2], dmparts['Masses'], dmparts['Velocities'][:, 0],dmparts['Velocities'][:, 1],dmparts['Velocities'][:, 2]]).transpose()
         fwriter.writerows(dmdata)
     print(x)
     x +=1
