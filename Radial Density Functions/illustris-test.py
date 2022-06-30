@@ -5,7 +5,7 @@ Created on Thu Jun 30 11:23:03 2022
 @author: clara
 """
 import sys
-sys.path.insert(1, '//wsl.localhost/Ubuntu/home/clara/summer_project')
+sys.path.insert(1, '/home/clilje/summer_project')
 from illustris_python import groupcat,lhalotree,snapshot,sublink,util
 #from localhost.Ubuntu.home.clara.summer_project import illustris_python as il
 
