@@ -108,7 +108,8 @@ while x <= (len(num_halo)):
                                 dmparts['Coordinates'][:, 0][lowerbound:upperbound],
                                 dmparts['Coordinates'][:, 1][lowerbound:upperbound],
                                 dmparts['Coordinates'][:, 2][lowerbound:upperbound], 
-                                dmmass, dmparts['Velocities'][:, 0][lowerbound:upperbound],
+                                dmmass[lowerbound:upperbound], 
+                                dmparts['Velocities'][:, 0][lowerbound:upperbound],
                                 dmparts['Velocities'][:, 1][lowerbound:upperbound],
                                 dmparts['Velocities'][:, 2][lowerbound:upperbound]]).transpose()
             fwriter.writerows(dmdata)
