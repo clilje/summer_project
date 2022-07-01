@@ -196,8 +196,12 @@ while g < numhalos:
 
 densities = np.array(densities)
 radii = np.array(radii)
+half_rad_index = int(len(radii[0])/2)
 uncertainties = np.array(uncertainties)
 uncertainties[uncertainties == np.nan] = 0
+radii[0] = radii[0][0:half_rad_index]
+densities[0] = densities[0][0:half_rad_index]
+uncertainties[0] = uncertainties[0][0:half_rad_index]
 
 
 
@@ -254,7 +258,7 @@ print ('Fitted value for Dehnen Three Parameters', dehnen_threeparamfitp)
 print ('Uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(dehnen_threeparamfitcov)))
 
 
-with open('HaloFits/50-4_snap_99_halo_'+str(g-1)+'_fit_param.csv', 'w', encoding='UTF8', newline='') as f:
+with open('HaloFits/50-4_snap_99_halo_'+str(g)+'_fit_param_shortrad.csv', 'w', encoding='UTF8', newline='') as f:
     
     header = ['Halo Number','NFW Scale Density','NFW Scale Radius','NFW Scale Density Uncertainty',
               'NFW Scale Radius Uncertainty','NFW ChiSquare','NFW P-Value','Burkert Scale Density','Burkert Scale Radius',
@@ -347,5 +351,5 @@ axs[2,1].set_xscale('log')
 axs[2,1].set_title('Denhen-3 fit for Data')
 
 fig.tight_layout()
-fig.savefig('fit-profiles-halo-0')
+fig.savefig('short-fit-profiles-halo-0')
 fig.show()
