@@ -102,4 +102,4 @@ while x <= (len(num_halo)):
             
             lowerbound = upperbound
     print(x)
-    x +=1'''
+    x +=1
