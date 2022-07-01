@@ -30,7 +30,7 @@ print(a)
 print(z)
 
 print(groupcat.loadHeader(basePath, snapnum))
-
+"""
 with open('50-1-subhalo-info.csv', 'w', encoding='UTF8', newline='') as subfile:
     header = ['SubhaloIndex','SubhaloPosX','SubhaloPosY','SubhaloPosZ','SubhaloHalfmassRad','SubhaloMass']
     fwriter = csv.writer(subfile, delimiter=',')
@@ -38,7 +38,7 @@ with open('50-1-subhalo-info.csv', 'w', encoding='UTF8', newline='') as subfile:
     fwriter.writerow(header)
     data = np.vstack([num_halo, subhalos['SubhaloPos'][:, 0],subhalos['SubhaloPos'][:, 1],subhalos['SubhaloPos'][:, 2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass']]).transpose()
     fwriter.writerows(data)
-
+"""
 #gasparts = snapshot.loadHalo(basePath, snapnum, 0, 'gas', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
 #print(gasparts['Coordinates'])
 x = 0
@@ -54,11 +54,11 @@ while x <= (len(num_halo)):
             starparts = snapshot.loadHalo(basePath, snapnum, x, 'stars', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
             bhparts = snapshot.loadHalo(basePath, snapnum, x, 'bh', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
         dmparts = snapshot.loadHalo(basePath, snapnum, x, 'dm', fields=['Coordinates','ParticleIDs','Velocities'])
+        
         with h5py.File(snapshot.snapPath(basePath,snapnum),'r') as f:
             header = dict( f['Header'].attrs.items() )
-
             print(header['MassTable'][1]) # 10^10 msun/h
-            dmmass = [(header['MassTable'][1][1]).astype('float')]*len(dmparts['ParticleIDs'])
+            dmmass = [(header['MassTable'][1]).astype('float')]*len(dmparts['ParticleIDs'])
         
 
         gasdata = np.vstack([gasparts['ParticleIDs'],['gas']*len(gasparts['ParticleIDs']), gasparts['Coordinates'][:, 0],gasparts['Coordinates'][:, 1],gasparts['Coordinates'][:, 2], gasparts['Masses'], gasparts['Velocities'][:, 0],gasparts['Velocities'][:, 1],gasparts['Velocities'][:, 2]]).transpose()
