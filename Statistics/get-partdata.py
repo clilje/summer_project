@@ -48,7 +48,7 @@ gasparts = snapshot.loadHalo(basePath, snapnum, 0, 'gas', fields=['Coordinates',
 print(gasparts['Coordinates'])
 x = 0
 while x <= (len(num_halo)):
-    with open('HaloParticles50-1/snap_99_halo_'+str(num_halo)+'.csv', 'w', encoding='UTF8', newline='') as f:
+    with open('HaloParticles50-1/snap_99_halo_'+str(x)+'.csv', 'w', encoding='UTF8', newline='') as f:
         header = ['ID','Type','x','y','z','mass','vx','vy','vz']
         # Create a writer object
         fwriter = csv.writer(f, delimiter=',')
@@ -57,7 +57,7 @@ while x <= (len(num_halo)):
         if dark == False:
             gasparts = snapshot.loadHalo(basePath, snapnum, x, 'gas', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
             starparts = snapshot.loadHalo(basePath, snapnum, x, 'stars', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
-            bhparts = snapshot.loadHalo(basePath, snapnum, x, 'black holes', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
+            bhparts = snapshot.loadHalo(basePath, snapnum, x, 'bh', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
         dmparts = snapshot.loadHalo(basePath, snapnum, x, 'dm', fields=['Coordinates','ParticleIDs','Masses'])
         dmmass = [(groupcat.loadHeader(basePath, snapnum)['MassTable'][1]).astype('float')]*len(dmparts['ParticleIDs'])
         
