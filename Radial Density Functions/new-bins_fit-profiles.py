@@ -199,10 +199,15 @@ radii = np.array(radii)
 half_rad_index = int(len(radii[0])/2)
 uncertainties = np.array(uncertainties)
 uncertainties[uncertainties == np.nan] = 0
+indices = np.arange(half_rad_index,int(len(radii[0])))
+np.delete(radii[0],indices)
+np.delete(densities[0],indices)
+np.delete(uncertainties[0],indices)
+"""
 radii[0] = radii[0][0:half_rad_index]
 densities[0] = densities[0][0:half_rad_index]
 uncertainties[0] = uncertainties[0][0:half_rad_index]
-
+"""
 
 
 def nfw(r, density_0, scale_radius):
@@ -351,5 +356,6 @@ axs[2,1].set_xscale('log')
 axs[2,1].set_title('Denhen-3 fit for Data')
 
 fig.tight_layout()
-fig.savefig('short-fit-profiles-halo-0')
+fig.savefig('shortrad-fit-profiles-halo-0')
+print('hello')
 fig.show()
