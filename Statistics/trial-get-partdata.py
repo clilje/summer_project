@@ -43,26 +43,22 @@ with open('50-1-subhalo-info.csv', 'w', encoding='UTF8', newline='') as subfile:
 #gasparts = snapshot.loadHalo(basePath, snapnum, 0, 'gas', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
 #print(gasparts['Coordinates'])
 x = 0
+header = ['ID','Type','x','y','z','mass','vx','vy','vz']
 while x <= (len(num_halo)):
     if dark == False: 
-        filename = 'HaloParticles50-1/snap_99_halo_'+str(x)+'.csv'
+        filename = 'HaloParticles50-1/snap_99_halo_'+str(x)
     else: 
-        filename = 'HaloParticles50-1/snap_99_halo_'+str(x)+'-dark.csv'
+        filename = 'HaloParticles50-1/snap_99_halo_'+str(x)+'-dark'
     with open(filename, 'w', encoding='UTF8', newline='') as f:
-        header = ['ID','Type','x','y','z','mass','vx','vy','vz']
+        #header = ['ID','Type','x','y','z','mass','vx','vy','vz']
         # Create a writer object
-        fwriter = csv.writer(f, delimiter=',')
+        #fwriter = csv.writer(f, delimiter=',')
         # Write the header
-        fwriter.writerow(header)
+        #fwriter.writerow(header)
+        
         if dark == False:
             gasparts = snapshot.loadHalo(basePath, snapnum, x, 'gas', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
-            gasparts = pd.DataFrame.from_dict(gasparts)
-            print(gasparts.head())
-        print(type(gasparts))
-        exit()
-            
-            
-        '''
+            #gasparts = pd.DataFrame.from_dict(gasparts)
             starparts = snapshot.loadHalo(basePath, snapnum, x, 'stars', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
             bhparts = snapshot.loadHalo(basePath, snapnum, x, 'bh', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
         dmparts = snapshot.loadHalo(basePath, snapnum, x, 'dm', fields=['Coordinates','ParticleIDs','Velocities'])
@@ -74,13 +70,31 @@ while x <= (len(num_halo)):
         
         lowerbound = 0
         indexjump = int(len(gasparts['ParticleIDs'])/300)
+        
+        derek = pd.DataFrame(columns=header)
         while lowerbound < len(gasparts['ParticleIDs']):
             print(lowerbound)
+            miniderek = pd.DataFrame(columns=header)
             if (lowerbound+indexjump)>len(gasparts['ParticleIDs']):
                 upperbound = len(gasparts['ParticleIDs'])
             else:
                 upperbound = lowerbound+indexjump
             if dark == False:
+                
+                miniderek['ID']=gasparts['ParticleIDs'][lowerbound:upperbound]
+                miniderek['Type']=['gas']*len(gasparts['ParticleIDs'][lowerbound:upperbound])
+                miniderek['x']=gasparts['Coordinates'][:, 0][lowerbound:upperbound]
+                miniderek['y']=gasparts['Coordinates'][:, 1][lowerbound:upperbound]
+                miniderek['z']=gasparts['Coordinates'][:, 2][lowerbound:upperbound]
+                miniderek['mass']=gasparts['Masses'][lowerbound:upperbound]
+                miniderek['vx']=gasparts['Velocities'][:, 0][lowerbound:upperbound]
+                miniderek['vy']=gasparts['Velocities'][:, 1][lowerbound:upperbound]
+                miniderek['vz']=gasparts['Velocities'][:, 2][lowerbound:upperbound]
+                
+                
+                print(miniderek)
+                
+                """
                 gasdata = np.vstack([gasparts['ParticleIDs'][lowerbound:upperbound],
                                      ['gas']*len(gasparts['ParticleIDs'][lowerbound:upperbound]), 
                                      gasparts['Coordinates'][:, 0][lowerbound:upperbound],
@@ -90,7 +104,22 @@ while x <= (len(num_halo)):
                                      gasparts['Velocities'][:, 0][lowerbound:upperbound],
                                      gasparts['Velocities'][:, 1][lowerbound:upperbound],
                                      gasparts['Velocities'][:, 2][lowerbound:upperbound]]).transpose()
-                fwriter.writerows(gasdata)
+                """
+                derek = pd.concat([derek,miniderek])
+                
+                
+                miniderek['ID']=starparts['ParticleIDs'][lowerbound:upperbound]
+                miniderek['Type']=['star']*len(starparts['ParticleIDs'][lowerbound:upperbound])
+                miniderek['x']=starparts['Coordinates'][:, 0][lowerbound:upperbound]
+                miniderek['y']=starparts['Coordinates'][:, 1][lowerbound:upperbound]
+                miniderek['z']=starparts['Coordinates'][:, 2][lowerbound:upperbound]
+                miniderek['mass']=starparts['Masses'][lowerbound:upperbound]
+                miniderek['vx']=starparts['Velocities'][:, 0][lowerbound:upperbound]
+                miniderek['vy']=starparts['Velocities'][:, 1][lowerbound:upperbound]
+                miniderek['vz']=starparts['Velocities'][:, 2][lowerbound:upperbound]
+                derek = pd.concat([derek,miniderek])
+                """
+                #fwriter.writerows(gasdata)
                 stardata = np.vstack([starparts['ParticleIDs'][lowerbound:upperbound],
                                       ['stars']*len(starparts['ParticleIDs'][lowerbound:upperbound]), 
                                       starparts['Coordinates'][:, 0][lowerbound:upperbound],
@@ -101,6 +130,18 @@ while x <= (len(num_halo)):
                                       starparts['Velocities'][:, 1][lowerbound:upperbound],
                                       starparts['Velocities'][:, 2][lowerbound:upperbound]]).transpose()
                 fwriter.writerows(stardata)
+                """
+                miniderek['ID']=bhparts['ParticleIDs'][lowerbound:upperbound]
+                miniderek['Type']=['bh']*len(bhparts['ParticleIDs'][lowerbound:upperbound])
+                miniderek['x']=bhparts['Coordinates'][:, 0][lowerbound:upperbound]
+                miniderek['y']=bhparts['Coordinates'][:, 1][lowerbound:upperbound]
+                miniderek['z']=bhparts['Coordinates'][:, 2][lowerbound:upperbound]
+                miniderek['mass']=bhparts['Masses'][lowerbound:upperbound]
+                miniderek['vx']=bhparts['Velocities'][:, 0][lowerbound:upperbound]
+                miniderek['vy']=bhparts['Velocities'][:, 1][lowerbound:upperbound]
+                miniderek['vz']=bhparts['Velocities'][:, 2][lowerbound:upperbound]
+                derek = pd.concat([derek,miniderek])
+                '''
                 bhdata = np.vstack([bhparts['ParticleIDs'][lowerbound:upperbound],
                                     ['bh']*len(bhparts['ParticleIDs'][lowerbound:upperbound]), 
                                     bhparts['Coordinates'][:, 0][lowerbound:upperbound],
@@ -111,6 +152,18 @@ while x <= (len(num_halo)):
                                     bhparts['Velocities'][:, 1][lowerbound:upperbound],
                                     bhparts['Velocities'][:, 2][lowerbound:upperbound]]).transpose()
                 fwriter.writerows(bhdata)
+                '''
+            miniderek['ID']=dmparts['ParticleIDs'][lowerbound:upperbound]
+            miniderek['Type']=['dm']*len(dmparts['ParticleIDs'][lowerbound:upperbound])
+            miniderek['x']=dmparts['Coordinates'][:, 0][lowerbound:upperbound]
+            miniderek['y']=dmparts['Coordinates'][:, 1][lowerbound:upperbound]
+            miniderek['z']=dmparts['Coordinates'][:, 2][lowerbound:upperbound]
+            miniderek['mass']=dmparts['Masses'][lowerbound:upperbound]
+            miniderek['vx']=dmparts['Velocities'][:, 0][lowerbound:upperbound]
+            miniderek['vy']=dmparts['Velocities'][:, 1][lowerbound:upperbound]
+            miniderek['vz']=dmparts['Velocities'][:, 2][lowerbound:upperbound]
+            derek = pd.concat([derek,miniderek])
+            """
             dmdata = np.vstack([dmparts['ParticleIDs'][lowerbound:upperbound],
                                 ['dm']*len(dmparts['ParticleIDs'][lowerbound:upperbound]), 
                                 dmparts['Coordinates'][:, 0][lowerbound:upperbound],
@@ -121,7 +174,9 @@ while x <= (len(num_halo)):
                                 dmparts['Velocities'][:, 1][lowerbound:upperbound],
                                 dmparts['Velocities'][:, 2][lowerbound:upperbound]]).transpose()
             fwriter.writerows(dmdata)
-            
+            """
             lowerbound = upperbound
+        derek.to_csv(filename+'.csv')
+        derek.to_hdf(filename+'.hdf')
     print(x)
-    x +=1'''
+    x +=1
