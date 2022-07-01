@@ -173,19 +173,11 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
         bin_lowerbound = bin_lowerbound+binsize
 
     return(density, rad_lowerbound, uncertainties, virdensity)
-"""
 
-interval = np.logspace(0.1, 2.5, 100)
-files = get_filenames(50, 4, 11)
-positions = get_pos(files)
-radius = get_rad(files)
-print(positions)
-print(radius)
-"""
-radius = 33.25  
-positions = [6854.98,24897.64,21297.8]
-g = 1
-numhalos = 2
+radius = 61.41  
+positions = [6813.98,23897.744,21113.64]
+g = 2
+numhalos = 3
 densities = []
 uncertainties = []
 radii = []
@@ -206,35 +198,6 @@ radii = np.array(radii)
 uncertainties = np.array(uncertainties)
 uncertainties[uncertainties == np.nan] = 0
 
-"""
-rho_s = np.logspace(-3, 3, 20)
-r_s = np.logspace(-3, 3,20)
-n = np.logspace(-1, 2,20)
-nfwfitplist = []
-nfwfitcovlist = []
-nfwresidualsquare = []
-i =0
-while i<len(rho_s):
-    print(i)
-    g = 0
-    while g < len(r_s):
-        nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0], densities[0], p0=[rho_s[i],r_s[g]], sigma=uncertainties[0])
-        #print(nfwfitp)
-        nfwfitplist.append(nfwfitp)
-        #print(nfwfitcov)
-        nfwfitcovlist.append(nfwfitcov)
-        nfwexpected = nfw(radii[0], nfwfitp[0], nfwfitp[1])
-        nfwresidualsquare.append(np.sum(np.power((densities[0]-nfwexpected),2)))
-        h = 0
-        while h<len(n):
-            h +=1
-        g+=1
-    i+=1
-print(nfwresidualsquare)
-"""
-
-
-
 
 def nfw(r, density_0, scale_radius):
     return(density_0/((r/scale_radius)*np.power((1+(r/scale_radius)),2)))
@@ -252,11 +215,8 @@ def dehnen_twoparam(r, density_s, r_s):
 def dehnen_threeparam(r, density_s, r_s, gamma):
     return(((2**6)*density_s)/((np.power((r/r_s),gamma))*np.power((1+(np.power((r/r_s),((3-gamma)/5)))),6)))
 
-#radii[0][0]= 0.001
 print(radii)
 
-#nfwfitp = [0.001,20]
-#print(nfwfitplist[np.argsort(nfwfitcovlist)])
 nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0]*h, densities[0]/(10*(h**2)), p0=[0.001,20], sigma=uncertainties[0], maxfev=1000)
 print ('Fitted value for NFW', nfwfitp)
 print ('Uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
@@ -347,6 +307,6 @@ axs[2,1].set_yscale('log')
 axs[2,1].set_xscale('log')
 axs[2,1].set_title('Denhen-3 fit for Data')
 
-fig.savefig('fit-profiles')
+fig.savefig('fit-profiles-2')
 fig.show()
 

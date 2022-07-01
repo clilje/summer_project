@@ -107,7 +107,7 @@ def distancefromcentre(cx, cy, cz, x, y, z, ):
     return (np.sqrt((np.power(np.subtract(x,cx), 2)+ np.power(np.subtract(y,cy), 2) + np.power(np.subtract(z,cz), 2)))) # distance between the centre and given point
 
 
-def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, haloz):
+def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, haloz):
     """
     
 
@@ -130,80 +130,64 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
     """
     density = []
     rad_lowerbound = []
-    uncertainties = []
     #lowerbound = np.logspace(0.1, (3*virrad), 50)
-    #lowerbound = interval
-    #i = 0
+    lowerbound = interval
+    i = 0
     dis = distancefromcentre(halox, haloy, haloz, partx, party, partz)
-    
     virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
     virindex = np.where(np.logical_and(dis.astype(float)>float(virrad-10), dis.astype(float)<float(virrad+10)))[0]
-    mass = np.array(mass)
+    
+    mass = mass.astype(float)
     virM = np.sum(mass[virindex])
     virdensity = virM/virV
     
-    
-    bin_index = np.argsort(dis)
-    radius_lowerbound = 0
-    bin_lowerbound = 0
-    #print(bin_index)
-    #print(np.shape(bin_index))
-    #print(dis[bin_index])
-    #print(np.shape(dis[bin_index]))
-    
-    while (bin_lowerbound+binsize) < len(dis):
-        index_in_bin = bin_index[bin_lowerbound:(bin_lowerbound+binsize)]
-        radius_upperbound = dis[index_in_bin][-1]
-        dV = (4/3)*math.pi*(np.power(radius_upperbound,3)-np.power(radius_lowerbound,3))
+    while i < (len(lowerbound)-1):
+        #print(lowerbound[i])
+        dr = (lowerbound[i+1]-lowerbound[i])
+        dV = (4/3)*math.pi*(np.power(lowerbound[i+1],3)-np.power(lowerbound[i],3))
+        nindex = np.where(np.logical_and(dis.astype(float)>float(lowerbound[i]), dis.astype(float)<float(lowerbound[(i+1)])))[0]
         
-        M = np.sum(mass[index_in_bin])
-        subdensity = (M/(dV))/virdensity
-        density = np.append(density, subdensity)
-        
-        rad_lowerbound = np.append(rad_lowerbound, radius_lowerbound/virrad)
-        dn = len(index_in_bin)
-        uncertainties = np.append(uncertainties, subdensity/np.sqrt(dn))
-        radius_lowerbound = radius_upperbound
-        bin_lowerbound = bin_lowerbound+binsize
-
-    return(density, rad_lowerbound, uncertainties)
+        dn = len(nindex)
+        #mass = mass.astype(float)
+        M = np.sum(mass[nindex])
+        density = np.append(density, (M/(dV))/virdensity)
+        rad_lowerbound = np.append(rad_lowerbound, lowerbound[i]/virrad)
+        i += 1
+    return(density, rad_lowerbound)
+    
 
 
 interval = np.logspace(0.1, 2.5, 100)
-files = get_filenames(50, 4, 11)
+files = get_filenames(50, 1, 680)
 positions = get_pos(files)
 radius = get_rad(files)
-g = 0
-numhalos = 29
+g = 4
+numhalos = 5
 densities = []
-uncertainties = []
 radii = []
 while g < numhalos:
-    data_csv = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass.csv')
-    rad_den = radial_density(data_csv['x'].to_numpy(), data_csv['y'].to_numpy(), data_csv['z'].to_numpy(),data_csv['mass'].to_numpy(), 40, radius[g], positions[g][0], positions[g][1], positions[g][2])
+    data_csv = pd.read_csv('HaloParticles/50-1_snap_99_halo_'+str(g)+'_pos_mass_long.csv')
+    rad_den = radial_density(data_csv['x'], data_csv['y'], data_csv['z'],data_csv['mass'], interval, radius[g], positions[g][0], positions[g][1], positions[g][2])
     print(rad_den)
     densities.append(list(rad_den[0]))
     radii.append(list(rad_den[1]))
-    uncertainties.append(list(rad_den[2]))
-
     g += 1 
 
 densities = np.array(densities)
 radii = np.array(radii)
-uncertainties = np.array(uncertainties)
-uncertainties[uncertainties == np.nan] = 0
+
+
 hsv = plt.get_cmap('gnuplot')
 colors = iter(hsv(np.linspace(0,1,5)))
-b = 20
-while b < 24:
+b = 0
+while b < (len(radii)):
     print('loop')
-    plt.errorbar((radii[b]), (densities[b]), yerr=(uncertainties[b]), fmt='.', label="Halo_"+str(b)+"_099", color=next(colors))
+    plt.loglog(radii[b], densities[b], "+", label="Halo_"+str(b+4)+"_099", color=next(colors))
     b += 1
 
-plt.xlabel(r'(Radius ($ckpc/(h*R_{HalfMass}})}$))')
-plt.ylabel(r'($\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$))')
+plt.xlabel(r'Radius ($ckpc/(h*R_{HalfMass}})}$)')
+plt.ylabel(r'$\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$)')
 plt.legend()
-plt.gca().set_yscale('log')
-plt.gca().set_xscale('log')
-plt.savefig('bin-halo-50-4-errorbars-test-24')
+plt.savefig('rad-den-halo-4-50-1-new')
 plt.show()
+
