@@ -47,7 +47,7 @@ with open('50-1-subhalo-info.csv', 'w', encoding='UTF8', newline='') as subfile:
 #gasparts = snapshot.loadHalo(basePath, snapnum, 0, 'gas', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
 #print(gasparts['Coordinates'])
 x = 0
-header = ['ID','Type','x','y','z','mass','vx','vy','vz']
+pdheader = ['ID','Type','x','y','z','mass','vx','vy','vz']
 while x <= (len(num_halo)):
     if dark == False: 
         filename = 'HaloParticles50-1/snap_99_halo_'+str(x)
@@ -76,17 +76,18 @@ while x <= (len(num_halo)):
     lowerbound = 0
     indexjump = int(len(gasparts['ParticleIDs'])/300)
     
-    derek = pd.DataFrame(columns=header)
+    derek = pd.DataFrame(columns=pdheader)
     
     while lowerbound < len(gasparts['ParticleIDs']):
         
         print(lowerbound)
         
-        miniderek = pd.DataFrame(columns=header)
+        miniderek = pd.DataFrame(columns=pdheader)
         if (lowerbound+indexjump)>len(gasparts['ParticleIDs']):
             upperbound = len(gasparts['ParticleIDs'])
         else:
             upperbound = lowerbound+indexjump
+        
         if dark == False:
             
             miniderek['ID']=gasparts['ParticleIDs'][lowerbound:upperbound]
@@ -114,7 +115,7 @@ while x <= (len(num_halo)):
                                  gasparts['Velocities'][:, 2][lowerbound:upperbound]]).transpose()
             """
             derek = pd.concat([derek,miniderek])
-            
+            miniderek = pd.DataFrame(columns=pdheader)
             
             miniderek['ID']=starparts['ParticleIDs'][lowerbound:upperbound]
             miniderek['Type']=['star']*len(starparts['ParticleIDs'][lowerbound:upperbound])
@@ -124,8 +125,10 @@ while x <= (len(num_halo)):
             miniderek['mass']=starparts['Masses'][lowerbound:upperbound]
             miniderek['vx']=starparts['Velocities'][:, 0][lowerbound:upperbound]
             miniderek['vy']=starparts['Velocities'][:, 1][lowerbound:upperbound]
-            miniderek['vz']=starparts['Velocities'][:, 2][lowerbound:upperbound]
+            miniderek['vz']=starparts['Velocities'][:, 2][lowerbound:upperbound]#
+            
             derek = pd.concat([derek,miniderek])
+            miniderek = pd.DataFrame(columns=pdheader)
             """
             #fwriter.writerows(gasdata)
             stardata = np.vstack([starparts['ParticleIDs'][lowerbound:upperbound],
@@ -149,6 +152,7 @@ while x <= (len(num_halo)):
             miniderek['vy']=bhparts['Velocities'][:, 1][lowerbound:upperbound]
             miniderek['vz']=bhparts['Velocities'][:, 2][lowerbound:upperbound]
             derek = pd.concat([derek,miniderek])
+            miniderek = pd.DataFrame(columns=pdheader)
             '''
             bhdata = np.vstack([bhparts['ParticleIDs'][lowerbound:upperbound],
                                 ['bh']*len(bhparts['ParticleIDs'][lowerbound:upperbound]), 
@@ -166,11 +170,12 @@ while x <= (len(num_halo)):
         miniderek['x']=dmparts['Coordinates'][:, 0][lowerbound:upperbound]
         miniderek['y']=dmparts['Coordinates'][:, 1][lowerbound:upperbound]
         miniderek['z']=dmparts['Coordinates'][:, 2][lowerbound:upperbound]
-        miniderek['mass']=dmparts['Masses'][lowerbound:upperbound]
+        miniderek['mass']=dmmass[lowerbound:upperbound],
         miniderek['vx']=dmparts['Velocities'][:, 0][lowerbound:upperbound]
         miniderek['vy']=dmparts['Velocities'][:, 1][lowerbound:upperbound]
         miniderek['vz']=dmparts['Velocities'][:, 2][lowerbound:upperbound]
         derek = pd.concat([derek,miniderek])
+        miniderek = pd.DataFrame(columns=pdheader)
         """
         dmdata = np.vstack([dmparts['ParticleIDs'][lowerbound:upperbound],
                             ['dm']*len(dmparts['ParticleIDs'][lowerbound:upperbound]), 
@@ -186,6 +191,6 @@ while x <= (len(num_halo)):
         lowerbound = upperbound
         derek.to_csv(filename+'.csv', mode='a')
         derek.to_hdf(filename+'.hdf', mode='a')
-        derek = pd.DataFrame(columns=header)
+        derek = pd.DataFrame(columns=pdheader)
     print(x)
     x +=1
