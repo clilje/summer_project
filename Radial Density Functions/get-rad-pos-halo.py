@@ -105,7 +105,7 @@ with open('HaloFits/50-4_halodata.csv', 'w', encoding='UTF8', newline='') as f:
     fwriter = csv.writer(f, delimiter=',')
     # Write the header
     fwriter.writerow(header)
-    data = gasdata = np.vstack([positions[:, 0],positions[:, 1], positions[:, 2],radius]).transpose()
-    fwriter.writerow(data)
+    data = np.vstack([positions[:, 0],positions[:, 1], positions[:, 2],radius]).transpose()
+    fwriter.writerows(data)
         
 
