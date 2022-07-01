@@ -115,7 +115,7 @@ while x <= (len(num_halo)):
                                  gasparts['Velocities'][:, 2][lowerbound:upperbound]]).transpose()
             """
             derek = pd.concat([derek,miniderek])
-            miniderek = pd.DataFrame(columns=pdheader)
+            miniderek = miniderek[0:0]
             
             miniderek['ID']=starparts['ParticleIDs'][lowerbound:upperbound]
             miniderek['Type']=['star']*len(starparts['ParticleIDs'][lowerbound:upperbound])
@@ -128,7 +128,8 @@ while x <= (len(num_halo)):
             miniderek['vz']=starparts['Velocities'][:, 2][lowerbound:upperbound]#
             
             derek = pd.concat([derek,miniderek])
-            miniderek = pd.DataFrame(columns=pdheader)
+            miniderek = miniderek[0:0]
+            
             """
             #fwriter.writerows(gasdata)
             stardata = np.vstack([starparts['ParticleIDs'][lowerbound:upperbound],
@@ -152,7 +153,7 @@ while x <= (len(num_halo)):
             miniderek['vy']=bhparts['Velocities'][:, 1][lowerbound:upperbound]
             miniderek['vz']=bhparts['Velocities'][:, 2][lowerbound:upperbound]
             derek = pd.concat([derek,miniderek])
-            miniderek = pd.DataFrame(columns=pdheader)
+            miniderek =miniderek[0:0]
             '''
             bhdata = np.vstack([bhparts['ParticleIDs'][lowerbound:upperbound],
                                 ['bh']*len(bhparts['ParticleIDs'][lowerbound:upperbound]), 
@@ -175,7 +176,7 @@ while x <= (len(num_halo)):
         miniderek['vy']=dmparts['Velocities'][:, 1][lowerbound:upperbound]
         miniderek['vz']=dmparts['Velocities'][:, 2][lowerbound:upperbound]
         derek = pd.concat([derek,miniderek])
-        miniderek = pd.DataFrame(columns=pdheader)
+        miniderek = miniderek[0:0]
         """
         dmdata = np.vstack([dmparts['ParticleIDs'][lowerbound:upperbound],
                             ['dm']*len(dmparts['ParticleIDs'][lowerbound:upperbound]), 
@@ -190,7 +191,7 @@ while x <= (len(num_halo)):
         """
         lowerbound = upperbound
         derek.to_csv(filename+'.csv', mode='a')
-        derek.to_hdf(filename+'.hdf', mode='a')
-        derek = pd.DataFrame(columns=pdheader)
+        #derek.to_hdf(filename+'.hdf', mode='a')
+        derek = derek[0:0]
     print(x)
     x +=1
