@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import math
 import csv
 from pathlib import Path
+import pandas as pd
 import sys
 sys.path.insert(1, '/home/clilje/summer_project')
 from illustris_python import groupcat,lhalotree,snapshot,sublink,util
@@ -55,6 +56,8 @@ while x <= (len(num_halo)):
         fwriter.writerow(header)
         if dark == False:
             gasparts = snapshot.loadHalo(basePath, snapnum, x, 'gas', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
+            gasparts = pd.DataFrame.from_dict(gasparts)
+            print(gasparts.head())
         print(type(gasparts))
         exit()
             
