@@ -109,7 +109,9 @@ while x <= (len(num_halo)):
                 
                 derek = pd.concat([derek,miniderek])
                 miniderek = miniderek[0:0]
-
+            
+            print(bhparts)
+            print(bhparts.keys())
             if any(bhparts):
                 #Black Holes
                 miniderek['ID']=bhparts['ParticleIDs'][lowerbound:upperbound]
