@@ -36,21 +36,19 @@ print(round(time.time()-tt,2))
 tt = time.time()
 #print(groupcat.loadHeader(basePath, snapnum))
 
-x = 0
+x = 1838
 pdheader = ['ID','Type','x','y','z','mass','vx','vy','vz']
 while x <= (len(num_halo)):
     if dark == False: 
         filename = 'HaloParticles50-1-pd/snap_99_halo_'+str(x)
     else: 
         filename = 'HaloParticles50-1-pd/snap_99_halo_'+str(x)+'-dark'
-    #with open(filename, 'w', encoding='UTF8', newline='') as f:
     
     print(round(time.time()-tt,2))
     tt = time.time()
     
     if dark == False:
         gasparts = snapshot.loadHalo(basePath, snapnum, x, 'gas', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
-        #gasparts = pd.DataFrame.from_dict(gasparts)
         starparts = snapshot.loadHalo(basePath, snapnum, x, 'stars', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
         bhparts = snapshot.loadHalo(basePath, snapnum, x, 'bh', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
     dmparts = snapshot.loadHalo(basePath, snapnum, x, 'dm', fields=['Coordinates','ParticleIDs','Velocities'])
@@ -79,62 +77,66 @@ while x <= (len(num_halo)):
             upperbound = lowerbound+indexjump
         
         if dark == False:
-            #Gas Particles
-            miniderek['ID']=gasparts['ParticleIDs'][lowerbound:upperbound]
-            miniderek['Type']=['gas']*len(gasparts['ParticleIDs'][lowerbound:upperbound])
-            miniderek['x']=gasparts['Coordinates'][:, 0][lowerbound:upperbound]
-            miniderek['y']=gasparts['Coordinates'][:, 1][lowerbound:upperbound]
-            miniderek['z']=gasparts['Coordinates'][:, 2][lowerbound:upperbound]
-            miniderek['mass']=gasparts['Masses'][lowerbound:upperbound]
-            miniderek['vx']=gasparts['Velocities'][:, 0][lowerbound:upperbound]
-            miniderek['vy']=gasparts['Velocities'][:, 1][lowerbound:upperbound]
-            miniderek['vz']=gasparts['Velocities'][:, 2][lowerbound:upperbound]
+            if any(gasparts['ParticleIDs']):
+                #Gas Particles
+                miniderek['ID']=gasparts['ParticleIDs'][lowerbound:upperbound]
+                miniderek['Type']=['gas']*len(gasparts['ParticleIDs'][lowerbound:upperbound])
+                miniderek['x']=gasparts['Coordinates'][:, 0][lowerbound:upperbound]
+                miniderek['y']=gasparts['Coordinates'][:, 1][lowerbound:upperbound]
+                miniderek['z']=gasparts['Coordinates'][:, 2][lowerbound:upperbound]
+                miniderek['mass']=gasparts['Masses'][lowerbound:upperbound]
+                miniderek['vx']=gasparts['Velocities'][:, 0][lowerbound:upperbound]
+                miniderek['vy']=gasparts['Velocities'][:, 1][lowerbound:upperbound]
+                miniderek['vz']=gasparts['Velocities'][:, 2][lowerbound:upperbound]
+                
+                
+                #print(miniderek)
+                
+                derek = pd.concat([derek,miniderek])
+                miniderek = miniderek[0:0]
             
-            
-            #print(miniderek)
-            
-            derek = pd.concat([derek,miniderek])
-            miniderek = miniderek[0:0]
-            
-            #Star Particles
-            miniderek['ID']=starparts['ParticleIDs'][lowerbound:upperbound]
-            miniderek['Type']=['star']*len(starparts['ParticleIDs'][lowerbound:upperbound])
-            miniderek['x']=starparts['Coordinates'][:, 0][lowerbound:upperbound]
-            miniderek['y']=starparts['Coordinates'][:, 1][lowerbound:upperbound]
-            miniderek['z']=starparts['Coordinates'][:, 2][lowerbound:upperbound]
-            miniderek['mass']=starparts['Masses'][lowerbound:upperbound]
-            miniderek['vx']=starparts['Velocities'][:, 0][lowerbound:upperbound]
-            miniderek['vy']=starparts['Velocities'][:, 1][lowerbound:upperbound]
-            miniderek['vz']=starparts['Velocities'][:, 2][lowerbound:upperbound]#
-            
-            derek = pd.concat([derek,miniderek])
-            miniderek = miniderek[0:0]
+            if any(starparts['ParticleIDs']):
+                #Star Particles
+                miniderek['ID']=starparts['ParticleIDs'][lowerbound:upperbound]
+                miniderek['Type']=['star']*len(starparts['ParticleIDs'][lowerbound:upperbound])
+                miniderek['x']=starparts['Coordinates'][:, 0][lowerbound:upperbound]
+                miniderek['y']=starparts['Coordinates'][:, 1][lowerbound:upperbound]
+                miniderek['z']=starparts['Coordinates'][:, 2][lowerbound:upperbound]
+                miniderek['mass']=starparts['Masses'][lowerbound:upperbound]
+                miniderek['vx']=starparts['Velocities'][:, 0][lowerbound:upperbound]
+                miniderek['vy']=starparts['Velocities'][:, 1][lowerbound:upperbound]
+                miniderek['vz']=starparts['Velocities'][:, 2][lowerbound:upperbound]
+                
+                derek = pd.concat([derek,miniderek])
+                miniderek = miniderek[0:0]
 
-            #Black Holes
-            miniderek['ID']=bhparts['ParticleIDs'][lowerbound:upperbound]
-            miniderek['Type']=['bh']*len(bhparts['ParticleIDs'][lowerbound:upperbound])
-            miniderek['x']=bhparts['Coordinates'][:, 0][lowerbound:upperbound]
-            miniderek['y']=bhparts['Coordinates'][:, 1][lowerbound:upperbound]
-            miniderek['z']=bhparts['Coordinates'][:, 2][lowerbound:upperbound]
-            miniderek['mass']=bhparts['Masses'][lowerbound:upperbound]
-            miniderek['vx']=bhparts['Velocities'][:, 0][lowerbound:upperbound]
-            miniderek['vy']=bhparts['Velocities'][:, 1][lowerbound:upperbound]
-            miniderek['vz']=bhparts['Velocities'][:, 2][lowerbound:upperbound]
-            derek = pd.concat([derek,miniderek])
-            miniderek =miniderek[0:0]
+            if any(bhparts['ParticleIDs']):
+                #Black Holes
+                miniderek['ID']=bhparts['ParticleIDs'][lowerbound:upperbound]
+                miniderek['Type']=['bh']*len(bhparts['ParticleIDs'][lowerbound:upperbound])
+                miniderek['x']=bhparts['Coordinates'][:, 0][lowerbound:upperbound]
+                miniderek['y']=bhparts['Coordinates'][:, 1][lowerbound:upperbound]
+                miniderek['z']=bhparts['Coordinates'][:, 2][lowerbound:upperbound]
+                miniderek['mass']=bhparts['Masses'][lowerbound:upperbound]
+                miniderek['vx']=bhparts['Velocities'][:, 0][lowerbound:upperbound]
+                miniderek['vy']=bhparts['Velocities'][:, 1][lowerbound:upperbound]
+                miniderek['vz']=bhparts['Velocities'][:, 2][lowerbound:upperbound]
+                derek = pd.concat([derek,miniderek])
+                miniderek =miniderek[0:0]
 
         #DM Particles
-        miniderek['ID']=dmparts['ParticleIDs'][lowerbound:upperbound]
-        miniderek['Type']=['dm']*len(dmparts['ParticleIDs'][lowerbound:upperbound])
-        miniderek['x']=dmparts['Coordinates'][:, 0][lowerbound:upperbound]
-        miniderek['y']=dmparts['Coordinates'][:, 1][lowerbound:upperbound]
-        miniderek['z']=dmparts['Coordinates'][:, 2][lowerbound:upperbound]
-        miniderek['mass']=dmmass[lowerbound:upperbound]
-        miniderek['vx']=dmparts['Velocities'][:, 0][lowerbound:upperbound]
-        miniderek['vy']=dmparts['Velocities'][:, 1][lowerbound:upperbound]
-        miniderek['vz']=dmparts['Velocities'][:, 2][lowerbound:upperbound]
-        derek = pd.concat([derek,miniderek])
-        miniderek = miniderek[0:0]
+        if any(dmparts['ParticleIDs']):
+            miniderek['ID']=dmparts['ParticleIDs'][lowerbound:upperbound]
+            miniderek['Type']=['dm']*len(dmparts['ParticleIDs'][lowerbound:upperbound])
+            miniderek['x']=dmparts['Coordinates'][:, 0][lowerbound:upperbound]
+            miniderek['y']=dmparts['Coordinates'][:, 1][lowerbound:upperbound]
+            miniderek['z']=dmparts['Coordinates'][:, 2][lowerbound:upperbound]
+            miniderek['mass']=dmmass[lowerbound:upperbound]
+            miniderek['vx']=dmparts['Velocities'][:, 0][lowerbound:upperbound]
+            miniderek['vy']=dmparts['Velocities'][:, 1][lowerbound:upperbound]
+            miniderek['vz']=dmparts['Velocities'][:, 2][lowerbound:upperbound]
+            derek = pd.concat([derek,miniderek])
+            miniderek = miniderek[0:0]
 
         lowerbound = upperbound
         #derek = derek.reset_index(drop=True)
