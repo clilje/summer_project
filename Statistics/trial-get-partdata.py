@@ -77,7 +77,7 @@ while x <= (len(num_halo)):
             upperbound = lowerbound+indexjump
         
         if dark == False:
-            if any(gasparts['ParticleIDs']):
+            if any(gasparts):
                 #Gas Particles
                 miniderek['ID']=gasparts['ParticleIDs'][lowerbound:upperbound]
                 miniderek['Type']=['gas']*len(gasparts['ParticleIDs'][lowerbound:upperbound])
@@ -95,7 +95,7 @@ while x <= (len(num_halo)):
                 derek = pd.concat([derek,miniderek])
                 miniderek = miniderek[0:0]
             
-            if any(starparts['ParticleIDs']):
+            if any(starparts):
                 #Star Particles
                 miniderek['ID']=starparts['ParticleIDs'][lowerbound:upperbound]
                 miniderek['Type']=['star']*len(starparts['ParticleIDs'][lowerbound:upperbound])
@@ -110,7 +110,7 @@ while x <= (len(num_halo)):
                 derek = pd.concat([derek,miniderek])
                 miniderek = miniderek[0:0]
 
-            if any(bhparts['ParticleIDs']):
+            if any(bhparts):
                 #Black Holes
                 miniderek['ID']=bhparts['ParticleIDs'][lowerbound:upperbound]
                 miniderek['Type']=['bh']*len(bhparts['ParticleIDs'][lowerbound:upperbound])
@@ -125,7 +125,7 @@ while x <= (len(num_halo)):
                 miniderek =miniderek[0:0]
 
         #DM Particles
-        if any(dmparts['ParticleIDs']):
+        if any(dmparts):
             miniderek['ID']=dmparts['ParticleIDs'][lowerbound:upperbound]
             miniderek['Type']=['dm']*len(dmparts['ParticleIDs'][lowerbound:upperbound])
             miniderek['x']=dmparts['Coordinates'][:, 0][lowerbound:upperbound]
