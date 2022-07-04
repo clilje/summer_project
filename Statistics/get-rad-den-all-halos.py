@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+-*- coding: utf-8 -*-
 """
 Created on Thu Jun 16 14:38:14 2022
 
@@ -62,7 +62,7 @@ def radial_density(partx, party, partz, mass, binsize, halox, haloy, haloz):
     rad_lowerbound = []
     uncertainties = []
     dis = distancefromcentre(halox, haloy, haloz, partx, party, partz)
-    print(dis)
+    print(np.min(dis))
     #virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
     #virindex = np.where(np.logical_and(dis.astype(float)>float(virrad-10), dis.astype(float)<float(virrad+10)))[0]
     mass = np.array(mass)
@@ -107,7 +107,7 @@ radius = subhalo_info['SubhaloHalfmassRad'].to_numpy()
 #print(positions[2])
 #print(radius[2])
 #halonumber = []
-g = 4000
+g = 40000
 numhalos = len(subhalo_index)
 #densities = []
 #uncertainties = []
@@ -116,17 +116,17 @@ numhalos = len(subhalo_index)
 pdheader = ['Radius','Density','Uncertainty','Virial Radius']
 #derek = pd.DataFrame(columns=pdheader)
 
-while g < 4003:
+while g < 40003:
     data_csv = pd.read_csv('HaloParticles50-1-pd/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':int,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float})
-    print(g)
+    print(positionsX[g],positionsY[g],positionsZ[g])
     print(subhalo_index[g])
-    print(data_csv['mass'])
-    print(h*(10**10)*data_csv['mass'].to_numpy())
+    print(data_csv['x'].to_numpy()/h)
+    #print(h*(10**10)*data_csv['mass'].to_numpy())
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
-    rad_den = radial_density((data_csv['x'].to_numpy()*h), (data_csv['y'].to_numpy()*h), (data_csv['z'].to_numpy()*h),(data_csv['mass'].to_numpy()*h*(10**10)), 10, (positionsX[g-1]*h), (h*positionsY[g-1]), (h*positionsZ[g-1]))
+    rad_den = radial_density((data_csv['x'].to_numpy()*h), (data_csv['y'].to_numpy()*h), (data_csv['z'].to_numpy()*h),(data_csv['mass'].to_numpy()*h*(10**10)), 10, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
     #mass in solar masses
     #distances in kpc
-    print(rad_den)
+    #print(rad_den)
     #hmrad = radius[g]
     virrad = rad_den[3]
     virden = 200*p_crit
