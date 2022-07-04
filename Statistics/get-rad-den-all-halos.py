@@ -123,7 +123,7 @@ while g < 4003:
     print(data_csv['mass'])
     print(h*(10**10)*data_csv['mass'].to_numpy())
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
-    rad_den = radial_density((data_csv['x'].to_numpy()*h), (data_csv['y'].to_numpy()*h), (data_csv['z'].to_numpy()*h),(data_csv['mass'].to_numpy()*h*(10**10)), 10, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
+    rad_den = radial_density((data_csv['x'].to_numpy()*h), (data_csv['y'].to_numpy()*h), (data_csv['z'].to_numpy()*h),(data_csv['mass'].to_numpy()*h*(10**10)), 10, (positionsX[g-1]*h), (h*positionsY[g-1]), (h*positionsZ[g-1]))
     #mass in solar masses
     #distances in kpc
     print(rad_den)
