@@ -62,7 +62,7 @@ def radial_density(partx, party, partz, mass, binsize, halox, haloy, haloz):
     rad_lowerbound = []
     uncertainties = []
     dis = distancefromcentre(halox, haloy, haloz, partx, party, partz)
-    
+    print(dis)
     #virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
     #virindex = np.where(np.logical_and(dis.astype(float)>float(virrad-10), dis.astype(float)<float(virrad+10)))[0]
     mass = np.array(mass)
@@ -140,7 +140,7 @@ while g < 4003:
     #halonumber.append(g)
     #print(hmrad,hmden)
     #derek = pd.concat([derek,miniderek])
-    miniderek.to_csv(filename+'.csv', mode='a')
+    miniderek.to_csv(filename+'.csv', mode='w')
     miniderek = miniderek[0:0]
     g += 1 
     plt.errorbar(rad_den[1]/(virrad), rad_den[0]/(virden), yerr=rad_den[2], fmt='.', label="Halo_"+str(g)+"_099", color='green')
