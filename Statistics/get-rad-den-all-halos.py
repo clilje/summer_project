@@ -100,7 +100,7 @@ subhalo_info = pd.read_csv('50-1-subhalo-info.csv')
 subhalo_index = subhalo_info['SubhaloIndex']
 positionsX = subhalo_info['SubhaloPosX'].to_numpy()
 positionsY = subhalo_info['SubhaloPosY'].to_numpy()
-positionsZ = subhalo_info['SubaloPosZ'].to_numpy()
+positionsZ = subhalo_info['SubhaloPosZ'].to_numpy()
 radius = subhalo_info['SubhaloHalfmassRad'].to_numpy()
 #full_mass = subhalo_info['SubhaloMass'].to_numpy()
 #print(pd.read_csv('HaloFits/50-4_halodata.csv'))
@@ -117,7 +117,7 @@ pdheader = ['Radius','Density','Uncertainty','Virial Radius']
 #derek = pd.DataFrame(columns=pdheader)
 
 while g < 33893:
-    data_csv = pd.read_csv('HaloParicles50-1-pd/snap_99_halo_'+str(g)+'.csv')
+    data_csv = pd.read_csv('HaloParticles50-1-pd/snap_99_halo_'+str(g)+'.csv')
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
     rad_den = radial_density((data_csv['x'].to_numpy()*h), (data_csv['y'].to_numpy()*h), (data_csv['z'].to_numpy()*h),(data_csv['mass'].to_numpy()*h/(10**10)), 10, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
     #print(rad_den)
