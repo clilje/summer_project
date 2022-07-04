@@ -107,7 +107,7 @@ radius = subhalo_info['SubhaloHalfmassRad'].to_numpy()
 #print(positions[2])
 #print(radius[2])
 #halonumber = []
-g = 33890
+g = 4000
 numhalos = len(subhalo_index)
 #densities = []
 #uncertainties = []
@@ -116,8 +116,9 @@ numhalos = len(subhalo_index)
 pdheader = ['Radius','Density','Uncertainty','Virial Radius']
 #derek = pd.DataFrame(columns=pdheader)
 
-while g < 33893:
+while g < 4003:
     data_csv = pd.read_csv('HaloParticles50-1-pd/snap_99_halo_'+str(g)+'.csv')
+    print(data_csv)
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
     rad_den = radial_density((data_csv['x'].to_numpy()*h), (data_csv['y'].to_numpy()*h), (data_csv['z'].to_numpy()*h),(data_csv['mass'].to_numpy()*h*(10**10)), 10, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
     #mass in solar masses
