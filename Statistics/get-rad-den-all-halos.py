@@ -122,6 +122,10 @@ while g < 40003:
     print(data_csv['x'].to_numpy())
     print(data_csv['y'].to_numpy())
     print(data_csv['z'].to_numpy())
+    print(np.where(np.logical_and(data_csv['x'].to_numpy()<float(positionsX+10),data_csv['x'].to_numpy()>float(positionsX-10),
+                                  data_csv['y'].to_numpy()<float(positionsY+10),data_csv['y'].to_numpy()>float(positionsY-10),
+                                  data_csv['z'].to_numpy()<float(positionsZ+10),data_csv['z'].to_numpy()>float(positionsZ-10),
+                                  ))[0])
     #print(h*(10**10)*data_csv['mass'].to_numpy())
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
     rad_den = radial_density((data_csv['x'].to_numpy()*h), (data_csv['y'].to_numpy()*h), (data_csv['z'].to_numpy()*h),(data_csv['mass'].to_numpy()*h*(10**10)), 10, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
