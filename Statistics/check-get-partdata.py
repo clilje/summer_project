@@ -45,10 +45,10 @@ while x <= 33890:
         filename = 'HaloParticles50-1-pd/snap_99_halo_'+str(x)
     else: 
         filename = 'HaloParticles50-1-pd/snap_99_halo_'+str(x)+'-dark'
-    if(os.path.isfile(filename)):
+    if(os.path.isfile(filename+'.csv')):
     
         #os.remove() function to remove the file
-        os.remove("test.txt")
+        os.remove(filename+'.csv')
     
         #Printing the confirmation message of deletion
         print("File Deleted successfully")
