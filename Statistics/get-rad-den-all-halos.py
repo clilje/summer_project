@@ -89,7 +89,7 @@ def radial_density(partx, party, partz, mass, binsize, halox, haloy, haloz):
         radius_lowerbound = radius_upperbound
         bin_lowerbound = bin_lowerbound+binsize
     
-    below_virR = np.where((dis[bin_index]).astype(float)<float(p_crit*200))[0]
+    below_virR = np.where((density[bin_index]).astype(float)<float(p_crit*200))[0]
     virR = dis[bin_index][below_virR][-1]
     return(density, rad_lowerbound, uncertainties, virR)
 
