@@ -86,7 +86,7 @@ while x <= (len(num_halo)):
         #print(lowerbound)
         
         miniderek = pd.DataFrame(columns=pdheader)
-        if (lowerbound+indexjump)>len(gasparts['ParticleIDs']):
+        if (lowerbound+indexjump)>max_num_part:
             upperbound = max_num_part
         else:
             upperbound = lowerbound+indexjump
