@@ -120,7 +120,7 @@ while g < 33893:
     data_csv = pd.read_csv('HaloParticles50-1-pd/snap_99_halo_'+str(g)+'.csv')
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
     rad_den = radial_density((data_csv['x'].to_numpy()*h), (data_csv['y'].to_numpy()*h), (data_csv['z'].to_numpy()*h),(data_csv['mass'].to_numpy()*h/(10**10)), 10, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
-    #print(rad_den)
+    print(rad_den)
     #hmrad = radius[g]
     virrad = rad_den[3]
     virden = 200*p_crit
@@ -139,7 +139,7 @@ while g < 33893:
     miniderek.to_csv(filename+'.csv', mode='a')
     miniderek = miniderek[0:0]
     g += 1 
-    plt.errorbar(rad_den[1]/(virrad), rad_den[0]/(virden), yerr=rad_den[2], fmt='.', label="Halo_"+str(g)+"_099", color='green')
+    plt.loglog(rad_den[1]/(virrad), rad_den[0]/(virden), yerr=rad_den[2], fmt='.', label="Halo_"+str(g)+"_099", color='green')
     plt.savefig('fit-profiles-halo-'+str(g)+'.jpg')
 
 #densities = np.array(densities)
