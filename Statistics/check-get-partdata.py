@@ -5,6 +5,7 @@ import math
 import csv
 from pathlib import Path
 import pandas as pd
+import os
 import sys
 sys.path.insert(1, '/home/clilje/summer_project')
 from illustris_python import groupcat,lhalotree,snapshot,sublink,util
@@ -39,12 +40,20 @@ tt = time.time()
 x = 0
 c = []
 pdheader = ['ID','Type','x','y','z','mass','vx','vy','vz']
-while x <= 33891:
+while x <= 33890:
     if dark == False: 
         filename = 'HaloParticles50-1-pd/snap_99_halo_'+str(x)
     else: 
         filename = 'HaloParticles50-1-pd/snap_99_halo_'+str(x)+'-dark'
+    if(os.path.isfile(filename)):
     
+        #os.remove() function to remove the file
+        os.remove("test.txt")
+    
+        #Printing the confirmation message of deletion
+        print("File Deleted successfully")
+    else:
+        print("File does not exist")
     print(round(time.time()-tt,2))
     tt = time.time()
     
@@ -84,7 +93,7 @@ while x <= 33891:
         
         
         
-    """
+    
     derek = pd.DataFrame(columns=pdheader)
     
     while lowerbound < max_num_part:
@@ -92,7 +101,7 @@ while x <= 33891:
         #print(lowerbound)
         
         miniderek = pd.DataFrame(columns=pdheader)
-        if (lowerbound+indexjump)>len(gasparts['ParticleIDs']):
+        if (lowerbound+indexjump)>max_num_part:
             upperbound = max_num_part
         else:
             upperbound = lowerbound+indexjump
@@ -166,7 +175,7 @@ while x <= 33891:
         derek.to_csv(filename+'.csv', mode='a')
         #derek.to_hdf(filename+'.hdf', mode='a')
         derek = derek[0:0]
-        """
+        
     print(x)
     x +=1
 print(c)
