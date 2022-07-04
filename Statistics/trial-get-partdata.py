@@ -36,7 +36,7 @@ print(round(time.time()-tt,2))
 tt = time.time()
 #print(groupcat.loadHeader(basePath, snapnum))
 
-x = 1838
+x = 33981
 pdheader = ['ID','Type','x','y','z','mass','vx','vy','vz']
 while x <= (len(num_halo)):
     if dark == False: 
@@ -63,16 +63,31 @@ while x <= (len(num_halo)):
     
     lowerbound = 0
     indexjump = 900000
-    
+    if gasparts['count'] >= starparts['count'] and gasparts['count'] >= bhparts['count'] and gasparts['count'] >= dmparts['count']:
+        max_num_part = gasparts['count']
+        print("gas dominates")
+    if dmparts['count'] >= gasparts['count'] and dmparts['count'] >= bhparts['count'] and dmparts['count'] >= starparts['count']:
+        max_num_part = dmparts['count']
+        print("dm dominates")
+    if starparts['count'] >= gasparts['count'] and starparts['count'] >= bhparts['count'] and starparts['count'] >= dmparts['count']:
+        max_num_part = starparts['count']
+        print("star dominates")
+    else: 
+        max_num_part = bhparts['count']
+        print("bh dominates")
+        
+        
+        
+        
     derek = pd.DataFrame(columns=pdheader)
     
-    while lowerbound < len(gasparts['ParticleIDs']):
+    while lowerbound < max_num_part:
         
         #print(lowerbound)
         
         miniderek = pd.DataFrame(columns=pdheader)
         if (lowerbound+indexjump)>len(gasparts['ParticleIDs']):
-            upperbound = len(gasparts['ParticleIDs'])
+            upperbound = max_num_part
         else:
             upperbound = lowerbound+indexjump
         
