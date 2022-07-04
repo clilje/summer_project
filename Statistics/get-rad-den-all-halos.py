@@ -129,7 +129,8 @@ while g < 40003:
     #print(np.where(np.logical_and((data_csv['y'].to_numpy()[0]-1)<(positionsY),(data_csv['y'].to_numpy()[0]+1)>(positionsY)))[0])
     #print(np.where(np.logical_and((data_csv['z'].to_numpy()[0]-1)<(positionsZ),(data_csv['z'].to_numpy()[0]+1)>(positionsZ)))[0])
     
-    print(np.where(np.logical_and(zrange == yrange, yrange == xrange))[0])
+    print(np.where(zrange==yrange)[0])
+    print(np.where(xrange==yrange)[0])
     #print(h*(10**10)*data_csv['mass'].to_numpy())
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
     rad_den = radial_density((data_csv['x'].to_numpy()*h), (data_csv['y'].to_numpy()*h), (data_csv['z'].to_numpy()*h),(data_csv['mass'].to_numpy()*h*(10**10)), 10, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
