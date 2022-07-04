@@ -120,7 +120,9 @@ while g < 40003:
     data_csv = pd.read_csv('HaloParticles50-1-pd/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':int,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float})
     print(positionsX[g],positionsY[g],positionsZ[g])
     print(subhalo_index[g])
-    print(data_csv['x'].to_numpy()/h)
+    print(data_csv['x'].to_numpy())
+    print(data_csv['y'].to_numpy())
+    print(data_csv['z'].to_numpy())
     #print(h*(10**10)*data_csv['mass'].to_numpy())
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
     rad_den = radial_density((data_csv['x'].to_numpy()*h), (data_csv['y'].to_numpy()*h), (data_csv['z'].to_numpy()*h),(data_csv['mass'].to_numpy()*h*(10**10)), 10, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
