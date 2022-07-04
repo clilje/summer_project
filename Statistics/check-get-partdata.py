@@ -36,9 +36,10 @@ print(round(time.time()-tt,2))
 tt = time.time()
 #print(groupcat.loadHeader(basePath, snapnum))
 
-x = 33981
+x = 0
+c = []
 pdheader = ['ID','Type','x','y','z','mass','vx','vy','vz']
-while x <= (len(num_halo)):
+while x <= 33891:
     if dark == False: 
         filename = 'HaloParticles50-1-pd/snap_99_halo_'+str(x)
     else: 
@@ -69,16 +70,21 @@ while x <= (len(num_halo)):
     if dmparts['count'] >= gasparts['count'] and dmparts['count'] >= bhparts['count'] and dmparts['count'] >= starparts['count']:
         max_num_part = dmparts['count']
         print("dm dominates")
+        c.append(x)
     if starparts['count'] >= gasparts['count'] and starparts['count'] >= bhparts['count'] and starparts['count'] >= dmparts['count']:
         max_num_part = starparts['count']
         print("star dominates")
+        c.append(x)
     if bhparts['count'] >= gasparts['count'] and bhparts['count'] >= starparts['count'] and bhparts['count'] >= dmparts['count']:
         max_num_part = bhparts['count']
         print("bh dominates")
+        c.append(x)
+
+ 
         
         
         
-        
+    """
     derek = pd.DataFrame(columns=pdheader)
     
     while lowerbound < max_num_part:
@@ -160,5 +166,7 @@ while x <= (len(num_halo)):
         derek.to_csv(filename+'.csv', mode='a')
         #derek.to_hdf(filename+'.hdf', mode='a')
         derek = derek[0:0]
+        """
     print(x)
     x +=1
+print(c)
