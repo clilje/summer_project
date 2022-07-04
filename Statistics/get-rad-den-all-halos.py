@@ -97,6 +97,7 @@ def radial_density(partx, party, partz, mass, binsize, halox, haloy, haloz):
 interval = np.logspace(0.1, 2.5, 100)
 #files = get_filenames(50, 4, 11)
 subhalo_info = pd.read_csv('50-1-subhalo-info.csv')
+print(subhalo_info)
 subhalo_index = subhalo_info['SubhaloIndex']
 positionsX = subhalo_info['SubhaloPosX'].to_numpy()
 positionsY = subhalo_info['SubhaloPosY'].to_numpy()
@@ -119,16 +120,7 @@ pdheader = ['Radius','Density','Uncertainty','Virial Radius']
 while g < 4003:
     data_csv = pd.read_csv('HaloParticles50-1-pd/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':int,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float})
     print(data_csv['mass'])
-    print(h*(10**10)*data_csv['mass'].to_numpy())
-    filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
-    rad_den = radial_density((data_csv['x'].to_numpy()*h), (data_csv['y'].to_numpy()*h), (data_csv['z'].to_numpy()*h),(data_csv['mass'].to_numpy()*h*(10**10)), 10, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
-    #mass in solar masses
-    #distances in kpc
-    print(rad_den)
-    #hmrad = radius[g]
-    virrad = rad_den[3]
-    virden = 200*p_crit
-    miniderek = pd.DataFrame(columns=pdheader)
+    print(h*(10**10)*data_csv['mapdheader)
     miniderek['Radius']=rad_den[1]/(virrad)
     miniderek['Virial Radius']=[virrad]*len(rad_den[0])
     miniderek['Density']=rad_den[0]/(virden)
@@ -140,7 +132,16 @@ while g < 4003:
     #halonumber.append(g)
     #print(hmrad,hmden)
     #derek = pd.concat([derek,miniderek])
-    miniderek.to_csv(filename+'.csv', mode='w')
+    miniderek.to_csv(filename+'.csv', mode='wss'].to_numpy())
+    filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
+    rad_den = radial_density((data_csv['x'].to_numpy()*h), (data_csv['y'].to_numpy()*h), (data_csv['z'].to_numpy()*h),(data_csv['mass'].to_numpy()*h*(10**10)), 10, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
+    #mass in solar masses
+    #distances in kpc
+    print(rad_den)
+    #hmrad = radius[g]
+    virrad = rad_den[3]
+    virden = 200*p_crit
+    miniderek = pd.DataFrame(columns=')
     miniderek = miniderek[0:0]
     g += 1 
     plt.errorbar(rad_den[1]/(virrad), rad_den[0]/(virden), yerr=rad_den[2], fmt='.', label="Halo_"+str(g)+"_099", color='green')
