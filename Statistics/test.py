@@ -123,7 +123,7 @@ print(CM)
 distance = distancefromcentre(CM[0], CM[1], CM[2], subhalos['SubhaloCM'][:, 0], subhalos['SubhaloCM'][:, 1], subhalos['SubhaloCM'][:, 2])
 print(distance)
 print(np.min(distance))
-index_sub = np.where(np.min(distance)==distance)[0]
+index_sub = np.argmin(distance)
 print(index_sub)
 
 print(subhalos['SubhaloCM'][index_sub])
