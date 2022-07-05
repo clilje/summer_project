@@ -127,14 +127,16 @@ pdheader = ['Radius','Density','Uncertainty','Virial Radius']
 
 while g < 40003:
     data_csv = pd.read_csv('HaloParticles50-1-pd/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':int,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float})
-    halo_mass = (np.sum((data_csv['mass'].to_numpy()*h*(10**10))))
+    halo_mass = (np.sum((data_csv['mass'].to_numpy())))
     print(halo_mass)
-    match = np.where((full_mass*h*(10**10))==halo_mass)[0]
+    match = np.where((full_mass)==halo_mass)[0]
     print(match)
+    print(full_mass[g])
     print(positionsX[match],positionsY[match],positionsZ[match])
     print(data_csv['x'].to_numpy())
     print(data_csv['y'].to_numpy())
     print(data_csv['z'].to_numpy())
+    print(data_csv['ID'].to_numpy())
     """
     print(positionsX[g],positionsY[g],positionsZ[g])
     print(subhalo_index[g])
