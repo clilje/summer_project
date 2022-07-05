@@ -35,7 +35,8 @@ def distancefromcentre(cx, cy, cz, x, y, z, ):
     Distance between particle and halo centre
 
     """
-    return (np.sqrt((np.power(np.subtract(x,cx), 2)+ np.power(np.subtract(y,cy), 2) + np.power(np.subtract(z,cz), 2)))) # distance between the centre and given point
+    return np.sqrt((x-cx)**2 + (y-cy)**2 + (z-cz)**2)
+    #return (np.sqrt((np.power(np.subtract(x,cx), 2)+ np.power(np.subtract(y,cy), 2) + np.power(np.subtract(z,cz), 2)))) # distance between the centre and given point
 
 
 
@@ -53,6 +54,11 @@ num_halo = np.arange(len(np.array(subhalos['SubhaloMass'])))
 #data = np.vstack([num_halo, subhalos['SubhaloPos'][:, 0],subhalos['SubhaloPos'][:, 1],subhalos['SubhaloPos'][:, 2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass']]).transpose()
 halo_50 = [subhalos['SubhaloPos'][x, 0],subhalos['SubhaloPos'][x, 1],subhalos['SubhaloPos'][x, 2], subhalos['SubhaloHalfmassRad'][x], subhalos['SubhaloMass'][x], subhalos['SubhaloLen'][x]]
 print(halo_50)
+dis = distancefromcentre(halo_50[0], halo_50[1], halo_50[2], partx, party, partz)
+print(dis)
+print(np.min(dis))
+
+
 
 gasparts = snapshot.loadHalo(basePath, snapnum, x, 'gas', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
 starparts = snapshot.loadHalo(basePath, snapnum, x, 'stars', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
@@ -92,9 +98,9 @@ party = np.append(gasparts['Coordinates'][:,1],[starparts['Coordinates'][:,1],bh
 partz = np.append(gasparts['Coordinates'][:,2],[starparts['Coordinates'][:,2],bhparts['Coordinates'][:,2],dmparts['Coordinates'][:,2]])
 
 print(len(partx))
-#dis = distancefromcentre(halo_50[0], halo_50[1], halo_50[2], partx, party, partz)
-#print(dis)
-#print(np.min(dis))
+dis = distancefromcentre(halo_50[0], halo_50[1], halo_50[2], partx, party, partz)
+print(dis)
+print(np.min(dis))
 
 
 
@@ -122,6 +128,6 @@ party = np.append(gasparts['Coordinates'][:,1],[starparts['Coordinates'][:,1],bh
 partz = np.append(gasparts['Coordinates'][:,2],[starparts['Coordinates'][:,2],bhparts['Coordinates'][:,2],dmparts['Coordinates'][:,2]])
 
 print(len(partx))
-#dis = distancefromcentre(halo_50[0], halo_50[1], halo_50[2], partx, party, partz)
-#print(dis)
-#print(np.min(dis))
+dis = distancefromcentre(halo_50[0], halo_50[1], halo_50[2], partx, party, partz)
+print(dis)
+print(np.min(dis))
