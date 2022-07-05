@@ -116,7 +116,7 @@ full_mass = subhalo_info['SubhaloMass'].to_numpy()
 #print(positions[2])
 #print(radius[2])
 #halonumber = []
-g = 0
+g = 1
 numhalos = len(subhalo_index)
 #densities = []
 #uncertainties = []
@@ -125,18 +125,20 @@ numhalos = len(subhalo_index)
 pdheader = ['Radius','Density','Uncertainty','Virial Radius']
 #derek = pd.DataFrame(columns=pdheader)
 
-while g < 3:
-    data_csv = pd.read_csv('HaloParticles50-1-pd/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':'string','y':'string','z':'sting','mass':'string','vx':'string','vy':'string','vz':'string'})
-    halo_mass = (np.sum((data_csv['mass'].to_numpy())))
-    print(halo_mass)
-    match = np.where((full_mass)==halo_mass)[0]
-    print(match)
-    print(full_mass[g])
-    print(positionsX[match],positionsY[match],positionsZ[match])
+while g < 2:
+    data_csv = pd.read_csv('HaloParticles50-1-pd/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':'string','y':'string','z':'string','mass':'string','vx':'string','vy':'string','vz':'string'})
+    data_csv = data_csv.convert_dtypes()
+    
+    #halo_mass = (np.sum((data_csv['mass'].to_numpy())))
+    #print(halo_mass)
+    #match = np.where((full_mass)==halo_mass)[0]
+    #print(match)
+    #print(full_mass[g])
+    print(positionsX[g],positionsY[g],positionsZ[g])
     print(data_csv['x'].to_numpy())
     print(data_csv['y'].to_numpy())
     print(data_csv['z'].to_numpy())
-    print(data_csv['ID'].to_numpy())
+    #print(data_csv['ID'].to_numpy())
     """
     print(positionsX[g],positionsY[g],positionsZ[g])
     print(subhalo_index[g])
