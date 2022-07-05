@@ -116,7 +116,7 @@ full_mass = subhalo_info['SubhaloMass'].to_numpy()
 #print(positions[2])
 #print(radius[2])
 #halonumber = []
-g = 40000
+g = 0
 numhalos = len(subhalo_index)
 #densities = []
 #uncertainties = []
@@ -125,7 +125,7 @@ numhalos = len(subhalo_index)
 pdheader = ['Radius','Density','Uncertainty','Virial Radius']
 #derek = pd.DataFrame(columns=pdheader)
 
-while g < 40003:
+while g < 3:
     data_csv = pd.read_csv('HaloParticles50-1-pd/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':int,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float})
     halo_mass = (np.sum((data_csv['mass'].to_numpy())))
     print(halo_mass)
