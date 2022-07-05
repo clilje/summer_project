@@ -83,7 +83,7 @@ def distancefromcentre(cx, cy, cz, x, y, z, ):
 
 
 
-x = 52
+x = 64
 pdheader = ['ID','Type','x','y','z','mass','vx','vy','vz']
 filename = 'HaloParticles50-1-pd/snap_99_halo_'+str(x)
 snapnum = 99
@@ -155,7 +155,7 @@ ax.set_xlabel('x [ckpc/h]')
 
 ax.set_ylabel('y [ckpc/h]')
 ax.set_zlabel('z [ckpc/h]')
-fig.savefig('halocomp-52')
+fig.savefig('halocomp-64')
 
 """
 x = 50
