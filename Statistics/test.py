@@ -54,10 +54,6 @@ num_halo = np.arange(len(np.array(subhalos['SubhaloMass'])))
 #data = np.vstack([num_halo, subhalos['SubhaloPos'][:, 0],subhalos['SubhaloPos'][:, 1],subhalos['SubhaloPos'][:, 2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass']]).transpose()
 halo_50 = [subhalos['SubhaloPos'][x, 0],subhalos['SubhaloPos'][x, 1],subhalos['SubhaloPos'][x, 2], subhalos['SubhaloHalfmassRad'][x], subhalos['SubhaloMass'][x], subhalos['SubhaloLen'][x]]
 print(halo_50)
-dis = distancefromcentre(halo_50[0], halo_50[1], halo_50[2], partx, party, partz)
-print(dis)
-print(np.min(dis))
-
 
 
 gasparts = snapshot.loadHalo(basePath, snapnum, x, 'gas', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
@@ -73,6 +69,11 @@ print(len(partx))
 print(type(partx))
 print(partx.shape())
 print(type(halo_50[0]))
+print(len(partx))
+dis = distancefromcentre(halo_50[0], halo_50[1], halo_50[2], partx, party, partz)
+print(dis)
+print(np.min(dis))
+
 
 x = 50
 pdheader = ['ID','Type','x','y','z','mass','vx','vy','vz']
