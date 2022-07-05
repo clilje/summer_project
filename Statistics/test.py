@@ -67,7 +67,7 @@ partz = np.append(gasparts['Coordinates'][:,2],[starparts['Coordinates'][:,2],bh
 
 print(len(partx))
 print(type(partx))
-print(partx.shape())
+#print(partx.shape())
 print(type(halo_50[0]))
 print(len(partx))
 dis = distancefromcentre(halo_50[0], halo_50[1], halo_50[2], partx, party, partz)
