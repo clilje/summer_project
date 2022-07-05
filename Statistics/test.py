@@ -91,6 +91,7 @@ basePath = '/disk01/rmcg/downloaded/tng/tng50-1'
 fields = ['SubhaloCM','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
 
 
+
 subhalos = groupcat.loadSubhalos(basePath,99,fields=fields)
 num_halo = np.arange(len(np.array(subhalos['SubhaloMass'])))
 #data = np.vstack([num_halo, subhalos['SubhaloCM'][:, 0],subhalos['SubhaloCM'][:, 1],subhalos['SubhaloCM'][:, 2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass']]).transpose()
@@ -103,10 +104,17 @@ starparts = snapshot.loadHalo(basePath, snapnum, x, 'stars', fields=['Coordinate
 bhparts = snapshot.loadHalo(basePath, snapnum, x, 'bh', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
 dmparts = snapshot.loadHalo(basePath, snapnum, x, 'dm', fields=['Coordinates','ParticleIDs','Velocities'])
 
+
+with h5py.File(snapshot.snapPath(basePath,snapnum),'r') as f:
+    header = dict( f['Header'].attrs.items() )
+    print(header['MassTable'][1]) # 10^10 msun/h
+    dmmass = [(header['MassTable'][1]).astype('float')]*len(dmparts['ParticleIDs'])
+
+
 partx = np.concatenate((gasparts['Coordinates'][:,0],starparts['Coordinates'][:,0],bhparts['Coordinates'][:,0],dmparts['Coordinates'][:,0]))
 party = np.concatenate((gasparts['Coordinates'][:,1],starparts['Coordinates'][:,1],bhparts['Coordinates'][:,1],dmparts['Coordinates'][:,1]))
 partz = np.concatenate((gasparts['Coordinates'][:,2],starparts['Coordinates'][:,2],bhparts['Coordinates'][:,2],dmparts['Coordinates'][:,2]))
-mass = np.concatenate((gasparts['Masses'],starparts['Masses'],bhparts['Masses'],dmparts['Masses']))
+mass = np.concatenate((gasparts['Masses'],starparts['Masses'],bhparts['Masses'],dmmass))
 
 pos = np.vstack((partx,party,partz)).T
 CM = np.average(pos, axis=0, weights=mass)
