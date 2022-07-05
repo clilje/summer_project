@@ -90,9 +90,9 @@ starparts = snapshot.loadHalo(basePath, snapnum, x, 'stars', fields=['Coordinate
 bhparts = snapshot.loadHalo(basePath, snapnum, x, 'bh', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
 dmparts = snapshot.loadHalo(basePath, snapnum, x, 'dm', fields=['Coordinates','ParticleIDs','Velocities'])
 
-partx = gasparts['Coordinates'][:,0].to_numpy()+starparts['Coordinates'][:,0].to_numpy()+bhparts['Coordinates'][:,0].to_numpy()+dmparts['Coordinates'][:,0].to_numpy()
-party = gasparts['Coordinates'][:,1].to_numpy()+starparts['Coordinates'][:,1].to_numpy()+bhparts['Coordinates'][:,1].to_numpy()+dmparts['Coordinates'][:,1].to_numpy()
-partz = gasparts['Coordinates'][:,2].to_numpy()+starparts['Coordinates'][:,2].to_numpy()+bhparts['Coordinates'][:,2].to_numpy()+dmparts['Coordinates'][:,2].to_numpy()
+partx = gasparts['Coordinates'][:,0]+starparts['Coordinates'][:,0]+bhparts['Coordinates'][:,0]+dmparts['Coordinates'][:,0]
+party = gasparts['Coordinates'][:,1]+starparts['Coordinates'][:,1]+bhparts['Coordinates'][:,1]+dmparts['Coordinates'][:,1]
+partz = gasparts['Coordinates'][:,2]+starparts['Coordinates'][:,2]+bhparts['Coordinates'][:,2]+dmparts['Coordinates'][:,2]
 
 print(len(partx))
 dis = distancefromcentre(halo_50[0], halo_50[1], halo_50[2], partx, party, partz)
