@@ -132,3 +132,16 @@ print(len(partx))
 dis = distancefromcentre(halo_50[0], halo_50[1], halo_50[2], partx, party, partz)
 print(dis)
 print(np.min(dis))
+
+fig = plt.figure()
+ax = plt.axes(projection ='3d')
+xyz = np.arange(len(partx))
+index = np.random.choice(xyz,2000)
+ax.scatter(partx[index], party[index], partz[index], marker='+',color='blue')
+ax.scatter(halo_50[0], halo_50[1], halo_50[2], marker='+',color='red')
+
+ax.set_xlabel('x [ckpc/h]')
+
+ax.set_ylabel('y [ckpc/h]')
+ax.set_zlabel('z [ckpc/h]')
+fig.savefig('halocomp')
