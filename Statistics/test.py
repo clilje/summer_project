@@ -16,6 +16,48 @@ import sys
 sys.path.insert(1, '/home/clilje/summer_project')
 from illustris_python import groupcat,lhalotree,snapshot,sublink,util
 import time
+'''
+def inverseMapPartIndicesToSubhaloIDs(sP, indsType, ptName, debug=False, flagFuzz=True,
+                                      SubhaloLenType, SnapOffsetsSubhalo):
+    """ For a particle type ptName and snapshot indices for that type indsType, compute the
+        subhalo ID to which each particle index belongs. 
+        If flagFuzz is True (default), particles in FoF fuzz are marked as outside any subhalo,
+        otherwise they are attributed to the closest (prior) subhalo.
+    """
+    gcLenType = SubhaloLenType[:,sP.ptNum(ptName)]
+    gcOffsetsType = SnapOffsetsSubhalo[:,sP.ptNum(ptName)][:-1]
+
+    # val gives the indices of gcOffsetsType such that, if each indsType was inserted
+    # into gcOffsetsType just -before- its index, the order of gcOffsetsType is unchanged
+    # note 1: (gcOffsetsType-1) so that the case of the particle index equaling the
+    # subhalo offset (i.e. first particle) works correctly
+    # note 2: np.ss()-1 to shift to the previous subhalo, since we want to know the
+    # subhalo offset index -after- which the particle should be inserted
+    val = np.searchsorted( gcOffsetsType - 1, indsType ) - 1
+    val = val.astype('int32')
+
+    # search and flag all matches where the indices exceed the length of the
+    # subhalo they have been assigned to, e.g. either in fof fuzz, in subhalos with
+    # no particles of this type, or not in any subhalo at the end of the file
+    if flagFuzz:
+        gcOffsetsMax = gcOffsetsType + gcLenType - 1
+        ww = np.where( indsType > gcOffsetsMax[val] )[0]
+
+        if len(ww):
+            val[ww] = -1
+
+    if debug:
+        # for all inds we identified in subhalos, verify parents directly
+        for i in range(len(indsType)):
+            if val[i] < 0:
+                continue
+            assert indsType[i] >= gcOffsetsType[val[i]]
+            if flagFuzz:
+                assert indsType[i] < gcOffsetsType[val[i]]+gcLenType[val[i]]
+                assert gcLenType[val[i]] != 0
+
+    return val
+'''
 
 def distancefromcentre(cx, cy, cz, x, y, z, ):
     """
@@ -54,8 +96,8 @@ num_halo = np.arange(len(np.array(subhalos['SubhaloMass'])))
 #data = np.vstack([num_halo, subhalos['SubhaloCM'][:, 0],subhalos['SubhaloCM'][:, 1],subhalos['SubhaloCM'][:, 2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass']]).transpose()
 halo_50 = [subhalos['SubhaloCM'][x, 0],subhalos['SubhaloCM'][x, 1],subhalos['SubhaloCM'][x, 2], subhalos['SubhaloHalfmassRad'][x], subhalos['SubhaloMass'][x], subhalos['SubhaloLen'][x]]
 print(halo_50)
-
-
+num_parts = subhalos['SubhaloLen']
+print(num_parts)
 gasparts = snapshot.loadHalo(basePath, snapnum, x, 'gas', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
 starparts = snapshot.loadHalo(basePath, snapnum, x, 'stars', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
 bhparts = snapshot.loadHalo(basePath, snapnum, x, 'bh', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
@@ -65,6 +107,7 @@ partx = np.concatenate((gasparts['Coordinates'][:,0],starparts['Coordinates'][:,
 party = np.concatenate((gasparts['Coordinates'][:,1],starparts['Coordinates'][:,1],bhparts['Coordinates'][:,1],dmparts['Coordinates'][:,1]))
 partz = np.concatenate((gasparts['Coordinates'][:,2],starparts['Coordinates'][:,2],bhparts['Coordinates'][:,2],dmparts['Coordinates'][:,2]))
 
+print(np.where(num_parts==len(partx)))
 print(len(partx))
 print(type(partx))
 #print(partx.shape())
