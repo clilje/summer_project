@@ -128,6 +128,7 @@ print(index_sub)
 
 print(subhalos['SubhaloCM'][index_sub])
 print(subhalos['SubhaloMass'][index_sub])
+print(np.sum(mass))
 print(subhalos['SubhaloLen'][index_sub])
 #print(np.where(np.logical_and((num_parts<(len(partx)+100)),(num_parts>(len(partx)-100)))))
 print(len(partx))
