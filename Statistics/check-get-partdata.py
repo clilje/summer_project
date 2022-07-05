@@ -37,14 +37,14 @@ print(round(time.time()-tt,2))
 tt = time.time()
 #print(groupcat.loadHeader(basePath, snapnum))
 
-x = 0
+x = 50
 c = []
 pdheader = ['ID','Type','x','y','z','mass','vx','vy','vz']
-while x <= 33890:
+while x <= 51:
     if dark == False: 
-        filename = 'HaloParticles50-1-pd/snap_99_halo_'+str(x)
+        filename = 'snap_99_halo_'+str(x)
     else: 
-        filename = 'HaloParticles50-1-pd/snap_99_halo_'+str(x)+'-dark'
+        filename = 'snap_99_halo_'+str(x)+'-dark'
     if(os.path.isfile(filename+'.csv')):
     
         #os.remove() function to remove the file
@@ -95,12 +95,14 @@ while x <= 33890:
         
     
     derek = pd.DataFrame(columns=pdheader)
+    print(derek) # scheiße
     
     while lowerbound < max_num_part:
         
         #print(lowerbound)
         
         miniderek = pd.DataFrame(columns=pdheader)
+        print(miniderek) # scheiße
         if (lowerbound+indexjump)>max_num_part:
             upperbound = max_num_part
         else:
@@ -123,7 +125,9 @@ while x <= 33890:
                 #print(miniderek)
                 
                 derek = pd.concat([derek,miniderek])
+                print(len(derek)) # ääää
                 miniderek = miniderek[0:0]
+                print(len(miniderek)) # scheiße
             
             if starparts['count'] != 0:
                 #Star Particles
@@ -138,7 +142,9 @@ while x <= 33890:
                 miniderek['vz']=starparts['Velocities'][:, 2][lowerbound:upperbound]
                 
                 derek = pd.concat([derek,miniderek])
+                print(len(derek)) # ääää
                 miniderek = miniderek[0:0]
+                print(len(miniderek)) # scheiße
             
             #print(bhparts)
             #print(bhparts.keys())
@@ -154,7 +160,9 @@ while x <= 33890:
                 miniderek['vy']=bhparts['Velocities'][:, 1][lowerbound:upperbound]
                 miniderek['vz']=bhparts['Velocities'][:, 2][lowerbound:upperbound]
                 derek = pd.concat([derek,miniderek])
-                miniderek =miniderek[0:0]
+                print(len(derek)) # ääää
+                miniderek = miniderek[0:0]
+                print(len(miniderek)) # scheiße
 
         #DM Particles
         if dmparts['count'] != 0:
@@ -168,13 +176,16 @@ while x <= 33890:
             miniderek['vy']=dmparts['Velocities'][:, 1][lowerbound:upperbound]
             miniderek['vz']=dmparts['Velocities'][:, 2][lowerbound:upperbound]
             derek = pd.concat([derek,miniderek])
+            print(len(derek)) # ääää
             miniderek = miniderek[0:0]
+            print(len(miniderek)) # scheiße
 
         lowerbound = upperbound
         #derek = derek.reset_index(drop=True)
         derek.to_csv(filename+'.csv', mode='a')
         #derek.to_hdf(filename+'.hdf', mode='a')
         derek = derek[0:0]
+        print(len(derek))
         
     print(x)
     x +=1
