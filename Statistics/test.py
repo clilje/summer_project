@@ -97,7 +97,7 @@ num_halo = np.arange(len(np.array(subhalos['SubhaloMass'])))
 halo_50 = [subhalos['SubhaloCM'][x, 0],subhalos['SubhaloCM'][x, 1],subhalos['SubhaloCM'][x, 2], subhalos['SubhaloHalfmassRad'][x], subhalos['SubhaloMass'][x], subhalos['SubhaloLen'][x]]
 print(halo_50)
 num_parts = subhalos['SubhaloLen']
-print(num_parts)
+print(num_parts[0:50])
 gasparts = snapshot.loadHalo(basePath, snapnum, x, 'gas', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
 starparts = snapshot.loadHalo(basePath, snapnum, x, 'stars', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
 bhparts = snapshot.loadHalo(basePath, snapnum, x, 'bh', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
@@ -107,7 +107,7 @@ partx = np.concatenate((gasparts['Coordinates'][:,0],starparts['Coordinates'][:,
 party = np.concatenate((gasparts['Coordinates'][:,1],starparts['Coordinates'][:,1],bhparts['Coordinates'][:,1],dmparts['Coordinates'][:,1]))
 partz = np.concatenate((gasparts['Coordinates'][:,2],starparts['Coordinates'][:,2],bhparts['Coordinates'][:,2],dmparts['Coordinates'][:,2]))
 
-print(np.where(num_parts==len(partx)))
+print(np.where(np.logical_and((num_parts<(len(partx)+100)),(num_parts>(len(partx)-100)))))[0]
 print(len(partx))
 print(type(partx))
 #print(partx.shape())
