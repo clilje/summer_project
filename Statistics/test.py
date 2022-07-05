@@ -84,7 +84,7 @@ def distancefromcentre(cx, cy, cz, x, y, z, ):
 
 
 xx = [700,1000,57893]
-    for x in xx:
+for x in xx:
     pdheader = ['ID','Type','x','y','z','mass','vx','vy','vz']
     filename = 'HaloParticles50-1-pd/snap_99_halo_'+str(x)
     snapnum = 99
