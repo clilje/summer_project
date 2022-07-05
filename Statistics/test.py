@@ -123,7 +123,12 @@ print(CM)
 distance = distancefromcentre(CM[0], CM[1], CM[2], subhalos['SubhaloCM'][:, 0], subhalos['SubhaloCM'][:, 1], subhalos['SubhaloCM'][:, 2])
 print(distance)
 print(np.min(distance))
-print(np.where(np.min(distance)==distance))
+index = np.where(np.min(distance)==distance)
+print(index)
+
+print(subhalos['SubhaloCM'][index])
+print(subhalos['SubhaloMass'][index])
+print(subhalos['SubhaloLen'][index])
 #print(np.where(np.logical_and((num_parts<(len(partx)+100)),(num_parts>(len(partx)-100)))))
 print(len(partx))
 print(type(partx))
@@ -135,6 +140,23 @@ print(dis)
 print(np.min(dis))
 
 
+
+fig = plt.figure()
+ax = plt.axes(projection ='3d')
+xyz = np.arange(len(partx))
+index = np.random.choice(xyz,2000)
+ax.scatter(partx[index], party[index], partz[index], marker='+',color='blue')
+ax.scatter(halo_50[0], halo_50[1], halo_50[2], marker='+',color='red')
+ax.scatter(subhalos['SubhaloCM'][index, 0],subhalos['SubhaloCM'][index, 1], subhalos['SubhaloCM'][index, 2], color='black')
+ax.scatter(CM[0], CM[1], CM[2], marker='+',color='pink')
+
+ax.set_xlabel('x [ckpc/h]')
+
+ax.set_ylabel('y [ckpc/h]')
+ax.set_zlabel('z [ckpc/h]')
+fig.savefig('halocomp')
+
+"""
 x = 50
 pdheader = ['ID','Type','x','y','z','mass','vx','vy','vz']
 filename = 'HaloParticles50-1-pd/snap_99_halo_'+str(x)
@@ -205,3 +227,4 @@ ax.set_xlabel('x [ckpc/h]')
 ax.set_ylabel('y [ckpc/h]')
 ax.set_zlabel('z [ckpc/h]')
 fig.savefig('halocomp')
+"""
