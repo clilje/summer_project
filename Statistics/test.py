@@ -64,6 +64,9 @@ party = np.append(gasparts['Coordinates'][:,1],[starparts['Coordinates'][:,1],bh
 partz = np.append(gasparts['Coordinates'][:,2],[starparts['Coordinates'][:,2],bhparts['Coordinates'][:,2],dmparts['Coordinates'][:,2]])
 
 print(len(partx))
+print(type(partx))
+print(partx.shape())
+print(type(halo_50[0]))
 
 x = 50
 pdheader = ['ID','Type','x','y','z','mass','vx','vy','vz']
