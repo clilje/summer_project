@@ -46,13 +46,13 @@ pdheader = ['ID','Type','x','y','z','mass','vx','vy','vz']
 filename = 'HaloParticles50-1-pd/snap_99_halo_'+str(x)
 snapnum = 99
 basePath = '/disk01/rmcg/downloaded/tng/tng50-1'
-fields = ['SubhaloPos','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
+fields = ['SubhaloCM','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
 
 
 subhalos = groupcat.loadSubhalos(basePath,99,fields=fields)
 num_halo = np.arange(len(np.array(subhalos['SubhaloMass'])))
-#data = np.vstack([num_halo, subhalos['SubhaloPos'][:, 0],subhalos['SubhaloPos'][:, 1],subhalos['SubhaloPos'][:, 2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass']]).transpose()
-halo_50 = [subhalos['SubhaloPos'][x, 0],subhalos['SubhaloPos'][x, 1],subhalos['SubhaloPos'][x, 2], subhalos['SubhaloHalfmassRad'][x], subhalos['SubhaloMass'][x], subhalos['SubhaloLen'][x]]
+#data = np.vstack([num_halo, subhalos['SubhaloCM'][:, 0],subhalos['SubhaloCM'][:, 1],subhalos['SubhaloCM'][:, 2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass']]).transpose()
+halo_50 = [subhalos['SubhaloCM'][x, 0],subhalos['SubhaloCM'][x, 1],subhalos['SubhaloCM'][x, 2], subhalos['SubhaloHalfmassRad'][x], subhalos['SubhaloMass'][x], subhalos['SubhaloLen'][x]]
 print(halo_50)
 
 
@@ -80,13 +80,13 @@ pdheader = ['ID','Type','x','y','z','mass','vx','vy','vz']
 filename = 'HaloParticles50-1-pd/snap_99_halo_'+str(x)
 snapnum = 99
 basePath = '/disk01/rmcg/downloaded/tng/tng50-1'
-fields = ['SubhaloPos','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
+fields = ['SubhaloCM','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
 
 
 subhalos = groupcat.loadSubhalos(basePath,99,fields=fields)
 num_halo = np.arange(len(np.array(subhalos['SubhaloMass'])))
-#data = np.vstack([num_halo, subhalos['SubhaloPos'][:, 0],subhalos['SubhaloPos'][:, 1],subhalos['SubhaloPos'][:, 2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass']]).transpose()
-halo_50 = [subhalos['SubhaloPos'][x, 0],subhalos['SubhaloPos'][x, 1],subhalos['SubhaloPos'][x, 2], subhalos['SubhaloHalfmassRad'][x], subhalos['SubhaloMass'][x], subhalos['SubhaloLen'][x]]
+#data = np.vstack([num_halo, subhalos['SubhaloCM'][:, 0],subhalos['SubhaloCM'][:, 1],subhalos['SubhaloCM'][:, 2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass']]).transpose()
+halo_50 = [subhalos['SubhaloCM'][x, 0],subhalos['SubhaloCM'][x, 1],subhalos['SubhaloCM'][x, 2], subhalos['SubhaloHalfmassRad'][x], subhalos['SubhaloMass'][x], subhalos['SubhaloLen'][x]]
 print(halo_50)
 
 gasparts = snapshot.loadHalo(basePath, snapnum, x, 'gas', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
@@ -110,13 +110,13 @@ pdheader = ['ID','Type','x','y','z','mass','vx','vy','vz']
 filename = 'HaloParticles50-1-pd/snap_99_halo_'+str(x)
 snapnum = 99
 basePath = '/disk01/rmcg/downloaded/tng/tng50-1'
-fields = ['SubhaloPos','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
+fields = ['SubhaloCM','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
 
 
 subhalos = groupcat.loadSubhalos(basePath,99,fields=fields)
 num_halo = np.arange(len(np.array(subhalos['SubhaloMass'])))
-#data = np.vstack([num_halo, subhalos['SubhaloPos'][:, 0],subhalos['SubhaloPos'][:, 1],subhalos['SubhaloPos'][:, 2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass']]).transpose()
-halo_50 = [subhalos['SubhaloPos'][x, 0],subhalos['SubhaloPos'][x, 1],subhalos['SubhaloPos'][x, 2], subhalos['SubhaloHalfmassRad'][x], subhalos['SubhaloMass'][x], subhalos['SubhaloLen'][x]]
+#data = np.vstack([num_halo, subhalos['SubhaloCM'][:, 0],subhalos['SubhaloCM'][:, 1],subhalos['SubhaloCM'][:, 2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass']]).transpose()
+halo_50 = [subhalos['SubhaloCM'][x, 0],subhalos['SubhaloCM'][x, 1],subhalos['SubhaloCM'][x, 2], subhalos['SubhaloHalfmassRad'][x], subhalos['SubhaloMass'][x], subhalos['SubhaloLen'][x]]
 print(halo_50)
 
 gasparts = snapshot.loadHalo(basePath, snapnum, x, 'gas', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
