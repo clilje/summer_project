@@ -107,7 +107,7 @@ partx = np.concatenate((gasparts['Coordinates'][:,0],starparts['Coordinates'][:,
 party = np.concatenate((gasparts['Coordinates'][:,1],starparts['Coordinates'][:,1],bhparts['Coordinates'][:,1],dmparts['Coordinates'][:,1]))
 partz = np.concatenate((gasparts['Coordinates'][:,2],starparts['Coordinates'][:,2],bhparts['Coordinates'][:,2],dmparts['Coordinates'][:,2]))
 
-print(np.where(np.logical_and((num_parts<(len(partx)+100)),(num_parts>(len(partx)-100)))))[0]
+print(np.where(np.logical_and((num_parts<(len(partx)+100)),(num_parts>(len(partx)-100)))))
 print(len(partx))
 print(type(partx))
 #print(partx.shape())
