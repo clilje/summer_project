@@ -106,8 +106,17 @@ dmparts = snapshot.loadHalo(basePath, snapnum, x, 'dm', fields=['Coordinates','P
 partx = np.concatenate((gasparts['Coordinates'][:,0],starparts['Coordinates'][:,0],bhparts['Coordinates'][:,0],dmparts['Coordinates'][:,0]))
 party = np.concatenate((gasparts['Coordinates'][:,1],starparts['Coordinates'][:,1],bhparts['Coordinates'][:,1],dmparts['Coordinates'][:,1]))
 partz = np.concatenate((gasparts['Coordinates'][:,2],starparts['Coordinates'][:,2],bhparts['Coordinates'][:,2],dmparts['Coordinates'][:,2]))
+mass = np.concatenate((gasparts['Masses'],starparts['Masses'],bhparts['Masses'],dmparts['Masses']))
 
-print(np.where(np.logical_and((num_parts<(len(partx)+100)),(num_parts>(len(partx)-100)))))
+pos = np.vstack((partx,party,partz)).T
+CM = np.average(pos, axis=0, weights=mass)
+print(CM)
+
+distance = distancefromcentre(CM[0], CM[1], CM[2], subhalos['SubhaloCM'][:, 0], subhalos['SubhaloCM'][:, 1], subhalos['SubhaloCM'][:, 2])
+print(distance)
+print(np.min(distance))
+print(np.where(np.min(distance)==distance))
+#print(np.where(np.logical_and((num_parts<(len(partx)+100)),(num_parts>(len(partx)-100)))))
 print(len(partx))
 print(type(partx))
 #print(partx.shape())
