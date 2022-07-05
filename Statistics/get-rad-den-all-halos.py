@@ -126,7 +126,7 @@ pdheader = ['Radius','Density','Uncertainty','Virial Radius']
 #derek = pd.DataFrame(columns=pdheader)
 
 while g < 3:
-    data_csv = pd.read_csv('HaloParticles50-1-pd/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float})
+    data_csv = pd.read_csv('HaloParticles50-1-pd/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':'string','y':'string','z':'sting','mass':'string','vx':'string','vy':'string','vz':'string'})
     halo_mass = (np.sum((data_csv['mass'].to_numpy())))
     print(halo_mass)
     match = np.where((full_mass)==halo_mass)[0]
