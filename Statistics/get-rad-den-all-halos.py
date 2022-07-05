@@ -7,6 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import csv
+import h5py
 import pandas as pd
 import scipy.optimize as scopt
 import scipy.linalg
@@ -93,6 +94,15 @@ def radial_density(partx, party, partz, mass, binsize, halox, haloy, haloz):
     return(density, rad_lowerbound, uncertainties, virR)
 
 
+
+fileoffsets = '/disk01/rmcg/downloaded/tng/tng50-1/offsets/offsets_099.hdf5'
+with h5py.File(fileoffsets) as file:
+    offsets = np.array(file['Subhalo/SnapByType'])
+    print(offsets)
+    print(np.shape(offsets))
+    print(offsets[0])
+    print(offsets[40000])
+#connections = pd.read_hdf(fileoffsets)
 interval = np.logspace(0.1, 2.5, 100)
 #files = get_filenames(50, 4, 11)
 subhalo_info = pd.read_csv('50-1-subhalo-info.csv')
@@ -101,7 +111,7 @@ positionsX = subhalo_info['SubhaloPosX'].to_numpy()
 positionsY = subhalo_info['SubhaloPosY'].to_numpy()
 positionsZ = subhalo_info['SubhaloPosZ'].to_numpy()
 radius = subhalo_info['SubhaloHalfmassRad'].to_numpy()
-#full_mass = subhalo_info['SubhaloMass'].to_numpy()
+full_mass = subhalo_info['SubhaloMass'].to_numpy()
 #print(pd.read_csv('HaloFits/50-4_halodata.csv'))
 #print(positions[2])
 #print(radius[2])
@@ -117,6 +127,15 @@ pdheader = ['Radius','Density','Uncertainty','Virial Radius']
 
 while g < 40003:
     data_csv = pd.read_csv('HaloParticles50-1-pd/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':int,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float})
+    halo_mass = (np.sum((data_csv['mass'].to_numpy()*h*(10**10))))
+    print(halo_mass)
+    match = np.where((full_mass*h*(10**10))==halo_mass)[0]
+    print(match)
+    print(positionsX[match],positionsY[match],positionsZ[match])
+    print(data_csv['x'].to_numpy())
+    print(data_csv['y'].to_numpy())
+    print(data_csv['z'].to_numpy())
+    """
     print(positionsX[g],positionsY[g],positionsZ[g])
     print(subhalo_index[g])
     print(data_csv['x'].to_numpy())
@@ -132,6 +151,9 @@ while g < 40003:
     print(np.where(zrange==yrange)[0])
     print(np.where(xrange==yrange)[0])
     #print(h*(10**10)*data_csv['mass'].to_numpy())
+    """
+    
+    
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
     rad_den = radial_density((data_csv['x'].to_numpy()*h), (data_csv['y'].to_numpy()*h), (data_csv['z'].to_numpy()*h),(data_csv['mass'].to_numpy()*h*(10**10)), 10, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
     #mass in solar masses
