@@ -61,9 +61,9 @@ starparts = snapshot.loadHalo(basePath, snapnum, x, 'stars', fields=['Coordinate
 bhparts = snapshot.loadHalo(basePath, snapnum, x, 'bh', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
 dmparts = snapshot.loadHalo(basePath, snapnum, x, 'dm', fields=['Coordinates','ParticleIDs','Velocities'])
 
-partx = np.append(gasparts['Coordinates'][:,0],[starparts['Coordinates'][:,0],bhparts['Coordinates'][:,0],dmparts['Coordinates'][:,0]])
-party = np.append(gasparts['Coordinates'][:,1],[starparts['Coordinates'][:,1],bhparts['Coordinates'][:,1],dmparts['Coordinates'][:,1]])
-partz = np.append(gasparts['Coordinates'][:,2],[starparts['Coordinates'][:,2],bhparts['Coordinates'][:,2],dmparts['Coordinates'][:,2]])
+partx = np.concatenate((gasparts['Coordinates'][:,0],starparts['Coordinates'][:,0],bhparts['Coordinates'][:,0],dmparts['Coordinates'][:,0]))
+party = np.concatenate((gasparts['Coordinates'][:,1],starparts['Coordinates'][:,1],bhparts['Coordinates'][:,1],dmparts['Coordinates'][:,1]))
+partz = np.concatenate((gasparts['Coordinates'][:,2],starparts['Coordinates'][:,2],bhparts['Coordinates'][:,2],dmparts['Coordinates'][:,2]))
 
 print(len(partx))
 print(type(partx))
@@ -94,9 +94,9 @@ starparts = snapshot.loadHalo(basePath, snapnum, x, 'stars', fields=['Coordinate
 bhparts = snapshot.loadHalo(basePath, snapnum, x, 'bh', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
 dmparts = snapshot.loadHalo(basePath, snapnum, x, 'dm', fields=['Coordinates','ParticleIDs','Velocities'])
 
-partx = np.append(gasparts['Coordinates'][:,0],[starparts['Coordinates'][:,0],bhparts['Coordinates'][:,0],dmparts['Coordinates'][:,0]])
-party = np.append(gasparts['Coordinates'][:,1],[starparts['Coordinates'][:,1],bhparts['Coordinates'][:,1],dmparts['Coordinates'][:,1]])
-partz = np.append(gasparts['Coordinates'][:,2],[starparts['Coordinates'][:,2],bhparts['Coordinates'][:,2],dmparts['Coordinates'][:,2]])
+partx = np.concatenate((gasparts['Coordinates'][:,0],starparts['Coordinates'][:,0],bhparts['Coordinates'][:,0],dmparts['Coordinates'][:,0]))
+party = np.concatenate((gasparts['Coordinates'][:,1],starparts['Coordinates'][:,1],bhparts['Coordinates'][:,1],dmparts['Coordinates'][:,1]))
+partz = np.concatenate((gasparts['Coordinates'][:,2],starparts['Coordinates'][:,2],bhparts['Coordinates'][:,2],dmparts['Coordinates'][:,2]))
 
 print(len(partx))
 dis = distancefromcentre(halo_50[0], halo_50[1], halo_50[2], partx, party, partz)
@@ -124,9 +124,9 @@ starparts = snapshot.loadHalo(basePath, snapnum, x, 'stars', fields=['Coordinate
 bhparts = snapshot.loadHalo(basePath, snapnum, x, 'bh', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
 dmparts = snapshot.loadHalo(basePath, snapnum, x, 'dm', fields=['Coordinates','ParticleIDs','Velocities'])
 
-partx = np.append(gasparts['Coordinates'][:,0],[starparts['Coordinates'][:,0],bhparts['Coordinates'][:,0],dmparts['Coordinates'][:,0]])
-party = np.append(gasparts['Coordinates'][:,1],[starparts['Coordinates'][:,1],bhparts['Coordinates'][:,1],dmparts['Coordinates'][:,1]])
-partz = np.append(gasparts['Coordinates'][:,2],[starparts['Coordinates'][:,2],bhparts['Coordinates'][:,2],dmparts['Coordinates'][:,2]])
+partx = np.concatenate((gasparts['Coordinates'][:,0],starparts['Coordinates'][:,0],bhparts['Coordinates'][:,0],dmparts['Coordinates'][:,0]))
+party = np.concatenate((gasparts['Coordinates'][:,1],starparts['Coordinates'][:,1],bhparts['Coordinates'][:,1],dmparts['Coordinates'][:,1]))
+partz = np.concatenate((gasparts['Coordinates'][:,2],starparts['Coordinates'][:,2],bhparts['Coordinates'][:,2],dmparts['Coordinates'][:,2]))
 
 print(len(partx))
 dis = distancefromcentre(halo_50[0], halo_50[1], halo_50[2], partx, party, partz)
