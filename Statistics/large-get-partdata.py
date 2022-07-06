@@ -39,7 +39,7 @@ z = (groupcat.loadHeader(basePath, snapnum)['Redshift']).astype('float')  #redsh
 #tt = time.time()
 #print(groupcat.loadHeader(basePath, snapnum))
 
-x = 50
+x = 100
 c = []
 pdheader = ['ID','Type','x','y','z','mass','vx','vy','vz']
 while x <= len(np.array(subhalos['SubhaloMass'])):
@@ -69,11 +69,11 @@ while x <= len(np.array(subhalos['SubhaloMass'])):
     
     print(round(time.time()-tt,2))
     tt = time.time()
-    
+    print(dmparts['count'])
     with h5py.File(snapshot.snapPath(basePath,snapnum),'r') as f:
         header = dict( f['Header'].attrs.items() )
         print(header['MassTable'][1]) # 10^10 msun/h
-        dmmass = [(header['MassTable'][1]).astype('float')]*len(dmparts['ParticleIDs'])
+        dmmass = [(header['MassTable'][1]).astype('float')]*len(dmparts['count'])
     
     lowerbound = 0
     indexjump = 900000
@@ -179,7 +179,7 @@ while x <= len(np.array(subhalos['SubhaloMass'])):
         derek.to_csv(filename+'.csv', mode='a')
         #derek.to_hdf(filename+'.hdf', mode='a')
         derek = derek[0:0]
-        print(len(derek))
+        
         
     print(x)
     x +=1
