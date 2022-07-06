@@ -18,7 +18,7 @@ if dark == True:
     basePath = '/disk01/rmcg/downloaded/tng/tng'+str(size)+'-'+str(res)+'-dark'
 else:
    basePath = '/disk01/rmcg/downloaded/tng/tng'+str(size)+'-'+str(res) 
-fields = ['SubhaloPos','SubhaloHalfmassRad','SubhaloMass']
+fields = ['SubhaloPos','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
 
 
 subhalos = groupcat.loadSubhalos(basePath,99,fields=fields)
