@@ -118,7 +118,7 @@ while g < numhalos:
     
     with open('HaloFitsInfo/50-4_snap_99_fit_param.csv', 'a', encoding='UTF8', newline='') as f:
         fwriter = csv.writer(f, delimiter=',')
-        data = [subhalo_index[0],num_datapoints,nfwfitp[0],nfwfitp[1],np.sqrt(np.diag(nfwfitcov))[0],
+        data = [subhalo_index[g],num_datapoints,nfwfitp[0],nfwfitp[1],np.sqrt(np.diag(nfwfitcov))[0],
                   np.sqrt(np.diag(nfwfitcov))[1],nfwchi_square_test_statistic,nfwp_value,
                   burkertfitp[0],burkertfitp[1],
                   np.sqrt(np.diag(burkertfitcov))[0],np.sqrt(np.diag(burkertfitcov))[1],burkertchi_square_test_statistic, burkertp_value,
@@ -131,7 +131,7 @@ while g < numhalos:
                   np.sqrt(np.diag(dehnen_threeparamfitcov))[1],np.sqrt(np.diag(dehnen_threeparamfitcov))[2],dehnenthreechi_square_test_statistic,dehnenthreep_value]
         fwriter.writerow(data)   
     
-    
+    """
         
     fig, axs = plt.subplots(3, 2, figsize=(15,15))
     
@@ -197,7 +197,7 @@ while g < numhalos:
     fig.tight_layout()
     fig.savefig('rad-fit-profiles-halo'+str(g))
     print('hello')
-    	
+    	"""
     g += 1
-    fig.clf()
-    fig.show()
+    #fig.clf()
+    #fig.show()
