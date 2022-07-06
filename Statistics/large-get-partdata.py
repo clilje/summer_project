@@ -72,8 +72,8 @@ while x <= len(np.array(subhalos['SubhaloMass'])):
     print(dmparts['count'])
     with h5py.File(snapshot.snapPath(basePath,snapnum),'r') as f:
         header = dict( f['Header'].attrs.items() )
-        print(header['MassTable'][1]) # 10^10 msun/h
-        dmmass = [(header['MassTable'][1]).astype('float')]*len(dmparts['count'])
+        #print(header['MassTable'][1]) # 10^10 msun/h
+        dmmass = [(header['MassTable'][1]).astype('float')]*dmparts['count']
     
     lowerbound = 0
     indexjump = 900000
