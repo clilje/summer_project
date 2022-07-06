@@ -22,7 +22,7 @@ fields = ['SubhaloPos','SubhaloHalfmassRad','SubhaloMass']
 
 
 subhalos = groupcat.loadSubhalos(basePath,99,fields=fields)
-num_halo = np.arange(len(np.array(subhalos['SubhaloMass'])))
+num_halo = np.arange(len(np.array(subhalos['SubhaloMass']))+1)
 
 a = (groupcat.loadHeader(basePath, snapnum)['Time']).astype('int')  #scalefactor
 z = (groupcat.loadHeader(basePath, snapnum)['Redshift']).astype('float')  #redshift
@@ -30,15 +30,15 @@ z = (groupcat.loadHeader(basePath, snapnum)['Redshift']).astype('float')  #redsh
 #print(z)
 
 #print(groupcat.loadHeader(basePath, snapnum))
-"""
+
 with open('50-1-subhalo-info.csv', 'w', encoding='UTF8', newline='') as subfile:
-    header = ['SubhaloIndex','SubhaloPosX','SubhaloPosY','SubhaloPosZ','SubhaloHalfmassRad','SubhaloMass']
+    header = ['SubhaloIndex','SubhaloPosX','SubhaloPosY','SubhaloPosZ','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
     fwriter = csv.writer(subfile, delimiter=',')
     # Write the header
     fwriter.writerow(header)
-    data = np.vstack([num_halo, subhalos['SubhaloPos'][:, 0],subhalos['SubhaloPos'][:, 1],subhalos['SubhaloPos'][:, 2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass']]).transpose()
+    data = np.vstack([num_halo, subhalos['SubhaloPos'][:, 0],subhalos['SubhaloPos'][:, 1],subhalos['SubhaloPos'][:, 2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass'], subhalos['SubhaloLen']]).transpose()
     fwriter.writerows(data)
-"""
+'''
 #gasparts = snapshot.loadHalo(basePath, snapnum, 0, 'gas', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
 #print(gasparts['Coordinates'])
 x = 0
@@ -108,4 +108,5 @@ while x <= (len(num_halo)):
             
             lowerbound = upperbound
     print(x)
-    x +=1
+    
+    x +=1'''
