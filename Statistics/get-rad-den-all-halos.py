@@ -117,19 +117,21 @@ pdheader = ['Radius','Density','Uncertainty','Virial Radius']
 #derek = pd.DataFrame(columns=pdheader)
 
 for g in gg:
-    intervals = np.arange(0,length[g],900000)
-    print(intervals)
+    intervals = np.arange(0,length[g],500000)
+    #print(intervals)
     f = 0
     while f <= len(intervals):
         if intervals[-1] == 0:
             to_exclude = []
         else:
             if f == 0:
-                to_exclude = np.arange(intervals[1],length[g],1)
+                to_exclude = np.arange(intervals[1],length[g],1)                
             else:
-                to_exclude = np.arange(0,intervals[f]) + np.arange(intervals[f],length[g],1)
+                to_exclude = np.arange(0,intervals[f],1) + np.arange(intervals[f+1],length[g],1)
         data_csv = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float},skiprows=to_exclude)
         f = f+1
+        
+        
         partx = data_csv['x'].to_numpy().astype(float)
         party = data_csv['y'].to_numpy().astype(float)
         partz = data_csv['z'].to_numpy().astype(float)
