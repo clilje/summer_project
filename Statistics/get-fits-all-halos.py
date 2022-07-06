@@ -198,5 +198,5 @@ while g < 54:
     fig.savefig('rad-fit-profiles-halo'+str(g))
     print('hello')
 
-    axs.clf()
+    fig.clf()
     fig.show()
