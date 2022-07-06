@@ -127,14 +127,14 @@ pdheader = ['Radius','Density','Uncertainty','Virial Radius']
 #derek = pd.DataFrame(columns=pdheader)
 
 for g in gg:
-    data_csv = pd.read_csv('HaloParticles50-1-pd/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':'string','y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float})
+    data_csv = pd.read_csv('HaloParticles50-1-pd/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':'string','y':'string','z':'string','mass':'string','vx':'string','vy':'string','vz':'string'})
     data_csv = data_csv.convert_dtypes()
     
     
     partx = data_csv['x'].to_numpy().astype(float)
-    party = data_csv['y'].to_numpy()
-    partz = data_csv['z'].to_numpy()
-    mass = data_csv['mass'].to_numpy()
+    party = data_csv['y'].to_numpy().astype(float)
+    partz = data_csv['z'].to_numpy().astype(float)
+    mass = data_csv['mass'].to_numpy().astype(float)
     
     pos = np.vstack((partx,party,partz)).T
     CM = np.average(pos, axis=0, weights=mass)
