@@ -67,7 +67,7 @@ for x in xx:
     
     with h5py.File(snapshot.snapPath(basePath,snapnum),'r') as f:
         header = dict( f['Header'].attrs.items() )
-        print(header['MassTable'][1]) # 10^10 msun/h
+        #print(header['MassTable'][1]) # 10^10 msun/h
         dmmass = [(header['MassTable'][1]).astype('float')]*len(dmparts['ParticleIDs'])
     
     if gasparts['count'] != 0:
@@ -108,7 +108,7 @@ for x in xx:
     print(np.sum(mass))
     print(subhalos['SubhaloLen'][index_sub])
     #print(np.where(np.logical_and((num_parts<(len(partx)+100)),(num_parts>(len(partx)-100)))))
-    #print(len(partx))
+    print(len(partx))
     #print(type(partx))
     #print(partx.shape())
     #print(type(halo_50[0]))
