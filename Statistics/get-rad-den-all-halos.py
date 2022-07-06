@@ -108,7 +108,7 @@ radius = subhalo_info['SubhaloHalfmassRad'].to_numpy()
 full_mass = subhalo_info['SubhaloMass'].to_numpy()
 length = subhalo_info['SubhaloLen'].to_numpy().astype(int)
 
-gg = [0,20,40]
+g = 50
 numhalos = len(subhalo_index)
 
 
@@ -116,7 +116,7 @@ numhalos = len(subhalo_index)
 pdheader = ['Radius','Density','Uncertainty','Virial Radius']
 #derek = pd.DataFrame(columns=pdheader)
 
-for g in gg:
+while g < len(full_mass):
     intervals = np.arange(0,length[g],500000)
     #print(intervals)
     f = 0
@@ -151,10 +151,11 @@ for g in gg:
         print(miniderek)
         miniderek.to_csv(filename+'.csv', mode='a')
         miniderek = miniderek[0:0]
-        g += 1 
+    g += 1 
     #halo_50 = [positionsX[g],positionsY[g],positionsZ[g], radius[g], full_mass[g]]
     #print(full_mass[g])
     #print(np.sum(mass))
+    
     
 
     
