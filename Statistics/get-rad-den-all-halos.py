@@ -167,20 +167,6 @@ for g in gg:
     print(full_mass[g])
     print(np.sum(mass))
     
-    fig = plt.figure()
-    ax = plt.axes(projection ='3d')
-    xyz = np.arange(len(partx))
-    index = np.random.choice(xyz,200)
-    ax.scatter(partx[index], party[index], partz[index], marker='+',color='blue',alpha=0.1)
-    ax.scatter(halo_50[0], halo_50[1], halo_50[2], marker='+',color='red')
-    #ax.scatter(positionsX[index_sub],positionsY[index_sub],positionsZ[index_sub],marker='x', color='black')
-    #ax.scatter(CM[0], CM[1], CM[2], marker='+',color='pink')
-    
-    ax.set_xlabel('x [ckpc/h]')
-    
-    ax.set_ylabel('y [ckpc/h]')
-    ax.set_zlabel('z [ckpc/h]')
-    fig.savefig('HaloFitsInfo/halocomp-'+str(g))
 
     
     
@@ -213,3 +199,18 @@ for g in gg:
     plt.xscale('log')
     plt.yscale('log')
     plt.savefig('fit-profiles-halo-'+str(g)+'.jpg')
+
+    fig = plt.figure()
+    ax = plt.axes(projection ='3d')
+    xyz = np.arange(len(partx))
+    index = np.random.choice(xyz,200)
+    ax.scatter(partx[index], party[index], partz[index], marker='+',color='blue',alpha=0.1)
+    ax.scatter(halo_50[0], halo_50[1], halo_50[2], marker='+',color='red')
+    #ax.scatter(positionsX[index_sub],positionsY[index_sub],positionsZ[index_sub],marker='x', color='black')
+    #ax.scatter(CM[0], CM[1], CM[2], marker='+',color='pink')
+    
+    ax.set_xlabel('x [ckpc/h]')
+    
+    ax.set_ylabel('y [ckpc/h]')
+    ax.set_zlabel('z [ckpc/h]')
+    fig.savefig('HaloFitsInfo/halocomp-'+str(g))
