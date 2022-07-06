@@ -150,8 +150,8 @@ for g in gg:
     #ax = plt.axes(projection =None)
     plt.errorbar(rad_den[1]/(virrad), rad_den[0]/(virden), yerr=rad_den[2]/virden, fmt='.', label="Halo_"+str(g)+"_099", color='green')
     plt.axhline(1)
-    plt.xlabel(-r'Radial Distance normalized by $r_{200}$ in kpc')
-    plt.ylabel(-r'Density normalized by $\rho_{200}$ in $M_{\odot}/kpc^{-3}$')
+    plt.xlabel(r'Radial Distance normalized by $r_{200}$ in kpc')
+    plt.ylabel(r'Density normalized by $\rho_{200}$ in $M_{\odot}/kpc^{-3}$')
     plt.xscale('log')
     plt.yscale('log')
     
