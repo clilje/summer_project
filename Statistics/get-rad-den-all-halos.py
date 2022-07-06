@@ -108,7 +108,7 @@ radius = subhalo_info['SubhaloHalfmassRad'].to_numpy()
 full_mass = subhalo_info['SubhaloMass'].to_numpy()
 length = subhalo_info['SubhaloLen'].to_numpy().astype(int)
 
-gg = [59,150,74]
+gg = [0,20,40]
 numhalos = len(subhalo_index)
 
 
