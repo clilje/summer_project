@@ -37,7 +37,7 @@ z = (groupcat.loadHeader(basePath, snapnum)['Redshift']).astype('float')  #redsh
 #tt = time.time()
 #print(groupcat.loadHeader(basePath, snapnum))
 
-x = 0
+x = 50
 c = []
 pdheader = ['ID','Type','x','y','z','mass','vx','vy','vz']
 while x <= 50:
@@ -174,7 +174,7 @@ while x <= 50:
 
         lowerbound = upperbound
         #derek = derek.reset_index(drop=True)
-        derek.to_csv(filename+'.csv', mode='a')
+        derek.to_csv(filename+'.csv', mode='w')
         #derek.to_hdf(filename+'.hdf', mode='a')
         derek = derek[0:0]
         print(len(derek))
