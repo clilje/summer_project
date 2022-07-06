@@ -195,12 +195,16 @@ for g in gg:
     miniderek.to_csv(filename+'.csv', mode='w')
     miniderek = miniderek[0:0]
     g += 1 
-    ax = plt.axes(projection =None)
-    plt.errorbar(rad_den[1]/(virrad), rad_den[0]/(virden), yerr=rad_den[2], fmt='.', label="Halo_"+str(g)+"_099", color='green')
+    #ax = plt.axes(projection =None)
+    plt.errorbar(rad_den[1]/(virrad), rad_den[0]/(virden), yerr=rad_den[2]/virden, fmt='.', label="Halo_"+str(g)+"_099", color='green')
+    plt.hline(200*p_crit)
+    plt.xlabel('kpc')
+    plt.ylabel('$M_{\odot}$')
     plt.xscale('log')
     plt.yscale('log')
-    plt.savefig('fit-profiles-halo-'+str(g)+'.jpg')
-
+    plt.savefig('HaloFitsInfo/fit-profiles-halo-'+str(g)+'.jpg')
+    
+    '''
     fig = plt.figure()
     ax = plt.axes(projection ='3d')
     xyz = np.arange(len(partx))
@@ -215,3 +219,4 @@ for g in gg:
     ax.set_ylabel('y [ckpc/h]')
     ax.set_zlabel('z [ckpc/h]')
     fig.savefig('HaloFitsInfo/halocomp-'+str(g))
+    '''
