@@ -120,7 +120,8 @@ while g < len(full_mass):
     intervals = np.arange(0,length[g],500000)
     #print(intervals)
     f = 0
-    while f <= len(intervals):
+    
+    while intervals[f] < length[g]:
         if intervals[-1] == 0:
             to_exclude = []
         else:
