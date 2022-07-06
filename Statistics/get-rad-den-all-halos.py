@@ -128,6 +128,7 @@ for g in gg:
                 to_exclude = np.arange(intervals[1],length[g],1)                
             else:
                 to_exclude = np.arange(0,intervals[f],1) + np.arange(intervals[f+1],length[g],1)
+        print(to_exclude)
         data_csv = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float},skiprows=to_exclude)
         f = f+1
         
