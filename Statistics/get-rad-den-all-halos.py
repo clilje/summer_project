@@ -62,7 +62,7 @@ def radial_density(partx, party, partz, mass, binsize, halox, haloy, haloz):
     rad_lowerbound = []
     uncertainties = []
     dis = distancefromcentre(halox, haloy, haloz, partx, party, partz)
-    print(np.min(dis))
+    #print(np.min(dis))
     #virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
     #virindex = np.where(np.logical_and(dis.astype(float)>float(virrad-10), dis.astype(float)<float(virrad+10)))[0]
     mass = np.array(mass)
@@ -91,10 +91,11 @@ def radial_density(partx, party, partz, mass, binsize, halox, haloy, haloz):
     
     
     below_virR = np.where((density).astype(float)<float(p_crit*200))[0]
+    print(density)
     print(below_virR)
     print(density[below_virR[-10:-1]])
-    print(rad_lowerbound)
-    virR = np.max(rad_lowerbound[below_virR])
+    #print(rad_lowerbound)
+    virR = np.min(rad_lowerbound[below_virR])
     return(density, rad_lowerbound, uncertainties, virR)
 
 subhalo_info = pd.read_csv('50-1-subhalo-info.csv')
