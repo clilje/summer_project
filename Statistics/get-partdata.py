@@ -22,7 +22,7 @@ fields = ['SubhaloPos','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
 
 
 subhalos = groupcat.loadSubhalos(basePath,99,fields=fields)
-num_halo = np.arange(len(np.array(subhalos['SubhaloMass']))+1)
+num_halo = np.arange(len(np.array(subhalos['SubhaloMass'])))
 
 a = (groupcat.loadHeader(basePath, snapnum)['Time']).astype('int')  #scalefactor
 z = (groupcat.loadHeader(basePath, snapnum)['Redshift']).astype('float')  #redshift
