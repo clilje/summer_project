@@ -60,9 +60,9 @@ for x in xx:
     num_parts = subhalos['SubhaloLen']
     #print(num_parts[0:50])
     gasparts = snapshot.loadSubhalo(basePath, snapnum, x, 'gas', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
-    starparts = snapshot.loadSubalo(basePath, snapnum, x, 'stars', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
-    bhparts = snapshot.loadSubalo(basePath, snapnum, x, 'bh', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
-    dmparts = snapshot.loadSubalo(basePath, snapnum, x, 'dm', fields=['Coordinates','ParticleIDs','Velocities'])
+    starparts = snapshot.loadSubhalo(basePath, snapnum, x, 'stars', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
+    bhparts = snapshot.loadSubhalo(basePath, snapnum, x, 'bh', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
+    dmparts = snapshot.loadSubhalo(basePath, snapnum, x, 'dm', fields=['Coordinates','ParticleIDs','Velocities'])
     
     
     with h5py.File(snapshot.snapPath(basePath,snapnum),'r') as f:
