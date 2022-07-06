@@ -195,6 +195,7 @@ for g in gg:
     miniderek.to_csv(filename+'.csv', mode='w')
     miniderek = miniderek[0:0]
     g += 1 
+    ax = plt.axes(projection =None)
     plt.errorbar(rad_den[1]/(virrad), rad_den[0]/(virden), yerr=rad_den[2], fmt='.', label="Halo_"+str(g)+"_099", color='green')
     plt.xscale('log')
     plt.yscale('log')
