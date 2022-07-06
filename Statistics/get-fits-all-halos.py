@@ -53,6 +53,7 @@ numhalos = len(subhalo_index)
 
 pdheader = ['Radius','Density','Uncertainty','Virial Radius']
 #derek = pd.DataFrame(columns=pdheader)
+"""
 with open('HaloFitsInfo/50-4_snap_99_fit_param.csv', 'x', encoding='UTF8', newline='') as f:
     
     header = ['Halo Number','DataPoints','NFW Scale Density','NFW Scale Radius','NFW Scale Density Uncertainty',
@@ -68,6 +69,7 @@ with open('HaloFitsInfo/50-4_snap_99_fit_param.csv', 'x', encoding='UTF8', newli
     fwriter = csv.writer(f, delimiter=',')
     # Write the header
     fwriter.writerow(header)
+    """
 while g < 54:
     data_csv = pd.read_csv('HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den.csv')
     
@@ -114,7 +116,7 @@ while g < 54:
     print ('Uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(dehnen_threeparamfitcov)))
     
     
-    with open('HaloFits/50-4_snap_99_fit_param.csv', 'a', encoding='UTF8', newline='') as f:
+    with open('HaloFitsInfo/50-4_snap_99_fit_param.csv', 'a', encoding='UTF8', newline='') as f:
         data = [subhalo_index[0],num_datapoints,nfwfitp[0],nfwfitp[1],np.sqrt(np.diag(nfwfitcov))[0],
                   np.sqrt(np.diag(nfwfitcov))[1],nfwchi_square_test_statistic,nfwp_value,
                   burkertfitp[0],burkertfitp[1],
