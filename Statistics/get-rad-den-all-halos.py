@@ -108,7 +108,7 @@ radius = subhalo_info['SubhaloHalfmassRad'].to_numpy()
 full_mass = subhalo_info['SubhaloMass'].to_numpy()
 length = subhalo_info['SubhaloLen'].to_numpy().astype(int)
 
-g = 50
+g = 51
 numhalos = len(subhalo_index)
 
 
@@ -117,22 +117,24 @@ pdheader = ['Radius','Density','Uncertainty','Virial Radius']
 #derek = pd.DataFrame(columns=pdheader)
 
 while g < len(full_mass):
-    intervals = np.arange(0,length[g],500000)
-    #print(intervals)
-    f = 0
-    
-    while intervals[f] < length[g]:
-        if intervals[-1] == 0:
-            to_exclude = []
-        else:
-            if f == 0:
-                to_exclude = np.arange(intervals[1],length[g],1)                
-            else:
-                to_exclude = np.arange(0,intervals[f],1) + np.arange(intervals[f+1],length[g],1)
-        print(to_exclude)
-        data_csv = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float},skiprows=to_exclude)
-        f = f+1
+    if length[g] > 900000:
+        intervals = np.arange(0,length[g],500000)
+        #print(intervals)
+        f = 0
         
+        while intervals[f] < length[g]:
+            if intervals[-1] == 0:
+                to_exclude = []
+            else:
+                if f == 0:
+                    to_exclude = np.arange(intervals[1],length[g],1)                
+                else:
+                    to_exclude = np.arange(0,intervals[f],1) + np.arange(intervals[f+1],length[g],1)
+            print(to_exclude)
+            data_csv = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float},skiprows=to_exclude)
+            f = f+1
+        else:
+            data_csv = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float})
         
         partx = data_csv['x'].to_numpy().astype(float)
         party = data_csv['y'].to_numpy().astype(float)
