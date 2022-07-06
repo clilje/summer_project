@@ -129,11 +129,17 @@ pdheader = ['Radius','Density','Uncertainty','Virial Radius']
 for g in gg:
     data_csv = pd.read_csv('HaloParticles50-1-pd/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':'string','y':'string','z':'string','mass':'string','vx':'string','vy':'string','vz':'string'})
     #data_csv = data_csv.convert_dtypes()
+    print(len(data_csv))
+    data_csv = data_csv[data_csv['x']!='x']
+    print(len(data_csv))
+    '''
     length_csv = len(data_csv)
     steps = np.arange(0,length_csv,900000)
     for i in steps:
+        data_csv.iloc[i,:]
+
         data_csv.drop(i)
-    
+    '''
     partx = data_csv['x'].to_numpy().astype(float)
     party = data_csv['y'].to_numpy().astype(float)
     partz = data_csv['z'].to_numpy().astype(float)
