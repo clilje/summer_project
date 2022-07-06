@@ -117,6 +117,7 @@ while g < 54:
     
     
     with open('HaloFitsInfo/50-4_snap_99_fit_param.csv', 'a', encoding='UTF8', newline='') as f:
+        fwriter = csv.writer(f, delimiter=',')
         data = [subhalo_index[0],num_datapoints,nfwfitp[0],nfwfitp[1],np.sqrt(np.diag(nfwfitcov))[0],
                   np.sqrt(np.diag(nfwfitcov))[1],nfwchi_square_test_statistic,nfwp_value,
                   burkertfitp[0],burkertfitp[1],
