@@ -40,7 +40,7 @@ concentration = []
 for g in indices:
     data_csv = pd.read_csv('HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den.csv')
     
-    virrad = data_csv['Virial Radius']
+    virrad = data_csv['Virial Radius'][0]
     #den = data_csv['Density']
     #uncer = data_csv['Uncertainty']
     concentration.append(virrad/nfw_scalerad[g])
@@ -48,3 +48,5 @@ for g in indices:
     g +=1
     
 plt.plot(full_mass[indices],concentration)
+plt.savefig('cmfunc')
+plt.show()
