@@ -117,7 +117,7 @@ full_mass = subhalo_info['SubhaloMass'].to_numpy()
 #print(positions[2])
 #print(radius[2])
 #halonumber = []
-gg = [100,3000,43000]
+gg = [100,102,103]
 numhalos = len(subhalo_index)
 #densities = []
 #uncertainties = []
@@ -144,7 +144,7 @@ for g in gg:
     party = data_csv['y'].to_numpy().astype(float)
     partz = data_csv['z'].to_numpy().astype(float)
     mass = data_csv['mass'].to_numpy().astype(float)
-    
+    """
     pos = np.vstack((partx,party,partz)).T
     CM = np.average(pos, axis=0, weights=mass)
     print(CM)
@@ -162,15 +162,19 @@ for g in gg:
     #print(np.where(np.logical_and((num_parts<(len(partx)+100)),(num_parts>(len(partx)-100)))))
     #print(len(partx))
     
+    """
+    halo_50 = [positionsX[g],positionsY[g],positionsZ[g], radius[g], full_mass[g]]
+    print(full_mass[g])
+    print(np.sum(mass))
     
     fig = plt.figure()
     ax = plt.axes(projection ='3d')
     xyz = np.arange(len(partx))
     index = np.random.choice(xyz,200)
     ax.scatter(partx[index], party[index], partz[index], marker='+',color='blue',alpha=0.1)
-    #ax.scatter(halo_50[0], halo_50[1], halo_50[2], marker='+',color='red')
-    ax.scatter(positionsX[index_sub],positionsY[index_sub],positionsZ[index_sub],marker='x', color='black')
-    ax.scatter(CM[0], CM[1], CM[2], marker='+',color='pink')
+    ax.scatter(halo_50[0], halo_50[1], halo_50[2], marker='+',color='red')
+    #ax.scatter(positionsX[index_sub],positionsY[index_sub],positionsZ[index_sub],marker='x', color='black')
+    #ax.scatter(CM[0], CM[1], CM[2], marker='+',color='pink')
     
     ax.set_xlabel('x [ckpc/h]')
     
