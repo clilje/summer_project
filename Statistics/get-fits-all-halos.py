@@ -53,7 +53,7 @@ numhalos = len(subhalo_index)
 
 pdheader = ['Radius','Density','Uncertainty','Virial Radius']
 #derek = pd.DataFrame(columns=pdheader)
-with open('HaloFits/50-4_snap_99_fit_param.csv', 'w', encoding='UTF8', newline='') as f:
+with open('HaloFits/50-4_snap_99_fit_param.csv', 'x', encoding='UTF8', newline='') as f:
     
     header = ['Halo Number','DataPoints','NFW Scale Density','NFW Scale Radius','NFW Scale Density Uncertainty',
               'NFW Scale Radius Uncertainty','NFW ChiSquare','NFW P-Value','Burkert Scale Density','Burkert Scale Radius',
