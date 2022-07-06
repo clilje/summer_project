@@ -90,6 +90,7 @@ def radial_density(partx, party, partz, mass, binsize, halox, haloy, haloz):
         bin_lowerbound = bin_lowerbound+binsize
     
     
+    #normalized = 
     below_virR = np.where((density).astype(float)<float(p_crit*200))[0]
     print(density)
     print(below_virR)
@@ -132,7 +133,7 @@ for g in gg:
     
     
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
-    rad_den = radial_density((data_csv['x'].to_numpy()*h), (data_csv['y'].to_numpy()*h), (data_csv['z'].to_numpy()*h),(data_csv['mass'].to_numpy()*h*(10**10)), 10, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
+    rad_den = radial_density((data_csv['x'].to_numpy()*h), (data_csv['y'].to_numpy()*h), (data_csv['z'].to_numpy()*h),(data_csv['mass'].to_numpy()*h*(10**10)), 25, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
     #mass in solar masses
     #distances in kpc
     virrad = rad_den[3]
@@ -148,13 +149,14 @@ for g in gg:
     g += 1 
     #ax = plt.axes(projection =None)
     plt.errorbar(rad_den[1]/(virrad), rad_den[0]/(virden), yerr=rad_den[2]/virden, fmt='.', label="Halo_"+str(g)+"_099", color='green')
-    plt.axhline(200*p_crit)
-    plt.xlabel('kpc')
-    plt.ylabel('$M_{\odot}$')
+    plt.axhline(1)
+    plt.xlabel('Radial Distance normalized by $r_{200}$ in kpc')
+    plt.ylabel('Density normalized by $\rho_{200}$ in $M_{\odot}/kpc^{-3}$')
     plt.xscale('log')
     plt.yscale('log')
-    plt.savefig('HaloFitsInfo/fit-profiles-halo-'+str(g)+'.jpg')
     
+    plt.savefig('HaloFitsInfo/fit-profiles-halo-'+str(g)+'.jpg')
+    plt.clf()
     '''
     fig = plt.figure()
     ax = plt.axes(projection ='3d')
