@@ -106,7 +106,7 @@ positionsY = subhalo_info['SubhaloPosY'].to_numpy()
 positionsZ = subhalo_info['SubhaloPosZ'].to_numpy()
 radius = subhalo_info['SubhaloHalfmassRad'].to_numpy()
 full_mass = subhalo_info['SubhaloMass'].to_numpy()
-length = subhalo_info['SubhaloLen'].to_numpy().
+length = subhalo_info['SubhaloLen'].to_numpy()
 
 g = 51
 numhalos = len(subhalo_index)
