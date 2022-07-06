@@ -22,6 +22,8 @@ if dark == True:
     basePath = '/disk01/rmcg/downloaded/tng/tng'+str(size)+'-'+str(res)+'-dark'
 else:
    basePath = '/disk01/rmcg/downloaded/tng/tng'+str(size)+'-'+str(res) 
+
+
 fields = ['SubhaloPos','SubhaloHalfmassRad','SubhaloMass']
 
 print(round(time.time()-tt,2))
@@ -37,10 +39,10 @@ z = (groupcat.loadHeader(basePath, snapnum)['Redshift']).astype('float')  #redsh
 #tt = time.time()
 #print(groupcat.loadHeader(basePath, snapnum))
 
-x = 0
+x = 50
 c = []
 pdheader = ['ID','Type','x','y','z','mass','vx','vy','vz']
-while x <= 50:
+while x <= len(np.array(subhalos['SubhaloMass'])):
     if dark == False: 
         filename = 'FullRun/snap_99_halo_'+str(x)
     else: 
