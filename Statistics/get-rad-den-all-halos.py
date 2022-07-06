@@ -96,7 +96,7 @@ def radial_density(partx, party, partz, mass, binsize, halox, haloy, haloz):
     #print(above_virR)
     #print(density[below_virR[-10:-1]])
     #print(rad_lowerbound)
-    virR = np.min(rad_lowerbound[above_virR])
+    virR = np.max(rad_lowerbound[above_virR])
     print(virR)
     return(density, rad_lowerbound, uncertainties, virR)
 
