@@ -121,10 +121,13 @@ for g in gg:
     print(intervals)
     f = 0
     while f <= len(intervals):
-        if f == 0:
-            to_exclude = np.arange(intervals[1],length[g],1)
+        if len(intervals) == 0:
+            to_exclude = []
         else:
-            to_exclude = np.arange(0,intervals[f]) + np.arange(intervals[f],length[g],1)
+            if f == 0:
+                to_exclude = np.arange(intervals[1],length[g],1)
+            else:
+                to_exclude = np.arange(0,intervals[f]) + np.arange(intervals[f],length[g],1)
         data_csv = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float},skiprows=to_exclude)
         f = f+1
         partx = data_csv['x'].to_numpy().astype(float)
