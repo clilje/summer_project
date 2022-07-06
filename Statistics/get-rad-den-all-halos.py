@@ -121,7 +121,7 @@ for g in gg:
     print(intervals)
     f = 0
     while f <= len(intervals):
-        if len(intervals) == 0:
+        if intervals[-1] == 0:
             to_exclude = []
         else:
             if f == 0:
