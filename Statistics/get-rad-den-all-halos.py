@@ -197,7 +197,7 @@ for g in gg:
     g += 1 
     #ax = plt.axes(projection =None)
     plt.errorbar(rad_den[1]/(virrad), rad_den[0]/(virden), yerr=rad_den[2]/virden, fmt='.', label="Halo_"+str(g)+"_099", color='green')
-    plt.hline(200*p_crit)
+    plt.axhline(200*p_crit)
     plt.xlabel('kpc')
     plt.ylabel('$M_{\odot}$')
     plt.xscale('log')
