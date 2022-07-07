@@ -56,7 +56,7 @@ weighted_chisquare = nfw_chisquare/weight
 lower_end = np.where(weighted_chisquare<(10**3))[0]
 print(lower_end)
 print(weighted_chisquare)
-plt.plot((full_mass[indices][lower_end]*h),concentration[lower_end],'.')
+plt.plot((full_mass[indices][lower_end])*h,concentration[lower_end],'.')
 plt.xscale('log')
 plt.xlabel(r'Total Mass of Halo in $10^{10} M_{\odot}$')
 plt.ylabel(r'$c_{200}$')
