@@ -47,9 +47,24 @@ for g in indices:
     #num_datapoints = len(data_csv['Radius'])
     g +=1
     
-plt.plot(full_mass[indices],concentration,'.')
+plt.plot((full_mass[indices]*h),concentration,'.')
 plt.xscale('log')
-plt.xlabel(r'Total Mass of cluster in $10^{10} M_{\odot}$')
+plt.xlabel(r'Total Mass of Halo in $10^{10} M_{\odot}$')
 plt.ylabel(r'$c_{200}$')
 plt.savefig('cmfunc')
 plt.show()
+
+fig = plt.figure()
+ax = plt.axes(projection ='3d')
+xyz = np.arange(len(positionsX))
+index = np.random.choice(xyz,2000)
+ax.scatter(positionsX[index], positionsY[index], positionsZ[index],c=weighted_chisquare, marker='.',cmap='hot',alpha=0.1)
+#ax.scatter(halo_50[0], halo_50[1], halo_50[2], marker='+',color='red')
+#ax.scatter(positionsX[index_sub],positionsY[index_sub],positionsZ[index_sub],marker='x', color='black')
+#ax.scatter(CM[0], CM[1], CM[2], marker='+',color='pink')
+
+ax.set_xlabel('x [ckpc/h]')
+
+ax.set_ylabel('y [ckpc/h]')
+ax.set_zlabel('z [ckpc/h]')
+fig.savefig('Heatmap')
