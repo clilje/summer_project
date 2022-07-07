@@ -71,7 +71,7 @@ def radial_density(partx, party, partz, mass, binsize, halox, haloy, haloz):
     upperbound =(bin_lowerbound+binsize)
     j = 0
     
-    while j < 1:
+    while j < 1:           
         if upperbound > len(dis):
             upperbound = len(dis)
             j = 1
@@ -108,7 +108,7 @@ radius = subhalo_info['SubhaloHalfmassRad'].to_numpy()
 full_mass = subhalo_info['SubhaloMass'].to_numpy()
 length = subhalo_info['SubhaloLen'].to_numpy()
 
-g = 1
+g = 63865
 numhalos = len(subhalo_index)
 
 
@@ -118,6 +118,8 @@ pdheader = ['Radius','Density','Uncertainty']
 
 while g < numhalos:
     
+    if g in [0,63864,96762,117250,184931,198182,143880,208811,229933,220595,167392,253861,242788,264883]:
+        g +=1
     #chunksize = 999999
     #chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float})
     #y = 0
