@@ -116,9 +116,12 @@ while g < numhalos:
     #y = 0
     #for chunk in data_csv:
     #process(chunk)  
-    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['x'],dtype={'x':object}).query('x != x')
+    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['x'],dtype={'x':object})
+    chunk = chunk[chunk['x'] != 'x']
     print('success')
     partx = chunk['x'].to_numpy().astype(float)
+    print(partx)
+    exit()
     chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['y'],dtype={'y':object}).query('y != y')
     party = chunk['y'].to_numpy().astype(float)
     chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['z'],dtype={'z':object}).query('z != z')
