@@ -47,6 +47,9 @@ for g in indices:
     #num_datapoints = len(data_csv['Radius'])
     g +=1
     
-plt.plot(full_mass[indices],concentration)
+plt.plot(full_mass[indices],concentration,'.')
+plt.xscale('log')
+plt.xlabel(r'Total Mass of cluster in $10^{10} M_{\odot}$')
+plt.ylable('$c_{200}$')
 plt.savefig('cmfunc')
 plt.show()
