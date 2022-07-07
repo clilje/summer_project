@@ -49,19 +49,24 @@ for g in indices:
     #num_datapoints = len(data_csv['Radius'])
     g +=1
 
+
+#lower_end = np.where(weighted_chisquare<np.mean(weighted_chisquare))
 weighted_chisquare = nfw_chisquare/weight
-plt.plot((full_mass[indices]*h),concentration,'.')
+lower_end = np.where(weighted_chisquare<np.mean(weighted_chisquare))[0]
+print(weighted_chisquare)
+plt.plot((full_mass[indices][lower_end]*h),concentration[lower_end],'.')
 plt.xscale('log')
 plt.xlabel(r'Total Mass of Halo in $10^{10} M_{\odot}$')
 plt.ylabel(r'$c_{200}$')
-plt.savefig('cmfunc')
+plt.savefig('cmfunc-reduced')
 plt.show()
 
 fig = plt.figure()
 ax = plt.axes(projection ='3d')
 xyz = np.arange(len(positionsX[indices]))
 index = np.random.choice(xyz,2000)
-p = ax.scatter3D(positionsX[indices], positionsY[indices], positionsZ[indices],c=weighted_chisquare, marker='.',cmap='hot',alpha=0.1)
+
+p = ax.scatter3D(positionsX[indices][lower_end], positionsY[indices][lower_end], positionsZ[indices][lower_end],c=weighted_chisquare[lower_end], marker='.',cmap='hot',alpha=0.3)
 #ax.scatter(halo_50[0], halo_50[1], halo_50[2], marker='+',color='red')
 #ax.scatter(positionsX[index_sub],positionsY[index_sub],positionsZ[index_sub],marker='x', color='black')
 #ax.scatter(CM[0], CM[1], CM[2], marker='+',color='pink')
@@ -70,4 +75,4 @@ ax.set_xlabel('x [ckpc/h]')
 
 ax.set_ylabel('y [ckpc/h]')
 ax.set_zlabel('z [ckpc/h]')
-fig.savefig('Heatmap')
+fig.savefig('Heatmap-reduced')
