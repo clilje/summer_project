@@ -75,7 +75,8 @@ def radial_density(partx, party, partz, mass, binsize, halox, haloy, haloz):
         if upperbound > len(dis):
             upperbound = len(dis)
             j = 1
-        
+        if bin_lowerbound == upperbound:
+            break
         index_in_bin = bin_index[bin_lowerbound:upperbound]
         radius_upperbound = dis[index_in_bin][-1]
         dV = (4/3)*math.pi*(np.power(radius_upperbound,3)-np.power(radius_lowerbound,3))
