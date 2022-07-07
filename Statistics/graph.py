@@ -43,7 +43,7 @@ for g in indices:
     virrad = data_csv['Virial Radius'][0]
     #den = data_csv['Density']
     #uncer = data_csv['Uncertainty']
-    concentration.append(virrad/nfw_scalerad[g-1])
+    concentration.append(virrad/nfw_scalerad[g-indices[0]])
     #num_datapoints = len(data_csv['Radius'])
     g +=1
     
