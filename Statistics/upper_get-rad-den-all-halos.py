@@ -68,9 +68,15 @@ def radial_density(partx, party, partz, mass, binsize, halox, haloy, haloz):
     bin_index = np.argsort(dis)
     radius_lowerbound = 0
     bin_lowerbound = 0
+    upperbound =(bin_lowerbound+binsize)
+    j = 0
     
-    while (bin_lowerbound+binsize) < len(dis):
-        index_in_bin = bin_index[bin_lowerbound:(bin_lowerbound+binsize)]
+    while j < 1:
+        if upperbound > len(dis):
+            upperbound = len(dis)
+            j = 1
+        
+        index_in_bin = bin_index[bin_lowerbound:upperbound]
         radius_upperbound = dis[index_in_bin][-1]
         dV = (4/3)*math.pi*(np.power(radius_upperbound,3)-np.power(radius_lowerbound,3))
         
@@ -82,8 +88,8 @@ def radial_density(partx, party, partz, mass, binsize, halox, haloy, haloz):
         dn = len(index_in_bin)
         uncertainties = np.append(uncertainties, subdensity/np.sqrt(dn))
         radius_lowerbound = radius_upperbound
-        bin_lowerbound = bin_lowerbound+binsize
-        
+        bin_lowerbound = upperbound
+        upperbound = bin_lowerbound+binsize
     """
     above_virR = np.where((density).astype(float)>float(p_crit*200))[0]
     virR = np.max(rad_lowerbound[above_virR])
@@ -101,7 +107,7 @@ radius = subhalo_info['SubhaloHalfmassRad'].to_numpy()
 full_mass = subhalo_info['SubhaloMass'].to_numpy()
 length = subhalo_info['SubhaloLen'].to_numpy()
 
-g = 50
+g = 1
 numhalos = len(subhalo_index)
 
 
@@ -132,7 +138,13 @@ while g < numhalos:
     chunk = chunk[chunk['mass'] != 'mass']
     mass = chunk['mass'].to_numpy().astype(float)
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
-    rad_den = radial_density((partx*h), (party*h), (partz*h),(mass*h*(10**10)), 50, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
+    
+    if len(partx) < 600:
+        binsize = 3
+    else:
+        binsize = int(len(partx)/200)
+    
+    rad_den = radial_density((partx*h), (party*h), (partz*h),(mass*h*(10**10)), binsize, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
     #mass in solar masses
     #distances in kpc
     #virrad = rad_den[3]
@@ -143,7 +155,7 @@ while g < numhalos:
     miniderek['Density']=rad_den[0]
     miniderek['Uncertainty']=rad_den[2]
     print(miniderek)
-    miniderek.to_csv(filename+'.csv', mode='w')
+    miniderek.to_csv(filename+'.csv')
     miniderek = miniderek[0:0]
     #y += 1
     #print('chunk'+str(y))

@@ -109,7 +109,13 @@ numhalos = len(subhalo_index)
 pdheader = ['Radius','Density','Uncertainty']
 #derek = pd.DataFrame(columns=pdheader)
 
-while g < 50:
+while g < 1:
+    
+    #chunksize = 999999
+    #chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float})
+    #y = 0
+    #for chunk in data_csv:
+    #process(chunk)  
     chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['x'],dtype={'x':object})
     chunk = chunk[chunk['x'] != 'x']
     print('success')
@@ -126,7 +132,13 @@ while g < 50:
     chunk = chunk[chunk['mass'] != 'mass']
     mass = chunk['mass'].to_numpy().astype(float)
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
-    rad_den = radial_density((partx*h), (party*h), (partz*h),(mass*h*(10**10)), 50, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
+    
+    if len(partx) < 600:
+        binsize = 3
+    else:
+        binsize = int(len(partx)/200)
+    
+    rad_den = radial_density((partx*h), (party*h), (partz*h),(mass*h*(10**10)), binsize, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
     #mass in solar masses
     #distances in kpc
     #virrad = rad_den[3]
@@ -137,8 +149,42 @@ while g < 50:
     miniderek['Density']=rad_den[0]
     miniderek['Uncertainty']=rad_den[2]
     print(miniderek)
-    miniderek.to_csv(filename+'.csv', mode='w')
+    miniderek.to_csv(filename+'.csv')
     miniderek = miniderek[0:0]
     #y += 1
     #print('chunk'+str(y))
     g += 1 
+    
+    
+
+    
+    
+    
+    """
+    #ax = plt.axes(projection =None)
+    plt.errorbar(rad_den[1]/(virrad), rad_den[0]/(virden), yerr=rad_den[2]/virden, fmt='.', label="Halo_"+str(g)+"_099", color='green')
+    plt.axhline(1)
+    plt.xlabel(r'Radial Distance normalized by $r_{200}$ in kpc')
+    plt.ylabel(r'Density normalized by $\rho_{200}$ in $M_{\odot}/kpc^{-3}$')
+    plt.xscale('log')
+    plt.yscale('log')
+    
+    plt.savefig('HaloFitsInfo/fit-profiles-halo-'+str(g)+'.jpg')
+    plt.clf()
+    """
+    '''
+    fig = plt.figure()
+    ax = plt.axes(projection ='3d')
+    xyz = np.arange(len(partx))
+    index = np.random.choice(xyz,200)
+    ax.scatter(partx[index], party[index], partz[index], marker='+',color='blue',alpha=0.1)
+    ax.scatter(halo_50[0], halo_50[1], halo_50[2], marker='+',color='red')
+    #ax.scatter(positionsX[index_sub],positionsY[index_sub],positionsZ[index_sub],marker='x', color='black')
+    #ax.scatter(CM[0], CM[1], CM[2], marker='+',color='pink')
+    
+    ax.set_xlabel('x [ckpc/h]')
+    
+    ax.set_ylabel('y [ckpc/h]')
+    ax.set_zlabel('z [ckpc/h]')
+    fig.savefig('HaloFitsInfo/halocomp-'+str(g))
+    '''
