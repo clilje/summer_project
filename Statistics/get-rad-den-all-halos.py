@@ -116,14 +116,14 @@ while g < numhalos:
     #y = 0
     #for chunk in data_csv:
     #process(chunk)  
-    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['x'],dtype={'x':np.float32})
+    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['x'],dtype={'x':object}).query('x != x')
     print('success')
     partx = chunk['x'].to_numpy().astype(float)
-    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['y'],dtype={'y':np.float32})
+    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['y'],dtype={'y':object}).query('y != y')
     party = chunk['y'].to_numpy().astype(float)
-    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['z'],dtype={'z':np.float32})
+    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['z'],dtype={'z':object}).query('z != z')
     partz = chunk['z'].to_numpy().astype(float)
-    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['mass'],dtype={'mass':np.float32})
+    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['mass'],dtype={'mass':object}).query('mass != mass')
     mass = chunk['mass'].to_numpy().astype(float)
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
     rad_den = radial_density((chunk['x'].to_numpy()*h), (chunk['y'].to_numpy()*h), (chunk['z'].to_numpy()*h),(chunk['mass'].to_numpy()*h*(10**10)), 50, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
