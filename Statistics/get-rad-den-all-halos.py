@@ -111,31 +111,36 @@ pdheader = ['Radius','Density','Uncertainty']
 
 while g < numhalos:
     
-    chunksize = 999999
-    with pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float}, chunksize=chunksize) as data_csv:
-        y = 0
-        for chunk in data_csv:
-            #process(chunk)    
-            partx = chunk['x'].to_numpy().astype(float)
-            party = chunk['y'].to_numpy().astype(float)
-            partz = chunk['z'].to_numpy().astype(float)
-            mass = chunk['mass'].to_numpy().astype(float)
-            filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
-            rad_den = radial_density((chunk['x'].to_numpy()*h), (chunk['y'].to_numpy()*h), (chunk['z'].to_numpy()*h),(chunk['mass'].to_numpy()*h*(10**10)), 50, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
-            #mass in solar masses
-            #distances in kpc
-            #virrad = rad_den[3]
-            virden = 200*p_crit
-            miniderek = pd.DataFrame(columns=pdheader)
-            miniderek['Radius']=rad_den[1]
-            #miniderek['Virial Radius']=[virrad]*len(rad_den[0])
-            miniderek['Density']=rad_den[0]
-            miniderek['Uncertainty']=rad_den[2]
-            print(miniderek)
-            miniderek.to_csv(filename+'.csv', mode='a')
-            miniderek = miniderek[0:0]
-            y += 1
-            print('chunk'+str(y))
+    #chunksize = 999999
+    #chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float})
+    #y = 0
+    #for chunk in data_csv:
+    #process(chunk)  
+    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['x'],dtype={'x':np.float32})
+    print('success')
+    partx = chunk['x'].to_numpy().astype(float)
+    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['y'],dtype={'y':np.float32})
+    party = chunk['y'].to_numpy().astype(float)
+    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['z'],dtype={'z':np.float32})
+    partz = chunk['z'].to_numpy().astype(float)
+    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['mass'],dtype={'mass':np.float32})
+    mass = chunk['mass'].to_numpy().astype(float)
+    filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
+    rad_den = radial_density((chunk['x'].to_numpy()*h), (chunk['y'].to_numpy()*h), (chunk['z'].to_numpy()*h),(chunk['mass'].to_numpy()*h*(10**10)), 50, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
+    #mass in solar masses
+    #distances in kpc
+    #virrad = rad_den[3]
+    virden = 200*p_crit
+    miniderek = pd.DataFrame(columns=pdheader)
+    miniderek['Radius']=rad_den[1]
+    #miniderek['Virial Radius']=[virrad]*len(rad_den[0])
+    miniderek['Density']=rad_den[0]
+    miniderek['Uncertainty']=rad_den[2]
+    print(miniderek)
+    miniderek.to_csv(filename+'.csv', mode='a')
+    miniderek = miniderek[0:0]
+    #y += 1
+    #print('chunk'+str(y))
     g += 1 
     
     
