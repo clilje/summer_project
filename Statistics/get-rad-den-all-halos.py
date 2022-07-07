@@ -124,7 +124,7 @@ while g < numhalos:
             rad_den = radial_density((chunk['x'].to_numpy()*h), (chunk['y'].to_numpy()*h), (chunk['z'].to_numpy()*h),(chunk['mass'].to_numpy()*h*(10**10)), 50, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
             #mass in solar masses
             #distances in kpc
-            virrad = rad_den[3]
+            #virrad = rad_den[3]
             virden = 200*p_crit
             miniderek = pd.DataFrame(columns=pdheader)
             miniderek['Radius']=rad_den[1]
