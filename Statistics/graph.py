@@ -34,9 +34,10 @@ nfw_scalerad = fit_param['NFW Scale Radius'].to_numpy()
 datapoint = fit_param['DataPoints'].to_numpy()
 indices = fit_param['Halo Number'].to_numpy().astype(int)
 numhalos = len(subhalo_index)
-weighted_chisquare = nfw_chisquare/datapoint
+#weighted_chisquare = nfw_chisquare
 #g = 51
 concentration = []
+weight = []
 for g in indices:
     data_csv = pd.read_csv('HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den.csv')
     
@@ -44,9 +45,11 @@ for g in indices:
     #den = data_csv['Density']
     #uncer = data_csv['Uncertainty']
     concentration.append(virrad/nfw_scalerad[g-indices[0]])
+    weight.append(len(data_csv['Virial Radius']))
     #num_datapoints = len(data_csv['Radius'])
     g +=1
-    
+
+weighted_chisquare = nfw_chisquare[indices]/weight
 plt.plot((full_mass[indices]*h),concentration,'.')
 plt.xscale('log')
 plt.xlabel(r'Total Mass of Halo in $10^{10} M_{\odot}$')
