@@ -101,7 +101,7 @@ radius = subhalo_info['SubhaloHalfmassRad'].to_numpy()
 full_mass = subhalo_info['SubhaloMass'].to_numpy()
 length = subhalo_info['SubhaloLen'].to_numpy()
 
-g = [0,63864,96762,117250,184931,198182,143880,208811,229933,220595,167392,253861,242788,264883]
+gg = [0,63864,96762,117250,184931,198182,143880,208811,229933,220595,167392,253861,242788,264883]
 numhalos = len(subhalo_index)
 
 
@@ -109,7 +109,7 @@ numhalos = len(subhalo_index)
 pdheader = ['Radius','Density','Uncertainty']
 #derek = pd.DataFrame(columns=pdheader)
 
-while g < 1:
+for g in gg:
     
     #chunksize = 999999
     #chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float})
