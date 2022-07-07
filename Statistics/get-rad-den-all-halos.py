@@ -110,20 +110,20 @@ pdheader = ['Radius','Density','Uncertainty']
 #derek = pd.DataFrame(columns=pdheader)
 
 while g < 50:
-    
-    #chunksize = 999999
-    #chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', dtype={'':int,'ID':object,'Type':'string','x':float,'y':float,'z':float,'mass':float,'vx':float,'vy':float,'vz':float})
-    #y = 0
-    #for chunk in data_csv:
-    #process(chunk)  
-    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['x'],dtype={'x':object}).query('x != x')
+    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['x'],dtype={'x':object})
+    chunk = chunk[chunk['x'] != 'x']
     print('success')
     partx = chunk['x'].to_numpy().astype(float)
-    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['y'],dtype={'y':object}).query('y != y')
+    print(partx)
+    #exit()
+    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['y'],dtype={'y':object})
+    chunk = chunk[chunk['y'] != 'y']
     party = chunk['y'].to_numpy().astype(float)
-    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['z'],dtype={'z':object}).query('z != z')
+    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['z'],dtype={'z':object})
+    chunk = chunk[chunk['z'] != 'z']
     partz = chunk['z'].to_numpy().astype(float)
-    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['mass'],dtype={'mass':object}).query('mass != mass')
+    chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['mass'],dtype={'mass':object})
+    chunk = chunk[chunk['mass'] != 'mass']
     mass = chunk['mass'].to_numpy().astype(float)
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
     rad_den = radial_density((partx*h), (party*h), (partz*h),(mass*h*(10**10)), 50, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
@@ -142,37 +142,3 @@ while g < 50:
     #y += 1
     #print('chunk'+str(y))
     g += 1 
-    
-    
-
-    
-    
-    
-    """
-    #ax = plt.axes(projection =None)
-    plt.errorbar(rad_den[1]/(virrad), rad_den[0]/(virden), yerr=rad_den[2]/virden, fmt='.', label="Halo_"+str(g)+"_099", color='green')
-    plt.axhline(1)
-    plt.xlabel(r'Radial Distance normalized by $r_{200}$ in kpc')
-    plt.ylabel(r'Density normalized by $\rho_{200}$ in $M_{\odot}/kpc^{-3}$')
-    plt.xscale('log')
-    plt.yscale('log')
-    
-    plt.savefig('HaloFitsInfo/fit-profiles-halo-'+str(g)+'.jpg')
-    plt.clf()
-    """
-    '''
-    fig = plt.figure()
-    ax = plt.axes(projection ='3d')
-    xyz = np.arange(len(partx))
-    index = np.random.choice(xyz,200)
-    ax.scatter(partx[index], party[index], partz[index], marker='+',color='blue',alpha=0.1)
-    ax.scatter(halo_50[0], halo_50[1], halo_50[2], marker='+',color='red')
-    #ax.scatter(positionsX[index_sub],positionsY[index_sub],positionsZ[index_sub],marker='x', color='black')
-    #ax.scatter(CM[0], CM[1], CM[2], marker='+',color='pink')
-    
-    ax.set_xlabel('x [ckpc/h]')
-    
-    ax.set_ylabel('y [ckpc/h]')
-    ax.set_zlabel('z [ckpc/h]')
-    fig.savefig('HaloFitsInfo/halocomp-'+str(g))
-    '''
