@@ -49,7 +49,7 @@ for g in indices:
     #num_datapoints = len(data_csv['Radius'])
     g +=1
 
-weighted_chisquare = nfw_chisquare[indices]/weight
+weighted_chisquare = nfw_chisquare/weight
 plt.plot((full_mass[indices]*h),concentration,'.')
 plt.xscale('log')
 plt.xlabel(r'Total Mass of Halo in $10^{10} M_{\odot}$')
