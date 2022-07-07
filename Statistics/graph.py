@@ -58,11 +58,11 @@ fig = plt.figure()
 ax = plt.axes(projection ='3d')
 xyz = np.arange(len(positionsX[indices]))
 index = np.random.choice(xyz,2000)
-ax.scatter(positionsX[indices], positionsY[indices], positionsZ[indices],c=weighted_chisquare, marker='.',cmap='hot',alpha=0.1)
+p = ax.scatter3D(positionsX[indices], positionsY[indices], positionsZ[indices],c=weighted_chisquare, marker='.',cmap='hot',alpha=0.1)
 #ax.scatter(halo_50[0], halo_50[1], halo_50[2], marker='+',color='red')
 #ax.scatter(positionsX[index_sub],positionsY[index_sub],positionsZ[index_sub],marker='x', color='black')
 #ax.scatter(CM[0], CM[1], CM[2], marker='+',color='pink')
-
+fig.colorbar(p, ax=ax)
 ax.set_xlabel('x [ckpc/h]')
 
 ax.set_ylabel('y [ckpc/h]')
