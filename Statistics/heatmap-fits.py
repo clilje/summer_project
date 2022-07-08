@@ -43,6 +43,11 @@ def virialRadius(radius, density):
 def chiSquareNFW(rad,den, nfwfitp):
     return(np.sum((np.square(((den))-(nfw(rad, nfwfitp[0], nfwfitp[1]))))/(nfw(rad, nfwfitp[0], nfwfitp[1]))))
 
+def getChiSquareplot(rad,den,nfwfitopt):
+    results = np.zeros((len(nfwfitopt[0]),len(nfwfitopt[1])))
+    for x in nfwfitopt[0]:
+        for y in nfwfitopt[1]:
+            results[nfwfitopt[0].index(x),nfwfitopt[1].index(y)] = chiSquareNFW(rad,den,[x,y])
 
 def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp):
     #fig, axs = plt.subplots(3, 2, figsize=(15,15))
@@ -74,10 +79,13 @@ def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_
     #axs2 = subfigs[1].subplots(1, 1)
     
     
-    x, y = np.linspace(0, 100, len(rad)), np.linspace(0, 100, len(rad))
+    x, y = np.linspace(0, 100, 1000), np.linspace(0, 100, 1000)
     X, Y = np.meshgrid(x, y)
-    Z = chiSquareNFW(rad, den, [X,Y])
-    axs2.pcolor(X, Y, Z)
+    Z = getChiSquareplot(rad, den, [X,Y])
+    print(X)
+    print(Y)
+    print(Z)
+    axs2.pcolor(Z)
     axs2.colorbar()
     
     #axs2.show()
