@@ -149,8 +149,8 @@ for g in gg:
     
     '''
     #fig, axs = plt.subplots(3, 2, figsize=(15,15))
-    fig = plt.figure(constrained_layout=True)
-    subfigs = fig.subfigures(1, 2, wspace=0.07, width_ratios=[1.5, 1.])
+    #fig = plt.figure(constrained_layout=True)
+    subfigs = plt.figure(constrained_layout=True).subfigures(1, 2, wspace=0.07, width_ratios=[1.5, 1.])
     axs = subfigs[0].subplots(3, 2)
     axs2 = subfigs[1].subplots(1, 1)
     
@@ -160,6 +160,7 @@ for g in gg:
     Z = chiSquareNFW(rad, den, [X,Y])
     axs2.pcolor(X, Y, Z)
     axs2.colorbar()
+    
     #axs2.show()
     
     
