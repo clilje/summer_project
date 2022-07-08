@@ -46,8 +46,8 @@ def chiSquareNFW(rad,den, nfwfitp):
 def getChiSquareplot(rad,den,nfwfitopt):
     results = np.zeros((len(nfwfitopt[0]),len(nfwfitopt[1])))
     #print(nfwfitopt)
-    for x in np.linspace(len(nfwfitopt[0]):
-        for y in np.linspace(len(nfwfitopt[1]):
+    for x in np.linspace(len(nfwfitopt[0])):
+        for y in np.linspace(len(nfwfitopt[1])):
             print(x,y)
             results[x,y] = chiSquareNFW(rad,den,[nfwfitopt[0][x,y],nfwfitopt[1][x,y]])
 
