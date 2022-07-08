@@ -62,7 +62,7 @@ numhalos = len(subhalo_index)
 
 pdheader = ['Radius','Density','Uncertainty']
 #derek = pd.DataFrame(columns=pdheader)
-
+"""
 with open('HaloFitsInfo/50-4_snap_99_fit_param.csv', 'x', encoding='UTF8', newline='') as f:
     
     header = ['Halo Number','DataPoints','NFW Scale Density','NFW Scale Radius','NFW Scale Density Uncertainty',
@@ -78,7 +78,7 @@ with open('HaloFitsInfo/50-4_snap_99_fit_param.csv', 'x', encoding='UTF8', newli
     fwriter = csv.writer(f, delimiter=',')
     # Write the header
     fwriter.writerow(header)
-
+"""
 for g in gg:
     data_csv = pd.read_csv('HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den.csv')
     
