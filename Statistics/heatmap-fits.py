@@ -49,9 +49,16 @@ def chiSquareNFW(rad,den, nfwfitp):
 def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp):
     #fig, axs = plt.subplots(3, 2, figsize=(15,15))
     fig = plt.figure(constrained_layout=True)
-    subfigs = fig.subfigures(1, 2, wspace=0.07, width_ratios=[1.5, 1.])
-    axs = subfigs[0].subplots(3, 2)
-    axs2 = subfigs[1].subplots(1, 1)
+    gs0 = fig.add_gridspec(1, 2)
+
+    axs = gs0[0].subgridspec(3, 2)
+    axs2 = gs0[1].subgridspec(1, 1)
+    
+    
+    #fig = plt.figure(constrained_layout=True)
+    #subfigs = fig.subfigures(1, 2, wspace=0.07, width_ratios=[1.5, 1.])
+    #axs = subfigs[0].subplots(3, 2)
+    #axs2 = subfigs[1].subplots(1, 1)
     
     
     x, y = np.linspace(0, 100, 1000), np.linspace(0, 100, 1000)
