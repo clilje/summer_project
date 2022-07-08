@@ -52,7 +52,7 @@ radius = subhalo_info['SubhaloHalfmassRad'].to_numpy()
 full_mass = subhalo_info['SubhaloMass'].to_numpy()
 length = subhalo_info['SubhaloLen'].to_numpy().astype(int)
 
-gg = [1,4,20,200,2000]
+gg = [0,63864,96762,117250,184931,198182,143880,208811,229933,220595,167392,253861,242788,264883]
 numhalos = len(subhalo_index)
 #densities = []
 #uncertainties = []
@@ -106,7 +106,7 @@ for g in gg:
     print ('Fitted value for Einasto', einastofitp)
     print ('uncertainties for Einasto', np.sqrt(np.diag(einastofitcov)))
     
-    burkertfitp, burkertfitcov = scopt.curve_fit(burkert,rad, den, p0=[1,10], sigma=uncer)
+    burkertfitp, burkertfitcov = scopt.curve_fit(burkert,rad, den, p0=[0.1,100], sigma=uncer)
     burkertchi_square_test_statistic =  np.sum((np.square(((den))-(burkert(rad, burkertfitp[0], burkertfitp[1]))))/(burkert(rad, burkertfitp[0], burkertfitp[1])))
     burkertp_value = scipy.stats.distributions.chi2.sf(burkertchi_square_test_statistic,(len(den)-1))
     print ('ChiSquare and P values for Burkert', burkertchi_square_test_statistic, burkertp_value)
@@ -149,7 +149,7 @@ for g in gg:
     fig, axs = plt.subplots(3, 2, figsize=(15,15))
     
     
-    axs[0,0].errorbar((rad/virial_radius), (den/virial_density), yerr=uncer/virial_density, fmt='.', label="Halo_"+str(1)+"_099", color='green')
+    axs[0,0].errorbar((rad/virial_radius), (den/virial_density), yerr=uncer/virial_density, fmt='.', label="Halo_"+str(g)+"_099", color='green')
     
     
     
@@ -160,8 +160,8 @@ for g in gg:
     axs[0,0].set_xscale('log')
     axs[0,0].set_title("Data from TNG")
     
-    axs[0,1].errorbar(rad/virial_radius, nfw(rad, nfwfitp[0], nfwfitp[1])/virial_density, fmt='-', label="NFW fit Halo_"+str(1)+"_099", color='blue')
-    axs[0,1].errorbar((rad/virial_radius), (den/virial_density), yerr=uncer/virial_density, fmt='.', label="Halo_"+str(1)+"_099", color='green')
+    axs[0,1].errorbar(rad/virial_radius, nfw(rad, nfwfitp[0], nfwfitp[1])/virial_density, fmt='-', label="NFW fit Halo_"+str(g)+"_099", color='blue')
+    axs[0,1].errorbar((rad/virial_radius), (den/virial_density), yerr=uncer/virial_density, fmt='.', label="Halo_"+str(g)+"_099", color='green')
     axs[0,1].set_xlabel(r'(Radius ($kpc/(R_{200}})}$))')
     axs[0,1].set_ylabel(r'($\rho$(r) ($M_{\odot} pc^{-3} (\rho_{200})^{-1}$))')
     axs[0,1].legend()
@@ -179,7 +179,7 @@ for g in gg:
     axs[1,0].set_title('Einasto fit for Data')
     
     
-    axs[1,1].errorbar(rad/virial_radius, burkert(rad, burkertfitp[0], burkertfitp[1])/virial_density, fmt='-', label="Bukert fit Halo_"+str(1)+"_099", color='blue')
+    axs[1,1].errorbar(rad/virial_radius, burkert(rad, burkertfitp[0], burkertfitp[1])/virial_density, fmt='-', label="Bukert fit Halo_"+str(g)+"_099", color='blue')
     axs[1,1].errorbar((rad/virial_radius), (den/virial_density), yerr=uncer/virial_density, fmt='.', label="Halo_"+str(g)+"_099", color='green')
     axs[1,1].set_xlabel(r'(Radius ($kpc/(R_{200}})}$))')
     axs[1,1].set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{200})^{-1}$))')
@@ -188,7 +188,7 @@ for g in gg:
     axs[1,1].set_xscale('log')
     axs[1,1].set_title('Burkert fit for Data')
     
-    axs[2,0].errorbar(rad/virial_radius, dehnen_twoparam(rad, dehnen_twoparamfitp[0], dehnen_twoparamfitp[1])/virial_density, fmt='-', label="Dehnen-2 fit Halo_"+str(1)+"_099", color='blue')
+    axs[2,0].errorbar(rad/virial_radius, dehnen_twoparam(rad, dehnen_twoparamfitp[0], dehnen_twoparamfitp[1])/virial_density, fmt='-', label="Dehnen-2 fit Halo_"+str(g)+"_099", color='blue')
     axs[2,0].errorbar((rad/virial_radius), (den/virial_density), yerr=uncer/virial_density, fmt='.', label="Halo_"+str(g)+"_099", color='green')
     axs[2,0].set_xlabel(r'(Radius ($kpc/(R_{200}})}$))')
     axs[2,0].set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{200})^{-1}$))')
@@ -198,7 +198,7 @@ for g in gg:
     axs[2,0].set_title('denhen-2 fit for Data')
     
     
-    axs[2,1].errorbar(rad/virial_radius, dehnen_threeparam(rad, dehnen_threeparamfitp[0], dehnen_threeparamfitp[1], dehnen_threeparamfitp[2])/virial_density, fmt='-', label="Dehnen-3 fit Halo_"+str(1)+"_099", color='blue')
+    axs[2,1].errorbar(rad/virial_radius, dehnen_threeparam(rad, dehnen_threeparamfitp[0], dehnen_threeparamfitp[1], dehnen_threeparamfitp[2])/virial_density, fmt='-', label="Dehnen-3 fit Halo_"+str(g)+"_099", color='blue')
     axs[2,1].errorbar((rad/virial_radius), (den/virial_density), yerr=uncer/virial_density, fmt='.', label="Halo_"+str(g)+"_099", color='green')
     axs[2,1].set_xlabel(r'(Radius ($kpc/(R_{200}})}$))')
     axs[2,1].set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{200})^{-1}$))')
