@@ -47,12 +47,27 @@ def chiSquareNFW(rad,den, nfwfitp):
 def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp):
     #fig, axs = plt.subplots(3, 2, figsize=(15,15))
     fig = plt.figure(constrained_layout=True)
-    gs0 = fig.add_gridspec(1, 2)
+    gs0 = fig.add_gridspec(3, 3)
+    
+    """
+    gs = fig.add_gridspec(3, 3)
+    ax1 = fig.add_subplot(gs[0, :])
+    ax1.set_title('gs[0, :]')
+    ax2 = fig.add_subplot(gs[1, :-1])
+    ax2.set_title('gs[1, :-1]')
+    """
+    #ax = gs0[0].subgridspec(3, 2)
+    #axs2 = gs0[1].subgridspec(1, 1)
+    axs2 = fig.add_subplot(gs0[0:, -1])
+    axs = np.zeros((2,3))
+    axs[0,0] = fig.add_subplot(gs0[0,0])
+    axs[0,1] = fig.add_subplot(gs0[0,1])
 
-    axs = gs0[0].subgridspec(3, 2)
-    axs2 = gs0[1].subgridspec(1, 1)
-    
-    
+    axs[1,1] = fig.add_subplot(gs0[1,1])
+    axs[1,0] = fig.add_subplot(gs0[1,0])
+    axs[2,1] = fig.add_subplot(gs0[2,1])
+    axs[2,0] = fig.add_subplot(gs0[2,0])
+
     #fig = plt.figure(constrained_layout=True)
     #subfigs = fig.subfigures(1, 2, wspace=0.07, width_ratios=[1.5, 1.])
     #axs = subfigs[0].subplots(3, 2)
@@ -62,8 +77,8 @@ def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_
     x, y = np.linspace(0, 100, len(rad)), np.linspace(0, 100, len(rad))
     X, Y = np.meshgrid(x, y)
     Z = chiSquareNFW(rad, den, [X,Y])
-    axs2[1,1].pcolor(X, Y, Z)
-    axs2[1,1].colorbar()
+    axs2.pcolor(X, Y, Z)
+    axs2.colorbar()
     
     #axs2.show()
     
