@@ -37,10 +37,10 @@ z = (groupcat.loadHeader(basePath, snapnum)['Redshift']).astype('float')  #redsh
 #tt = time.time()
 #print(groupcat.loadHeader(basePath, snapnum))
 
-x = 50
+x = 3468764
 c = []
 pdheader = ['ID','Type','x','y','z','mass','vx','vy','vz']
-while x <= 50:
+while x <= num_halo:
     if dark == False: 
         filename = 'FullRun/snap_99_halo_'+str(x)
     else: 
