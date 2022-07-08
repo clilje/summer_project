@@ -88,9 +88,9 @@ def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_
     print(X)
     print(Y)
     print(Z)
-    axs2.pcolor(Z)
-    axs2.colorbar()
-    
+    pc = axs2.pcolor(Z)
+    #axs2.colorbar()
+    fig.colorbar(pc, ax=axs2)
     #axs2.show()
     
     
