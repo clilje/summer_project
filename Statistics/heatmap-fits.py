@@ -6,8 +6,6 @@ Created on Thu Jun 16 14:38:14 2022
 """
 import numpy as np
 import matplotlib.pyplot as plt
-import math
-import csv
 import pandas as pd
 import scipy.optimize as scopt
 import scipy.linalg
@@ -61,7 +59,7 @@ def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_
     #axs2 = subfigs[1].subplots(1, 1)
     
     
-    x, y = np.linspace(0, 100, 1000), np.linspace(0, 100, 1000)
+    x, y = np.linspace(0, 100, len(rad)), np.linspace(0, 100, len(rad))
     X, Y = np.meshgrid(x, y)
     Z = chiSquareNFW(rad, den, [X,Y])
     axs2.pcolor(X, Y, Z)
