@@ -48,8 +48,9 @@ def getChiSquareplot(rad,den,nfwfitopt):
     #print(nfwfitopt)
     for x in np.arange(len(nfwfitopt[0])):
         for y in np.arange(len(nfwfitopt[1])):
-            print(x,y)
+            #print(x,y)
             results[x,y] = chiSquareNFW(rad,den,[nfwfitopt[0][x,y],nfwfitopt[1][x,y]])
+    return(results)
 
 def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp):
     #fig, axs = plt.subplots(3, 2, figsize=(15,15))
