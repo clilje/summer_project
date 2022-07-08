@@ -54,7 +54,7 @@ def getChiSquareplot(rad,den,nfwfitopt):
 
 def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp):
     #fig, axs = plt.subplots(3, 2, figsize=(15,15))
-    fig = plt.figure(constrained_layout=True)
+    fig = plt.figure(figsize=(20,20))
     gs0 = fig.add_gridspec(3, 3)
     
     """
@@ -157,7 +157,7 @@ radius = subhalo_info['SubhaloHalfmassRad'].to_numpy()
 full_mass = subhalo_info['SubhaloMass'].to_numpy()
 length = subhalo_info['SubhaloLen'].to_numpy().astype(int)
 
-gg = [0,6,20,200,2000,198182,19999]
+gg = [0,4,20,200,2000,198182,19999]
 numhalos = len(subhalo_index)
 #densities = []
 #uncertainties = []
@@ -219,7 +219,7 @@ for g in gg:
     print ('uncertainties for Burkert', np.sqrt(np.diag(burkertfitcov)))
     
     
-    dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, rad, den, p0=[rad[-1]/10,den[-1]]/10, sigma=uncer)
+    dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, rad, den, p0=[rad[-1]/10,den[-1]/10], sigma=uncer)
     dehnentwochi_square_test_statistic =  np.sum((np.square(((den))-(dehnen_twoparam(rad, dehnen_twoparamfitp[0], dehnen_twoparamfitp[1]))))/(dehnen_twoparam(rad, dehnen_twoparamfitp[0], dehnen_twoparamfitp[1])))
     dehnentwop_value = scipy.stats.distributions.chi2.sf(dehnentwochi_square_test_statistic,(len(den)-1))
     print ('ChiSquare and P values for dehnentwo', dehnentwochi_square_test_statistic, dehnentwop_value)
