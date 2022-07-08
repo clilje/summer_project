@@ -62,8 +62,8 @@ def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_
     x, y = np.linspace(0, 100, len(rad)), np.linspace(0, 100, len(rad))
     X, Y = np.meshgrid(x, y)
     Z = chiSquareNFW(rad, den, [X,Y])
-    axs2.pcolor(X, Y, Z)
-    axs2.colorbar()
+    axs2[1,1].pcolor(X, Y, Z)
+    axs2[1,1].colorbar()
     
     #axs2.show()
     
