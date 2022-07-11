@@ -195,8 +195,8 @@ for g in gg:
     
     virial_radius,virial_index = virialRadius(rad, den)
     virial_density = p_crit*200
-    print(str(virial_radius/radius))
-    if virial_radius/radius < 10:
+    print(str((virial_radius/radius)[g]))
+    if (virial_radius/radius)[g] < 10:
         
         filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'param'
         
