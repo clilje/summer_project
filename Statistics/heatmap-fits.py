@@ -75,8 +75,10 @@ def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_
     print(Y)
     print(Z)
     normalizeC = np.min(Z)
+    print(normalizeC)
     Z = Z/normalizeC
-    Z[np.where(Z>10)[0]] = 10
+    print(Z)
+    Z[np.where(Z>100)[0]] = 10
     print(Z)
     pc = axs2.pcolor(Z)
     #axs2.colorbar()
