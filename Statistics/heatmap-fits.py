@@ -56,7 +56,8 @@ def getChiSquareplot(rad,den,nfwfitopt):
 def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp):
     #fig, axs = plt.subplots(3, 2, figsize=(15,15))
     fig = plt.figure(figsize=(30,20))
-    gs0 = fig.add_gridspec(3, 3)
+    #gs0 = fig.add_gridspec(3, 3)
+    gs0 = fig.add_gridspec(2, 1)
     
     """
     gs = fig.add_gridspec(3, 3)
@@ -69,32 +70,59 @@ def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_
     
     
     
-    x, y = np.linspace(1000000, 500000000, 1000), np.linspace(0, 200, 1000)
+    x, y = np.linspace(1000000, 3000000000, 5000), np.linspace(0, 300, 5000)
     X, Y = np.meshgrid(x, y)
     Z = getChiSquareplot(rad, den, [X,Y])
-    print(X)
-    print(Y)
-    print(Z)
+    #print(X)
+    #print(Y)
+    #print(Z)
     normalizeC = np.min(Z)
-    print(normalizeC)
+    #print(normalizeC)
     Z = Z/normalizeC
-    print(Z)
+    #print(Z)
     #Z[np.where(Z==np.inf)[0]] = 10**10
     #print(Z)
-    pc = axs2.pcolor(X,Y,Z,norm=matplotlib.colors.LogNorm(vmin=1, vmax=10000),cmap='PuBu_r', shading='auto')
+    pc = axs2.pcolor(X,Y,Z,norm=matplotlib.colors.LogNorm(vmin=1, vmax=15000),cmap='PuBu_r', shading='auto')
     #pc = axs2.pcolor(Z)
-    nfwfitp, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[den[-1],rad[-1]], sigma=uncer)
-    axs2.scatter(nfwfitp[0],nfwfitp[1], color='red')
-    axs2.set_xlabel("Scale Density from 1 000 000 to 500 000 000")
-    axs2.set_ylabel("Scale Radius from 0 to 200")
-    #colorbar_scale = np.logspace(0,100,200)
-    #axs2.colorbar()
+    
+    
+    nfwfitp0, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[den[-1],rad[-1]], sigma=uncer)
+    axs2.scatter(nfwfitp0[0],nfwfitp0[1], color='red', label="Optimised Parameters initial parameters: Virrad and Virdensity")
+    axs2.scatter(den[-1],rad[-1], color='red', label="Initial parameters: Virrad and Virdensity")
+    
+    nfwfitp1, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[250000000,10], sigma=uncer)
+    axs2.scatter(nfwfitp1[0],nfwfitp1[1], color='pink', label="Optimised Parameters initial parameters: 250000000,10")
+    axs2.scatter(250000000,10, color='pink', label="Initial parameters: 250000000,10")
+    
+    nfwfitp2, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[10000000,175], sigma=uncer)
+    axs2.scatter(nfwfitp2[0],nfwfitp2[1], color='cyan', label="Optimised Parameters initial parameters: 10000000,175")
+    axs2.scatter(10000000,175, color='cyan', label="Initial parameters: 10000000,175")
+    
+    nfwfitp3, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[1750000000,1], sigma=uncer)
+    axs2.scatter(nfwfitp3[0],nfwfitp3[1], color='green', label="Optimised Parameters initial parameters: 1750000000,1")
+    axs2.scatter(1750000000,1, color='green', label="Initial parameters: 1750000000,1")
+    
+    nfwfitp4, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[500000000,5], sigma=uncer)
+    axs2.scatter(nfwfitp4[0],nfwfitp4[1], color='black', label="Optimised Parameters initial parameters: 500000000,5")
+    axs2.scatter(500000000,5, color='black', label="Initial parameters: 500000000,5")
+    
+    
+    
+    
+    axs2.set_xlabel("Scale Density")
+    axs2.set_ylabel("Scale Radius")
+    axs2.set_title("Heatmap of ChiSquare values for NFW profile parameters (minimum ChiSquare set to 1)")
+    axs2.legend()
     fig.colorbar(pc, ax=axs2, extend='max')
-    #axs2.show()
     
     
     
-    fig.add_subplot(gs0[0,0]).errorbar((rad/virial_radius), (den/virial_density), yerr=uncer/virial_density, fmt='.', label="Halo_"+str(g)+"_099", color='green')
+    fig.add_subplot(gs0[0,0]).errorbar((rad/virial_radius), (den/virial_density), yerr=uncer/virial_density, fmt='.', label="Halo_"+str(g)+"_099", color='blue')
+    fig.add_subplot(gs0[0,1]).errorbar(rad/virial_radius, nfw(rad, nfwfitp0[0], nfwfitp0[1])/virial_density, fmt='-', label="NFW fit initial param"+str(nfwfitp0), color='red')
+    fig.add_subplot(gs0[0,1]).errorbar(rad/virial_radius, nfw(rad, nfwfitp1[0], nfwfitp1[1])/virial_density, fmt='-', label="NFW fit initial param"+str(nfwfitp1), color='pink')
+    fig.add_subplot(gs0[0,1]).errorbar(rad/virial_radius, nfw(rad, nfwfitp2[0], nfwfitp2[1])/virial_density, fmt='-', label="NFW fit initial param"+str(nfwfitp2), color='cyan')
+    fig.add_subplot(gs0[0,1]).errorbar(rad/virial_radius, nfw(rad, nfwfitp3[0], nfwfitp3[1])/virial_density, fmt='-', label="NFW fit initial param"+str(nfwfitp3), color='green')
+    fig.add_subplot(gs0[0,1]).errorbar(rad/virial_radius, nfw(rad, nfwfitp4[0], nfwfitp4[1])/virial_density, fmt='-', label="NFW fit initial param"+str(nfwfitp4), color='black')
     
     
     
@@ -104,7 +132,7 @@ def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_
     fig.add_subplot(gs0[0,0]).set_yscale('log')
     fig.add_subplot(gs0[0,0]).set_xscale('log')
     fig.add_subplot(gs0[0,0]).set_title("Data from TNG")
-    
+    """
     fig.add_subplot(gs0[0,1]).errorbar(rad/virial_radius, nfw(rad, nfwfitp[0], nfwfitp[1])/virial_density, fmt='-', label="NFW fit Halo_"+str(g)+"_099", color='blue')
     fig.add_subplot(gs0[0,1]).errorbar((rad/virial_radius), (den/virial_density), yerr=uncer/virial_density, fmt='.', label="Halo_"+str(g)+"_099", color='green')
     fig.add_subplot(gs0[0,1]).set_xlabel(r'(Radius ($kpc/(R_{200}})}$))')
@@ -151,7 +179,7 @@ def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_
     fig.add_subplot(gs0[2,1]).set_yscale('log')
     fig.add_subplot(gs0[2,1]).set_xscale('log')
     fig.add_subplot(gs0[2,1]).set_title('denhen-3 fit for Data')
-    
+    """
     fig.tight_layout()
     fig.savefig('HaloFitsInfo/fit-profiles-halo'+str(g))
     print('hello')
@@ -170,7 +198,8 @@ radius = subhalo_info['SubhaloHalfmassRad'].to_numpy()
 full_mass = subhalo_info['SubhaloMass'].to_numpy()
 length = subhalo_info['SubhaloLen'].to_numpy().astype(int)
 
-gg = [0,4,20,200,2000,198182,19999]
+#gg = [0,4,20,200,2000,198182,19999]
+gg =[20]
 numhalos = len(subhalo_index)
 #densities = []
 #uncertainties = []
@@ -219,7 +248,7 @@ for g in gg:
         print ('ChiSquare and P values for NFW', nfwchi_square_test_statistic)
         print ('Fitted value for NFW', nfwfitp)
         print ('uncer/(p_crit*200)tainties for NFW', np.sqrt(np.diag(nfwfitcov)))
-        
+        """
         einastofitp, einastofitcov = scopt.curve_fit(einasto, rad, den, p0=[den[-1],rad[-1],5], sigma=uncer)
         einastochi_square_test_statistic =  np.sum((np.square(((den))-(einasto(rad, einastofitp[0], einastofitp[1],einastofitp[2]))))/(einasto(rad, einastofitp[0], einastofitp[1],einastofitp[2])))
         einastop_value = scipy.stats.distributions.chi2.sf(einastochi_square_test_statistic,(len(den)-1))
@@ -267,7 +296,7 @@ for g in gg:
         
         '''
         
-        
+        """
         plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp)
         
     g += 1
