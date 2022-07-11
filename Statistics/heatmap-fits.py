@@ -79,9 +79,9 @@ def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_
     print(normalizeC)
     Z = Z/normalizeC
     print(Z)
-    Z[np.where(Z==np.inf)[0]] = 10**10
+    #Z[np.where(Z==np.inf)[0]] = 10**10
     print(Z)
-    pc = axs2.pcolor(X,Y,Z,matplotlib.colors.LogNorm(vmin=Z.min(), vmax=Z.max()),cmap='PuBu_r', shading='auto')
+    pc = axs2.pcolor(X,Y,Z,norm=matplotlib.colors.LogNorm(vmin=Z.min(), vmax=Z.max()),cmap='PuBu_r', shading='auto')
     #colorbar_scale = np.logspace(0,100,200)
     #axs2.colorbar()
     fig.colorbar(pc, ax=axs2, extend='max')
