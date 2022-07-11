@@ -69,7 +69,7 @@ def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_
     
     
     
-    x, y = np.linspace(0, 10000, 10000), np.linspace(0, 500, 1000)
+    x, y = np.linspace(0, 10000, 10000), np.linspace(0, 500, 10000)
     X, Y = np.meshgrid(x, y)
     Z = getChiSquareplot(rad, den, [X,Y])
     print(X)
