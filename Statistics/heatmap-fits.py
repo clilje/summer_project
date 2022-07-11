@@ -55,7 +55,7 @@ def getChiSquareplot(rad,den,nfwfitopt):
 
 def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp):
     #fig, axs = plt.subplots(3, 2, figsize=(15,15))
-    fig = plt.figure(figsize=(20,20))
+    fig = plt.figure(figsize=(30,20))
     gs0 = fig.add_gridspec(3, 3)
     
     """
@@ -81,8 +81,10 @@ def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_
     print(Z)
     #Z[np.where(Z==np.inf)[0]] = 10**10
     #print(Z)
-    pc = axs2.pcolor(Z,norm=matplotlib.colors.LogNorm(vmin=1, vmax=10000),cmap='PuBu_r', shading='auto')
+    pc = axs2.pcolor(X,Y,Z,norm=matplotlib.colors.LogNorm(vmin=1, vmax=10000),cmap='PuBu_r', shading='auto')
     #pc = axs2.pcolor(Z)
+    nfwfitp, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[den[-1],rad[-1]], sigma=uncer)
+    axs2.scatter(nfwfitp[0],nfwfitp[1], color='red')
     axs2.set_xlabel("Scale Density from 1 000 000 to 500 000 000")
     axs2.set_ylabel("Scale Radius from 0 to 200")
     #colorbar_scale = np.logspace(0,100,200)
