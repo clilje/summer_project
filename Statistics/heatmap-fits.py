@@ -74,6 +74,9 @@ def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_
     print(X)
     print(Y)
     print(Z)
+    normalizeC = np.min(Z)
+    Z = Z/normalizeC
+    Z[np.where(Z>10)[0]] = 10
     pc = axs2.pcolor(Z)
     #axs2.colorbar()
     fig.colorbar(pc, ax=axs2)
@@ -192,68 +195,71 @@ for g in gg:
     
     virial_radius,virial_index = virialRadius(rad, den)
     virial_density = p_crit*200
-    filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'param'
-    
-    rad = rad[virial_index]
-    den = den[virial_index]
-    uncer = uncer[virial_index]
-    nfwfitp, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[rad[-1]/10,den[-1]/10], sigma=uncer)
-    nfwchi_square_test_statistic =  np.sum((np.square(((den))-(nfw(rad, nfwfitp[0], nfwfitp[1]))))/(nfw(rad, nfwfitp[0], nfwfitp[1])))
-    nfwp_value = scipy.stats.distributions.chi2.sf(nfwchi_square_test_statistic,(len(den)-1))
-    print ('ChiSquare and P values for NFW', nfwchi_square_test_statistic)
-    print ('Fitted value for NFW', nfwfitp)
-    print ('uncer/(p_crit*200)tainties for NFW', np.sqrt(np.diag(nfwfitcov)))
-    
-    einastofitp, einastofitcov = scopt.curve_fit(einasto, rad, den, p0=[rad[-1]/10,den[-1]/10,5], sigma=uncer)
-    einastochi_square_test_statistic =  np.sum((np.square(((den))-(einasto(rad, einastofitp[0], einastofitp[1],einastofitp[2]))))/(einasto(rad, einastofitp[0], einastofitp[1],einastofitp[2])))
-    einastop_value = scipy.stats.distributions.chi2.sf(einastochi_square_test_statistic,(len(den)-1))
-    print ('ChiSquare and P values for Einasto', einastochi_square_test_statistic, einastop_value)
-    print ('Fitted value for Einasto', einastofitp)
-    print ('uncertainties for Einasto', np.sqrt(np.diag(einastofitcov)))
-    
-    burkertfitp, burkertfitcov = scopt.curve_fit(burkert,rad, den, p0=[rad[-1]/10,den[-1]/10], sigma=uncer)
-    burkertchi_square_test_statistic =  np.sum((np.square(((den))-(burkert(rad, burkertfitp[0], burkertfitp[1]))))/(burkert(rad, burkertfitp[0], burkertfitp[1])))
-    burkertp_value = scipy.stats.distributions.chi2.sf(burkertchi_square_test_statistic,(len(den)-1))
-    print ('ChiSquare and P values for Burkert', burkertchi_square_test_statistic, burkertp_value)
-    print ('Fitted value for Burkert', burkertfitp)
-    print ('uncertainties for Burkert', np.sqrt(np.diag(burkertfitcov)))
-    
-    
-    dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, rad, den, p0=[rad[-1]/10,den[-1]/10], sigma=uncer)
-    dehnentwochi_square_test_statistic =  np.sum((np.square(((den))-(dehnen_twoparam(rad, dehnen_twoparamfitp[0], dehnen_twoparamfitp[1]))))/(dehnen_twoparam(rad, dehnen_twoparamfitp[0], dehnen_twoparamfitp[1])))
-    dehnentwop_value = scipy.stats.distributions.chi2.sf(dehnentwochi_square_test_statistic,(len(den)-1))
-    print ('ChiSquare and P values for dehnentwo', dehnentwochi_square_test_statistic, dehnentwop_value)
-    print ('Fitted value for Dehnen Two Parameters', dehnen_twoparamfitp)
-    print ('uncertainties for Dehnen Two Parameters', np.sqrt(np.diag(dehnen_twoparamfitcov)))
-    
-    dehnen_threeparamfitp, dehnen_threeparamfitcov = scopt.curve_fit(dehnen_threeparam, rad, den, p0=[rad[-1]/10,den[-1]/10,0.02], sigma=uncer)
-    dehnenthreechi_square_test_statistic =  np.sum((np.square(((den))-(dehnen_threeparam(rad,dehnen_threeparamfitp[0],dehnen_threeparamfitp[1],dehnen_threeparamfitp[2]))))/(dehnen_threeparam(rad, dehnen_threeparamfitp[0], dehnen_threeparamfitp[1],dehnen_threeparamfitp[2])))
-    dehnenthreep_value = scipy.stats.distributions.chi2.sf(einastochi_square_test_statistic,(len(den)-1))
-    print ('ChiSquare and P values for dehnenthree', dehnenthreechi_square_test_statistic, dehnenthreep_value)
-    print ('Fitted value for Dehnen Three Parameters', dehnen_threeparamfitp)
-    print ('uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(dehnen_threeparamfitcov)))
-    '''
-    with open('HaloFitsInfo/50-4_snap_99_fit_param.csv', 'a', encoding='UTF8', newline='') as f:
-        fwriter = csv.writer(f, delimiter=',')
-        data = [subhalo_index[g],num_datapoints,nfwfitp[0],nfwfitp[1],np.sqrt(np.diag(nfwfitcov))[0],
-                  np.sqrt(np.diag(nfwfitcov))[1],nfwchi_square_test_statistic,nfwp_value,
-                  burkertfitp[0],burkertfitp[1],
-                  np.sqrt(np.diag(burkertfitcov))[0],np.sqrt(np.diag(burkertfitcov))[1],burkertchi_square_test_statistic, burkertp_value,
-                  dehnen_twoparamfitp[0],dehnen_twoparamfitp[1],np.sqrt(np.diag(dehnen_twoparamfitcov))[0],
-                  np.sqrt(np.diag(dehnen_twoparamfitcov))[1],dehnentwochi_square_test_statistic,dehnentwop_value,
-                  einastofitp[0],
-                  einastofitp[1],einastofitp[2], np.sqrt(np.diag(einastofitcov))[0],
-                  np.sqrt(np.diag(einastofitcov))[1],np.sqrt(np.diag(einastofitcov))[2],einastochi_square_test_statistic,einastop_value,
-                  dehnen_threeparamfitp[0],dehnen_threeparamfitp[1],dehnen_threeparamfitp[2], np.sqrt(np.diag(dehnen_threeparamfitcov))[0],
-                  np.sqrt(np.diag(dehnen_threeparamfitcov))[1],np.sqrt(np.diag(dehnen_threeparamfitcov))[2],dehnenthreechi_square_test_statistic,dehnenthreep_value]
-        fwriter.writerow(data)   
-    
-    
-    '''
-    
-    
-    plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp)
-    
+    print(str(virial_radius/radius))
+    if virial_radius/radius < 10:
+        
+        filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'param'
+        
+        rad = rad[virial_index]
+        den = den[virial_index]
+        uncer = uncer[virial_index]
+        nfwfitp, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[rad[-1]/10,den[-1]/10], sigma=uncer)
+        nfwchi_square_test_statistic =  np.sum((np.square(((den))-(nfw(rad, nfwfitp[0], nfwfitp[1]))))/(nfw(rad, nfwfitp[0], nfwfitp[1])))
+        nfwp_value = scipy.stats.distributions.chi2.sf(nfwchi_square_test_statistic,(len(den)-1))
+        print ('ChiSquare and P values for NFW', nfwchi_square_test_statistic)
+        print ('Fitted value for NFW', nfwfitp)
+        print ('uncer/(p_crit*200)tainties for NFW', np.sqrt(np.diag(nfwfitcov)))
+        
+        einastofitp, einastofitcov = scopt.curve_fit(einasto, rad, den, p0=[rad[-1]/10,den[-1]/10,5], sigma=uncer)
+        einastochi_square_test_statistic =  np.sum((np.square(((den))-(einasto(rad, einastofitp[0], einastofitp[1],einastofitp[2]))))/(einasto(rad, einastofitp[0], einastofitp[1],einastofitp[2])))
+        einastop_value = scipy.stats.distributions.chi2.sf(einastochi_square_test_statistic,(len(den)-1))
+        print ('ChiSquare and P values for Einasto', einastochi_square_test_statistic, einastop_value)
+        print ('Fitted value for Einasto', einastofitp)
+        print ('uncertainties for Einasto', np.sqrt(np.diag(einastofitcov)))
+        
+        burkertfitp, burkertfitcov = scopt.curve_fit(burkert,rad, den, p0=[rad[-1]/10,den[-1]/10], sigma=uncer)
+        burkertchi_square_test_statistic =  np.sum((np.square(((den))-(burkert(rad, burkertfitp[0], burkertfitp[1]))))/(burkert(rad, burkertfitp[0], burkertfitp[1])))
+        burkertp_value = scipy.stats.distributions.chi2.sf(burkertchi_square_test_statistic,(len(den)-1))
+        print ('ChiSquare and P values for Burkert', burkertchi_square_test_statistic, burkertp_value)
+        print ('Fitted value for Burkert', burkertfitp)
+        print ('uncertainties for Burkert', np.sqrt(np.diag(burkertfitcov)))
+        
+        
+        dehnen_twoparamfitp, dehnen_twoparamfitcov = scopt.curve_fit(dehnen_twoparam, rad, den, p0=[rad[-1]/10,den[-1]/10], sigma=uncer)
+        dehnentwochi_square_test_statistic =  np.sum((np.square(((den))-(dehnen_twoparam(rad, dehnen_twoparamfitp[0], dehnen_twoparamfitp[1]))))/(dehnen_twoparam(rad, dehnen_twoparamfitp[0], dehnen_twoparamfitp[1])))
+        dehnentwop_value = scipy.stats.distributions.chi2.sf(dehnentwochi_square_test_statistic,(len(den)-1))
+        print ('ChiSquare and P values for dehnentwo', dehnentwochi_square_test_statistic, dehnentwop_value)
+        print ('Fitted value for Dehnen Two Parameters', dehnen_twoparamfitp)
+        print ('uncertainties for Dehnen Two Parameters', np.sqrt(np.diag(dehnen_twoparamfitcov)))
+        
+        dehnen_threeparamfitp, dehnen_threeparamfitcov = scopt.curve_fit(dehnen_threeparam, rad, den, p0=[rad[-1]/10,den[-1]/10,0.02], sigma=uncer)
+        dehnenthreechi_square_test_statistic =  np.sum((np.square(((den))-(dehnen_threeparam(rad,dehnen_threeparamfitp[0],dehnen_threeparamfitp[1],dehnen_threeparamfitp[2]))))/(dehnen_threeparam(rad, dehnen_threeparamfitp[0], dehnen_threeparamfitp[1],dehnen_threeparamfitp[2])))
+        dehnenthreep_value = scipy.stats.distributions.chi2.sf(einastochi_square_test_statistic,(len(den)-1))
+        print ('ChiSquare and P values for dehnenthree', dehnenthreechi_square_test_statistic, dehnenthreep_value)
+        print ('Fitted value for Dehnen Three Parameters', dehnen_threeparamfitp)
+        print ('uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(dehnen_threeparamfitcov)))
+        '''
+        with open('HaloFitsInfo/50-4_snap_99_fit_param.csv', 'a', encoding='UTF8', newline='') as f:
+            fwriter = csv.writer(f, delimiter=',')
+            data = [subhalo_index[g],num_datapoints,nfwfitp[0],nfwfitp[1],np.sqrt(np.diag(nfwfitcov))[0],
+                      np.sqrt(np.diag(nfwfitcov))[1],nfwchi_square_test_statistic,nfwp_value,
+                      burkertfitp[0],burkertfitp[1],
+                      np.sqrt(np.diag(burkertfitcov))[0],np.sqrt(np.diag(burkertfitcov))[1],burkertchi_square_test_statistic, burkertp_value,
+                      dehnen_twoparamfitp[0],dehnen_twoparamfitp[1],np.sqrt(np.diag(dehnen_twoparamfitcov))[0],
+                      np.sqrt(np.diag(dehnen_twoparamfitcov))[1],dehnentwochi_square_test_statistic,dehnentwop_value,
+                      einastofitp[0],
+                      einastofitp[1],einastofitp[2], np.sqrt(np.diag(einastofitcov))[0],
+                      np.sqrt(np.diag(einastofitcov))[1],np.sqrt(np.diag(einastofitcov))[2],einastochi_square_test_statistic,einastop_value,
+                      dehnen_threeparamfitp[0],dehnen_threeparamfitp[1],dehnen_threeparamfitp[2], np.sqrt(np.diag(dehnen_threeparamfitcov))[0],
+                      np.sqrt(np.diag(dehnen_threeparamfitcov))[1],np.sqrt(np.diag(dehnen_threeparamfitcov))[2],dehnenthreechi_square_test_statistic,dehnenthreep_value]
+            fwriter.writerow(data)   
+        
+        
+        '''
+        
+        
+        plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp)
+        
     g += 1
         #fig.clf()
         #fig.show()
