@@ -69,7 +69,7 @@ def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_
     
     
     
-    x, y = np.linspace(50000, 1000000, 1000), np.linspace(0, 10, 1000)
+    x, y = np.linspace(1000000, 50000000, 1000), np.linspace(0, 50, 1000)
     X, Y = np.meshgrid(x, y)
     Z = getChiSquareplot(rad, den, [X,Y])
     print(X)
@@ -82,8 +82,8 @@ def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_
     #Z[np.where(Z==np.inf)[0]] = 10**10
     #print(Z)
     pc = axs2.pcolor(Z,norm=matplotlib.colors.LogNorm(vmin=1, vmax=10000),cmap='PuBu_r', shading='auto')
-    axs2.set_xlabel("Scale Density from 50 000 to  1 000 000")
-    axs2.set_ylabel("Scale Radius from 0 to 10")
+    axs2.set_xlabel("Scale Density from 1 000 000 to 50 000 000")
+    axs2.set_ylabel("Scale Radius from 0 to 50")
     #colorbar_scale = np.logspace(0,100,200)
     #axs2.colorbar()
     fig.colorbar(pc, ax=axs2, extend='max')
