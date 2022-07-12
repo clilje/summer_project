@@ -282,7 +282,7 @@ for g in gg:
     else:
         binsize = int(len(partx)/200)
     """
-    binsizes = np.linspace(3,100,50)
+    binsizes = np.linspace(3,100,50).astype(int)
     scale_den = []
     scale_rad = []
     chisquare = []
