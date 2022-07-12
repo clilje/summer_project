@@ -290,11 +290,11 @@ for g in gg:
     else:
         binsize = int(len(partx)/200)
     """
-    if len(mass)/350 > 3:
-        binsizes = np.linspace((len(mass)/350),(len(mass)/7),70).astype(int)
+    if len(mass)/350 > 5:
+        binsizes = np.linspace((len(mass)/250),(len(mass)/7),15).astype(int)
     else:
         #bin_num = len(mass)/3
-        binsizes = np.linspace(3,len(mass)/7,50).astype(int)
+        binsizes = np.linspace(3,len(mass)/7,15).astype(int)
     
     scale_den = []
     scale_rad = []
@@ -335,7 +335,7 @@ for g in gg:
         den = den[virial_index]
         uncer = uncer[virial_index]
         nfwfitp, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[virial_density,virial_radius], sigma=uncer)
-        nfwchi_square_test_statistic =  np.sum((np.square(((den))-(nfw(rad, nfwfitp[0], nfwfitp[1]))))/(nfw(rad, nfwfitp[0], nfwfitp[1])))
+        nfwchi_square_test_statistic =  np.sum((np.square(((den))-(nfw(rad, nfwfitp[0], nfwfitp[1]))))/np.square(uncer))
         nfwp_value = scipy.stats.distributions.chi2.sf(nfwchi_square_test_statistic,(len(den)-1))
         print ('ChiSquare and P values for NFW', nfwchi_square_test_statistic)
         print ('Fitted value for NFW', nfwfitp)
