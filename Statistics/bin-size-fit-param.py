@@ -282,7 +282,7 @@ for g in gg:
     else:
         binsize = int(len(partx)/200)
     """
-    binsizes = np.linspace(3,100,50).astype(int)
+    binsizes = np.linspace(3,200,100).astype(int)
     scale_den = []
     scale_rad = []
     chisquare = []
@@ -338,11 +338,11 @@ for g in gg:
     print(scale_den)
     print(scale_rad)
     print(chisquare)
-    fig, axs = plt.subplots(1, 2, figsize=(20,20))
+    fig, axs = plt.subplots(1, 2, figsize=(30,20))
     cm = plt.cm.get_cmap('RdYlBu')
     #xy = range(20)
     z = chisquare
-    sc = axs[0].scatter(binsizes, scale_den, c=z, cmap=cm)
+    sc = axs[0].scatter(binsizes, scale_den, c=z)
     
     axs[0].set_xlabel(r'Binsize')
     axs[0].set_ylabel(r'Scale Density')
@@ -364,8 +364,8 @@ for g in gg:
     fig.tight_layout()
     fig.savefig('HaloFitsInfo/bins-fit-profiles-halo'+str(g))
     print('hello')
-    fig.colorbar(sc, ax=axs[0], extend='max')
-    fig.colorbar(sc2, ax=axs[1], extend='max')
+    fig.colorbar(sc, ax=axs[0])
+    fig.colorbar(sc2, ax=axs[1])
     fig.clf()
     fig.show()
     #plotting(rad, den, uncer, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp)
