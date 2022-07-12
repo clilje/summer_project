@@ -290,11 +290,11 @@ for g in gg:
     else:
         binsize = int(len(partx)/200)
     """
-    if len(mass)/200 > 3:
-        binsizes = np.linspace(3,(len(mass)/200),70).astype(int)
+    if len(mass)/350 > 3:
+        binsizes = np.linspace((len(mass)/350),(len(mass)/7),70).astype(int)
     else:
         #bin_num = len(mass)/3
-        binsizes = np.linspace(3,len(mass)/7,100).astype(int)
+        binsizes = np.linspace(3,len(mass)/7,50).astype(int)
     
     scale_den = []
     scale_rad = []
