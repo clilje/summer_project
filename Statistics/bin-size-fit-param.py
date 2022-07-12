@@ -353,7 +353,7 @@ for g in gg:
     
     sc2 = axs[1].scatter(binsizes, scale_rad, c=z,  cmap=cm)
     
-    axs[1].colorbar(sc)
+    #axs[1].colorbar(sc)
     axs[1].set_xlabel(r'Binsize')
     axs[1].set_ylabel(r'Scale Radius')
     #axs1.legend()
