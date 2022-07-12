@@ -290,12 +290,12 @@ for g in gg:
     else:
         binsize = int(len(partx)/200)
     """
-    if len(mass)/200 > 350:
-        binsizes = np.linspace(3,(len(mass)/200),100).astype(int)
-    if len(mass)/350 < 3:
-        binsizes = [2,3,4,5,6,7]
+    if len(mass)/200 > 3:
+        binsizes = np.linspace(3,(len(mass)/200),70).astype(int)
     else:
-        binsizes = np.linspace(3,350,70).astype(int)
+        #bin_num = len(mass)/3
+        binsizes = np.linspace(3,len(mass)/7,100).astype(int)
+    
     scale_den = []
     scale_rad = []
     chisquare = []
