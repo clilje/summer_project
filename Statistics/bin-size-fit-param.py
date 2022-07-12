@@ -257,7 +257,7 @@ full_mass = subhalo_info['SubhaloMass'].to_numpy()
 #length = subhalo_info['SubhaloLen'].to_numpy().astype(int)
 
 #gg = [0,4,20,200,2000,198182,19999]
-gg =[20,200,2000,4]
+gg =[20,50,200,300,2000,4000,4]
 numhalos = len(subhalo_index)
 #densities = []
 #uncertainties = []
@@ -292,6 +292,8 @@ for g in gg:
     """
     if len(mass)/200 > 350:
         binsizes = np.linspace(3,(len(mass)/200),100).astype(int)
+    if len(mass)/350 < 3:
+        binsizes = [2,3,4,5,6,7]
     else:
         binsizes = np.linspace(3,350,70).astype(int)
     scale_den = []
