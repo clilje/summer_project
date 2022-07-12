@@ -13,6 +13,14 @@ import scipy.optimize as scopt
 import scipy.linalg
 import scipy.stats
 
+plt.rc('font', size=20) #controls default text size
+plt.rc('axes', titlesize=20) #fontsize of the title
+plt.rc('axes', labelsize=20) #fontsize of the x and y labels
+plt.rc('xtick', labelsize=20) #fontsize of the x tick labels
+plt.rc('ytick', labelsize=20) #fontsize of the y tick labels
+plt.rc('legend', fontsize=20) #fontsize of the legend
+
+
 h = 0.6774
 p_crit = 127 #m_sun/(kpc^3)
 
@@ -282,7 +290,7 @@ for g in gg:
     else:
         binsize = int(len(partx)/200)
     """
-    binsizes = np.linspace(3,200,100).astype(int)
+    binsizes = np.linspace(3,200,70).astype(int)
     scale_den = []
     scale_rad = []
     chisquare = []
@@ -362,12 +370,12 @@ for g in gg:
     axs[1].set_title("Scale Radius at different bin sizes")
     
     fig.tight_layout()
-    fig.savefig('HaloFitsInfo/bins-fit-profiles-halo'+str(g))
+    #fig.savefig('HaloFitsInfo/bins-fit-profiles-halo'+str(g))
     print('hello')
     fig.colorbar(sc, ax=axs[0])
     fig.colorbar(sc2, ax=axs[1])
-    fig.clf()
-    fig.show()
+    fig.savefig('HaloFitsInfo/bins-fit-profiles-halo'+str(g))
+    #fig.show()
     #plotting(rad, den, uncer, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp)
     
     g += 1
