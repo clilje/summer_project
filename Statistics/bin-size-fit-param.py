@@ -257,7 +257,7 @@ full_mass = subhalo_info['SubhaloMass'].to_numpy()
 #length = subhalo_info['SubhaloLen'].to_numpy().astype(int)
 
 #gg = [0,4,20,200,2000,198182,19999]
-gg =[20]
+gg =[20,200,4,2000]
 numhalos = len(subhalo_index)
 #densities = []
 #uncertainties = []
@@ -350,7 +350,7 @@ for g in gg:
     cm = plt.cm.get_cmap('RdYlBu')
     #xy = range(20)
     z = chisquare
-    sc = axs[0].scatter(binsizes, scale_den, c=z, s=20,marker='*')
+    sc = axs[0].scatter(binsizes, scale_den, c=z, s=100,marker='*')
     
     axs[0].set_xlabel(r'Binsize')
     axs[0].set_ylabel(r'Scale Density')
@@ -359,7 +359,7 @@ for g in gg:
     #axs1.set_xscale('log')
     axs[0].set_title("Scale Density at different bin sizes")
     
-    sc2 = axs[1].scatter(binsizes, scale_rad, c=z, s=20,marker='*',  cmap=cm)
+    sc2 = axs[1].scatter(binsizes, scale_rad, c=z, s=100,marker='*',  cmap=cm)
     
     #axs[1].colorbar(sc)
     axs[1].set_xlabel(r'Binsize')
