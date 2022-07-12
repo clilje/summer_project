@@ -330,44 +330,44 @@ for g in gg:
         scale_den.append(nfwfitp[0])
         scale_rad.append(nfwfitp[1])
         chisquare.append(nfwchi_square_test_statistic)
-        burkertfitp = [0,0]
-        dehnen_threeparamfitp = [0,0]
-        dehnen_twoparamfitp = [0,0]
-        einastofitp = [0,0]
-        print(binsizes)
-        print(scale_den)
-        print(scale_rad)
-        print(chisquare)
-        fig, axs = plt.subplots(1, 2, figsize=(20,20))
-        cm = plt.cm.get_cmap('RdYlBu')
-        #xy = range(20)
-        z = chisquare
-        sc = axs[0].scatter(binsizes, scale_den, c=z, cmap=cm)
-        axs[0].colorbar(sc)
-        axs[0].set_xlabel(r'Binsize')
-        axs[0].set_ylabel(r'Scale Density')
-        #axs1.legend()
-        #axs1.set_yscale('log')
-        #axs1.set_xscale('log')
-        axs[0].set_title("Scale Density at different bin sizes")
-        
-        sc2 = axs[1].scatter(binsizes, scale_rad, c=z,  cmap=cm)
-        axs[1].colorbar(sc2)
-        axs[1].colorbar(sc)
-        axs[1].set_xlabel(r'Binsize')
-        axs[1].set_ylabel(r'Scale Radius')
-        #axs1.legend()
-        #axs1.set_yscale('log')
-        #axs1.set_xscale('log')
-        axs[1].set_title("Scale Radius at different bin sizes")
-        
-        fig.tight_layout()
-        fig.savefig('HaloFitsInfo/zoom-fit-profiles-halo'+str(g))
-        print('hello')
+    burkertfitp = [0,0]
+    dehnen_threeparamfitp = [0,0]
+    dehnen_twoparamfitp = [0,0]
+    einastofitp = [0,0]
+    print(binsizes)
+    print(scale_den)
+    print(scale_rad)
+    print(chisquare)
+    fig, axs = plt.subplots(1, 2, figsize=(20,20))
+    cm = plt.cm.get_cmap('RdYlBu')
+    #xy = range(20)
+    z = chisquare
+    sc = axs[0].scatter(binsizes, scale_den, c=z, cmap=cm)
+    axs[0].colorbar(sc)
+    axs[0].set_xlabel(r'Binsize')
+    axs[0].set_ylabel(r'Scale Density')
+    #axs1.legend()
+    #axs1.set_yscale('log')
+    #axs1.set_xscale('log')
+    axs[0].set_title("Scale Density at different bin sizes")
     
-        fig.clf()
-        fig.show()
-        #plotting(rad, den, uncer, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp)
+    sc2 = axs[1].scatter(binsizes, scale_rad, c=z,  cmap=cm)
+    axs[1].colorbar(sc2)
+    axs[1].colorbar(sc)
+    axs[1].set_xlabel(r'Binsize')
+    axs[1].set_ylabel(r'Scale Radius')
+    #axs1.legend()
+    #axs1.set_yscale('log')
+    #axs1.set_xscale('log')
+    axs[1].set_title("Scale Radius at different bin sizes")
+    
+    fig.tight_layout()
+    fig.savefig('HaloFitsInfo/bins-fit-profiles-halo'+str(g))
+    print('hello')
+
+    fig.clf()
+    fig.show()
+    #plotting(rad, den, uncer, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp)
     
     g += 1
         #fig.clf()
