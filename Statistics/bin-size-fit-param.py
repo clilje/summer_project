@@ -122,8 +122,8 @@ def virialRadius(radius, density):
     above_virR = np.where((density).astype(float)>float(p_crit*200))[0]
     virIndex = np.argmax(radius[above_virR])
     virR = radius[virIndex]
-    print(virR)
-    print(radius[-10:-1])
+    #print(virR)
+    #print(radius[-10:-1])
     return(virR,above_virR)
     
 def chiSquareNFW(rad,den, uncertainties, nfwfitp):
@@ -249,7 +249,7 @@ full_mass = subhalo_info['SubhaloMass'].to_numpy()
 #length = subhalo_info['SubhaloLen'].to_numpy().astype(int)
 
 #gg = [0,4,20,200,2000,198182,19999]
-gg =[2000]
+gg =[20]
 numhalos = len(subhalo_index)
 #densities = []
 #uncertainties = []
@@ -262,9 +262,9 @@ for g in gg:
     
     chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['x'],dtype={'x':object})
     chunk = chunk[chunk['x'] != 'x']
-    print('success')
+    #print('success')
     partx = chunk['x'].to_numpy().astype(float)
-    print(partx)
+    #print(partx)
     #exit()
     chunk = pd.read_csv('FullRun/snap_99_halo_'+str(g)+'.csv', usecols=['y'],dtype={'y':object})
     chunk = chunk[chunk['y'] != 'y']
@@ -313,27 +313,31 @@ for g in gg:
         
         virial_radius,virial_index = virialRadius(rad, den)
         virial_density = p_crit*200
-        print(str((virial_radius/radius)[g]))
-        if (virial_radius/radius)[g] < 10:
-            
-            #filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'param'
-            
-            rad = rad[virial_index]
-            den = den[virial_index]
-            uncer = uncer[virial_index]
-            nfwfitp, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[virial_density,virial_radius], sigma=uncer)
-            nfwchi_square_test_statistic =  np.sum((np.square(((den))-(nfw(rad, nfwfitp[0], nfwfitp[1]))))/(nfw(rad, nfwfitp[0], nfwfitp[1])))
-            nfwp_value = scipy.stats.distributions.chi2.sf(nfwchi_square_test_statistic,(len(den)-1))
-            print ('ChiSquare and P values for NFW', nfwchi_square_test_statistic)
-            print ('Fitted value for NFW', nfwfitp)
-            print ('uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
-            scale_den.append(nfwfitp[0])
-            scale_rad.append(nfwfitp[1])
-            chisquare.append(nfwchi_square_test_statistic)
-            burkertfitp = [0,0]
-            dehnen_threeparamfitp = [0,0]
-            dehnen_twoparamfitp = [0,0]
-            einastofitp = [0,0]
+        #print(str((virial_radius/radius)[g]))
+        #if (virial_radius/radius)[g] < 10:
+        
+        #filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'param'
+        
+        rad = rad[virial_index]
+        den = den[virial_index]
+        uncer = uncer[virial_index]
+        nfwfitp, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[virial_density,virial_radius], sigma=uncer)
+        nfwchi_square_test_statistic =  np.sum((np.square(((den))-(nfw(rad, nfwfitp[0], nfwfitp[1]))))/(nfw(rad, nfwfitp[0], nfwfitp[1])))
+        nfwp_value = scipy.stats.distributions.chi2.sf(nfwchi_square_test_statistic,(len(den)-1))
+        print ('ChiSquare and P values for NFW', nfwchi_square_test_statistic)
+        print ('Fitted value for NFW', nfwfitp)
+        print ('uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
+        scale_den.append(nfwfitp[0])
+        scale_rad.append(nfwfitp[1])
+        chisquare.append(nfwchi_square_test_statistic)
+        burkertfitp = [0,0]
+        dehnen_threeparamfitp = [0,0]
+        dehnen_twoparamfitp = [0,0]
+        einastofitp = [0,0]
+        print(binsizes)
+        print(scale_den)
+        print(scale_rad)
+        print(chisquare)
         fig, axs = plt.subplots(1, 2, figsize=(20,20))
         cm = plt.cm.get_cmap('RdYlBu')
         #xy = range(20)
@@ -357,7 +361,11 @@ for g in gg:
         #axs1.set_xscale('log')
         axs[1].set_title("Scale Radius at different bin sizes")
         
-        
+        fig.tight_layout()
+        fig.savefig('HaloFitsInfo/zoom-fit-profiles-halo'+str(g))
+        print('hello')
+    
+        fig.clf()
         fig.show()
         #plotting(rad, den, uncer, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp)
     
