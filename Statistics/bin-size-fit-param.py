@@ -343,7 +343,7 @@ for g in gg:
     #xy = range(20)
     z = chisquare
     sc = axs[0].scatter(binsizes, scale_den, c=z, cmap=cm)
-    axs[0].colorbar(sc)
+    
     axs[0].set_xlabel(r'Binsize')
     axs[0].set_ylabel(r'Scale Density')
     #axs1.legend()
@@ -352,7 +352,7 @@ for g in gg:
     axs[0].set_title("Scale Density at different bin sizes")
     
     sc2 = axs[1].scatter(binsizes, scale_rad, c=z,  cmap=cm)
-    axs[1].colorbar(sc2)
+    
     axs[1].colorbar(sc)
     axs[1].set_xlabel(r'Binsize')
     axs[1].set_ylabel(r'Scale Radius')
@@ -364,7 +364,8 @@ for g in gg:
     fig.tight_layout()
     fig.savefig('HaloFitsInfo/bins-fit-profiles-halo'+str(g))
     print('hello')
-
+    fig.colorbar(sc, ax=axs[0], extend='max')
+    fig.colorbar(sc2, ax=axs[1], extend='max')
     fig.clf()
     fig.show()
     #plotting(rad, den, uncer, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp)
