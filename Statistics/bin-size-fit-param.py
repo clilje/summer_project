@@ -291,10 +291,10 @@ for g in gg:
         binsize = int(len(partx)/200)
     """
     if len(mass)/350 > 5:
-        binsizes = np.linspace((len(mass)/250),(len(mass)/7),15).astype(int)
+        binsizes = np.linspace((len(mass)/350),(len(mass)/150),15).astype(int)
     else:
         #bin_num = len(mass)/3
-        binsizes = np.linspace(3,len(mass)/7,15).astype(int)
+        binsizes = np.linspace(3,len(mass)/15,15).astype(int)
     
     scale_den = []
     scale_rad = []
@@ -379,7 +379,7 @@ for g in gg:
     print('hello')
     fig.colorbar(sc, ax=axs[0])
     fig.colorbar(sc2, ax=axs[1])
-    fig.savefig('HaloFitsInfo/bins-fit-profiles-halo'+str(g))
+    fig.savefig('HaloFitsInfo/bins-smallrange-fit-profiles-halo'+str(g))
     #fig.show()
     #plotting(rad, den, uncer, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp)
     
