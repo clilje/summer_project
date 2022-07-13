@@ -53,8 +53,9 @@ numhalos = len(subhalo_index)
 #g = 51
 concentration = []
 chisquare = []
+mass = []
 g= 0
-while g < 36999:
+while g < 3699:
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
     if(os.path.isfile(filename+'.csv')):
         print(g)
@@ -78,6 +79,7 @@ while g < 36999:
             #virrad = data_csv['Virial Radius'][0]
             #uncer = data_csv['Uncertainty']
             concentration.append(virrad/nfwfitp[0])
+            mass.append(full_massmass[g])
             #num_datapoints = len(data_csv['Radius'])
     g +=1
 
@@ -88,7 +90,7 @@ while g < 36999:
 #lower_end = np.where(weighted_chisquare<(10**3))[0]
 #print(lower_end)
 #print(weighted_chisquare)
-plt.plot((full_mass)*h,concentration,'.')
+plt.plot((mass)*h,concentration,'.')
 plt.xscale('log')
 plt.xlabel(r'Total Mass of Halo in $10^{10} M_{\odot}$')
 plt.ylabel(r'$c_{200}$')
@@ -99,7 +101,7 @@ fig = plt.figure()
 ax = plt.axes(projection ='3d')
 #xyz = np.arange(len(positionsX[indices]))
 #index = np.random.choice(xyz,2000)
-
+"""
 chisquare = np.array(chisquare)/min(chisquare)
 p = ax.scatter3D(positionsX, positionsY, positionsZ,c=chisquare, marker='.',cmap='hot',alpha=0.3)
 #ax.scatter(halo_50[0], halo_50[1], halo_50[2], marker='+',color='red')
@@ -111,3 +113,4 @@ ax.set_xlabel('x [ckpc/h]')
 ax.set_ylabel('y [ckpc/h]')
 ax.set_zlabel('z [ckpc/h]')
 fig.savefig('Heatmap-reduced')
+"""
