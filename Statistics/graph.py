@@ -79,7 +79,7 @@ while g < 3699:
             #virrad = data_csv['Virial Radius'][0]
             #uncer = data_csv['Uncertainty']
             concentration.append(virrad/nfwfitp[0])
-            mass.append(full_massmass[g])
+            mass.append(full_mass[g])
             #num_datapoints = len(data_csv['Radius'])
     g +=1
 
