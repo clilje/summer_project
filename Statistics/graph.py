@@ -57,7 +57,7 @@ g= 0
 while g < 360999:
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
     if(os.path.isfile(filename+'.csv')):
-        
+        print(g)
         
         data_csv = pd.read_csv('HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den.csv')
         
