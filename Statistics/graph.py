@@ -71,7 +71,7 @@ while g < 360999:
         den = den[virial_index]
         uncer = uncer[virial_index]
         print(virrad/radius[g])
-        if virrad/radius[g] < 15:
+        if virrad/radius[g] < 5:
             nfwfitp, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[virial_density,virrad], sigma=uncer)
             nfwchi_square_test_statistic =  np.sum((np.square(((den))-(nfw(rad, nfwfitp[0], nfwfitp[1]))))/(nfw(rad, nfwfitp[0], nfwfitp[1])))
             chisquare.append(nfwchi_square_test_statistic)
