@@ -292,13 +292,17 @@ for g in gg:
     """
     if len(mass)/350 > 5:
         binsizes = np.linspace((len(mass)/350),(len(mass)/150),15).astype(int)
+        #binsizes = np.linspace((len(mass)/250),(len(mass)/7),15).astype(int)
     else:
         #bin_num = len(mass)/3
         binsizes = np.linspace(3,len(mass)/15,15).astype(int)
-    
+        #binsizes = np.linspace(3,len(mass)/7,15).astype(int)
+        
     scale_den = []
     scale_rad = []
     chisquare = []
+    uncer_den = []
+    uncer_rad = []
     for binsize in binsizes:
         rad_den = radial_density((partx*h), (party*h), (partz*h),(mass*h*(10**10)), binsize, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
         #mass in solar masses
@@ -343,6 +347,8 @@ for g in gg:
         scale_den.append(nfwfitp[0])
         scale_rad.append(nfwfitp[1])
         chisquare.append(nfwchi_square_test_statistic)
+        uncer_den.append(np.sqrt(np.diag(nfwfitcov))[0])
+        uncer_rad.append(np.sqrt(np.diag(nfwfitcov))[1])
     burkertfitp = [0,0]
     dehnen_threeparamfitp = [0,0]
     dehnen_twoparamfitp = [0,0]
@@ -355,7 +361,7 @@ for g in gg:
     cm = plt.cm.get_cmap('RdYlBu')
     #xy = range(20)
     z = chisquare
-    sc = axs[0].scatter(binsizes, scale_den, c=z, s=150,marker='*')
+    sc = axs[0].scatter(binsizes, scale_den, c=z,yerr=uncer_den, s=150,marker='*')
     
     axs[0].set_xlabel(r'Binsize')
     axs[0].set_ylabel(r'Scale Density')
@@ -364,7 +370,7 @@ for g in gg:
     #axs1.set_xscale('log')
     axs[0].set_title("Scale Density at different bin sizes")
     
-    sc2 = axs[1].scatter(binsizes, scale_rad, c=z, s=150,marker='*',  cmap=cm)
+    sc2 = axs[1].scatter(binsizes, scale_rad, c=z,yerr=uncer_rad, s=150,marker='*',  cmap=cm)
     
     #axs[1].colorbar(sc)
     axs[1].set_xlabel(r'Binsize')
