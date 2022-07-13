@@ -39,8 +39,8 @@ def virialRadius(radius, density):
     above_virR = np.where((density).astype(float)>float(p_crit*200))[0]
     virIndex = np.argmax(radius[above_virR])
     virR = radius[virIndex]
-    print(virR)
-    print(radius[-10:-1])
+    #print(virR)
+    #print(radius[-10:-1])
     return(virR,above_virR)
     
 
@@ -95,7 +95,7 @@ while g < numhalos:
         uncer = data_csv['Uncertainty']
         virrad,virial_index = virialRadius(rad, den)
         virial_density = p_crit*200
-        print(virrad)
+        #print(virrad)
         rad = rad[virial_index]
         den = den[virial_index]
         uncer = uncer[virial_index]
@@ -143,7 +143,7 @@ while g < numhalos:
                 data = [subhalo_index[g],num_datapoints,nfwfitp[0],nfwfitp[1],np.sqrt(np.diag(nfwfitcov))[0],
                           np.sqrt(np.diag(nfwfitcov))[1],nfwchi_square_test_statistic,nfwp_value,
                           einastofitp[0],
-                          einastofitp[1],einastofitp[2], np.sqrt(np.diag(einastofitcov))[0],
+                          einastofitp[1], np.sqrt(np.diag(einastofitcov))[0],
                           np.sqrt(np.diag(einastofitcov))[1],np.sqrt(np.diag(einastofitcov))[2],einastochi_square_test_statistic,einastop_value]
                 fwriter.writerow(data)   
     g +=1
