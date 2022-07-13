@@ -361,7 +361,7 @@ for g in gg:
     cm = plt.cm.get_cmap('RdYlBu')
     #xy = range(20)
     z = chisquare
-    sc = axs[0].scatter(binsizes, scale_den, c=z,yerr=uncer_den, s=150,marker='*')
+    sc = axs[0].errorbar(binsizes, scale_den, c=z,yerr=uncer_den, s=300,marker='*')
     
     axs[0].set_xlabel(r'Binsize')
     axs[0].set_ylabel(r'Scale Density')
@@ -370,7 +370,7 @@ for g in gg:
     #axs1.set_xscale('log')
     axs[0].set_title("Scale Density at different bin sizes")
     
-    sc2 = axs[1].scatter(binsizes, scale_rad, c=z,yerr=uncer_rad, s=150,marker='*',  cmap=cm)
+    sc2 = axs[1].errorbar(binsizes, scale_rad, c=z,yerr=uncer_rad, s=300,marker='*',  cmap=cm)
     
     #axs[1].colorbar(sc)
     axs[1].set_xlabel(r'Binsize')
