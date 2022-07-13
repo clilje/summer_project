@@ -66,8 +66,8 @@ with open('HaloFitsInfo/50-1_snap_99_fit_param.csv', 'x', encoding='UTF8', newli
     
     header = ['Halo Number','DataPoints','NFW Scale Density','NFW Scale Radius','NFW Scale Density Uncertainty',
               'NFW Scale Radius Uncertainty','NFW ChiSquare','NFW P-Value','Einasto Scale Density',
-              'Einasto Scale Radius','Einasto n', 'Einasto Scale Density Uncertainty',
-              'Einasto Scale Radius Uncertainty','Einasto n Uncertainty','Einasto ChiSquare','Einasto P-Value']
+              'Einasto Scale Radius', 'Einasto Scale Density Uncertainty',
+              'Einasto Scale Radius Uncertainty','Einasto ChiSquare','Einasto P-Value']
     # Create a writer object
     fwriter = csv.writer(f, delimiter=',')
     # Write the header
@@ -144,7 +144,7 @@ while g < numhalos:
                           np.sqrt(np.diag(nfwfitcov))[1],nfwchi_square_test_statistic,nfwp_value,
                           einastofitp[0],
                           einastofitp[1], np.sqrt(np.diag(einastofitcov))[0],
-                          np.sqrt(np.diag(einastofitcov))[1],np.sqrt(np.diag(einastofitcov))[2],einastochi_square_test_statistic,einastop_value]
+                          np.sqrt(np.diag(einastofitcov))[1],einastochi_square_test_statistic,einastop_value]
                 fwriter.writerow(data)   
     g +=1
 """
