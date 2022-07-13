@@ -66,6 +66,10 @@ while g < 360999:
         uncer = data_csv['Uncertainty']
         virrad,virial_index = virialRadius(rad, den)
         virial_density = p_crit*200
+        print(virrad)
+        rad = rad[virial_index]
+        den = den[virial_index]
+        uncer = uncer[virial_index]
         if virrad/radius[g] < 15:
             nfwfitp, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[virial_density,virrad], sigma=uncer)
             nfwchi_square_test_statistic =  np.sum((np.square(((den))-(nfw(rad, nfwfitp[0], nfwfitp[1]))))/(nfw(rad, nfwfitp[0], nfwfitp[1])))
