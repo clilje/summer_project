@@ -64,7 +64,7 @@ pdheader = ['Radius','Density','Uncertainty']
 
 with open('HaloFitsInfo/50-1_snap_99_fit_param.csv', 'x', encoding='UTF8', newline='') as f:
     
-    header = ['Halo Number','DataPoints','NFW Scale Density','NFW Scale Radius','NFW Scale Density Uncertainty',
+    header = ['Halo Number','DataPoints','Virial Radius','NFW Scale Density','NFW Scale Radius','NFW Scale Density Uncertainty',
               'NFW Scale Radius Uncertainty','NFW ChiSquare','NFW P-Value','Einasto Scale Density',
               'Einasto Scale Radius', 'Einasto Scale Density Uncertainty',
               'Einasto Scale Radius Uncertainty','Einasto ChiSquare','Einasto P-Value']
@@ -100,13 +100,13 @@ while g < numhalos:
         den = den[virial_index]
         uncer = uncer[virial_index]
         print(virrad/radius[g])
-        if virrad/radius[g] < 5:
+        if virrad/radius[g] < 4:
             nfwfitp, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[virial_density,virrad], sigma=uncer)
             nfwchi_square_test_statistic =  np.sum((np.square(((den))-(nfw(rad, nfwfitp[0], nfwfitp[1]))))/(np.square(uncer)))
             nfwp_value = scipy.stats.distributions.chi2.sf(nfwchi_square_test_statistic,(len(den)-1))
             print ('ChiSquare and P values for NFW', nfwchi_square_test_statistic)
             print ('Fitted value for NFW', nfwfitp)
-            print ('uncer/(p_crit*200)tainties for NFW', np.sqrt(np.diag(nfwfitcov)))
+            print ('uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
             
             einastofitp, einastofitcov = scopt.curve_fit(einasto, rad, den, p0=[virial_density,virrad], sigma=uncer)
             einastochi_square_test_statistic =  np.sum((np.square(((den))-(einasto(rad, einastofitp[0], einastofitp[1]))))/(np.square(uncer)))
@@ -140,7 +140,7 @@ while g < numhalos:
             
             with open('HaloFitsInfo/50-1_snap_99_fit_param.csv', 'a', encoding='UTF8', newline='') as f:
                 fwriter = csv.writer(f, delimiter=',')
-                data = [subhalo_index[g],num_datapoints,nfwfitp[0],nfwfitp[1],np.sqrt(np.diag(nfwfitcov))[0],
+                data = [subhalo_index[g],num_datapoints,virrad,nfwfitp[0],nfwfitp[1],np.sqrt(np.diag(nfwfitcov))[0],
                           np.sqrt(np.diag(nfwfitcov))[1],nfwchi_square_test_statistic,nfwp_value,
                           einastofitp[0],
                           einastofitp[1], np.sqrt(np.diag(einastofitcov))[0],
