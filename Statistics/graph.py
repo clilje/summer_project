@@ -54,8 +54,8 @@ numhalos = len(subhalo_index)
 concentration = []
 chisquare = []
 mass = []
-g= 1
-while g < 3699:
+gg = [0,63864,96762,117250,184931,198182,143880,208811,229933,220595,167392,253861,242788,264883]
+for g in gg:
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
     if(os.path.isfile(filename+'.csv')):
         print(g)
