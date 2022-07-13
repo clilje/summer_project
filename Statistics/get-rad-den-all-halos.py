@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import math
 import csv
 import h5py
+import os
 import pandas as pd
 import scipy.optimize as scopt
 import scipy.linalg
@@ -132,11 +133,18 @@ for g in gg:
     chunk = chunk[chunk['mass'] != 'mass']
     mass = chunk['mass'].to_numpy().astype(float)
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
+    if(os.path.isfile(filename+'.csv')):
     
-    if len(partx) < 600:
-        binsize = 3
+        #os.remove() function to remove the file
+        os.remove(filename+'.csv')
+    
+        #Printing the confirmation message of deletion
+        print("File Deleted successfully")
     else:
-        binsize = int(len(partx)/200)
+        print("File does not exist")
+    
+    
+    binsize = int(len(partx)/50)
     
     rad_den = radial_density((partx*h), (party*h), (partz*h),(mass*h*(10**10)), binsize, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
     #mass in solar masses
