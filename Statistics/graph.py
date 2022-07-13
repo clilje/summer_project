@@ -63,7 +63,7 @@ while g < 360999:
         
         rad = data_csv['Radius']
         den = data_csv['Density']
-        uncer = data_csv['Uncertainties']
+        uncer = data_csv['Uncertainty']
         virrad,virial_index = virialRadius(rad, den)
         virial_density = p_crit*200
         if virrad/radius[g] < 15:
