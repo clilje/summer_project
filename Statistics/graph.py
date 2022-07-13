@@ -90,7 +90,7 @@ while g < 3699:
 #lower_end = np.where(weighted_chisquare<(10**3))[0]
 #print(lower_end)
 #print(weighted_chisquare)
-plt.plot((mass)*h,concentration,'.')
+plt.plot(np.array(mass)*h,concentration,'.')
 plt.xscale('log')
 plt.xlabel(r'Total Mass of Halo in $10^{10} M_{\odot}$')
 plt.ylabel(r'$c_{200}$')
