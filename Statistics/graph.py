@@ -78,7 +78,7 @@ while g < 3699:
             chisquare.append(nfwchi_square_test_statistic)
             #virrad = data_csv['Virial Radius'][0]
             #uncer = data_csv['Uncertainty']
-            concentration.append(virrad/nfwfitp[0])
+            concentration.append(virrad/nfwfitp[1])
             mass.append(full_mass[g])
             #num_datapoints = len(data_csv['Radius'])
     g +=1
