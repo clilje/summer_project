@@ -2,6 +2,18 @@
 """
 Created on Thu Jun 16 14:38:14 2022
 
+This code plots the radial density function, from a file which includes all particles,
+their position and mass.
+This code has the additional functionality of plotting both the radial density function
+for the DMO and the DM + Baryons halo.
+Lastly the code calculates the enhancement of each halo and adds this to the plot.
+
+This code contains functions for getting filenames for group catalogs, extracting position
+and radius from h5py files, as well as getting the matching indices of DMO halos.
+Lastly there are functions for radial density binning, distance from centre of particles and 
+calculating enhancement that are easily adaptable. 
+
+
 @author: clara
 """
 import h5py
@@ -69,6 +81,7 @@ def get_pos(filename):
         #print(pos)
     pos = np.reshape(pos, [int(len(pos)/3),3])
     return(pos)
+
 
 def get_rad(filename):
     """
@@ -146,36 +159,49 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
     list with densities at certain radii and radii at which density is calculated.
 
     """
+    
+    #create lists in which to store final results
     density = np.array([])
     rad_lowerbound = np.array([])
     uncertainties = np.array([])
-    #lowerbound = np.logspace(0.1, (3*virrad), 50)
-    #lowerbound = interval
-    #i = 0
+    
+    
+    #calculate radial distance of each particle
     dis = distancefromcentre(halox, haloy, haloz, partx, party, partz)
-    index= np.argsort(dis)
-    print(dis[index][:10])
-    print(len(dis))
+    #index= np.argsort(dis)
+    
+    #calculate the halfmass radius density, here falsely named virial radius
     virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
     virindex = np.where(np.logical_and(dis.astype(float)>float(virrad-10), dis.astype(float)<float(virrad+10)))[0]
     mass = np.array(mass)
     virM = np.sum(mass[virindex])
     virdensity = virM/virV
     
-    
+    #sort list of radial distances to make binning easier
     bin_index = np.argsort(dis)
     radius_lowerbound = 0
     bin_lowerbound = 0
     
+    
     while (bin_lowerbound+binsize) < len(dis):
+        """
+        This loop iterates through radial shells, each containing the same amount of halos.
+        Then determines the density in each bin, storing everything in lists.
+        Uncertainties are Poisson errors.
+        """
+        #radial shell volume
         index_in_bin = bin_index[bin_lowerbound:(bin_lowerbound+binsize)]
         radius_upperbound = dis[index_in_bin][-1]
         dV = (4/3)*math.pi*(np.power(radius_upperbound,3)-np.power(radius_lowerbound,3))
         
+        #mass contained in shell
         M = np.sum(mass[index_in_bin])
+        
+        #density = mass/volume
         subdensity = (M/(dV))
         density = np.append(density, subdensity)
         
+        #change indices for next iteration
         rad_lowerbound = np.append(rad_lowerbound, radius_upperbound)
         dn = len(index_in_bin)
         uncertainties = np.append(uncertainties, subdensity/np.sqrt(dn))
@@ -185,34 +211,62 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
     return(density, rad_lowerbound, uncertainties, virdensity)
 
 def enhancement(halopos, halopartpos, halopartmass, cutoffrad, halodmpos, halodmpartpos, halodmpartmass):
+    """
+    
+
+    Parameters
+    ----------
+    halopos : contains x,y,z of halo
+    halopartpos : contains lists of x,y,z of particles belonging to halo
+    halopartmass : list of mass of each particle
+    cutoffrad : radius within which enhancement should be calculated.
+    halodmpos : DMO halo centre x,y,z
+    halodmpartpos : particle positions belonging to DMO halo
+    halodmpartmass : List of mass of each particle of DMO halo
+
+    Returns
+    -------
+    enhancement of DM + Baryonic compared to DMO
+
+    """
+    #simulation constants
     omega_m = 0.3089
     omega_b = 0.0486
+    
+    #extracting data from lists
     halox, haloy, haloz = halopos
     halodmx, halodmy, halodmz = halodmpos
     halopartx, haloparty, halopartz = halopartpos
     halodmpartx, halodmparty, halodmpartz = halodmpartpos
+    
+    #calculating radial distances
     dis = distancefromcentre(halox, haloy, haloz, halopartx, haloparty, halopartz)
     disdm = distancefromcentre(halodmx, halodmy, halodmz, halodmpartx, halodmparty, halodmpartz)
+    
+    #cutoff indices
     virindex = np.where(dis.astype(float)<float(cutoffrad))[0]
     virindex_dm = np.where(disdm.astype(float)<float(cutoffrad))[0]
     M = np.sum(halopartmass[virindex])
     M_dm = np.sum(halodmpartmass[virindex_dm])
+    
     return((M/M_dm)*(omega_m/(omega_m-omega_b)))
     
-
+#get filenames and group file information
 matchingarr = get_matching(50, 4)
-
 files_dark = get_filenames(50, 4, 4, True)
 files = get_filenames(50, 4, 9, False)
 positions = get_pos(files)
 radius = get_rad(files)
 positions_dark = get_pos(files_dark)
 radius_dark = get_rad(files_dark)
-print(positions, radius)
-print(positions_dark, radius_dark)
+
+#constants defining which halos are selected and iterated through
 g = 1
 c = 0
 numhalos = 10
+
+
+#lists to store results
 densities = []
 radii = []
 uncertainties = []
@@ -223,12 +277,20 @@ halo_number = []
 enhance = []
 
 while c < 4: 
+    
+    #iterate through each dark halo, because there are more DM+Baryonic matched
     path = Path('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass_dark.csv')
+    
+    
     if path.is_file():
+        #extract data
         data_csv_dark = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass_dark.csv')
         data_csv = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass.csv')
+        
+        #calc radial densities
         rad_den_dark = radial_density(data_csv_dark['x'].to_numpy(), data_csv_dark['y'].to_numpy(), data_csv_dark['z'].to_numpy(), data_csv_dark['mass'].to_numpy(), 10, radius_dark[matchingarr[g]], positions_dark[matchingarr[g]][0], positions_dark[matchingarr[g]][1], positions_dark[matchingarr[g]][2])
         rad_den = radial_density(data_csv['x'].to_numpy(), data_csv['y'].to_numpy(), data_csv['z'].to_numpy(), data_csv['mass'].to_numpy(), 10, radius[g], positions[g][0], positions[g][1], positions[g][2])
+        
         hmrad = radius[g]
         densities.append(list(rad_den[0]))
         radii.append(list(rad_den[1]))
@@ -240,15 +302,18 @@ while c < 4:
         radii_dark.append(list(rad_den_dark[1]))
         uncertainties_dark.append(list(rad_den_dark[2]))
         hmden_dark = rad_den_dark[3]
-        print(hmrad,hmden)
+        
         halo_number.append(g)
         
+        #calc enhancement
         enhance.append(enhancement([positions[g][0], positions[g][1], positions[g][2]],[data_csv['x'].to_numpy(), data_csv['y'].to_numpy(), data_csv['z'].to_numpy()],data_csv['mass'].to_numpy(),10,[positions_dark[matchingarr[g]][0], positions_dark[matchingarr[g]][1], positions_dark[matchingarr[g]][2]],[data_csv_dark['x'].to_numpy(), data_csv_dark['y'].to_numpy(), data_csv_dark['z'].to_numpy()], data_csv_dark['mass'].to_numpy()))
         
         c+=1
     g += 1
     
 #print(enhance)
+
+#This section plots 4 of the halos both DMO and counterparts on 4 subplots, writing the enhancement on each.
 hsv = plt.get_cmap('hsv')
 colors = iter(hsv(np.linspace(0,1,6)))
 fig, axs = plt.subplots(2, 2, figsize=(16,16))

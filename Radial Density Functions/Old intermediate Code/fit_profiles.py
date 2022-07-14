@@ -16,7 +16,11 @@ import math
 import csv
 import pandas as pd
 
+"""
+The following are all just the formulas for each of the radial density profiles. 
+The formulas are written so that all of these may be optimised wrt to free parameters.
 
+"""
 def nfw(density_0, scale_radius, r):
     return(density_0/((r/scale_radius)*np.power((1+(r/scale_radius)),2)))
 
@@ -151,12 +155,16 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
     list with densities at certain radii and radii at which density is calculated.
 
     """
+    #Lists and set up
     density = []
     rad_lowerbound = []
-    #lowerbound = np.logspace(0.1, (3*virrad), 50)
     lowerbound = interval
     i = 0
+    
+    #Distance
     dis = distancefromcentre(halox, haloy, haloz, partx, party, partz)
+    
+    #HM Density and Rad
     virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
     virindex = np.where(np.logical_and(dis.astype(float)>float(virrad-10), dis.astype(float)<float(virrad+10)))[0]
     mass = mass.astype(float)
@@ -164,7 +172,7 @@ def radial_density(partx, party, partz, mass, interval, virrad, halox, haloy, ha
     virdensity = virM/virV
     
     while i < (len(lowerbound)-1):
-        #print(lowerbound[i])
+        'Old version'
         dr = (lowerbound[i+1]-lowerbound[i])
         dV = (4/3)*math.pi*(np.power(lowerbound[i+1],3)-np.power(lowerbound[i],3))
         
@@ -220,18 +228,3 @@ fitp, fitcov = scopt.curve_fit(dehnen_threeparam, radii, densities, p0=np.ones(3
 print ('Fitted value for Dehnen Three Parameters', fitp)
 print ('Uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(fitcov)))
 
-'''
-hsv = plt.get_cmap('gnuplot')
-colors = iter(hsv(np.linspace(0,1,5)))
-b = 0
-while b < (len(radii)):
-    print('loop')
-    plt.loglog(radii[b], densities[b], "+", label="Halo_"+str(b)+"_099", color=next(colors))
-    b += 1
-
-plt.xlabel(r'Radius ($ckpc/(h*R_{HalfMass}})}$)')
-plt.ylabel(r'$\rho$(r) ($10^{10} M_{\odot} h^{-1} ckpc^{-3} (\rho_{HalfMass})^{-1}$)')
-plt.legend()
-plt.savefig('rad-den-next5')
-plt.show()
-'''

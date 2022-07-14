@@ -2,6 +2,10 @@
 """
 Created on Thu Jun 16 14:38:14 2022
 
+This is code to create a file containing crucial information from group files
+about Halo position and mass. This has been extended and improved in the
+Statistics folder. 
+
 @author: clara
 """
 import h5py
@@ -99,7 +103,10 @@ positions = get_pos(files)
 radius = get_rad(files)
 
 with open('HaloFits/50-4_halodata.csv', 'w', encoding='UTF8', newline='') as f:
-    
+    """
+    Write to file the key information about a file.
+    Pandas is much quicker, see improvement in Statistics folder. 
+    """
     header = ['HaloPosX','HaloPosY','HaloPosZ','HaloHMrad']
     # Create a writer object
     fwriter = csv.writer(f, delimiter=',')

@@ -2,6 +2,10 @@
 """
 Created on Thu Jun 16 14:38:14 2022
 
+This code is designed to find the difference between the Halfmass Radius
+of Gravitationally bound particles and Particles that just happend to be 
+within a certain radius of the Halo centre. 
+
 @author: clara
 """
 import h5py
@@ -15,11 +19,12 @@ from pathlib import Path
 
 h = 0.6774
 
-"""
-Function that gets Subhalo Mass from given file list.
-"""
+
         
 def get_mass(filename):
+    """
+    Function that gets Subhalo Mass from given file list.
+    """
     g = 0
     mass = np.array([])
     while g < len(filename):
@@ -112,10 +117,11 @@ def get_rad(filename):
         #pos = np.reshape(pos, [int(len(pos)/3),3])
     return(rad)
 
-"""
-Reading out info from matching catalogue
-"""
+
 def get_matching(sim_size, sim_res):
+    """
+    Reading out info from matching catalogue
+    """
     with h5py.File("/disk01/rmcg/downloaded/tng/tng"+str(sim_size)+"-"+str(sim_res)+"/subhalo_matching_to_dark.hdf5") as file:
         #print(file.keys())
         matchingarr = np.array(file['Snapshot_99/SubhaloIndexDark_LHaloTree'])
@@ -142,7 +148,6 @@ def distancefromcentre(cx, cy, cz, x, y, z, ):
     """
     return (np.sqrt((np.power(np.subtract(x,cx), 2)+ np.power(np.subtract(y,cy), 2) + np.power(np.subtract(z,cz), 2)))) # distance between the centre and given point
 
-
 def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, haloz):
     """
     
@@ -164,36 +169,49 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
     list with densities at certain radii and radii at which density is calculated.
 
     """
+    
+    #create lists in which to store final results
     density = np.array([])
     rad_lowerbound = np.array([])
     uncertainties = np.array([])
-    #lowerbound = np.logspace(0.1, (3*virrad), 50)
-    #lowerbound = interval
-    #i = 0
+    
+    
+    #calculate radial distance of each particle
     dis = distancefromcentre(halox, haloy, haloz, partx, party, partz)
-    index= np.argsort(dis)
-    print(dis[index][:10])
-    print(len(dis))
+    #index= np.argsort(dis)
+    
+    #calculate the halfmass radius density, here falsely named virial radius
     virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
     virindex = np.where(np.logical_and(dis.astype(float)>float(virrad-10), dis.astype(float)<float(virrad+10)))[0]
     mass = np.array(mass)
     virM = np.sum(mass[virindex])
     virdensity = virM/virV
     
-    
+    #sort list of radial distances to make binning easier
     bin_index = np.argsort(dis)
     radius_lowerbound = 0
     bin_lowerbound = 0
     
+    
     while (bin_lowerbound+binsize) < len(dis):
+        """
+        This loop iterates through radial shells, each containing the same amount of halos.
+        Then determines the density in each bin, storing everything in lists.
+        Uncertainties are Poisson errors.
+        """
+        #radial shell volume
         index_in_bin = bin_index[bin_lowerbound:(bin_lowerbound+binsize)]
         radius_upperbound = dis[index_in_bin][-1]
         dV = (4/3)*math.pi*(np.power(radius_upperbound,3)-np.power(radius_lowerbound,3))
         
+        #mass contained in shell
         M = np.sum(mass[index_in_bin])
+        
+        #density = mass/volume
         subdensity = (M/(dV))
         density = np.append(density, subdensity)
         
+        #change indices for next iteration
         rad_lowerbound = np.append(rad_lowerbound, radius_upperbound)
         dn = len(index_in_bin)
         uncertainties = np.append(uncertainties, subdensity/np.sqrt(dn))
@@ -201,7 +219,6 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
         bin_lowerbound = bin_lowerbound+binsize
 
     return(density, rad_lowerbound, uncertainties, virdensity)
-
 
 
 def halfmass(partx, party, partz, mass, binsize, hmrad, halox, haloy, haloz):
@@ -222,75 +239,57 @@ def halfmass(partx, party, partz, mass, binsize, hmrad, halox, haloy, haloz):
 
     Returns
     -------
-    list with densities at certain radii and radii at which density is calculated.
+    mass within the given halfmass radius
 
     """
-    #density = np.array([])
-    #rad_lowerbound = np.array([])
-    #uncertainties = np.array([])
-    #lowerbound = np.logspace(0.1, (3*virrad), 50)
-    #lowerbound = interval
-    #i = 0
     dis = distancefromcentre(halox, haloy, haloz, partx, party, partz)
-    #index= np.argsort(dis)
-    #print(dis[index][:10])
-    #print(len(dis))
-    #virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
     hmindex = np.where(dis.astype(float)<float(hmrad))[0]
     mass = np.array(mass)
     hmM = np.sum(mass[hmindex])
-    #virdensity = virM/virV
     
-    """
-    bin_index = np.argsort(dis)
-    radius_lowerbound = 0
-    bin_lowerbound = 0
-    
-    while (bin_lowerbound+binsize) < len(dis):
-        index_in_bin = bin_index[bin_lowerbound:(bin_lowerbound+binsize)]
-        radius_upperbound = dis[index_in_bin][-1]
-        dV = (4/3)*math.pi*(np.power(radius_upperbound,3)-np.power(radius_lowerbound,3))
-        
-        M = np.sum(mass[index_in_bin])
-        subdensity = (M/(dV))
-        density = np.append(density, subdensity)
-        
-        rad_lowerbound = np.append(rad_lowerbound, radius_upperbound)
-        dn = len(index_in_bin)
-        uncertainties = np.append(uncertainties, subdensity/np.sqrt(dn))
-        radius_lowerbound = radius_upperbound
-        bin_lowerbound = bin_lowerbound+binsize
-        """
     return(hmM)
 
-
+#Set up defining simulation
 files = get_filenames(50, 4, 9, False)
 positions = get_pos(files)
 radius = get_rad(files)
 masses = get_mass(files)
+
+#Which halos to read out
 g = 0
 c = 0
 numhalos = 30
+
+#lists to store results
 halo_number = []
 hmclara = []
 
 
 while c < numhalos: 
+    #get data from file containing all particles within specific radius of Halo Centre
     data_csv = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass.csv')
     hmrad = radius[g]
+    
+    #get half mass 
     hmMass = halfmass(data_csv['x'].to_numpy(), data_csv['y'].to_numpy(), data_csv['z'].to_numpy(), data_csv['mass'].to_numpy(), 10, radius[g], positions[g][0], positions[g][1], positions[g][2])
 
     halo_number.append(g)
     hmclara.append(hmMass)
     c+=1
     g += 1
-    
+
+
 hmclara = np.array(hmclara)
 mclara = 2*hmclara
+
+#Calculate difference between given full mass in Catalogue and the one found by 
+#doubling the mass in given HMrad for all particles within that radius of Halo Centre
 mass_difference = masses[:len(hmclara)]-mclara
 
 with open('50-4_mass_difference.csv', 'w', encoding='UTF8', newline='') as f:
-    
+    '''
+    Write results to file
+    '''
     header = ['halo_number','halfmass_clara','mass_clara','mass_tng','mass_difference']
     # Create a writer object
     fwriter = csv.writer(f, delimiter=',')

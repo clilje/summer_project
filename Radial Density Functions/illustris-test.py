@@ -2,6 +2,8 @@
 """
 Created on Thu Jun 30 11:23:03 2022
 
+THis code is simply to test the Illustris Python pack, it's fun!
+
 @author: clara
 """
 import sys

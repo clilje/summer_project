@@ -2,6 +2,8 @@
 """
 Created on Thu Jun 16 14:38:14 2022
 
+This code fits multiple different radial density profiles to halos. 
+Thereby it uses bins containing equal numbers of halos. 
 @author: clara
 """
 import h5py
@@ -16,11 +18,30 @@ import scipy.stats
 
 h = 0.6774
 
+"""
+The following are the mathematical formulas for each possible profile
+"""
+
+def nfw(r, density_0, scale_radius):
+    return(density_0/((r/scale_radius)*np.power((1+(r/scale_radius)),2)))
+
+def einasto(r, density_e, r_e, n):
+    d_n = (3*n)-(1/3)+(0.0079/n)
+    return(density_e*np.exp((-1*d_n)*(np.power((r/r_e),(1/n))-1)))
+
+def burkert(r, density_0, r_s):
+    return((density_0*np.power(r_s,3))/((r+r_s)*(np.power(r,2)+np.power(r_s,2))))
+
+def dehnen_twoparam(r, density_s, r_s):
+    return(((2**6)*density_s)/((np.power((r/r_s),(7/9)))*np.power((1+(np.power((r/r_s),(4/9)))),6)))
+
+def dehnen_threeparam(r, density_s, r_s, gamma):
+    return(((2**6)*density_s)/((np.power((r/r_s),gamma))*np.power((1+(np.power((r/r_s),((3-gamma)/5)))),6)))
+
+
 
 def get_filenames(sim_size, sim_res, num_files):
     """
-    
-
     Parameters
     ----------
     sim_size : Size of Edge of simulation box in kpc.
@@ -134,32 +155,50 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
     list with densities at certain radii and radii at which density is calculated.
 
     """
-    density = []
-    rad_lowerbound = []
-    uncertainties = []
-    dis = distancefromcentre(halox, haloy, haloz, partx, party, partz)
     
+    #create lists in which to store final results
+    density = np.array([])
+    rad_lowerbound = np.array([])
+    uncertainties = np.array([])
+    
+    
+    #calculate radial distance of each particle
+    dis = distancefromcentre(halox, haloy, haloz, partx, party, partz)
+    #index= np.argsort(dis)
+    
+    #calculate the halfmass radius density, here falsely named virial radius
     virV = (4/3)*math.pi*(np.power((virrad+10),3)-np.power((virrad-10),3))
     virindex = np.where(np.logical_and(dis.astype(float)>float(virrad-10), dis.astype(float)<float(virrad+10)))[0]
     mass = np.array(mass)
     virM = np.sum(mass[virindex])
     virdensity = virM/virV
     
-    
+    #sort list of radial distances to make binning easier
     bin_index = np.argsort(dis)
     radius_lowerbound = 0
     bin_lowerbound = 0
     
+    
     while (bin_lowerbound+binsize) < len(dis):
+        """
+        This loop iterates through radial shells, each containing the same amount of halos.
+        Then determines the density in each bin, storing everything in lists.
+        Uncertainties are Poisson errors.
+        """
+        #radial shell volume
         index_in_bin = bin_index[bin_lowerbound:(bin_lowerbound+binsize)]
         radius_upperbound = dis[index_in_bin][-1]
         dV = (4/3)*math.pi*(np.power(radius_upperbound,3)-np.power(radius_lowerbound,3))
         
+        #mass contained in shell
         M = np.sum(mass[index_in_bin])
+        
+        #density = mass/volume
         subdensity = (M/(dV))
         density = np.append(density, subdensity)
         
-        rad_lowerbound = np.append(rad_lowerbound, (radius_upperbound+radius_lowerbound)/2)
+        #change indices for next iteration
+        rad_lowerbound = np.append(rad_lowerbound, radius_upperbound)
         dn = len(index_in_bin)
         uncertainties = np.append(uncertainties, subdensity/np.sqrt(dn))
         radius_lowerbound = radius_upperbound
@@ -167,59 +206,60 @@ def radial_density(partx, party, partz, mass, binsize, virrad, halox, haloy, hal
 
     return(density, rad_lowerbound, uncertainties, virdensity)
 
-
+#Set up and get basic parameters
 interval = np.logspace(0.1, 2.5, 100)
 files = get_filenames(50, 4, 11)
 positions = get_pos(files)
 radius = get_rad(files)
-#print(positions[2])
-#print(radius[2])
+
+#set up which halos should be plotted
 halonumber = []
 g = 23
 numhalos = 24
 densities = []
 uncertainties = []
 radii = []
+
+
 while g < numhalos:
+    #get halo group catalogue data
     data_csv = pd.read_csv('HaloParticles/50-4_snap_99_halo_'+str(g)+'_pos_mass.csv')
+    
+    #get radial densities for each halo
     rad_den = radial_density(data_csv['x'].to_numpy(), data_csv['y'].to_numpy(), data_csv['z'].to_numpy(),data_csv['mass'].to_numpy(), 40, radius[g], positions[g][0], positions[g][1], positions[g][2])
-    #print(rad_den)
+    
+    
     hmrad = radius[g]
+    
+    
     densities.append(list(rad_den[0]))
     radii.append(list(rad_den[1]))
     uncertainties.append(list(rad_den[2]))
     hmden = rad_den[3]
     halonumber.append(g)
-    #print(hmrad,hmden)
+    
     
     g += 1 
+
+
 
 densities = np.array(densities)
 radii = np.array(radii)
 half_rad_index = int(len(radii[0])/2)
 uncertainties = np.array(uncertainties)
+
+#Manipulate lists for better fits, since divison by 0 error leads to no results
 uncertainties[uncertainties == np.nan] = 0
+
 indices = np.arange(half_rad_index,int(len(radii[0])))
 np.delete(radii[0],indices)
 np.delete(densities[0],indices)
 np.delete(uncertainties[0],indices)
 
 
-def nfw(r, density_0, scale_radius):
-    return(density_0/((r/scale_radius)*np.power((1+(r/scale_radius)),2)))
-
-def einasto(r, density_e, r_e, n):
-    d_n = (3*n)-(1/3)+(0.0079/n)
-    return(density_e*np.exp((-1*d_n)*(np.power((r/r_e),(1/n))-1)))
-
-def burkert(r, density_0, r_s):
-    return((density_0*np.power(r_s,3))/((r+r_s)*(np.power(r,2)+np.power(r_s,2))))
-
-def dehnen_twoparam(r, density_s, r_s):
-    return(((2**6)*density_s)/((np.power((r/r_s),(7/9)))*np.power((1+(np.power((r/r_s),(4/9)))),6)))
-
-def dehnen_threeparam(r, density_s, r_s, gamma):
-    return(((2**6)*density_s)/((np.power((r/r_s),gamma))*np.power((1+(np.power((r/r_s),((3-gamma)/5)))),6)))
+"""
+Scipy curve fit is used to optimise parameters for all the different profiles.
+"""
 
 nfwfitp, nfwfitcov = scopt.curve_fit(nfw, radii[0]*h, densities[0]/(10*(h**2)), p0=[0.001,100], sigma=uncertainties[0])
 nfwchi_square_test_statistic =  np.sum((np.square(((densities[0])/(10*(h**2)*hmden))-(nfw(radii[0], nfwfitp[0], nfwfitp[1])/hmden)))/(nfw(radii[0], nfwfitp[0], nfwfitp[1])/hmden))
@@ -258,8 +298,12 @@ print ('Fitted value for Dehnen Three Parameters', dehnen_threeparamfitp)
 print ('Uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(dehnen_threeparamfitcov)))
 
 
+
+
 with open('HaloFits/50-4_snap_99_halo_'+str(g)+'_fit_param_shortrad.csv', 'w', encoding='UTF8', newline='') as f:
-    
+    """
+    Write all the parameters to file.
+    """
     header = ['Halo Number','NFW Scale Density','NFW Scale Radius','NFW Scale Density Uncertainty',
               'NFW Scale Radius Uncertainty','NFW ChiSquare','NFW P-Value','Burkert Scale Density','Burkert Scale Radius',
               'Burkert Scale Density Uncertainty','Burkert Scale Radius Uncertainty','Burkert ChiSquare','Burkert P-Value', 
@@ -289,13 +333,14 @@ with open('HaloFits/50-4_snap_99_halo_'+str(g)+'_fit_param_shortrad.csv', 'w', e
 
 
 
+"""
+Plot all the differnt fits over the data.
+"""
+
 fig, axs = plt.subplots(3, 2, figsize=(15,15))
 
 
 axs[0,0].errorbar((radii[0])*(h/hmrad), (densities[0])/(10*(h**2)*hmden), yerr=(uncertainties[0]), fmt='.', label="Halo_"+str(1)+"_099", color='green')
-
-
-
 axs[0,0].set_xlabel(r'(Radius ($kpc/(R_{HalfMass}})}$))')
 axs[0,0].set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{HalfMass})^{-1}$))')
 axs[0,0].legend()
