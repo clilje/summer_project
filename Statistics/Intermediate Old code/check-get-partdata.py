@@ -31,11 +31,6 @@ num_halo = np.arange(len(np.array(subhalos['SubhaloMass'])))
 
 a = (groupcat.loadHeader(basePath, snapnum)['Time']).astype('int')  #scalefactor
 z = (groupcat.loadHeader(basePath, snapnum)['Redshift']).astype('float')  #redshift
-#print(a)
-#print(z)
-#print(round(time.time()-tt,2))
-#tt = time.time()
-#print(groupcat.loadHeader(basePath, snapnum))
 
 x = 3468764
 c = []

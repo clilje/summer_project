@@ -2,6 +2,8 @@
 """
 Created on Thu Jun 16 14:38:14 2022
 
+This code is to check whether NFW fits depend sensitively on initial parameters
+
 @author: clara
 """
 import numpy as np
@@ -15,7 +17,9 @@ import scipy.stats
 h = 0.6774
 p_crit = 127 #m_sun/(kpc^3)
 
-
+"""
+These are all possible profiles that can be tested.
+"""
 
 def nfw(r, density_0, scale_radius):
     return(density_0/((r/scale_radius)*np.power((1+(r/scale_radius)),2)))
@@ -33,159 +37,153 @@ def dehnen_twoparam(r, density_s, r_s):
 def dehnen_threeparam(r, density_s, r_s, gamma):
     return(((2**6)*density_s)/((np.power((r/r_s),gamma))*np.power((1+(np.power((r/r_s),((3-gamma)/5)))),6)))
 
+
+
 def virialRadius(radius, density):
+    """
+    
+
+    Parameters
+    ----------
+    radius : radius of the radial shells at which density is calculated
+    density : density for each radial shell
+
+    Returns
+    -------
+    radius at which halo has 200 times the critical density of the univers
+
+    """
     above_virR = np.where((density).astype(float)>float(p_crit*200))[0]
     virIndex = np.argmax(radius[above_virR])
     virR = radius[virIndex]
-    print(virR)
-    print(radius[-10:-1])
     return(virR,above_virR)
     
-def chiSquareNFW(rad,den, nfwfitp):
-    return(np.sum((np.square(((den))-(nfw(rad, nfwfitp[0], nfwfitp[1]))))/(nfw(rad, nfwfitp[0], nfwfitp[1]))))
+def chiSquareNFW(rad,den, uncertainties, nfwfitp):
+    """
 
-def getChiSquareplot(rad,den,nfwfitopt):
+    Parameters
+    ----------
+    radius : radius of the radial shells at which density is calculated
+    density : density for each radial shell
+    uncertainties : poisson errors
+    nfwfitp : optimised parameters
+    Returns
+    -------
+    weighted chisquare for the most optimal fit compared to the given data for nfw profile
+
+    """
+    return(np.sum((np.square(((den))-(nfw(rad, nfwfitp[0], nfwfitp[1]))))/np.square(uncertainties)))
+
+def getChiSquareplot(rad,den,uncertainties,nfwfitopt):
+    """
+
+
+    Parameters
+    ----------
+    radius : radius of the radial shells at which density is calculated
+    density : density for each radial shell
+    uncertainties : poisson errors
+    nfwfitp : optimised parameters
+
+    Returns
+    -------
+    A NxN grid of the chisquare values of different parameters for the NFW profile
+
+    """
     results = np.zeros((len(nfwfitopt[0]),len(nfwfitopt[1])))
     #print(nfwfitopt)
     for x in np.arange(len(nfwfitopt[0])):
         for y in np.arange(len(nfwfitopt[1])):
             #print(x,y)
-            results[x,y] = chiSquareNFW(rad,den,[nfwfitopt[0][x,y],nfwfitopt[1][x,y]])
+            results[x,y] = chiSquareNFW(rad,den,uncertainties,[nfwfitopt[0][x,y],nfwfitopt[1][x,y]])
     return(results)
 
-def plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp):
-    #fig, axs = plt.subplots(3, 2, figsize=(15,15))
-    fig = plt.figure(figsize=(30,20))
-    #gs0 = fig.add_gridspec(3, 3)
-    gs0 = fig.add_gridspec(2, 1)
+
+def plotting(rad, den,uncertainties, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp):
+    """
+    In case this is required this plots a heat map of Chi Square value with the most optimised value indicated.
+    It is possible to add the location of different starting values and the fits they produce.
+    This function needs to be hand-tuned to each halo it is operated on to find optimal framing of the plot as well as starting
+    parameters.
     
     """
-    gs = fig.add_gridspec(3, 3)
-    ax1 = fig.add_subplot(gs[0, :])
-    ax1.set_title('gs[0, :]')
-    ax2 = fig.add_subplot(gs[1, :-1])
-    ax2.set_title('gs[1, :-1]')
-    """
-    axs2 = fig.add_subplot(gs0[0:, -1])
     
+    #create axis with sublots
+    fig, axs = plt.subplots(1, 2, figsize=(20,20))
+    axs2 = axs[1]
     
-    
-    x, y = np.linspace(1000000, 3000000000, 5000), np.linspace(0, 300, 5000)
+    #plot the heatmap on the right
+    x, y = np.linspace(100000, 1000000000, 1000), np.linspace(0, 5, 1000)
     X, Y = np.meshgrid(x, y)
-    Z = getChiSquareplot(rad, den, [X,Y])
-    #print(X)
-    #print(Y)
-    #print(Z)
+    Z = getChiSquareplot(rad, den, uncertainties, [X,Y])
+    
     normalizeC = np.min(Z)
-    #print(normalizeC)
     Z = Z/normalizeC
-    #print(Z)
-    #Z[np.where(Z==np.inf)[0]] = 10**10
-    #print(Z)
-    pc = axs2.pcolor(X,Y,Z,norm=matplotlib.colors.LogNorm(vmin=1, vmax=15000),cmap='PuBu_r', shading='auto')
-    #pc = axs2.pcolor(Z)
     
+    pc = axs2.pcolor(X,Y,Z,norm=matplotlib.colors.LogNorm(vmin=1, vmax=15000),cmap='PuBu_r')
     
+    #add different initial parameters
+
     nfwfitp0, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[den[-1],rad[-1]], sigma=uncer)
-    axs2.scatter(nfwfitp0[0],nfwfitp0[1], color='red', label="Optimised Parameters initial parameters: Virrad and Virdensity")
-    axs2.scatter(den[-1],rad[-1], color='red', label="Initial parameters: Virrad and Virdensity")
-    
-    nfwfitp1, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[250000000,10], sigma=uncer)
-    axs2.scatter(nfwfitp1[0],nfwfitp1[1], color='pink', label="Optimised Parameters initial parameters: 250000000,10")
-    axs2.scatter(250000000,10, color='pink', label="Initial parameters: 250000000,10")
-    
-    nfwfitp2, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[10000000,175], sigma=uncer)
-    axs2.scatter(nfwfitp2[0],nfwfitp2[1], color='cyan', label="Optimised Parameters initial parameters: 10000000,175")
-    axs2.scatter(10000000,175, color='cyan', label="Initial parameters: 10000000,175")
-    
-    nfwfitp3, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[1750000000,1], sigma=uncer)
-    axs2.scatter(nfwfitp3[0],nfwfitp3[1], color='green', label="Optimised Parameters initial parameters: 1750000000,1")
-    axs2.scatter(1750000000,1, color='green', label="Initial parameters: 1750000000,1")
-    
-    nfwfitp4, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[500000000,5], sigma=uncer)
-    axs2.scatter(nfwfitp4[0],nfwfitp4[1], color='black', label="Optimised Parameters initial parameters: 500000000,5")
-    axs2.scatter(500000000,5, color='black', label="Initial parameters: 500000000,5")
+    axs[1].scatter(nfwfitp0[0],nfwfitp0[1], color='red', label="Optimised Parameters initial parameters: Virrad and Virdensity")
+    axs[1].scatter(den[-1],rad[-1], color='red',marker='x', label="Initial parameters: Virrad and Virdensity")
     
     
+    init1 = [100000,3]
+    nfwfitp1, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=init1, sigma=uncer)
+    axs[1].scatter(nfwfitp1[0],nfwfitp1[1], color='pink', label="Optimised Parameters initial parameters: 100000,3")
+    axs[1].scatter(100000,3, color='pink',marker='x', label="Initial parameters: 100000,3")
     
     
-    axs2.set_xlabel("Scale Density")
-    axs2.set_ylabel("Scale Radius")
-    axs2.set_title("Heatmap of ChiSquare values for NFW profile parameters (minimum ChiSquare set to 1)")
-    axs2.legend()
+    init2 = [200000000,0.5]
+    nfwfitp2, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[200000000,0.5], sigma=uncer)
+    axs[1].scatter(nfwfitp2[0],nfwfitp2[1], color='cyan', label="Optimised Parameters initial parameters:200000000,0.5")
+    axs[1].scatter(200000000,0.5, color='cyan',marker='x', label="Initial parameters: 200000000,0.5")
+    
+    
+    init3 = [800000000,0.3]
+    nfwfitp3, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[800000000,0.3], sigma=uncer)
+    axs[1].scatter(nfwfitp3[0],nfwfitp3[1], color='green', label="Optimised Parameters initial parameters:800000000,0.3")
+    axs[1].scatter(800000000,0.3, color='green',marker='x', label="Initial parameters: 800000000,0.3")
+    
+    
+    
+    #init4 = [3000000000,1]
+    #nfwfitp4, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[3000000000,1], sigma=uncer)
+    #axs[1].scatter(nfwfitp4[0],nfwfitp4[1], color='black', label="Optimised Parameters initial parameters: 3000000000,1")
+    #axs[1].scatter(3000000000,1, color='black',marker='x', label="Initial parameters: 3000000000,1")
+    
+    
+    
+    
+    axs[1].set_xlabel("Scale Density")
+    axs[1].set_ylabel("Scale Radius")
+    axs[1].set_title("Heatmap of ChiSquare values for NFW profile parameters (minimum ChiSquare set to 1)")
+    axs[1].legend()
     fig.colorbar(pc, ax=axs2, extend='max')
     
+    #Plot fits to original data on the left
+    axs1 = axs[0]
+    axs1.errorbar((rad/virial_radius), (den/virial_density), yerr=uncer/virial_density, fmt='.', label="Halo_"+str(g)+"_099", color='blue')
+    axs1.scatter(rad/virial_radius, nfw(rad, nfwfitp0[0], nfwfitp0[1])/virial_density, marker='x', label="NFW fit optimised param"+str(nfwfitp0), color='red')
+    #add fits of different initial parameters
+    axs1.scatter(rad/virial_radius, nfw(rad, init1[0], init1[1])/virial_density,marker='x', label="NFW fit initial param"+str(init1), color='pink')
+    axs1.scatter(rad/virial_radius, nfw(rad, init2[0], init2[1])/virial_density, marker='x', label="NFW fit initial param"+str(init2), color='cyan')
+    axs1.scatter(rad/virial_radius, nfw(rad, init3[0], init3[1])/virial_density, marker='x', label="NFW fit initial param"+str(init3), color='green')
+    #axs1.scatter(rad/virial_radius, nfw(rad, init4[0], init4[1])/virial_density, marker='x', label="NFW fit initial param"+str(init4), color='black')
     
+    axs1.set_xlabel(r'(Radius ($kpc/(R_{200}})}$))')
+    axs1.set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{200})^{-1}$))')
+    axs1.legend()
+    axs1.set_yscale('log')
+    axs1.set_xscale('log')
+    axs1.set_title("Fits to Data from TNG")
     
-    fig.add_subplot(gs0[0,0]).errorbar((rad/virial_radius), (den/virial_density), yerr=uncer/virial_density, fmt='.', label="Halo_"+str(g)+"_099", color='blue')
-    fig.add_subplot(gs0[0,1]).errorbar(rad/virial_radius, nfw(rad, nfwfitp0[0], nfwfitp0[1])/virial_density, fmt='-', label="NFW fit initial param"+str(nfwfitp0), color='red')
-    fig.add_subplot(gs0[0,1]).errorbar(rad/virial_radius, nfw(rad, nfwfitp1[0], nfwfitp1[1])/virial_density, fmt='-', label="NFW fit initial param"+str(nfwfitp1), color='pink')
-    fig.add_subplot(gs0[0,1]).errorbar(rad/virial_radius, nfw(rad, nfwfitp2[0], nfwfitp2[1])/virial_density, fmt='-', label="NFW fit initial param"+str(nfwfitp2), color='cyan')
-    fig.add_subplot(gs0[0,1]).errorbar(rad/virial_radius, nfw(rad, nfwfitp3[0], nfwfitp3[1])/virial_density, fmt='-', label="NFW fit initial param"+str(nfwfitp3), color='green')
-    fig.add_subplot(gs0[0,1]).errorbar(rad/virial_radius, nfw(rad, nfwfitp4[0], nfwfitp4[1])/virial_density, fmt='-', label="NFW fit initial param"+str(nfwfitp4), color='black')
-    
-    
-    
-    fig.add_subplot(gs0[0,0]).set_xlabel(r'(Radius ($kpc/(R_{200}})}$))')
-    fig.add_subplot(gs0[0,0]).set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{200})^{-1}$))')
-    fig.add_subplot(gs0[0,0]).legend()
-    fig.add_subplot(gs0[0,0]).set_yscale('log')
-    fig.add_subplot(gs0[0,0]).set_xscale('log')
-    fig.add_subplot(gs0[0,0]).set_title("Data from TNG")
-    """
-    fig.add_subplot(gs0[0,1]).errorbar(rad/virial_radius, nfw(rad, nfwfitp[0], nfwfitp[1])/virial_density, fmt='-', label="NFW fit Halo_"+str(g)+"_099", color='blue')
-    fig.add_subplot(gs0[0,1]).errorbar((rad/virial_radius), (den/virial_density), yerr=uncer/virial_density, fmt='.', label="Halo_"+str(g)+"_099", color='green')
-    fig.add_subplot(gs0[0,1]).set_xlabel(r'(Radius ($kpc/(R_{200}})}$))')
-    fig.add_subplot(gs0[0,1]).set_ylabel(r'($\rho$(r) ($M_{\odot} pc^{-3} (\rho_{200})^{-1}$))')
-    fig.add_subplot(gs0[0,1]).legend()
-    fig.add_subplot(gs0[0,1]).set_yscale('log')
-    fig.add_subplot(gs0[0,1]).set_xscale('log')
-    fig.add_subplot(gs0[0,1]).set_title('NFW fit for Data')
-    
-    fig.add_subplot(gs0[1,0]).errorbar(rad/virial_radius, einasto(rad, einastofitp[0], einastofitp[1], einastofitp[2])/virial_density, fmt='-', label="Einasto fit Halo_"+str(1)+"_099", color='blue')
-    fig.add_subplot(gs0[1,0]).errorbar((rad/virial_radius), (den/virial_density), yerr=uncer/virial_density, fmt='.', label="Halo_"+str(g)+"_099", color='green')
-    fig.add_subplot(gs0[1,0]).set_xlabel(r'(Radius ($kpc/(h*R_{200}})}$))')
-    fig.add_subplot(gs0[1,0]).set_ylabel(r'($\rho$(r) ($M_{\odot} pc^{-3} (\rho_{200})^{-1}$))')
-    fig.add_subplot(gs0[1,0]).legend()
-    fig.add_subplot(gs0[1,0]).set_yscale('log')
-    fig.add_subplot(gs0[1,0]).set_xscale('log')
-    fig.add_subplot(gs0[1,0]).set_title('Einasto fit for Data')
-    
-    
-    fig.add_subplot(gs0[1,1]).errorbar(rad/virial_radius, burkert(rad, burkertfitp[0], burkertfitp[1])/virial_density, fmt='-', label="Bukert fit Halo_"+str(g)+"_099", color='blue')
-    fig.add_subplot(gs0[1,1]).errorbar((rad/virial_radius), (den/virial_density), yerr=uncer/virial_density, fmt='.', label="Halo_"+str(g)+"_099", color='green')
-    fig.add_subplot(gs0[1,1]).set_xlabel(r'(Radius ($kpc/(R_{200}})}$))')
-    fig.add_subplot(gs0[1,1]).set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{200})^{-1}$))')
-    fig.add_subplot(gs0[1,1]).legend()
-    fig.add_subplot(gs0[1,1]).set_yscale('log')
-    fig.add_subplot(gs0[1,1]).set_xscale('log')
-    fig.add_subplot(gs0[1,1]).set_title('Burkert fit for Data')
-    
-    fig.add_subplot(gs0[2,0]).errorbar(rad/virial_radius, dehnen_twoparam(rad, dehnen_twoparamfitp[0], dehnen_twoparamfitp[1])/virial_density, fmt='-', label="Dehnen-2 fit Halo_"+str(g)+"_099", color='blue')
-    fig.add_subplot(gs0[2,0]).errorbar((rad/virial_radius), (den/virial_density), yerr=uncer/virial_density, fmt='.', label="Halo_"+str(g)+"_099", color='green')
-    fig.add_subplot(gs0[2,0]).set_xlabel(r'(Radius ($kpc/(R_{200}})}$))')
-    fig.add_subplot(gs0[2,0]).set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{200})^{-1}$))')
-    fig.add_subplot(gs0[2,0]).legend()
-    fig.add_subplot(gs0[2,0]).set_yscale('log')
-    fig.add_subplot(gs0[2,0]).set_xscale('log')
-    fig.add_subplot(gs0[2,0]).set_title('denhen-2 fit for Data')
-    
-    
-    fig.add_subplot(gs0[2,1]).errorbar(rad/virial_radius, dehnen_threeparam(rad, dehnen_threeparamfitp[0], dehnen_threeparamfitp[1], dehnen_threeparamfitp[2])/virial_density, fmt='-', label="Dehnen-3 fit Halo_"+str(g)+"_099", color='blue')
-    fig.add_subplot(gs0[2,1]).errorbar((rad/virial_radius), (den/virial_density), yerr=uncer/virial_density, fmt='.', label="Halo_"+str(g)+"_099", color='green')
-    fig.add_subplot(gs0[2,1]).set_xlabel(r'(Radius ($kpc/(R_{200}})}$))')
-    fig.add_subplot(gs0[2,1]).set_ylabel(r'($\rho$(r) ($M_{\odot} kpc^{-3} (\rho_{200})^{-1}$))')
-    fig.add_subplot(gs0[2,1]).legend()
-    fig.add_subplot(gs0[2,1]).set_yscale('log')
-    fig.add_subplot(gs0[2,1]).set_xscale('log')
-    fig.add_subplot(gs0[2,1]).set_title('denhen-3 fit for Data')
-    """
     fig.tight_layout()
-    fig.savefig('HaloFitsInfo/fit-profiles-halo'+str(g))
-    print('hello')
+    fig.savefig('HaloFitsInfo/zoom-fit-profiles-halo'+str(g))
+
     
     fig.clf()
-    fig.show()
 
 
 
@@ -196,35 +194,17 @@ positionsY = subhalo_info['SubhaloPosY'].to_numpy()
 positionsZ = subhalo_info['SubhaloPosZ'].to_numpy()
 radius = subhalo_info['SubhaloHalfmassRad'].to_numpy()
 full_mass = subhalo_info['SubhaloMass'].to_numpy()
-length = subhalo_info['SubhaloLen'].to_numpy().astype(int)
 
-#gg = [0,4,20,200,2000,198182,19999]
-gg =[20]
+#list of halos to check for
+gg =[2000]
 numhalos = len(subhalo_index)
-#densities = []
-#uncertainties = []
-#radii = []
 
 pdheader = ['Radius','Density','Uncertainty']
-#derek = pd.DataFrame(columns=pdheader)
-"""
-with open('HaloFitsInfo/50-4_snap_99_fit_param.csv', 'x', encoding='UTF8', newline='') as f:
-    
-    header = ['Halo Number','DataPoints','NFW Scale Density','NFW Scale Radius','NFW Scale Density Uncertainty',
-              'NFW Scale Radius Uncertainty','NFW ChiSquare','NFW P-Value','Burkert Scale Density','Burkert Scale Radius',
-              'Burkert Scale Density Uncertainty','Burkert Scale Radius Uncertainty','Burkert ChiSquare','Burkert P-Value', 
-              'Dehnen-2 Scale Density','Dehnen-2 Scale Radius','Dehnen-2 Scale Density Uncertainty',
-              'Dehnen-2 Scale Radius Uncertainty','Dehnen-2 ChiSquare','Dehnen-2 P-Value','Einasto Scale Density',
-              'Einasto Scale Radius','Einasto n', 'Einasto Scale Density Uncertainty',
-              'Einasto Scale Radius Uncertainty','Einasto n Uncertainty','Einasto ChiSquare','Einasto P-Value',
-              'Dehnen-3 Scale Density','Dehnen-3 Scale Radius','Dehnen-3 gamma', 'Dehnen-3 Scale Density Uncertainty',
-              'Dehnen-3 Scale Radius Uncertainty','Dehnen-3 gamma Uncertainty','Dehnen-3 ChiSquare', 'Dehnen-3 P-Value']
-    # Create a writer object
-    fwriter = csv.writer(f, delimiter=',')
-    # Write the header
-    fwriter.writerow(header)
-"""
+
+#iterate over each halo
 for g in gg:
+    
+    #Read radial density information in 
     data_csv = pd.read_csv('HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den.csv')
     
     rad = data_csv['Radius'].to_numpy()
@@ -232,13 +212,17 @@ for g in gg:
     uncer = data_csv['Uncertainty'].to_numpy()
     num_datapoints = len(rad)
     
+    #find virial radius
     virial_radius,virial_index = virialRadius(rad, den)
     virial_density = p_crit*200
-    print(str((virial_radius/radius)[g]))
+    
+    
+    #criterion for disruption
     if (virial_radius/radius)[g] < 10:
         
         filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'param'
         
+        #find optimised fit up to virial radius for nFW
         rad = rad[virial_index]
         den = den[virial_index]
         uncer = uncer[virial_index]
@@ -247,7 +231,9 @@ for g in gg:
         nfwp_value = scipy.stats.distributions.chi2.sf(nfwchi_square_test_statistic,(len(den)-1))
         print ('ChiSquare and P values for NFW', nfwchi_square_test_statistic)
         print ('Fitted value for NFW', nfwfitp)
-        print ('uncer/(p_crit*200)tainties for NFW', np.sqrt(np.diag(nfwfitcov)))
+        print ('uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
+        
+        #This section can be uncommented if other fits are required
         """
         einastofitp, einastofitcov = scopt.curve_fit(einasto, rad, den, p0=[den[-1],rad[-1],5], sigma=uncer)
         einastochi_square_test_statistic =  np.sum((np.square(((den))-(einasto(rad, einastofitp[0], einastofitp[1],einastofitp[2]))))/(einasto(rad, einastofitp[0], einastofitp[1],einastofitp[2])))
@@ -277,28 +263,17 @@ for g in gg:
         print ('ChiSquare and P values for dehnenthree', dehnenthreechi_square_test_statistic, dehnenthreep_value)
         print ('Fitted value for Dehnen Three Parameters', dehnen_threeparamfitp)
         print ('uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(dehnen_threeparamfitcov)))
-        '''
-        with open('HaloFitsInfo/50-4_snap_99_fit_param.csv', 'a', encoding='UTF8', newline='') as f:
-            fwriter = csv.writer(f, delimiter=',')
-            data = [subhalo_index[g],num_datapoints,nfwfitp[0],nfwfitp[1],np.sqrt(np.diag(nfwfitcov))[0],
-                      np.sqrt(np.diag(nfwfitcov))[1],nfwchi_square_test_statistic,nfwp_value,
-                      burkertfitp[0],burkertfitp[1],
-                      np.sqrt(np.diag(burkertfitcov))[0],np.sqrt(np.diag(burkertfitcov))[1],burkertchi_square_test_statistic, burkertp_value,
-                      dehnen_twoparamfitp[0],dehnen_twoparamfitp[1],np.sqrt(np.diag(dehnen_twoparamfitcov))[0],
-                      np.sqrt(np.diag(dehnen_twoparamfitcov))[1],dehnentwochi_square_test_statistic,dehnentwop_value,
-                      einastofitp[0],
-                      einastofitp[1],einastofitp[2], np.sqrt(np.diag(einastofitcov))[0],
-                      np.sqrt(np.diag(einastofitcov))[1],np.sqrt(np.diag(einastofitcov))[2],einastochi_square_test_statistic,einastop_value,
-                      dehnen_threeparamfitp[0],dehnen_threeparamfitp[1],dehnen_threeparamfitp[2], np.sqrt(np.diag(dehnen_threeparamfitcov))[0],
-                      np.sqrt(np.diag(dehnen_threeparamfitcov))[1],np.sqrt(np.diag(dehnen_threeparamfitcov))[2],dehnenthreechi_square_test_statistic,dehnenthreep_value]
-            fwriter.writerow(data)   
         
-        
-        '''
         
         """
-        plotting(rad, den, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp)
+        
+        #unnescessary parameters for rad den
+        burkertfitp = [0,0]
+        dehnen_threeparamfitp = [0,0]
+        dehnen_twoparamfitp = [0,0]
+        einastofitp = [0,0]
+        
+        #plot
+        plotting(rad, den, uncer, virial_radius, virial_density,nfwfitp,burkertfitp,dehnen_threeparamfitp,dehnen_twoparamfitp,einastofitp)
         
     g += 1
-        #fig.clf()
-        #fig.show()

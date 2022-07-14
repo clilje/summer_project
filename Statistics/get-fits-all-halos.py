@@ -2,6 +2,10 @@
 """
 Created on Thu Jun 16 14:38:14 2022
 
+This code is used to find the best fitting parameters for EInasto and NFW profiles
+for given radial density data for each halo.
+This information is then appended to a file
+
 @author: clara
 """
 import numpy as np
@@ -18,6 +22,9 @@ h = 0.6774
 p_crit = 127 #m_sun/(kpc^3)
 n = 1/0.16
 
+"""
+Mathematical descriptions of each of the possible profiles.
+"""
 
 def nfw(r, density_0, scale_radius):
     return(density_0/((r/scale_radius)*np.power((1+(r/scale_radius)),2)))
@@ -36,14 +43,26 @@ def dehnen_threeparam(r, density_s, r_s, gamma):
     return(((2**6)*density_s)/((np.power((r/r_s),gamma))*np.power((1+(np.power((r/r_s),((3-gamma)/5)))),6)))
 
 def virialRadius(radius, density):
+    """
+    
+
+    Parameters
+    ----------
+    radius : array of radial distances defining each shell
+    density : array of densities at each radial distance
+
+    Returns
+    -------
+    radius at which the halo has 200*critical density of universe
+
+    """
     above_virR = np.where((density).astype(float)>float(p_crit*200))[0]
     virIndex = np.argmax(radius[above_virR])
     virR = radius[virIndex]
-    #print(virR)
-    #print(radius[-10:-1])
     return(virR,above_virR)
     
 
+#Get critical data from Group catalogiue from file
 subhalo_info = pd.read_csv('50-1-subhalo-info.csv')
 subhalo_index = subhalo_info['SubhaloIndex']
 positionsX = subhalo_info['SubhaloPosX'].to_numpy()
@@ -53,15 +72,14 @@ radius = subhalo_info['SubhaloHalfmassRad'].to_numpy()
 full_mass = subhalo_info['SubhaloMass'].to_numpy()
 length = subhalo_info['SubhaloLen'].to_numpy().astype(int)
 
-#gg = [0,63864,96762,117250,184931,198182,143880,208811,229933,220595,167392,253861,242788,264883]
 numhalos = len(subhalo_index)
-#densities = []
-#uncertainties = []
-#radii = []
+
+#which subhalo to start at, take care to avoid doubles
 g = 0
 pdheader = ['Radius','Density','Uncertainty']
-#derek = pd.DataFrame(columns=pdheader)
 
+#This section only needs to be run the first time the file needs to be created.
+"""
 with open('HaloFitsInfo/50-1_snap_99_fit_param.csv', 'x', encoding='UTF8', newline='') as f:
     
     header = ['Halo Number','DataPoints','Virial Radius','NFW Scale Density','NFW Scale Radius','NFW Scale Density Uncertainty',
@@ -72,12 +90,19 @@ with open('HaloFitsInfo/50-1_snap_99_fit_param.csv', 'x', encoding='UTF8', newli
     fwriter = csv.writer(f, delimiter=',')
     # Write the header
     fwriter.writerow(header)
+"""
+
 
 while g < numhalos:
+    
+    #File from which to read in 
     filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
+    
+    #check if file exists, otherwise halo to small
     if(os.path.isfile(filename+'.csv')):
-        print(g)
-            
+        #print(g)
+        
+        #read key data from file
         data_csv = pd.read_csv('HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den.csv')
         
         rad = data_csv['Radius'].to_numpy()
@@ -85,22 +110,18 @@ while g < numhalos:
         uncer = data_csv['Uncertainty'].to_numpy()
         num_datapoints = len(rad)
         
-        virial_radius,virial_index = virialRadius(rad, den)
-        virial_density = p_crit*200
-        filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'param'
-        data_csv = pd.read_csv('HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den.csv')
-        
-        rad = data_csv['Radius']
-        den = data_csv['Density']
-        uncer = data_csv['Uncertainty']
+        #Determine virial radius
         virrad,virial_index = virialRadius(rad, den)
         virial_density = p_crit*200
-        #print(virrad)
-        rad = rad[virial_index]
-        den = den[virial_index]
-        uncer = uncer[virial_index]
+        
+        
         print(virrad/radius[g])
+        
+        #section out halos at border
         if virrad/radius[g] < 4:
+            
+            
+            #find best fit for nfw
             nfwfitp, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[virial_density,virrad], sigma=uncer)
             nfwchi_square_test_statistic =  np.sum((np.square(((den))-(nfw(rad, nfwfitp[0], nfwfitp[1]))))/(np.square(uncer)))
             nfwp_value = scipy.stats.distributions.chi2.sf(nfwchi_square_test_statistic,(len(den)-1))
@@ -108,12 +129,16 @@ while g < numhalos:
             print ('Fitted value for NFW', nfwfitp)
             print ('uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
             
+            #find best fit for einasto
             einastofitp, einastofitcov = scopt.curve_fit(einasto, rad, den, p0=[virial_density,virrad], sigma=uncer)
             einastochi_square_test_statistic =  np.sum((np.square(((den))-(einasto(rad, einastofitp[0], einastofitp[1]))))/(np.square(uncer)))
             einastop_value = scipy.stats.distributions.chi2.sf(einastochi_square_test_statistic,(len(den)-1))
             print ('ChiSquare and P values for Einasto', einastochi_square_test_statistic, einastop_value)
             print ('Fitted value for Einasto', einastofitp)
             print ('uncertainties for Einasto', np.sqrt(np.diag(einastofitcov)))
+            
+            
+            #this section can be used for additional fits
             """
             burkertfitp, burkertfitcov = scopt.curve_fit(burkert,rad, den, p0=[0.1,100], sigma=uncer)
             burkertchi_square_test_statistic =  np.sum((np.square(((den))-(burkert(rad, burkertfitp[0], burkertfitp[1]))))/(burkert(rad, burkertfitp[0], burkertfitp[1])))
@@ -138,6 +163,7 @@ while g < numhalos:
             print ('uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(dehnen_threeparamfitcov)))
             """
             
+            #Append best fit parameters to file
             with open('HaloFitsInfo/50-1_snap_99_fit_param.csv', 'a', encoding='UTF8', newline='') as f:
                 fwriter = csv.writer(f, delimiter=',')
                 data = [subhalo_index[g],num_datapoints,virrad,nfwfitp[0],nfwfitp[1],np.sqrt(np.diag(nfwfitcov))[0],
@@ -147,6 +173,8 @@ while g < numhalos:
                           np.sqrt(np.diag(einastofitcov))[1],einastochi_square_test_statistic,einastop_value]
                 fwriter.writerow(data)   
     g +=1
+
+#This section may be used to plot the best fit
 """
 fig, axs = plt.subplots(3, 2, figsize=(15,15))
 

@@ -2,6 +2,8 @@
 """
 Created on Tue Jul  5 10:56:06 2022
 
+This code was used to compare the CM of a Subhalo to the CM of a FOF halo
+
 @author: clara
 """
 import h5py
@@ -59,10 +61,10 @@ for x in xx:
     print(halo_50)
     num_parts = subhalos['SubhaloLen']
     #print(num_parts[0:50])
-    gasparts = snapshot.loadSubhalo(basePath, snapnum, x, 'gas', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
-    starparts = snapshot.loadSubhalo(basePath, snapnum, x, 'stars', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
-    bhparts = snapshot.loadSubhalo(basePath, snapnum, x, 'bh', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
-    dmparts = snapshot.loadSubhalo(basePath, snapnum, x, 'dm', fields=['Coordinates','ParticleIDs','Velocities'])
+    gasparts = snapshot.loadHalo(basePath, snapnum, x, 'gas', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
+    starparts = snapshot.loadHalo(basePath, snapnum, x, 'stars', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
+    bhparts = snapshot.loadHalo(basePath, snapnum, x, 'bh', fields=['Coordinates','ParticleIDs','Velocities','Masses'])
+    dmparts = snapshot.loadHalo(basePath, snapnum, x, 'dm', fields=['Coordinates','ParticleIDs','Velocities'])
     
     
     with h5py.File(snapshot.snapPath(basePath,snapnum),'r') as f:
@@ -88,6 +90,7 @@ for x in xx:
     else: 
         bhx,bhy,bhz = [],[],[]
         bhmass = []
+    
     partx = np.concatenate((gasx,starx,bhx,dmparts['Coordinates'][:,0]))
     party = np.concatenate((gasy,stary,bhy,dmparts['Coordinates'][:,1]))
     partz = np.concatenate((gasz,starz,bhz,dmparts['Coordinates'][:,2]))
@@ -117,7 +120,8 @@ for x in xx:
     #print(dis)
     #print(np.min(dis))
     
-    
+    print("Difference in CoM: "+str(np.min(distance)))
+    print("Difference in Mass: "+str(np.sum(mass)-subhalos['SubhaloMass'][index_sub]))    
     
     fig = plt.figure()
     ax = plt.axes(projection ='3d')
