@@ -119,7 +119,7 @@ full_mass = subhalo_info['SubhaloMass'].to_numpy()
 length = subhalo_info['SubhaloLen'].to_numpy()
 
 #halo to start with
-g = 2000000
+g = 3000000
 numhalos = len(subhalo_index)
 
 
@@ -127,7 +127,7 @@ numhalos = len(subhalo_index)
 pdheader = ['Radius','Density','Uncertainty']
 
 #iterating through every halo
-while g < 3000000:
+while g < 4000000:
     
     #excluding extremely massive halos for storage reasons
     if g not in [0,63864,96762,117250,184931,198182,143880,208811,229933,220595,167392,253861,242788,264883]:
