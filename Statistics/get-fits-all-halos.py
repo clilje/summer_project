@@ -75,7 +75,7 @@ length = subhalo_info['SubhaloLen'].to_numpy().astype(int)
 numhalos = len(subhalo_index)
 
 #which subhalo to start at, take care to avoid doubles
-g = 1346678
+g = 1347575
 pdheader = ['Radius','Density','Uncertainty']
 
 #This section only needs to be run the first time the file needs to be created.
