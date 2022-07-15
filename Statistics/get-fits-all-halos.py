@@ -75,7 +75,7 @@ length = subhalo_info['SubhaloLen'].to_numpy().astype(int)
 numhalos = len(subhalo_index)
 
 #which subhalo to start at, take care to avoid doubles
-g = 1347928
+g = 0
 pdheader = ['Radius','Density','Uncertainty']
 
 #This section only needs to be run the first time the file needs to be created.
@@ -122,21 +122,34 @@ while g < numhalos:
             
             
             #find best fit for nfw
-            nfwfitp, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[virial_density,virrad], sigma=uncer)
-            nfwchi_square_test_statistic =  np.sum((np.square(((den))-(nfw(rad, nfwfitp[0], nfwfitp[1]))))/(np.square(uncer)))
-            nfwp_value = scipy.stats.distributions.chi2.sf(nfwchi_square_test_statistic,(len(den)-1))
-            print ('ChiSquare and P values for NFW', nfwchi_square_test_statistic)
-            print ('Fitted value for NFW', nfwfitp)
-            print ('uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
+            try:
+                nfwfitp, nfwfitcov = scopt.curve_fit(nfw, rad, den, p0=[virial_density,virrad], sigma=uncer)
+                nfwchi_square_test_statistic =  np.sum((np.square(((den))-(nfw(rad, nfwfitp[0], nfwfitp[1]))))/(np.square(uncer)))
+                nfwp_value = scipy.stats.distributions.chi2.sf(nfwchi_square_test_statistic,(len(den)-1))
+                print ('ChiSquare and P values for NFW', nfwchi_square_test_statistic)
+                print ('Fitted value for NFW', nfwfitp)
+                print ('uncertainties for NFW', np.sqrt(np.diag(nfwfitcov)))
+                
+                #find best fit for einasto
+                einastofitp, einastofitcov = scopt.curve_fit(einasto, rad, den, p0=[virial_density,virrad], sigma=uncer)
+                einastochi_square_test_statistic =  np.sum((np.square(((den))-(einasto(rad, einastofitp[0], einastofitp[1]))))/(np.square(uncer)))
+                einastop_value = scipy.stats.distributions.chi2.sf(einastochi_square_test_statistic,(len(den)-1))
+                print ('ChiSquare and P values for Einasto', einastochi_square_test_statistic, einastop_value)
+                print ('Fitted value for Einasto', einastofitp)
+                print ('uncertainties for Einasto', np.sqrt(np.diag(einastofitcov)))
+                #Append best fit parameters to file
+                with open('HaloFitsInfo/50-1_snap_99_fit_param.csv', 'a', encoding='UTF8', newline='') as f:
+                    fwriter = csv.writer(f, delimiter=',')
+                    data = [subhalo_index[g],num_datapoints,virrad,nfwfitp[0],nfwfitp[1],np.sqrt(np.diag(nfwfitcov))[0],
+                              np.sqrt(np.diag(nfwfitcov))[1],nfwchi_square_test_statistic,nfwp_value,
+                              einastofitp[0],
+                              einastofitp[1], np.sqrt(np.diag(einastofitcov))[0],
+                              np.sqrt(np.diag(einastofitcov))[1],einastochi_square_test_statistic,einastop_value]
+                    fwriter.writerow(data)   
+            except:
+                print('fail')
             
-            #find best fit for einasto
-            einastofitp, einastofitcov = scopt.curve_fit(einasto, rad, den, p0=[virial_density,virrad], sigma=uncer)
-            einastochi_square_test_statistic =  np.sum((np.square(((den))-(einasto(rad, einastofitp[0], einastofitp[1]))))/(np.square(uncer)))
-            einastop_value = scipy.stats.distributions.chi2.sf(einastochi_square_test_statistic,(len(den)-1))
-            print ('ChiSquare and P values for Einasto', einastochi_square_test_statistic, einastop_value)
-            print ('Fitted value for Einasto', einastofitp)
-            print ('uncertainties for Einasto', np.sqrt(np.diag(einastofitcov)))
-            
+                
             
             #this section can be used for additional fits
             """
@@ -163,15 +176,7 @@ while g < numhalos:
             print ('uncertainties for Dehnen Three Parameters', np.sqrt(np.diag(dehnen_threeparamfitcov)))
             """
             
-            #Append best fit parameters to file
-            with open('HaloFitsInfo/50-1_snap_99_fit_param.csv', 'a', encoding='UTF8', newline='') as f:
-                fwriter = csv.writer(f, delimiter=',')
-                data = [subhalo_index[g],num_datapoints,virrad,nfwfitp[0],nfwfitp[1],np.sqrt(np.diag(nfwfitcov))[0],
-                          np.sqrt(np.diag(nfwfitcov))[1],nfwchi_square_test_statistic,nfwp_value,
-                          einastofitp[0],
-                          einastofitp[1], np.sqrt(np.diag(einastofitcov))[0],
-                          np.sqrt(np.diag(einastofitcov))[1],einastochi_square_test_statistic,einastop_value]
-                fwriter.writerow(data)   
+            
     g +=1
 
 #This section may be used to plot the best fit
