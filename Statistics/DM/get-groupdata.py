@@ -67,7 +67,7 @@ with open('../50-1-subhalo-info-dark.csv', 'w', encoding='UTF8', newline='') as 
     for k in range(len(matchingarr)):
         x = matchingarr[k]
         data = [int(indices[k]), subhalos['SubhaloPos'][:, 0][x],subhalos['SubhaloPos'][:, 1][x],subhalos['SubhaloPos'][:, 2][x], subhalos['SubhaloHalfmassRad'][x], subhalos['SubhaloMass'][x], subhalos['SubhaloLen'][x]]
-        fwriter.writerow(",".join(data))
+        fwriter.writerow(data)
 
 
 #header = ['SubhaloIndex','SubhaloPosX','SubhaloPosY','SubhaloPosZ','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
