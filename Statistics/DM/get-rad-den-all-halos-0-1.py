@@ -132,56 +132,61 @@ while g < 1000000:
     #excluding extremely massive halos for storage reasons
     if g not in [0,63864,96762,117250,184931,198182,143880,208811,229933,220595,167392,253861,242788,264883]:
         
-        #read in particle data
-        chunk = pd.read_csv('../FullRunDark/snap_99_halo_'+str(g)+'-dark.csv', usecols=['x'],dtype={'x':object})
-        chunk = chunk[chunk['x'] != 'x']
-        partx = chunk['x'].to_numpy().astype(float)
-        #print(partx)
-        chunk = pd.read_csv('../FullRunDark/snap_99_halo_'+str(g)+'-dark.csv', usecols=['y'],dtype={'y':object})
-        chunk = chunk[chunk['y'] != 'y']
-        party = chunk['y'].to_numpy().astype(float)
-        chunk = pd.read_csv('../FullRunDark/snap_99_halo_'+str(g)+'-dark.csv', usecols=['z'],dtype={'z':object})
-        chunk = chunk[chunk['z'] != 'z']
-        partz = chunk['z'].to_numpy().astype(float)
-        chunk = pd.read_csv('../FullRunDark/snap_99_halo_'+str(g)+'-dark.csv', usecols=['mass'],dtype={'mass':object})
-        chunk = chunk[chunk['mass'] != 'mass']
-        mass = chunk['mass'].to_numpy().astype(float)
+        #File from which to read in 
+        filename = '../FullRunDark/snap_99_halo_'+str(g)+'-dark.csv'
         
-        #create new filename to store rad-den-data
-        filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den-dark'
-        
-        #check if file already exists and delete faulty files
-        if(os.path.isfile(filename+'.csv')):
-        
-            #os.remove() function to remove the file
-            os.remove(filename+'.csv')
-        
-            #Printing the confirmation message of deletion
-            print("File Deleted successfully")
-        else:
-            print("File does not exist")
-        
-        #condition if halo is large neough
-        if len(partx) > 500:
+        #check if file exists, otherwise halo to small
+        if(os.path.isfile(filename)):
+            #read in particle data
+            chunk = pd.read_csv(filename, usecols=['x'],dtype={'x':object})
+            chunk = chunk[chunk['x'] != 'x']
+            partx = chunk['x'].to_numpy().astype(float)
+            #print(partx)
+            chunk = pd.read_csv(filename, usecols=['y'],dtype={'y':object})
+            chunk = chunk[chunk['y'] != 'y']
+            party = chunk['y'].to_numpy().astype(float)
+            chunk = pd.read_csv(filename, usecols=['z'],dtype={'z':object})
+            chunk = chunk[chunk['z'] != 'z']
+            partz = chunk['z'].to_numpy().astype(float)
+            chunk = pd.read_csv(filename, usecols=['mass'],dtype={'mass':object})
+            chunk = chunk[chunk['mass'] != 'mass']
+            mass = chunk['mass'].to_numpy().astype(float)
             
+            #create new filename to store rad-den-data
+            filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den-dark'
             
-            #50 bins to bin over
-            binsize = int(len(partx)/50)
+            #check if file already exists and delete faulty files
+            if(os.path.isfile(filename+'.csv')):
             
-            #get radial density values
-            rad_den = radial_density((partx*h), (party*h), (partz*h),(mass*h*(10**10)), binsize, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
-            #mass in solar masses
-            #distances in kpc
+                #os.remove() function to remove the file
+                os.remove(filename+'.csv')
             
-            #virden = 200*p_crit
+                #Printing the confirmation message of deletion
+                print("File Deleted successfully")
+            else:
+                print("File does not exist")
             
-            #create data frame which then will be added to file
-            miniderek = pd.DataFrame(columns=pdheader)
-            miniderek['Radius']=rad_den[1]
-            #miniderek['Virial Radius']=[virrad]*len(rad_den[0])
-            miniderek['Density']=rad_den[0]
-            miniderek['Uncertainty']=rad_den[2]
-            print(miniderek)
-            miniderek.to_csv(filename+'.csv')
-            miniderek = miniderek[0:0]
+            #condition if halo is large neough
+            if len(partx) > 500:
+                
+                
+                #50 bins to bin over
+                binsize = int(len(partx)/50)
+                
+                #get radial density values
+                rad_den = radial_density((partx*h), (party*h), (partz*h),(mass*h*(10**10)), binsize, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
+                #mass in solar masses
+                #distances in kpc
+                
+                #virden = 200*p_crit
+                
+                #create data frame which then will be added to file
+                miniderek = pd.DataFrame(columns=pdheader)
+                miniderek['Radius']=rad_den[1]
+                #miniderek['Virial Radius']=[virrad]*len(rad_den[0])
+                miniderek['Density']=rad_den[0]
+                miniderek['Uncertainty']=rad_den[2]
+                print(miniderek)
+                miniderek.to_csv(filename+'.csv')
+                miniderek = miniderek[0:0]
     g += 1 
