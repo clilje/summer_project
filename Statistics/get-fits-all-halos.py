@@ -79,7 +79,7 @@ g = 0
 pdheader = ['Radius','Density','Uncertainty']
 
 #This section only needs to be run the first time the file needs to be created.
-"""
+
 with open('HaloFitsInfo/50-1_snap_99_fit_param.csv', 'x', encoding='UTF8', newline='') as f:
     
     header = ['Halo Number','DataPoints','Virial Radius','NFW Scale Density','NFW Scale Radius','NFW Scale Density Uncertainty',
@@ -90,7 +90,7 @@ with open('HaloFitsInfo/50-1_snap_99_fit_param.csv', 'x', encoding='UTF8', newli
     fwriter = csv.writer(f, delimiter=',')
     # Write the header
     fwriter.writerow(header)
-"""
+
 
 
 while g < numhalos:
