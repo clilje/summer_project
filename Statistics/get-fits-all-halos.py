@@ -146,7 +146,7 @@ while g < numhalos:
                               einastofitp[1], np.sqrt(np.diag(einastofitcov))[0],
                               np.sqrt(np.diag(einastofitcov))[1],einastochi_square_test_statistic,einastop_value]
                     fwriter.writerow(data)   
-            except:
+            except RuntimeError:
                 print('fail')
             
                 
