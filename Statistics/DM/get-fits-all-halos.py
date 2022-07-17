@@ -96,14 +96,14 @@ with open('HaloFitsInfo/50-1_snap_99_fit_param.csv', 'x', encoding='UTF8', newli
 while g < numhalos:
     
     #File from which to read in 
-    filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den'
+    filename = 'HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den-dark'
     
     #check if file exists, otherwise halo to small
     if(os.path.isfile(filename+'.csv')):
         #print(g)
         
         #read key data from file
-        data_csv = pd.read_csv('HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den.csv')
+        data_csv = pd.read_csv('HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den-dark.csv')
         
         rad = data_csv['Radius'].to_numpy()
         den = data_csv['Density'].to_numpy()
