@@ -80,7 +80,7 @@ pdheader = ['Radius','Density','Uncertainty']
 
 #This section only needs to be run the first time the file needs to be created.
 
-with open('HaloFitsInfo/50-1_snap_99_fit_param.csv', 'x', encoding='UTF8', newline='') as f:
+with open('HaloFitsInfo/50-1_snap_99_fit_param-dark.csv', 'x', encoding='UTF8', newline='') as f:
     
     header = ['Halo Number','DataPoints','Virial Radius','NFW Scale Density','NFW Scale Radius','NFW Scale Density Uncertainty',
               'NFW Scale Radius Uncertainty','NFW ChiSquare','NFW P-Value','Einasto Scale Density',
@@ -143,7 +143,7 @@ while g < numhalos:
                 print ('Fitted value for Einasto', einastofitp)
                 print ('uncertainties for Einasto', np.sqrt(np.diag(einastofitcov)))
                 #Append best fit parameters to file
-                with open('HaloFitsInfo/50-1_snap_99_fit_param.csv', 'a', encoding='UTF8', newline='') as f:
+                with open('HaloFitsInfo/50-1_snap_99_fit_param-dark.csv', 'a', encoding='UTF8', newline='') as f:
                     fwriter = csv.writer(f, delimiter=',')
                     data = [subhalo_index[g],num_datapoints,virrad,nfwfitp[0],nfwfitp[1],np.sqrt(np.diag(nfwfitcov))[0],
                               np.sqrt(np.diag(nfwfitcov))[1],nfwchi_square_test_statistic,nfwp_value,
