@@ -114,6 +114,11 @@ while g < numhalos:
         virrad,virial_index = virialRadius(rad, den)
         virial_density = p_crit*200
         
+        #Shorten all arrays out to virial radius
+        rad = rad[virial_index]
+        den = den[virial_index]
+        uncer = uncer[virial_index]
+        
         
         print(virrad/radius[g])
         
