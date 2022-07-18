@@ -106,7 +106,7 @@ while g < numhalos:
     #check if file exists, otherwise halo to small
     if(os.path.isfile(filename+'.csv')):
         print(g)
-        
+        DMindex = np.where(subhalo_index==g)[0]
         #read key data from file
         data_csv = pd.read_csv('HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den-dark.csv')
         
@@ -126,10 +126,10 @@ while g < numhalos:
         uncer = uncer[virial_index]
         
         
-        print(virrad/radius[g])
+        print(virrad/radius[DMindex])
         
         #section out halos at border
-        if virrad/radius[g] < 4:
+        if virrad/radius[DMindex] < 4:
             
             
             #find best fit for nfw
@@ -151,7 +151,7 @@ while g < numhalos:
                 #Append best fit parameters to file
                 with open('HaloFitsInfo/50-1_snap_99_fit_param-dark.csv', 'a', encoding='UTF8', newline='') as f:
                     fwriter = csv.writer(f, delimiter=',')
-                    data = [subhalo_index[g],num_datapoints,virrad,nfwfitp[0],nfwfitp[1],np.sqrt(np.diag(nfwfitcov))[0],
+                    data = [g,num_datapoints,virrad,nfwfitp[0],nfwfitp[1],np.sqrt(np.diag(nfwfitcov))[0],
                               np.sqrt(np.diag(nfwfitcov))[1],nfwchi_square_test_statistic,nfwp_value,
                               einastofitp[0],
                               einastofitp[1], np.sqrt(np.diag(einastofitcov))[0],

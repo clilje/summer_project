@@ -67,16 +67,37 @@ datapoint = fit_param['DataPoints'].to_numpy()
 virrad = fit_param['Virial Radius'].to_numpy()
 true_indices = fit_param['Halo Number'].to_numpy().astype(int)
 
+#Similarly for DMO
+#Get key info from group catalogue from file
+subhalo_info_dark = pd.read_csv('50-1-subhalo-info-dark.csv')
+subhalo_index_dark = subhalo_info_dark['SubhaloIndex'].to_numpy().astype(int)
+positionsX_dark = subhalo_info_dark['SubhaloPosX'].to_numpy()
+positionsY_dark = subhalo_info_dark['SubhaloPosY'].to_numpy()
+positionsZ_dark = subhalo_info_dark['SubhaloPosZ'].to_numpy()
+radius_dark = subhalo_info_dark['SubhaloHalfmassRad'].to_numpy()
+full_mass_dark = subhalo_info_dark['SubhaloMass'].to_numpy()
+#length = subhalo_info['SubhaloLen'].to_numpy().astype(int)
+
+
+#Read in the optimal fit parameters as well as chisquare
+fit_param_dark = pd.read_csv('HaloFitsInfo/50-1_snap_99_fit_param-dark.csv')
+nfw_chisquare_dark = fit_param_dark['NFW ChiSquare'].to_numpy()
+nfw_scalerad_dark = fit_param_dark['NFW Scale Radius'].to_numpy()
+datapoint_dark = fit_param_dark['DataPoints'].to_numpy()
+virrad_dark = fit_param_dark['Virial Radius'].to_numpy()
+true_indices_dark = fit_param_dark['Halo Number'].to_numpy().astype(int)
+
+
 #lists to store data
 numhalos = len(subhalo_index)
 
 
 #calculate concentration from given arrays
 concentration = virrad/nfw_scalerad
-
+concentration_dark = virrad_dark/nfw_scalerad_dark
 #Get list of indices plotted
 indices = np.linspace(0,len(true_indices))
-
+indices_dark = np.linspace(0,len(true_indices_dark))
 
 #Prepare mass to be binned
 bins = np.logspace(-2,5.5,12)
@@ -86,6 +107,11 @@ mean_mass = []
 mean_concentration =[]
 stdev = []
 lowerbound = 0
+
+mean_mass_dark = []
+mean_concentration_dark =[]
+stdev_dark = []
+lowerbound_dark = 0
 
 #loop over bins
 for upperbound in bins:
@@ -105,15 +131,34 @@ for upperbound in bins:
     stdev.append(statistics.stdev(concentration[conc_index]))
     lowerbound= upperbound
 
+for upperbound_dark in bins:
+    #get indices of mass lying inside bin
+    massindex_dark = np.where(np.logical_and(full_mass_dark[true_indices_dark]<upperbound_dark,full_mass_dark[true_indices_dark]>lowerbound_dark))[0]
+    
+    #get indices for which concentration values correspond to this
+    conc_index_dark = np.searchsorted(true_indices_dark, subhalo_index_dark[true_indices_dark][massindex_dark])
+    
+    #ensure no error for stdev or mean
+    if conc_index_dark.size ==0:
+        break
+    
+    #append all data to lists
+    mean_mass_dark.append(((upperbound_dark-lowerbound_dark)/2)*h)
+    mean_concentration_dark.append(statistics.mean(concentration_dark[conc_index_dark]))
+    stdev.append(statistics.stdev(concentration_dark[conc_index_dark]))
+    lowerbound_dark= upperbound_dark
+
 
 #plot data obtained in scatterplot
-plt.errorbar(np.array(mean_mass),mean_concentration,yerr=stdev,fmt='.')
+plt.errorbar(np.array(mean_mass),mean_concentration,yerr=stdev,fmt='.', color='black', label='Full Physics Run')
+plt.errorbar(np.array(mean_mass_dark),mean_concentration_dark,yerr=stdev_dark,fmt='.',color='red',label='DMO')
+
 plt.xscale('log')
 plt.yscale('log')
-plt.ylim((1,30))
+#plt.ylim((1,30))
 plt.xlabel(r'Total Mass of Halo in $10^{10} M_{\odot}$')
 plt.ylabel(r'$c_{200}$')
-plt.savefig('cmfunc-6')
+plt.savefig('cmfunc-both')
 plt.show()
 
 
