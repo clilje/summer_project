@@ -75,8 +75,8 @@ with open('../50-1-subhalo-info-dark-og.csv', 'w', encoding='UTF8', newline='') 
             x = matchingarr[g]
             data = [g, x, subhalos['SubhaloPos'][:, 0][x],subhalos['SubhaloPos'][:, 1][x],subhalos['SubhaloPos'][:, 2][x], subhalos['SubhaloHalfmassRad'][x], subhalos['SubhaloMass'][x], subhalos['SubhaloLen'][x]]
             fwriter.writerow(data)
-    """
         g +=1
+    """
             
         
     """    
