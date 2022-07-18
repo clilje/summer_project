@@ -43,7 +43,7 @@ matchingarr = get_matching(50, 1)
 
 
 basePathDark = '/disk01/rmcg/downloaded/tng/tng'+str(size)+'-'+str(res)+'-dark'
-basePath = '/disk01/rmcg/downloaded/tng/tng'+str(size)+'-'+str(res) 
+#basePath = '/disk01/rmcg/downloaded/tng/tng'+str(size)+'-'+str(res) 
 fields = ['SubhaloPos','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
 
 
@@ -51,32 +51,26 @@ subhalos = groupcat.loadSubhalos(basePathDark,99,fields=fields)
 #subhalosBar= groupcat.loadSubhalos(basePath,99,fields=fields)
 num_halo = np.arange(len(np.array(subhalos['SubhaloMass'])))
 
-a = (groupcat.loadHeader(basePath, snapnum)['Time']).astype('int')  #scalefactor
-z = (groupcat.loadHeader(basePath, snapnum)['Redshift']).astype('float')  #redshift
-#print(a)
-#print(z)
-#indices = np.where(matchingarr != -1)[0]
-#matchingarr = np.delete(matchingarr,np.where(matchingarr == -1)[0])
+#a = (groupcat.loadHeader(basePath, snapnum)['Time']).astype('int')  #scalefactor
+#z = (groupcat.loadHeader(basePath, snapnum)['Redshift']).astype('float')  #redshift
+
+
 print(matchingarr)
-#print(groupcat.loadHeader(basePath, snapnum))
+
+
 with open('../50-1-subhalo-info-dark-og.csv', 'w', encoding='UTF8', newline='') as subfile:
-    header = ['DMIndex','SubhaloPosX','SubhaloPosY','SubhaloPosZ','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
+    header = ['SubhaloIndex','DMIndex','SubhaloPosX','SubhaloPosY','SubhaloPosZ','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
     fwriter = csv.writer(subfile, delimiter=',')
     # Write the header
     fwriter.writerow(header)
     g = 0
-    data = [num_halo, subhalos['SubhaloPos'][:, 0],subhalos['SubhaloPos'][:, 1],subhalos['SubhaloPos'][:, 2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass'], subhalos['SubhaloLen']]
-    fwriter.writerows(data)
-    """
     while g < len(matchingarr):
-        print(matchingarr[g])
+        
         if matchingarr[g] != -1:
-            print(g)
-            x = matchingarr[g]
-            data = [g, x, subhalos['SubhaloPos'][:, 0][x],subhalos['SubhaloPos'][:, 1][x],subhalos['SubhaloPos'][:, 2][x], subhalos['SubhaloHalfmassRad'][x], subhalos['SubhaloMass'][x], subhalos['SubhaloLen'][x]]
+            print(g,matchingarr[g])
+            data = [g, matchingarr[g], subhalos['SubhaloPos'][:, 0][matchingarr[g]],subhalos['SubhaloPos'][:, 1][matchingarr[g]],subhalos['SubhaloPos'][:, 2][matchingarr[g]], subhalos['SubhaloHalfmassRad'][matchingarr[g]], subhalos['SubhaloMass'][matchingarr[g]], subhalos['SubhaloLen'][matchingarr[g]]]
             fwriter.writerow(data)
         g +=1
-    """
             
         
     """    
