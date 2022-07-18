@@ -58,7 +58,7 @@ def virialRadius(radius, density):
     """
     above_virR = np.where((density).astype(float)>float(p_crit*200))[0]
     #print(above_virR)
-    if above_virR.size() >0:
+    if above_virR.size >0:
         virIndex = np.argmax(radius[above_virR])
         virR = radius[virIndex]
     else:
