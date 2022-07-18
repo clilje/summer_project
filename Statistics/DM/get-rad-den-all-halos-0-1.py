@@ -109,7 +109,7 @@ def radial_density(partx, party, partz, mass, binsize, halox, haloy, haloz):
 
 
 #Read in basic Subhalo Group Info
-subhalo_info = pd.read_csv('../50-1-subhalo-info-dark.csv')
+subhalo_info = pd.read_csv('../50-1-subhalo-info.csv')
 subhalo_index = subhalo_info['SubhaloIndex']
 positionsX = subhalo_info['SubhaloPosX'].to_numpy()
 positionsY = subhalo_info['SubhaloPosY'].to_numpy()
@@ -118,6 +118,15 @@ radius = subhalo_info['SubhaloHalfmassRad'].to_numpy()
 full_mass = subhalo_info['SubhaloMass'].to_numpy()
 length = subhalo_info['SubhaloLen'].to_numpy()
 
+
+subhalo_info_dark = pd.read_csv('../50-1-subhalo-info-dark.csv')
+subhalo_index_dark = subhalo_info_dark['SubhaloIndex']
+positionsX_dark = subhalo_info_dark['SubhaloPosX'].to_numpy()
+positionsY_dark = subhalo_info_dark['SubhaloPosY'].to_numpy()
+positionsZ_dark = subhalo_info_dark['SubhaloPosZ'].to_numpy()
+radius_dark = subhalo_info_dark['SubhaloHalfmassRad'].to_numpy()
+full_mass_dark = subhalo_info_dark['SubhaloMass'].to_numpy()
+length_dark = subhalo_info_dark['SubhaloLen'].to_numpy()
 #halo to start with
 g = 0
 numhalos = len(subhalo_index)
@@ -169,12 +178,13 @@ while g < 1000000:
             #condition if halo is large neough
             if len(partx) > 500:
                 DMindex = np.where(subhalo_index == g)[0]
-                
+                print(g,DMindex)
+                print(positionsX[g], positionsX_dark[DMindex])
                 #50 bins to bin over
                 binsize = int(len(partx)/50)
                 
                 #get radial density values
-                rad_den = radial_density((partx*h), (party*h), (partz*h),(mass*h*(10**10)), binsize, (positionsX[DMindex]*h), (h*positionsY[DMindex]), (h*positionsZ[DMindex]))
+                rad_den = radial_density((partx*h), (party*h), (partz*h),(mass*h*(10**10)), binsize, (positionsX_dark[DMindex]*h), (h*positionsY_dark[DMindex]), (h*positionsZ_dark[DMindex]))
                 #mass in solar masses
                 #distances in kpc
                 
