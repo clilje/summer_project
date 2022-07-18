@@ -177,7 +177,7 @@ while g < 1000000:
             
             #condition if halo is large neough
             if len(partx) > 500:
-                DMindex = np.where(subhalo_index == g)[0]
+                DMindex = np.where(subhalo_index_dark == g)[0]
                 print(g,DMindex)
                 print(positionsX[g], positionsX_dark[DMindex])
                 #50 bins to bin over
