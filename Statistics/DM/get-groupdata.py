@@ -68,7 +68,7 @@ with open('../50-1-subhalo-info-dark-og.csv', 'w', encoding='UTF8', newline='') 
         
         if matchingarr[g] != -1:
             print(g,matchingarr[g])
-            print(subhalos['SubhaloMass'],subhalosBar['SubhaloMass'])
+            print(subhalos['SubhaloMass'][matchingarr[g]],subhalosBar['SubhaloMass'][g])
             data = [g, matchingarr[g], subhalos['SubhaloPos'][:, 0][matchingarr[g]],subhalos['SubhaloPos'][:, 1][matchingarr[g]],subhalos['SubhaloPos'][:, 2][matchingarr[g]], subhalos['SubhaloHalfmassRad'][matchingarr[g]], subhalos['SubhaloMass'][matchingarr[g]], subhalos['SubhaloLen'][matchingarr[g]]]
             fwriter.writerow(data)
         g +=1
