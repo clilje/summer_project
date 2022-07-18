@@ -58,7 +58,7 @@ num_halo = np.arange(len(np.array(subhalos['SubhaloMass'])))
 print(matchingarr)
 
 
-with open('../50-1-subhalo-info-dark-og.csv', 'w', encoding='UTF8', newline='') as subfile:
+with open('../50-1-subhalo-info-dark.csv', 'w', encoding='UTF8', newline='') as subfile:
     header = ['SubhaloIndex','DMIndex','SubhaloPosX','SubhaloPosY','SubhaloPosZ','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
     fwriter = csv.writer(subfile, delimiter=',')
     # Write the header
