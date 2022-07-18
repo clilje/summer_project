@@ -43,12 +43,12 @@ matchingarr = get_matching(50, 1)
 
 
 basePathDark = '/disk01/rmcg/downloaded/tng/tng'+str(size)+'-'+str(res)+'-dark'
-#basePath = '/disk01/rmcg/downloaded/tng/tng'+str(size)+'-'+str(res) 
+basePath = '/disk01/rmcg/downloaded/tng/tng'+str(size)+'-'+str(res) 
 fields = ['SubhaloPos','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
 
 
 subhalos = groupcat.loadSubhalos(basePathDark,99,fields=fields)
-#subhalosBar= groupcat.loadSubhalos(basePath,99,fields=fields)
+subhalosBar= groupcat.loadSubhalos(basePath,99,fields=fields)
 num_halo = np.arange(len(np.array(subhalos['SubhaloMass'])))
 
 #a = (groupcat.loadHeader(basePath, snapnum)['Time']).astype('int')  #scalefactor
@@ -68,6 +68,7 @@ with open('../50-1-subhalo-info-dark-og.csv', 'w', encoding='UTF8', newline='') 
         
         if matchingarr[g] != -1:
             print(g,matchingarr[g])
+            print(subhalos['SubhaloMass'],subhalosBar['SubhaloMass'])
             data = [g, matchingarr[g], subhalos['SubhaloPos'][:, 0][matchingarr[g]],subhalos['SubhaloPos'][:, 1][matchingarr[g]],subhalos['SubhaloPos'][:, 2][matchingarr[g]], subhalos['SubhaloHalfmassRad'][matchingarr[g]], subhalos['SubhaloMass'][matchingarr[g]], subhalos['SubhaloLen'][matchingarr[g]]]
             fwriter.writerow(data)
         g +=1
