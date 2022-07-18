@@ -67,10 +67,10 @@ for g in xx:
     ax.scatter(partx[index], party[index], partz[index], marker='+',color='blue',alpha=0.1)
     #ax.scatter(halo_50[0], halo_50[1], halo_50[2], marker='+',color='red')
     ax.scatter(positionsX[g],positionsY[g], positionsZ[g],marker='x', color='black')
-    ax.scatter(positionsX_dark[g],positionsY_dark[g], positionsZ_dark[g], marker='+',color='pink')
+    ax.scatter(positionsX_dark[g],positionsY_dark[g], positionsZ_dark[g], marker='+',color='green')
     
     ax.set_xlabel('x [ckpc/h]')
     
     ax.set_ylabel('y [ckpc/h]')
     ax.set_zlabel('z [ckpc/h]')
-    fig.savefig('halocomp-centre-revised-'+str(g))
+    fig.savefig('halocomp-centre-again-'+str(g))
