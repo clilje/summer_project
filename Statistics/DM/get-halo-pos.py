@@ -19,7 +19,7 @@ import time
 
 
 #Read in basic Subhalo Group Info
-subhalo_info = pd.read_csv('../50-1-subhalo-info-dark.csv')
+subhalo_info = pd.read_csv('../50-1-subhalo-info.csv')
 subhalo_index = subhalo_info['SubhaloIndex']
 positionsX = subhalo_info['SubhaloPosX'].to_numpy()
 positionsY = subhalo_info['SubhaloPosY'].to_numpy()
@@ -27,6 +27,16 @@ positionsZ = subhalo_info['SubhaloPosZ'].to_numpy()
 radius = subhalo_info['SubhaloHalfmassRad'].to_numpy()
 full_mass = subhalo_info['SubhaloMass'].to_numpy()
 length = subhalo_info['SubhaloLen'].to_numpy()
+
+
+subhalo_info_dark = pd.read_csv('../50-1-subhalo-info-dark.csv')
+subhalo_index_dark = subhalo_info_dark['SubhaloIndex']
+positionsX_dark = subhalo_info_dark['SubhaloPosX'].to_numpy()
+positionsY_dark = subhalo_info_dark['SubhaloPosY'].to_numpy()
+positionsZ_dark = subhalo_info_dark['SubhaloPosZ'].to_numpy()
+radius_dark = subhalo_info_dark['SubhaloHalfmassRad'].to_numpy()
+full_mass_dark = subhalo_info_dark['SubhaloMass'].to_numpy()
+length_dark = subhalo_info_dark['SubhaloLen'].to_numpy()
 
 
 
@@ -57,7 +67,7 @@ for g in xx:
     ax.scatter(partx[index], party[index], partz[index], marker='+',color='blue',alpha=0.1)
     #ax.scatter(halo_50[0], halo_50[1], halo_50[2], marker='+',color='red')
     ax.scatter(positionsX[g],positionsY[g], positionsZ[g],marker='x', color='black')
-    #ax.scatter(CM[0], CM[1], CM[2], marker='+',color='pink')
+    ax.scatter(positionsX_dark[g],positionsY_dark[g], positionsZ_dark[g], marker='+',color='pink')
     
     ax.set_xlabel('x [ckpc/h]')
     
