@@ -168,13 +168,13 @@ while g < 2000000:
             
             #condition if halo is large neough
             if len(partx) > 500:
-                
+                DMindex = np.where(subhalo_index == g)[0]
                 
                 #50 bins to bin over
                 binsize = int(len(partx)/50)
                 
                 #get radial density values
-                rad_den = radial_density((partx*h), (party*h), (partz*h),(mass*h*(10**10)), binsize, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
+                rad_den = radial_density((partx*h), (party*h), (partz*h),(mass*h*(10**10)), binsize, (positionsX[DMindex]*h), (h*positionsY[DMindex]), (h*positionsZ[DMindex]))
                 #mass in solar masses
                 #distances in kpc
                 

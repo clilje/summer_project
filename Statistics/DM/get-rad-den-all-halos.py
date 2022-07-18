@@ -2,7 +2,7 @@
 Created on Thu Jun 16 14:38:14 2022
 
 This code creates binned radial density profiles for each halo that
-satisfies more than 500 particles and virrad/hmrad <3.
+satisfies more than 500 particles.
 This is done from files containing all halo particle information.
 
 @author: clara
@@ -163,13 +163,13 @@ while g < 1000000:
         
         #condition if halo is large neough
         if len(partx) > 500:
-            
+            DMindex = np.where(subhalo_index == g)[0]
             
             #50 bins to bin over
             binsize = int(len(partx)/50)
             
             #get radial density values
-            rad_den = radial_density((partx*h), (party*h), (partz*h),(mass*h*(10**10)), binsize, (positionsX[g]*h), (h*positionsY[g]), (h*positionsZ[g]))
+            rad_den = radial_density((partx*h), (party*h), (partz*h),(mass*h*(10**10)), binsize, (positionsX[DMindex]*h), (h*positionsY[DMindex]), (h*positionsZ[DMindex]))
             #mass in solar masses
             #distances in kpc
             
