@@ -29,7 +29,7 @@ full_mass = subhalo_info['SubhaloMass'].to_numpy()
 length = subhalo_info['SubhaloLen'].to_numpy()
 
 
-subhalo_info_dark = pd.read_csv('../50-1-subhalo-info-dark.csv')
+subhalo_info_dark = pd.read_csv('../50-1-subhalo-info-dark-og.csv')
 subhalo_index_dark = subhalo_info_dark['SubhaloIndex']
 positionsX_dark = subhalo_info_dark['SubhaloPosX'].to_numpy()
 positionsY_dark = subhalo_info_dark['SubhaloPosY'].to_numpy()
