@@ -57,6 +57,7 @@ def virialRadius(radius, density):
 
     """
     above_virR = np.where((density).astype(float)>float(p_crit*200))[0]
+    print(above_virR)
     virIndex = np.argmax(radius[above_virR])
     virR = radius[virIndex]
     return(virR,above_virR)
@@ -100,7 +101,7 @@ while g < numhalos:
     
     #check if file exists, otherwise halo to small
     if(os.path.isfile(filename+'.csv')):
-        #print(g)
+        print(g)
         
         #read key data from file
         data_csv = pd.read_csv('HaloFitsInfo/snap_99_halo_'+str(g)+'rad-den-dark.csv')
@@ -110,6 +111,7 @@ while g < numhalos:
         uncer = data_csv['Uncertainty'].to_numpy()
         num_datapoints = len(rad)
         
+        print(den)
         #Determine virial radius
         virrad,virial_index = virialRadius(rad, den)
         virial_density = p_crit*200
