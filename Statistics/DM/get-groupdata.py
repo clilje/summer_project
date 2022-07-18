@@ -64,11 +64,21 @@ with open('../50-1-subhalo-info-dark.csv', 'w', encoding='UTF8', newline='') as 
     fwriter = csv.writer(subfile, delimiter=',')
     # Write the header
     fwriter.writerow(header)
+    g = 0
+    while g < len(matchingarr):
+        if matchingarr[g] != -1:
+            x = matchingarr[g]
+            data = [g, subhalos['SubhaloPos'][:, 0][x],subhalos['SubhaloPos'][:, 1][x],subhalos['SubhaloPos'][:, 2][x], subhalos['SubhaloHalfmassRad'][x], subhalos['SubhaloMass'][x], subhalos['SubhaloLen'][x]]
+            fwriter.writerow(data)
+        g +=1
+            
+        
+    """    
     for k in range(len(matchingarr)):
         x = matchingarr[k]
         data = [int(indices[k]), subhalos['SubhaloPos'][:, 0][x],subhalos['SubhaloPos'][:, 1][x],subhalos['SubhaloPos'][:, 2][x], subhalos['SubhaloHalfmassRad'][x], subhalos['SubhaloMass'][x], subhalos['SubhaloLen'][x]]
         fwriter.writerow(data)
-
+"""
 
 #header = ['SubhaloIndex','SubhaloPosX','SubhaloPosY','SubhaloPosZ','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
 
