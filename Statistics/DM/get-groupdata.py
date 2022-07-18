@@ -48,7 +48,7 @@ fields = ['SubhaloPos','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
 
 
 subhalos = groupcat.loadSubhalos(basePathDark,99,fields=fields)
-subhalosBar= groupcat.loadSubhalos(basePath,99,fields=fields)
+#subhalosBar= groupcat.loadSubhalos(basePath,99,fields=fields)
 num_halo = np.arange(len(np.array(subhalos['SubhaloMass'])))
 
 a = (groupcat.loadHeader(basePath, snapnum)['Time']).astype('int')  #scalefactor
@@ -57,7 +57,7 @@ z = (groupcat.loadHeader(basePath, snapnum)['Redshift']).astype('float')  #redsh
 #print(z)
 #indices = np.where(matchingarr != -1)[0]
 #matchingarr = np.delete(matchingarr,np.where(matchingarr == -1)[0])
-
+print(matchingarr)
 #print(groupcat.loadHeader(basePath, snapnum))
 with open('../50-1-subhalo-info-dark.csv', 'w', encoding='UTF8', newline='') as subfile:
     header = ['SubhaloIndex','SubhaloPosX','SubhaloPosY','SubhaloPosZ','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
@@ -66,7 +66,9 @@ with open('../50-1-subhalo-info-dark.csv', 'w', encoding='UTF8', newline='') as 
     fwriter.writerow(header)
     g = 0
     while g < len(matchingarr):
+        print(matchingarr(g))
         if matchingarr[g] != -1:
+            print(g)
             x = matchingarr[g]
             data = [g, subhalos['SubhaloPos'][:, 0][x],subhalos['SubhaloPos'][:, 1][x],subhalos['SubhaloPos'][:, 2][x], subhalos['SubhaloHalfmassRad'][x], subhalos['SubhaloMass'][x], subhalos['SubhaloLen'][x]]
             fwriter.writerow(data)
