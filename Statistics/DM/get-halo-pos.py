@@ -19,7 +19,7 @@ import time
 
 
 #Read in basic Subhalo Group Info
-subhalo_info = pd.read_csv('../50-1-subhalo-info.csv')
+subhalo_info = pd.read_csv('../50-1-subhalo-info-dark.csv')
 subhalo_index = subhalo_info['SubhaloIndex']
 positionsX = subhalo_info['SubhaloPosX'].to_numpy()
 positionsY = subhalo_info['SubhaloPosY'].to_numpy()
@@ -63,4 +63,4 @@ for g in xx:
     
     ax.set_ylabel('y [ckpc/h]')
     ax.set_zlabel('z [ckpc/h]')
-    fig.savefig('halocomp-npdarkcentre-'+str(g))
+    fig.savefig('halocomp-centre-revised-'+str(g))
