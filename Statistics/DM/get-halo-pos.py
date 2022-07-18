@@ -59,7 +59,8 @@ for g in xx:
     mass = chunk['mass'].to_numpy().astype(float)
     
     
-    
+    DMindex = np.where(subhalo_index_dark == g)[0]
+    print(DMindex)
     fig = plt.figure()
     ax = plt.axes(projection ='3d')
     xyz = np.arange(len(partx))
@@ -67,7 +68,7 @@ for g in xx:
     ax.scatter(partx[index], party[index], partz[index], marker='+',color='blue',alpha=0.1)
     #ax.scatter(halo_50[0], halo_50[1], halo_50[2], marker='+',color='red')
     ax.scatter(positionsX[g],positionsY[g], positionsZ[g],marker='x', color='black')
-    ax.scatter(positionsX_dark[g],positionsY_dark[g], positionsZ_dark[g], marker='+',color='green')
+    ax.scatter(positionsX_dark[DMindex],positionsY_dark[DMindex], positionsZ_dark[DMindex], marker='+',color='green')
     
     ax.set_xlabel('x [ckpc/h]')
     
