@@ -55,8 +55,8 @@ a = (groupcat.loadHeader(basePath, snapnum)['Time']).astype('int')  #scalefactor
 z = (groupcat.loadHeader(basePath, snapnum)['Redshift']).astype('float')  #redshift
 #print(a)
 #print(z)
-indices = np.where(matchingarr != -1)[0]
-matchingarr = np.delete(matchingarr,np.where(matchingarr == -1)[0])
+#indices = np.where(matchingarr != -1)[0]
+#matchingarr = np.delete(matchingarr,np.where(matchingarr == -1)[0])
 
 #print(groupcat.loadHeader(basePath, snapnum))
 with open('../50-1-subhalo-info-dark.csv', 'w', encoding='UTF8', newline='') as subfile:
