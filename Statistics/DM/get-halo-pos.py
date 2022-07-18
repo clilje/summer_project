@@ -30,7 +30,7 @@ length = subhalo_info['SubhaloLen'].to_numpy()
 
 
 
-xx = [2,50,200,1000]
+xx = [2,53,201,1000]
 for g in xx:
     
     #read in particle data
