@@ -60,17 +60,17 @@ z = (groupcat.loadHeader(basePath, snapnum)['Redshift']).astype('float')  #redsh
 print(matchingarr)
 #print(groupcat.loadHeader(basePath, snapnum))
 with open('../50-1-subhalo-info-dark.csv', 'w', encoding='UTF8', newline='') as subfile:
-    header = ['SubhaloIndex','SubhaloPosX','SubhaloPosY','SubhaloPosZ','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
+    header = ['SubhaloIndex','DMIndex','SubhaloPosX','SubhaloPosY','SubhaloPosZ','SubhaloHalfmassRad','SubhaloMass','SubhaloLen']
     fwriter = csv.writer(subfile, delimiter=',')
     # Write the header
     fwriter.writerow(header)
     g = 0
     while g < len(matchingarr):
-        print(matchingarr(g))
+        print(matchingarr[g])
         if matchingarr[g] != -1:
             print(g)
             x = matchingarr[g]
-            data = [g, subhalos['SubhaloPos'][:, 0][x],subhalos['SubhaloPos'][:, 1][x],subhalos['SubhaloPos'][:, 2][x], subhalos['SubhaloHalfmassRad'][x], subhalos['SubhaloMass'][x], subhalos['SubhaloLen'][x]]
+            data = [g, x, subhalos['SubhaloPos'][:, 0][x],subhalos['SubhaloPos'][:, 1][x],subhalos['SubhaloPos'][:, 2][x], subhalos['SubhaloHalfmassRad'][x], subhalos['SubhaloMass'][x], subhalos['SubhaloLen'][x]]
             fwriter.writerow(data)
         g +=1
             
