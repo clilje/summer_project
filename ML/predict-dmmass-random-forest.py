@@ -11,7 +11,7 @@ import math
 import csv
 import pandas as pd
 #import scikit-learn as sklearn
-from sklearn.linear_model import RandomForestRegressor
+from sklearn.ensemble import RandomForestRegressor
 
 h = 0.6774
 p_crit = 127 #m_sun/(kpc^3)
