@@ -12,33 +12,40 @@ import csv
 import pandas as pd
 #import scikit-learn as sklearn
 from sklearn.ensemble import RandomForestRegressor
+from sklearn.cross_validation import train_test_split
 import matplotlib.pylab as pylab
-params = {'legend.fontsize': 'large',
+params = {'legend.fontsize': 'x-large',
           'figure.figsize': (30, 10),
-         'axes.labelsize': 'large',
-         'axes.titlesize':'large',
-         'xtick.labelsize':'large',
-         'ytick.labelsize':'large'}
+         'axes.labelsize': 'x-large',
+         'axes.titlesize':'x-large',
+         'xtick.labelsize':'x-large',
+         'ytick.labelsize':'x-large'}
 pylab.rcParams.update(params)
 
 
 h = 0.6774
 p_crit = 127 #m_sun/(kpc^3)
 
-
+#get the input data from the Group Catalogues
+#DM + Baryons
 data_csv = pd.read_csv('50-1-subhalo-info.csv')
 column_names = ['SubhaloIndex','SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass','SubhaloDMMass']
 X = data_csv[column_names]
 
+#DMO
 data_csv_dark = pd.read_csv('50-1-subhalo-info-dark.csv')
 column_names_dark = ['SubhaloIndex','SubhaloDMMass']
 X_dark = data_csv_dark[column_names_dark]
 
 
+#Get the nessecary data to calculate the concentration from the fit files
 
+#Prepare the dataframes to be resorted to match Halo Indices
 fit_param_dark = pd.read_csv('50-1_snap_99_fit_param-dark.csv')
 true_indices_dark = fit_param_dark['Halo Number'].to_numpy().astype(int)
 
+#Import the Fit Parameters for DM+Baryons
+#Reorder according to DMO Halo Indices, cut all NaN
 fit_param = pd.read_csv('50-1_snap_99_fit_param.csv')
 fit_param['Df_cat'] = pd.Categorical(fit_param['Halo Number'],
                                              categories = true_indices_dark,
@@ -48,6 +55,7 @@ nfw_scalerad = sorted_df['NFW Scale Radius'].to_numpy()
 virrad = sorted_df['Virial Radius'].to_numpy()
 true_indices = sorted_df['Halo Number'].to_numpy().astype(int)
 
+#Reorder DMO Halos according to leftover DM+Baryon indices, cut all NaN
 fit_param_dark['Df_cat'] = pd.Categorical(fit_param_dark['Halo Number'],
                                              categories = true_indices,
                                              ordered=True)
@@ -56,7 +64,7 @@ nfw_scalerad_dark = sorted_df_dark['NFW Scale Radius'].to_numpy()
 virrad_dark = sorted_df_dark['Virial Radius'].to_numpy()
 
 
-
+#Reorder the input values according to leftover DM+Baryon indices, cut all NaN
 X['Df_cat'] = pd.Categorical(X['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
@@ -71,6 +79,7 @@ sorted_data_dark = X_dark.sort_values('Df_cat').dropna().copy()
 sorted_X_dark = sorted_data_dark['SubhaloDMMass'].to_numpy()
 
 
+#Calculate concentration from Re-indexed input arrays and set as expected value
 concentration = virrad/nfw_scalerad
 concentration_dark = virrad_dark/nfw_scalerad_dark
 
@@ -83,40 +92,53 @@ print(y_dark)
 print(sorted_X)
 print(sorted_X_dark)
 
+Xtrain, Xtest, ytrain, ytest = train_test_split(sorted_X, y,
+                                                random_state=1)
+
+Xtrain_dark, Xtest_dark, ytrain_dark, ytest_dark = train_test_split(sorted_X_dark, y_dark,
+                                                random_state=1)
+
+#set up plotting params
 fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
+
+#Train Model for DM+Baryons
 model = RandomForestRegressor(n_estimators=1000,n_jobs=10)
-model.fit(sorted_X,y)
-y_pred = model.predict(sorted_X)
+model.fit(Xtrain,ytrain)
+y_pred = model.predict(Xtest)
 print(y)
 print(y_pred)
-axs[0].scatter(y,y_pred, marker="x",color="black")
-
+#Plot Predicted vs actual values
+axs[0].scatter(ytest,y_pred, marker="x",color="black")
 axs[0].set_xlabel(r'Concentration of Halos')
 axs[0].set_ylabel(r'Predicted Concentration of Halos')
 axs[0].set_xscale('log')
 axs[0].set_yscale('log')
 axs[0].set_title('Predicted Halo Concentration from Stellar, Gas, BH and DM Mass')
 
-
+#Train Model for DMO
 model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
-model.fit(sorted_X_dark.reshape(-1,1),y)
-y_pred_dark = model.predict(sorted_X_dark.reshape(-1,1))
+model.fit(Xtrain_dark.reshape(-1,1),ytrain)
+y_pred_dark = model.predict(Xtest_dark.reshape(-1,1))
 print(y_dark)
 print(y_pred_dark)
-axs[1].scatter(y_dark,y_pred_dark, marker="x",color="black")
+#Plot predicted vs actual
+axs[1].scatter(ytest_dark,y_pred_dark, marker="x",color="black")
 axs[1].set_xlabel(r'Concentration of DMO Halos')
 axs[1].set_ylabel(r'Predicted Concentration of DMO Halos')
 axs[1].set_xscale('log')
 axs[1].set_yscale('log')
 axs[1].set_title('Prediced Halo Concentration from DM Mass')
 
+
+#Calculate the C_Bar/C_DMO ratio
 conc_ratio = y/y_dark
 conc_ratio_pred = y_pred/y_pred_dark
+#Plot predicted vs actual
 plt.scatter(conc_ratio,conc_ratio_pred, marker="x",color="black")
 axs[2].set_xlabel(r'Ratio of $\frac{C_{B}}{C_{DMO}}$')
 axs[2].set_ylabel(r'Predicted Ratio of $\frac{C_{B}}{C_{DMO}}$')
 axs[2].set_xscale('log')
 axs[2].set_yscale('log')
 axs[2].set_title('Predicted Halo Concentration ratio from Stellar, Gas, BH and DM Mass')
-fig.savefig('concentration_ratio_forest.jpg')
+fig.savefig('concentration_ratio_forest-traintest.jpg')
 
