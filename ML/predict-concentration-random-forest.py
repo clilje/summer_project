@@ -131,7 +131,7 @@ axs[1].set_title('Prediced Halo Concentration from DM Mass')
 
 
 #Calculate the C_Bar/C_DMO ratio
-conc_ratio = y/y_dark
+conc_ratio = ytest/ytest_dark
 conc_ratio_pred = y_pred/y_pred_dark
 #Plot predicted vs actual
 plt.scatter(conc_ratio,conc_ratio_pred, marker="x",color="black")
