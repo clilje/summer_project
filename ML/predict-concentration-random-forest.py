@@ -54,6 +54,9 @@ X['Df_cat'] = pd.Categorical(X['SubhaloIndex'],
                                              ordered=True)
 sorted_data = X.sort_values('Df_cat').dropna().copy()
 print(sorted_data)
+print(sorted_data['Df_cat'])
+print(sorted_data['Df_cat/SubhaloGasMass'])
+print(sorted_data['SubhaloGasMass'])
 sorted_X = sorted_data['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass','SubhaloDMMass']
 print(sorted_X)
 
