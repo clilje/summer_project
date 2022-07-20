@@ -65,7 +65,7 @@ X_dark['Df_cat'] = pd.Categorical(X_dark['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data_dark = X_dark.sort_values('Df_cat').dropna().copy()
-sorted_X_dark = sorted_data_dark['SubhaloDMMass']
+sorted_X_dark = sorted_data_dark['SubhaloDMMass'].to_numpy()
 print(sorted_X_dark)
 
 #sorted_X.reset_index(drop = True, inplace = True)
