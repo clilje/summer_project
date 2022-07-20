@@ -57,14 +57,14 @@ print(sorted_data)
 print(sorted_data['Df_cat'])
 print(sorted_data['SubhaloGasMass'])
 sorted_X = pd.DataFrame([sorted_data['SubhaloGasMass'],sorted_data['SubhaloStarMass'],
-                         sorted_data['SubhaloBHMass'],sorted_data['SubhaloDMMass']])
+                         sorted_data['SubhaloBHMass'],sorted_data['SubhaloDMMass']]).T
 print(sorted_X)
 
 X_dark['Df_cat'] = pd.Categorical(X_dark['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data_dark = X_dark.sort_values('Df_cat').dropna().copy()
-sorted_X_dark = sorted_data_dark.loc['SubhaloDMMass']
+sorted_X_dark = sorted_data_dark['SubhaloDMMass'].T
 
 
 concentration = virrad/nfw_scalerad
