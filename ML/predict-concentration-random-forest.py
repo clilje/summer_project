@@ -12,6 +12,15 @@ import csv
 import pandas as pd
 #import scikit-learn as sklearn
 from sklearn.ensemble import RandomForestRegressor
+import matplotlib.pylab as pylab
+params = {'legend.fontsize': 'large',
+          'figure.figsize': (30, 10),
+         'axes.labelsize': 'large',
+         'axes.titlesize':'large',
+         'xtick.labelsize':'large',
+         'ytick.labelsize':'large'}
+pylab.rcParams.update(params)
+
 
 h = 0.6774
 p_crit = 127 #m_sun/(kpc^3)
@@ -105,7 +114,7 @@ conc_ratio = y/y_dark
 conc_ratio_pred = y_pred/y_pred_dark
 plt.scatter(conc_ratio,conc_ratio_pred, marker="x",color="black")
 axs[2].set_xlabel(r'Ratio of $\frac{C_{B}}{C_{DMO}}$')
-axs[2].set_ylabel(r'Predicted Ratio of $\frac{C_{B}}{C_{DMO}}')
+axs[2].set_ylabel(r'Predicted Ratio of $\frac{C_{B}}{C_{DMO}}$')
 axs[2].set_xscale('log')
 axs[2].set_yscale('log')
 axs[2].set_title('Predicted Halo Concentration ratio from Stellar, Gas, BH and DM Mass')
