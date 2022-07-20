@@ -12,7 +12,7 @@ import csv
 import pandas as pd
 #import scikit-learn as sklearn
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.cross_validation import train_test_split
+from sklearn.model_selection import train_test_split
 import matplotlib.pylab as pylab
 params = {'legend.fontsize': 'x-large',
           'figure.figsize': (30, 10),
