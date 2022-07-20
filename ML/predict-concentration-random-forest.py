@@ -48,11 +48,14 @@ nfw_scalerad_dark = sorted_df_dark['NFW Scale Radius'].to_numpy()
 virrad_dark = sorted_df_dark['Virial Radius'].to_numpy()
 
 
+print(X)
 X['Df_cat'] = pd.Categorical(X['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data = X.sort_values('Df_cat').dropna().copy()
+print(sorted_data)
 sorted_X = sorted_data['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass','SubhaloDMMass']
+print(sorted_X)
 
 X_dark['Df_cat'] = pd.Categorical(X_dark['SubhaloIndex'],
                                              categories = true_indices,
