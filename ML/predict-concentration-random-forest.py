@@ -22,13 +22,12 @@ column_names = ['SubhaloIndex','SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMas
 X = data_csv[column_names]
 
 data_csv_dark = pd.read_csv('50-1-subhalo-info-dark.csv')
-column_names = ['SubhaloIndex','SubhaloDMMass']
-X_dark = data_csv_dark[column_names]
+column_names_dark = ['SubhaloIndex','SubhaloDMMass']
+X_dark = data_csv_dark[column_names_dark]
 
 
 
 fit_param_dark = pd.read_csv('50-1_snap_99_fit_param-dark.csv')
-
 true_indices_dark = fit_param_dark['Halo Number'].to_numpy().astype(int)
 
 
@@ -37,7 +36,6 @@ fit_param['Df_cat'] = pd.Categorical(fit_param['Halo Number'],
                                              categories = true_indices_dark,
                                              ordered=True)
 sorted_df = fit_param.sort_values('Df_cat').dropna()
-
 nfw_scalerad = sorted_df['NFW Scale Radius'].to_numpy()
 virrad = sorted_df['Virial Radius'].to_numpy()
 true_indices = sorted_df['Halo Number'].to_numpy().astype(int)
@@ -48,6 +46,7 @@ fit_param_dark['Df_cat'] = pd.Categorical(fit_param_dark['Halo Number'],
 sorted_df_dark = fit_param_dark.sort_values('Df_cat').dropna()
 nfw_scalerad_dark = sorted_df_dark['NFW Scale Radius'].to_numpy()
 virrad_dark = sorted_df_dark['Virial Radius'].to_numpy()
+
 
 X['Df_cat'] = pd.Categorical(X['SubhaloIndex'],
                                              categories = true_indices,
