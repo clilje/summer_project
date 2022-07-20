@@ -65,8 +65,11 @@ X_dark['Df_cat'] = pd.Categorical(X_dark['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data_dark = X_dark.sort_values('Df_cat').dropna().copy()
-sorted_X_dark = sorted_data_dark['SubhaloDMMass'].astype('float32')
+sorted_X_dark = sorted_data_dark['SubhaloDMMass']
 print(sorted_X_dark)
+
+sorted_X.reset_index(drop = True, inplace = True)
+sorted_X_dark.reset_index(drop = True, inplace = True)
 
 concentration = virrad/nfw_scalerad
 concentration_dark = virrad_dark/nfw_scalerad_dark
@@ -75,6 +78,14 @@ y = concentration
 y_dark = concentration_dark
 print(y)
 print(y_dark)
+
+#y.reset_index(drop = True, inplace = True)
+#y_dark.reset_index(drop = True, inplace = True)
+
+print(sorted_X)
+print(sorted_X_dark)
+#print(y)
+#print(y_dark)
 
 fig, axs = plt.subplots(3,constrained_layout=True, figsize=(10, 30))
 model = RandomForestRegressor(n_estimators=1000,n_jobs=10)
