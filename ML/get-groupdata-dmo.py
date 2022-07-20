@@ -47,9 +47,7 @@ with open('50-1-subhalo-info-dark.csv', 'w', encoding='UTF8', newline='') as sub
     fwriter.writerow(header)
     data = np.vstack([num_halo, subhalos['SubhaloPos'][:, 0],subhalos['SubhaloPos'][:, 1],
                       subhalos['SubhaloPos'][:, 2], subhalos['SubhaloHalfmassRad'], 
-                      subhalos['SubhaloMass'], subhalos['SubhaloLen'], 
-                      subhalos['SubhaloMassType'][:, 0], subhalos['SubhaloMassType'][:, 1], 
-                      subhalos['SubhaloMassType'][:, 4], subhalos['SubhaloMassType'][:, 5], 
+                      subhalos['SubhaloMass'], subhalos['SubhaloLen'], subhalos['SubhaloMassType'][:, 1], 
                       subhalos['SubhaloSpin'][:, 0],subhalos['SubhaloSpin'][:, 1],subhalos['SubhaloSpin'][:, 2],
                       subhalos['SubhaloVelDisp'],subhalos['SubhaloVmax']]).transpose()
     fwriter.writerows(data)
