@@ -143,5 +143,5 @@ axs[2].set_ylabel(r'Predicted Ratio of $\frac{C_{B}}{C_{DMO}}$')
 axs[2].set_xscale('log')
 axs[2].set_yscale('log')
 axs[2].set_title('Predicted Halo Concentration ratio from VelDisp')
-fig.savefig('concentration_ratio_vmax.jpg')
+fig.savefig('concentration_ratio_vdisp.jpg')
 
