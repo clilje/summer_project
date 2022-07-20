@@ -55,9 +55,9 @@ X['Df_cat'] = pd.Categorical(X['SubhaloIndex'],
 sorted_data = X.sort_values('Df_cat').dropna().copy()
 print(sorted_data)
 print(sorted_data['Df_cat'])
-print(sorted_data.loc['SubhaloGasMass'])
-sorted_X = pd.DataFrame([sorted_data.loc['SubhaloGasMass'],sorted_data.loc['SubhaloStarMass'],
-                         sorted_data.loc['SubhaloBHMass'],sorted_data.loc['SubhaloDMMass']])
+print(sorted_data['SubhaloGasMass'])
+sorted_X = pd.DataFrame([sorted_data['SubhaloGasMass'],sorted_data['SubhaloStarMass'],
+                         sorted_data['SubhaloBHMass'],sorted_data['SubhaloDMMass']])
 print(sorted_X)
 
 X_dark['Df_cat'] = pd.Categorical(X_dark['SubhaloIndex'],
