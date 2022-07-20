@@ -71,10 +71,13 @@ X['Df_cat'] = pd.Categorical(X['SubhaloIndex'],
 sorted_data = X.sort_values('Df_cat').dropna().copy()
 sorted_X = sorted_data['SubhaloVmax'].to_numpy()
 
+print(X_dark)
+
 X_dark['Df_cat'] = pd.Categorical(X_dark['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data_dark = X_dark.sort_values('Df_cat').dropna().copy()
+print(sorted_data_dark)
 sorted_X_dark = sorted_data_dark['SubhaloVmax'].to_numpy()
 
 
@@ -86,6 +89,7 @@ y = concentration
 y_dark = concentration_dark
 print(y)
 print(y_dark)
+
 
 
 print(sorted_X)
@@ -139,5 +143,5 @@ axs[2].set_ylabel(r'Predicted Ratio of $\frac{C_{B}}{C_{DMO}}$')
 axs[2].set_xscale('log')
 axs[2].set_yscale('log')
 axs[2].set_title('Predicted Halo Concentration ratio from Vmax')
-fig.savefig('concentration_ratio_forest-traintest.jpg')
+fig.savefig('concentration_ratio_vmax.jpg')
 
