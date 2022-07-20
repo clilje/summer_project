@@ -32,7 +32,7 @@ fit_param_dark = pd.read_csv('50-1_snap_99_fit_param-dark.csv')
 true_indices_dark = fit_param_dark['Halo Number'].to_numpy().astype(int)
 
 
-fit_param = pd.read_csv('HaloFitsInfo/50-1_snap_99_fit_param.csv')
+fit_param = pd.read_csv('50-1_snap_99_fit_param.csv')
 fit_param['Df_cat'] = pd.Categorical(fit_param['Halo Number'],
                                              categories = true_indices_dark,
                                              ordered=True)
