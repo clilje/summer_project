@@ -49,22 +49,21 @@ virrad_dark = sorted_df_dark['Virial Radius'].to_numpy()
 
 
 print(X)
-X['Df_cat'] = pd.Categorical(X['SubhaloIndex'],
+X.loc['Df_cat'] = pd.Categorical(X['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data = X.sort_values('Df_cat').dropna().copy()
 print(sorted_data)
 print(sorted_data['Df_cat'])
-print(sorted_data['Df_cat/SubhaloGasMass'])
 print(sorted_data['SubhaloGasMass'])
-sorted_X = sorted_data['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass','SubhaloDMMass']
+sorted_X = sorted_data.loc['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass','SubhaloDMMass']
 print(sorted_X)
 
-X_dark['Df_cat'] = pd.Categorical(X_dark['SubhaloIndex'],
+X_dark.loc['Df_cat'] = pd.Categorical(X_dark['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data_dark = X_dark.sort_values('Df_cat').dropna().copy()
-sorted_X_dark = sorted_data_dark['SubhaloDMMass']
+sorted_X_dark = sorted_data_dark.loc['SubhaloDMMass']
 
 
 concentration = virrad/nfw_scalerad
