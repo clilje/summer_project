@@ -50,14 +50,14 @@ virrad_dark = sorted_df_dark['Virial Radius'].to_numpy()
 
 X['Df_cat'] = pd.Categorical(X['SubhaloIndex'],
                                              categories = true_indices,
-                                             ordered=True).copy()
-sorted_data = X.sort_values('Df_cat').dropna()
+                                             ordered=True)
+sorted_data = X.sort_values('Df_cat').dropna().copy()
 sorted_X = sorted_data['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass','SubhaloDMMass']
 
 X_dark['Df_cat'] = pd.Categorical(X_dark['SubhaloIndex'],
                                              categories = true_indices,
-                                             ordered=True).copy()
-sorted_data_dark = X_dark.sort_values('Df_cat').dropna()
+                                             ordered=True)
+sorted_data_dark = X_dark.sort_values('Df_cat').dropna().copy()
 sorted_X_dark = sorted_data_dark['SubhaloDMMass']
 
 
