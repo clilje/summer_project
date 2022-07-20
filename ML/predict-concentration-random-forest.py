@@ -53,30 +53,32 @@ X['Df_cat'] = pd.Categorical(X['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data = X.sort_values('Df_cat').dropna().copy()
-print(sorted_data)
-print(sorted_data['Df_cat'])
-print(sorted_data['SubhaloGasMass'])
+#print(sorted_data)
+#print(sorted_data['Df_cat'])
+#print(sorted_data['SubhaloGasMass'])
 sorted_X = pd.DataFrame([sorted_data['SubhaloGasMass'],sorted_data['SubhaloStarMass'],
                          sorted_data['SubhaloBHMass'],sorted_data['SubhaloDMMass']]).T
 print(sorted_X)
 
+#print(X_dark)
 X_dark['Df_cat'] = pd.Categorical(X_dark['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data_dark = X_dark.sort_values('Df_cat').dropna().copy()
-sorted_X_dark = sorted_data_dark['SubhaloDMMass'].T
-
+sorted_X_dark = sorted_data_dark['SubhaloDMMass'].astype('float32')
+print(sorted_X_dark)
 
 concentration = virrad/nfw_scalerad
 concentration_dark = virrad_dark/nfw_scalerad_dark
 
 y = concentration
 y_dark = concentration_dark
-
+print(y)
+print(y_dark)
 
 fig, axs = plt.subplots(3,constrained_layout=True, figsize=(10, 30))
 model = RandomForestRegressor(n_estimators=1000,n_jobs=10)
-model.fit(X,y)
+model.fit(sorted_X,y)
 data_csv['predicted'] = model.predict(X)
 print(y)
 print(data_csv['predicted'])
@@ -87,7 +89,7 @@ axs[0].set_yscale('log')
 axs[0].set_title('Prediced Halo Concentration from Stellar, Gas, BH and DM Mass')
 
 model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
-model_dark.fit(X_dark,y_dark)
+model_dark.fit(sorted_X_dark,y_dark)
 data_csv_dark['predicted'] = model_dark.predict(X)
 print(y_dark)
 print(data_csv_dark['predicted'])
