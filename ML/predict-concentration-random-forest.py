@@ -68,8 +68,8 @@ sorted_data_dark = X_dark.sort_values('Df_cat').dropna().copy()
 sorted_X_dark = sorted_data_dark['SubhaloDMMass']
 print(sorted_X_dark)
 
-sorted_X.reset_index(drop = True, inplace = True)
-sorted_X_dark.reset_index(drop = True, inplace = True)
+#sorted_X.reset_index(drop = True, inplace = True)
+#sorted_X_dark.reset_index(drop = True, inplace = True)
 
 concentration = virrad/nfw_scalerad
 concentration_dark = virrad_dark/nfw_scalerad_dark
@@ -90,9 +90,11 @@ print(sorted_X_dark)
 fig, axs = plt.subplots(3,constrained_layout=True, figsize=(10, 30))
 model = RandomForestRegressor(n_estimators=1000,n_jobs=10)
 model.fit(sorted_X,y)
-data_csv['predicted'] = model.predict(sorted_X)
+y_pred = model.predict(sorted_X)
 print(y)
-print(data_csv['predicted'])
+print(y_pred)
+axs[0].scatter(y,y_pred, marker="x",color="black")
+
 axs[0].set_xlabel(r'Concentration of Halos')
 axs[0].set_ylabel(r'Predicted Concentration of Halos')
 axs[0].set_xscale('log')
@@ -101,10 +103,10 @@ axs[0].set_title('Prediced Halo Concentration from Stellar, Gas, BH and DM Mass'
 
 model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
 model_dark.fit(sorted_X_dark,y_dark)
-data_csv_dark['predicted'] = model_dark.predict(sorted_X_dark)
+y_pred_dark = model_dark.predict(sorted_X_dark)
 print(y_dark)
-print(data_csv_dark['predicted'])
-axs[1].scatter(y_dark,data_csv_dark['predicted'], marker="x",color="black")
+print(y_pred_dark)
+axs[1].scatter(y_dark,y_pred_dark, marker="x",color="black")
 axs[1].set_xlabel(r'Concentration of DMO Halos')
 axs[1].set_ylabel(r'Predicted Concentration of DMO Halos')
 axs[1].set_xscale('log')
@@ -112,7 +114,7 @@ axs[1].set_yscale('log')
 axs[1].set_title('Prediced Halo Concentration from Stellar, Gas, BH and DM Mass')
 
 conc_ratio = y/y_dark
-conc_ratio_pred = data_csv['predicted']/data_csv_dark['predicted']
+conc_ratio_pred = y_pred/y_pred_dark
 plt.scatter(conc_ratio,conc_ratio_pred, marker="x",color="black")
 axs[2].set_xlabel(r'Concentration of DMO Halos')
 axs[2].set_ylabel(r'Predicted Concentration of DMO Halos')
