@@ -40,9 +40,15 @@ z = (groupcat.loadHeader(basePath, snapnum)['Redshift']).astype('float')  #redsh
 print(subhalos['SubhaloMassType'])
 
 with open('50-1-subhalo-info-dark.csv', 'w', encoding='UTF8', newline='') as subfile:
-    header = ['SubhaloIndex','SubhaloPosX','SubhaloPosY','SubhaloPosZ','SubhaloHalfmassRad','SubhaloMass','SubhaloLen', 'SubhaloGasMass','SubhaloDMMass','SubhaloStarMass','SubhaloBHMass']
+    header = ['SubhaloIndex','SubhaloPosX','SubhaloPosY','SubhaloPosZ','SubhaloHalfmassRad','SubhaloMass',
+              'SubhaloLen', 'SubhaloDMMass','SubhaloSpin','SubhaloVelDisp','SubhaloVmax']
     fwriter = csv.writer(subfile, delimiter=',')
     # Write the header
     fwriter.writerow(header)
-    data = np.vstack([num_halo, subhalos['SubhaloPos'][:, 0],subhalos['SubhaloPos'][:, 1],subhalos['SubhaloPos'][:, 2], subhalos['SubhaloHalfmassRad'], subhalos['SubhaloMass'], subhalos['SubhaloLen'], subhalos['SubhaloMassType'][:, 0], subhalos['SubhaloMassType'][:, 1], subhalos['SubhaloMassType'][:, 4], subhalos['SubhaloMassType'][:, 5]]).transpose()
+    data = np.vstack([num_halo, subhalos['SubhaloPos'][:, 0],subhalos['SubhaloPos'][:, 1],
+                      subhalos['SubhaloPos'][:, 2], subhalos['SubhaloHalfmassRad'], 
+                      subhalos['SubhaloMass'], subhalos['SubhaloLen'], 
+                      subhalos['SubhaloMassType'][:, 0], subhalos['SubhaloMassType'][:, 1], 
+                      subhalos['SubhaloMassType'][:, 4], subhalos['SubhaloMassType'][:, 5], 
+                      subhalos['SubhaloSpin'],subhalos['SubhaloVelDisp'],subhalos['SubhaloVmax']]).transpose()
     fwriter.writerows(data)
