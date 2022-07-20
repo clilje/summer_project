@@ -81,7 +81,7 @@ print(y_dark)
 
 #y.reset_index(drop = True, inplace = True)
 #y_dark.reset_index(drop = True, inplace = True)
-
+sorted_X_dark.reshape(-1,1)
 print(sorted_X)
 print(sorted_X_dark)
 #print(y)
@@ -100,6 +100,7 @@ axs[0].set_ylabel(r'Predicted Concentration of Halos')
 axs[0].set_xscale('log')
 axs[0].set_yscale('log')
 axs[0].set_title('Prediced Halo Concentration from Stellar, Gas, BH and DM Mass')
+
 
 model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
 model_dark.fit(sorted_X_dark,y_dark)
