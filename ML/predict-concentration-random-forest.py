@@ -16,11 +16,13 @@ from sklearn.ensemble import RandomForestRegressor
 h = 0.6774
 p_crit = 127 #m_sun/(kpc^3)
 
+
 data_csv = pd.read_csv('50-1-subhalo-info.csv')
-column_names = ['SubhaloIndex','SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass']
+column_names = ['SubhaloIndex','SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass','SubhaloDMMass']
 X = data_csv[column_names]
 
 data_csv_dark = pd.read_csv('50-1-subhalo-info-dark.csv')
+column_names = ['SubhaloIndex','SubhaloDMMass']
 X_dark = data_csv_dark[column_names]
 
 
@@ -51,13 +53,13 @@ X['Df_cat'] = pd.Categorical(X['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data = X.sort_values('Df_cat').dropna()
-sorted_X = sorted_data['SubhaloMass']
+sorted_X = sorted_data['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass','SubhaloDMMass']
 
 X_dark['Df_cat'] = pd.Categorical(X_dark['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data_dark = X_dark.sort_values('Df_cat').dropna()
-sorted_X_dark = sorted_data_dark['SubhaloMass']
+sorted_X_dark = sorted_data_dark['SubhaloDMMass']
 
 
 concentration = virrad/nfw_scalerad
@@ -67,31 +69,36 @@ y = concentration
 y_dark = concentration_dark
 
 
-
+fig, axs = plt.subplots(3,constrained_layout=True, figsize=(10, 30))
 model = RandomForestRegressor(n_estimators=1000,n_jobs=10)
 model.fit(X,y)
 data_csv['predicted'] = model.predict(X)
 print(y)
 print(data_csv['predicted'])
-plt.scatter(y,data_csv['predicted'], marker="x",color="black")
-plt.xlabel(r'Concentration of Halos')
-plt.ylabel(r'Predicted Concentration of Halos')
-plt.xscale('log')
-plt.yscale('log')
-plt.savefig('concentation-forest.jpg')
-plt.show()
-plt.clf()
+axs[0].set_xlabel(r'Concentration of Halos')
+axs[0].set_ylabel(r'Predicted Concentration of Halos')
+axs[0].set_xscale('log')
+axs[0].set_yscale('log')
+axs[0].set_title('Prediced Halo Concentration from Stellar, Gas, BH and DM Mass')
 
 model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
 model_dark.fit(X_dark,y_dark)
 data_csv_dark['predicted'] = model_dark.predict(X)
 print(y_dark)
 print(data_csv_dark['predicted'])
-plt.scatter(y_dark,data_csv_dark['predicted'], marker="x",color="black")
-plt.xlabel(r'Concentration of DMO Halos')
-plt.ylabel(r'Predicted Concentration of DMO Halos')
-plt.xscale('log')
-plt.yscale('log')
-plt.savefig('concentation-dmo-forest.jpg')
-plt.show()
-plt.clf()
+axs[1].scatter(y_dark,data_csv_dark['predicted'], marker="x",color="black")
+axs[1].set_xlabel(r'Concentration of DMO Halos')
+axs[1].set_ylabel(r'Predicted Concentration of DMO Halos')
+axs[1].set_xscale('log')
+axs[1].set_yscale('log')
+axs[1].set_title('Prediced Halo Concentration from Stellar, Gas, BH and DM Mass')
+
+conc_ratio = y/y_dark
+conc_ratio_pred = data_csv['predicted']/data_csv_dark['predicted']
+plt.scatter(conc_ratio,conc_ratio_pred, marker="x",color="black")
+axs[2].set_xlabel(r'Concentration of DMO Halos')
+axs[2].set_ylabel(r'Predicted Concentration of DMO Halos')
+axs[2].set_xscale('log')
+axs[2].set_yscale('log')
+fig.savefig('concentation_ratio_forest.jpg')
+
