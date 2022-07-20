@@ -87,7 +87,7 @@ print(sorted_X_dark)
 #print(y)
 #print(y_dark)
 
-fig, axs = plt.subplots((1,3),constrained_layout=True, figsize=(30, 10))
+fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
 model = RandomForestRegressor(n_estimators=1000,n_jobs=10)
 model.fit(sorted_X,y)
 y_pred = model.predict(sorted_X)
