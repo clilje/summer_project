@@ -29,12 +29,13 @@ p_crit = 127 #m_sun/(kpc^3)
 #get the input data from the Group Catalogues
 #DM + Baryons
 data_csv = pd.read_csv('50-1-subhalo-info.csv')
-column_names = ['SubhaloIndex','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ']
+column_names = ['SubhaloIndex','SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
+                'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax']
 X = data_csv[column_names]
 
 #DMO
 data_csv_dark = pd.read_csv('50-1-subhalo-info-dark.csv')
-column_names_dark = ['SubhaloIndex','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ']
+column_names_dark = ['SubhaloIndex','SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax']
 X_dark = data_csv_dark[column_names_dark]
 
 
@@ -69,15 +70,20 @@ X['Df_cat'] = pd.Categorical(X['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data = X.sort_values('Df_cat').dropna().copy()
-sorted_X = pd.DataFrame([sorted_data['SubhaloSpinX'],sorted_data['SubhaloSpinY'],
-                         sorted_data['SubhaloSpinZ']]).T
+sorted_X = pd.DataFrame([sorted_data['SubhaloGasMass'],sorted_data['SubhaloStarMass'],
+                         sorted_data['SubhaloBHMass'],sorted_data['SubhaloDMMass'],
+                         sorted_data['SubhaloSpinX'],sorted_data['SubhaloSpinY'],
+                         sorted_data['SubhaloSpinZ'],sorted_data['SubhaloVelDisp'],
+                         sorted_data['SubhaloVmax']]).T
 
 X_dark['Df_cat'] = pd.Categorical(X_dark['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data_dark = X_dark.sort_values('Df_cat').dropna().copy()
-sorted_X_dark = pd.DataFrame([sorted_data_dark['SubhaloSpinX'],sorted_data_dark['SubhaloSpinY'],
-                         sorted_data_dark['SubhaloSpinZ']]).T
+sorted_X_dark = pd.DataFrame([sorted_data_dark['SubhaloDMMass'],
+                         sorted_data_dark['SubhaloSpinX'],sorted_data_dark['SubhaloSpinY'],
+                         sorted_data_dark['SubhaloSpinZ'],sorted_data_dark['SubhaloVelDisp'],
+                         sorted_data_dark['SubhaloVmax']]).T
 
 
 #Calculate concentration from Re-indexed input arrays and set as expected value
@@ -114,7 +120,7 @@ axs[0].set_xlabel(r'Concentration of Halos')
 axs[0].set_ylabel(r'Predicted Concentration of Halos')
 axs[0].set_xscale('log')
 axs[0].set_yscale('log')
-axs[0].set_title('Predicted Halo Concentration from Spin')
+axs[0].set_title('Predicted Halo Concentration from Stellar, Gas, BH and DM Mass')
 
 #Train Model for DMO
 model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
@@ -128,7 +134,7 @@ axs[1].set_xlabel(r'Concentration of DMO Halos')
 axs[1].set_ylabel(r'Predicted Concentration of DMO Halos')
 axs[1].set_xscale('log')
 axs[1].set_yscale('log')
-axs[1].set_title('Prediced Halo Concentration from Spin')
+axs[1].set_title('Prediced Halo Concentration from DM Mass')
 
 
 #Calculate the C_Bar/C_DMO ratio
@@ -140,6 +146,6 @@ axs[2].set_xlabel(r'Ratio of $\frac{C_{B}}{C_{DMO}}$')
 axs[2].set_ylabel(r'Predicted Ratio of $\frac{C_{B}}{C_{DMO}}$')
 axs[2].set_xscale('log')
 axs[2].set_yscale('log')
-axs[2].set_title('Predicted Halo Concentration ratio from Spin')
-fig.savefig('concentration_ratio_spin.jpg')
+axs[2].set_title('Predicted Halo Concentration ratio from Stellar, Gas, BH and DM Mass')
+fig.savefig('concentration_ratio_all.jpg')
 
