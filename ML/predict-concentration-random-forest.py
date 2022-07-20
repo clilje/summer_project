@@ -89,8 +89,8 @@ print(sorted_X_dark)
 
 fig, axs = plt.subplots(3,constrained_layout=True, figsize=(10, 30))
 model = RandomForestRegressor(n_estimators=1000,n_jobs=10)
-model.fit(sorted_X_dark.reshape(-1,1),y)
-y_pred = model.predict(sorted_X_dark.reshape(-1,1))
+model.fit(sorted_X,y)
+y_pred = model.predict(sorted_X)
 print(y)
 print(y_pred)
 axs[0].scatter(y,y_pred, marker="x",color="black")
@@ -103,8 +103,8 @@ axs[0].set_title('Prediced Halo Concentration from Stellar, Gas, BH and DM Mass'
 
 
 model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
-model_dark.fit(sorted_X_dark,y_dark)
-y_pred_dark = model_dark.predict(sorted_X_dark)
+model.fit(sorted_X_dark.reshape(-1,1),y)
+y_pred_dark = model.predict(sorted_X_dark.reshape(-1,1))
 print(y_dark)
 print(y_pred_dark)
 axs[1].scatter(y_dark,y_pred_dark, marker="x",color="black")
