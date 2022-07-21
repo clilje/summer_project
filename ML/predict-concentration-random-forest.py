@@ -117,7 +117,7 @@ axs[0].set_title('Predicted Halo Concentration from Stellar, Gas, BH and DM Mass
 
 #Train Model for DMO
 model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
-model.fit(Xtrain_dark.reshape(-1,1),ytrain)
+model.fit(Xtrain_dark.reshape(-1,1),ytrain_dark)
 y_pred_dark = model.predict(Xtest_dark.reshape(-1,1))
 print(y_dark)
 print(y_pred_dark)

@@ -118,7 +118,7 @@ axs[0].set_title('Predicted Halo Concentration from Spin')
 
 #Train Model for DMO
 model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
-model.fit(Xtrain_dark,ytrain)
+model.fit(Xtrain_dark,ytrain_dark)
 y_pred_dark = model.predict(Xtest_dark)
 print(y_dark)
 print(y_pred_dark)

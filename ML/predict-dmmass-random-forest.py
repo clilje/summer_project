@@ -21,7 +21,7 @@ print(data_csv.columns.values)
 column_names = ['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass']
 y = data_csv['SubhaloDMMass']
 X = data_csv[column_names]
-model = RandomForestRegressor(n_estimators=5000,n_jobs=50)
+model = RandomForestRegressor(n_estimators=1000,n_jobs=10)
 model.fit(X,y)
 data_csv['predicted'] = model.predict(X)
 print(y)
@@ -31,7 +31,7 @@ plt.xlabel(r'DM Mass of Halos in $10^{10} M_{\odot}$')
 plt.ylabel(r'Predicted DM Mass of Halos in $10^{10} M_{\odot}$')
 plt.xscale('log')
 plt.yscale('log')
-plt.xlim((0.001,1000))
-plt.ylim((0.001,1000))
+plt.xlim((0.0001,1000))
+plt.ylim((0.0001,1000))
 plt.savefig('massprediction-forest.jpg')
 plt.show()
