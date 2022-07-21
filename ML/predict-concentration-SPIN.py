@@ -118,8 +118,8 @@ axs[0].set_title('Predicted Halo Concentration from Spin')
 
 #Train Model for DMO
 model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
-model.fit(Xtrain_dark,ytrain_dark)
-y_pred_dark = model.predict(Xtest_dark)
+model_dark.fit(Xtrain_dark,ytrain_dark)
+y_pred_dark = model_dark.predict(Xtest_dark)
 print(y_dark)
 print(y_pred_dark)
 #Plot predicted vs actual
@@ -131,15 +131,29 @@ axs[1].set_yscale('log')
 axs[1].set_title('Prediced Halo Concentration from Spin')
 
 
+
 #Calculate the C_Bar/C_DMO ratio
-conc_ratio = ytest/ytest_dark
-conc_ratio_pred = y_pred/y_pred_dark
+y_conc_ratio = y/y_dark
+
+#Predict the ratio using ML
+X_ratio = pd.DataFrame([sorted_data['SubhaloSpinX'],sorted_data['SubhaloSpinY'],
+                         sorted_data['SubhaloSpinZ'],
+                         sorted_data_dark['SubhaloSpinX'],sorted_data_dark['SubhaloSpinY'],
+                         sorted_data_dark['SubhaloSpinZ']]).T
+
+Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_conc_ratio,
+                                                random_state=1)
+
+model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=10)
+model_ratio.fit(Xtrain_ratio,ytrain_ratio)
+y_pred_ratio = model_ratio.predict(Xtest_ratio)
+
 #Plot predicted vs actual
-plt.scatter(conc_ratio,conc_ratio_pred, marker="x",color="black")
+plt.scatter(ytest_ratio,y_pred_ratio, marker="x",color="black")
 axs[2].set_xlabel(r'Ratio of $\frac{C_{B}}{C_{DMO}}$')
 axs[2].set_ylabel(r'Predicted Ratio of $\frac{C_{B}}{C_{DMO}}$')
 axs[2].set_xscale('log')
 axs[2].set_yscale('log')
 axs[2].set_title('Predicted Halo Concentration ratio from Spin')
-fig.savefig('concentration_ratio_spin.jpg')
+fig.savefig('concentration_ratio_spin2.jpg')
 

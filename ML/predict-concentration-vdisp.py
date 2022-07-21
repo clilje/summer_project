@@ -120,8 +120,8 @@ axs[0].set_title('Predicted Halo Concentration from VelDisp')
 
 #Train Model for DMO
 model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
-model.fit(Xtrain_dark.reshape(-1,1),ytrain_dark)
-y_pred_dark = model.predict(Xtest_dark.reshape(-1,1))
+model_dark.fit(Xtrain_dark.reshape(-1,1),ytrain_dark)
+y_pred_dark = model_dark.predict(Xtest_dark.reshape(-1,1))
 print(y_dark)
 print(y_pred_dark)
 #Plot predicted vs actual
@@ -133,15 +133,27 @@ axs[1].set_yscale('log')
 axs[1].set_title('Prediced Halo Concentration from VelDisp')
 
 
+
 #Calculate the C_Bar/C_DMO ratio
-conc_ratio = ytest/ytest_dark
-conc_ratio_pred = y_pred/y_pred_dark
+y_conc_ratio = y/y_dark
+
+#Predict the ratio using ML
+X_ratio = pd.DataFrame([sorted_data['SubhaloVelDisp'],
+                        sorted_data_dark['SubhaloVelDisp']]).T
+
+Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_conc_ratio,
+                                                random_state=1)
+
+model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=10)
+model_ratio.fit(Xtrain_ratio,ytrain_ratio)
+y_pred_ratio = model_ratio.predict(Xtest_ratio)
+
 #Plot predicted vs actual
-plt.scatter(conc_ratio,conc_ratio_pred, marker="x",color="black")
+plt.scatter(ytest_ratio,y_pred_ratio, marker="x",color="black")
 axs[2].set_xlabel(r'Ratio of $\frac{C_{B}}{C_{DMO}}$')
 axs[2].set_ylabel(r'Predicted Ratio of $\frac{C_{B}}{C_{DMO}}$')
 axs[2].set_xscale('log')
 axs[2].set_yscale('log')
 axs[2].set_title('Predicted Halo Concentration ratio from VelDisp')
-fig.savefig('concentration_ratio_vdisp.jpg')
+fig.savefig('concentration_ratio_vdisp2.jpg')
 
