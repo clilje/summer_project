@@ -38,7 +38,7 @@ X = data_csv[column_names]
 #DMO
 data_csv_dark = pd.read_csv('50-1-subhalo-info-dark.csv')
 column_names_dark = ['SubhaloIndex','SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 
-                     'SubhaloVmax','SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter']
+                     'SubhaloVmax','FoFMass','FoFDistanceCenter']
 X_dark = data_csv_dark[column_names_dark]
 
 
@@ -88,8 +88,7 @@ sorted_data_dark = X_dark.sort_values('Df_cat').dropna().copy()
 sorted_X_dark = pd.DataFrame([sorted_data_dark['SubhaloDMMass'],
                          sorted_data_dark['SubhaloSpinX'],sorted_data_dark['SubhaloSpinY'],
                          sorted_data_dark['SubhaloSpinZ'],sorted_data_dark['SubhaloVelDisp'],
-                         sorted_data_dark['SubhaloVmax'],sorted_data_dark['SubhaloBHMdot'],
-                         sorted_data_dark['SubhaloSFR'],sorted_data_dark['FoFMass'],
+                         sorted_data_dark['SubhaloVmax'],sorted_data_dark['FoFMass'],
                          sorted_data_dark['FoFDistanceCenter']]).T
 
 
@@ -126,8 +125,7 @@ X_ratio = pd.DataFrame([sorted_data['SubhaloGasMass'],sorted_data['SubhaloStarMa
                          sorted_data_dark['SubhaloDMMass'],
                          sorted_data_dark['SubhaloSpinX'],sorted_data_dark['SubhaloSpinY'],
                          sorted_data_dark['SubhaloSpinZ'],sorted_data_dark['SubhaloVelDisp'],
-                         sorted_data_dark['SubhaloVmax'],sorted_data_dark['SubhaloBHMdot'],
-                         sorted_data_dark['SubhaloSFR'],sorted_data_dark['FoFMass'],
+                         sorted_data_dark['SubhaloVmax'],sorted_data_dark['FoFMass'],
                          sorted_data_dark['FoFDistanceCenter']]).T
 
 Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_conc_ratio,
@@ -140,8 +138,8 @@ fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
 
 #Train Model for DM+Baryons
 model = RandomForestRegressor(n_estimators=1000,n_jobs=10)
-model.fit(Xtrain.reshape(-1,1),ytrain)
-y_pred = model.predict(Xtest.reshape(-1,1))
+model.fit(Xtrain,ytrain)
+y_pred = model.predict(Xtest)
 print(y)
 print(y_pred)
 #Plot Predicted vs actual values
@@ -157,8 +155,8 @@ cb = fig.colorbar(im)
 
 #Train Model for DMO
 model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
-model_dark.fit(Xtrain_dark.reshape(-1,1),ytrain_dark)
-y_pred_dark = model_dark.predict(Xtest_dark.reshape(-1,1))
+model_dark.fit(Xtrain_dark,ytrain_dark)
+y_pred_dark = model_dark.predict(Xtest_dark)
 print(y_dark)
 print(y_pred_dark)
 #Plot predicted vs actual
