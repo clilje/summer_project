@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import math
 import csv
 import pandas as pd
+import matplotlib
 #import scikit-learn as sklearn
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
@@ -111,12 +112,13 @@ y_pred = model.predict(Xtest.reshape(-1,1))
 print(y)
 print(y_pred)
 #Plot Predicted vs actual values
-im = axs[0].hexbin(ytest,y_pred, gridsize = 50, cmap ='Greens',xscale ='log',yscale='log')
+im = axs[0].hexbin(ytest,y_pred, gridsize = 50,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
 axs[0].set_xlabel(r'Concentration of Halos')
 axs[0].set_ylabel(r'Predicted Concentration of Halos')
 axs[0].set_xscale('log')
 axs[0].set_yscale('log')
-axs[0].set_aspect('equal')
+axs[0].set_xlim(3*10**0, 2*10)
+axs[0].set_ylim(3*10**0, 2*10)
 axs[0].set_title('Predicted Halo Concentration from Vmax')
 cb = fig.colorbar(im)
 
@@ -127,12 +129,13 @@ y_pred_dark = model_dark.predict(Xtest_dark.reshape(-1,1))
 print(y_dark)
 print(y_pred_dark)
 #Plot predicted vs actual
-axs[1].hexbin(ytest_dark,y_pred_dark, gridsize = 50, cmap ='Greens',xscale ='log',yscale='log')
+axs[1].hexbin(ytest_dark,y_pred_dark, gridsize = 50,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
 axs[1].set_xlabel(r'Concentration of DMO Halos')
 axs[1].set_ylabel(r'Predicted Concentration of DMO Halos')
 axs[1].set_xscale('log')
 axs[1].set_yscale('log')
-axs[1].set_aspect('equal')
+axs[1].set_xlim(3*10**0, 2*10)
+axs[1].set_ylim(3*10**0, 2*10)
 axs[1].set_title('Prediced Halo Concentration from Vmax')
 
 
@@ -152,12 +155,13 @@ model_ratio.fit(Xtrain_ratio,ytrain_ratio)
 y_pred_ratio = model_ratio.predict(Xtest_ratio)
 
 #Plot predicted vs actual
-plt.hexbin(ytest_ratio,y_pred_ratio, gridsize = 50, cmap ='Greens',xscale ='log',yscale='log')
+plt.hexbin(ytest_ratio,y_pred_ratio, gridsize = 50,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
 axs[2].set_xlabel(r'Ratio of $\frac{C_{B}}{C_{DMO}}$')
 axs[2].set_ylabel(r'Predicted Ratio of $\frac{C_{B}}{C_{DMO}}$')
 axs[2].set_xscale('log')
 axs[2].set_yscale('log')
-axs[2].set_aspect('equal')
+axs[2].set_xlim(3*10**0, 2*10)
+axs[2].set_ylim(3*10**0, 2*10)
 axs[2].set_title('Predicted Halo Concentration ratio from Vmax')
 
 fig.savefig('concentration_ratio_vmax_hex.jpg')
