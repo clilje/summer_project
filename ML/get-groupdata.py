@@ -60,9 +60,9 @@ z = (groupcat.loadHeader(basePath, snapnum)['Redshift']).astype('float')  #redsh
 #print(a)
 #print(z)
 
-radial_distance = distancefromcentre(fof_halos['GroupPos'][subhalos['SubhalosGrNr']][0], 
-                                     fof_halos['GroupPos'][subhalos['SubhalosGrNr']][1], 
-                                     fof_halos['GroupPos'][subhalos['SubhalosGrNr']][2], 
+radial_distance = distancefromcentre(fof_halos['GroupPos'][subhalos['SubhaloGrNr']][0], 
+                                     fof_halos['GroupPos'][subhalos['SubhaloGrNr']][1], 
+                                     fof_halos['GroupPos'][subhalos['SubhaloGrNr']][2], 
                                      subhalos['SubhaloPos'][:, 0], subhalos['SubhaloPos'][:, 1], 
                                      subhalos['SubhaloPos'][:, 2])
 
@@ -85,5 +85,5 @@ with open('50-1-subhalo-info.csv', 'w', encoding='UTF8', newline='') as subfile:
                       subhalos['SubhaloSpin'][:, 0],subhalos['SubhaloSpin'][:, 1],subhalos['SubhaloSpin'][:, 2],
                       subhalos['SubhaloVelDisp'],subhalos['SubhaloVmax'],
                       subhalos['SubhaloBHMdot'],subhalos['SubhaloSFR'], 
-                      fof_halos['GroupMass'][subhalos['SubhalosGrNr']],radial_distance]).transpose()
+                      fof_halos['GroupMass'][subhalos['SubhaloGrNr']],radial_distance]).transpose()
     fwriter.writerows(data)
