@@ -121,8 +121,8 @@ fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
 
 #Train Model for DM+Baryons
 model = RandomForestRegressor(n_estimators=1000,n_jobs=10)
-model.fit(Xtrain.reshape(-1,1),ytrain)
-y_pred = model.predict(Xtest.reshape(-1,1))
+model.fit(Xtrain,ytrain)
+y_pred = model.predict(Xtest)
 print(y)
 print(y_pred)
 #Plot Predicted vs actual values
@@ -138,8 +138,8 @@ cb = fig.colorbar(im)
 
 #Train Model for DMO
 model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
-model_dark.fit(Xtrain_dark.reshape(-1,1),ytrain_dark)
-y_pred_dark = model_dark.predict(Xtest_dark.reshape(-1,1))
+model_dark.fit(Xtrain_dark,ytrain_dark)
+y_pred_dark = model_dark.predict(Xtest_dark)
 print(y_dark)
 print(y_pred_dark)
 #Plot predicted vs actual

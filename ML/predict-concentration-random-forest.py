@@ -134,8 +134,8 @@ cb = fig.colorbar(im)
 
 #Train Model for DMO
 model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
-model_dark.fit(Xtrain_dark,ytrain_dark)
-y_pred_dark = model_dark.predict(Xtest_dark)
+model_dark.fit(Xtrain_dark.reshape(-1,1),ytrain_dark)
+y_pred_dark = model_dark.predict(Xtest_dark.reshape(-1,1))
 print(y_dark)
 print(y_pred_dark)
 #Plot predicted vs actual
