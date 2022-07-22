@@ -59,7 +59,9 @@ a = (groupcat.loadHeader(basePath, snapnum)['Time']).astype('int')  #scalefactor
 z = (groupcat.loadHeader(basePath, snapnum)['Redshift']).astype('float')  #redshift
 #print(a)
 #print(z)
-
+print(subhalos['SubhaloGrNr'])
+print(fof_halos['GroupPos'])
+print(fof_halos['GroupPos'][subhalos['SubhaloGrNr']])
 radial_distance = distancefromcentre(fof_halos['GroupPos'][subhalos['SubhaloGrNr']][0], 
                                      fof_halos['GroupPos'][subhalos['SubhaloGrNr']][1], 
                                      fof_halos['GroupPos'][subhalos['SubhaloGrNr']][2], 
