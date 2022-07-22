@@ -48,7 +48,7 @@ if dark == True:
 else:
    basePath = '/disk01/rmcg/downloaded/tng/tng'+str(size)+'-'+str(res) 
 fields = ['SubhaloPos','SubhaloHalfmassRad','SubhaloMass','SubhaloLen','SubhaloMassType','SubhaloSpin',
-          'SubhaloVelDisp','SubhaloVmax', 'SubhaloSFR','SubhaloGrNr']
+          'SubhaloVelDisp','SubhaloVmax','SubhaloGrNr']
 foffields = ['GroupPos','GroupMass']
 
 subhalos = groupcat.loadSubhalos(basePath,99,fields=fields)
@@ -73,7 +73,7 @@ print(subhalos['SubhaloMassType'])
 with open('50-1-subhalo-info-dark.csv', 'w', encoding='UTF8', newline='') as subfile:
     header = ['SubhaloIndex','SubhaloPosX','SubhaloPosY','SubhaloPosZ','SubhaloHalfmassRad','SubhaloMass',
               'SubhaloLen', 'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp','SubhaloVmax',
-              'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter']
+              'FoFMass','FoFDistanceCenter']
     fwriter = csv.writer(subfile, delimiter=',')
     # Write the header
     fwriter.writerow(header)
@@ -81,6 +81,6 @@ with open('50-1-subhalo-info-dark.csv', 'w', encoding='UTF8', newline='') as sub
                       subhalos['SubhaloPos'][:, 2], subhalos['SubhaloHalfmassRad'], 
                       subhalos['SubhaloMass'], subhalos['SubhaloLen'], subhalos['SubhaloMassType'][:, 1], 
                       subhalos['SubhaloSpin'][:, 0],subhalos['SubhaloSpin'][:, 1],subhalos['SubhaloSpin'][:, 2],
-                      subhalos['SubhaloVelDisp'],subhalos['SubhaloVmax'],subhalos['SubhaloSFR'], 
+                      subhalos['SubhaloVelDisp'],subhalos['SubhaloVmax'], 
                       fof_halos['GroupMass'][subhalos['SubhaloGrNr']],radial_distance]).transpose()
     fwriter.writerows(data)
