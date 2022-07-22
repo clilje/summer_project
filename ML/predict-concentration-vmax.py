@@ -102,42 +102,6 @@ Xtrain, Xtest, ytrain, ytest = train_test_split(sorted_X, y,
 Xtrain_dark, Xtest_dark, ytrain_dark, ytest_dark = train_test_split(sorted_X_dark, y_dark,
                                                 random_state=1)
 
-#set up plotting params
-fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
-
-#Train Model for DM+Baryons
-model = RandomForestRegressor(n_estimators=1000,n_jobs=10)
-model.fit(Xtrain.reshape(-1,1),ytrain)
-y_pred = model.predict(Xtest.reshape(-1,1))
-print(y)
-print(y_pred)
-#Plot Predicted vs actual values
-im = axs[0].hexbin(ytest,y_pred, gridsize = 50,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
-axs[0].set_xlabel(r'Concentration of Halos')
-axs[0].set_ylabel(r'Predicted Concentration of Halos')
-axs[0].set_xscale('log')
-axs[0].set_yscale('log')
-axs[0].set_xlim(3*10**0, 2*10)
-axs[0].set_ylim(3*10**0, 2*10)
-axs[0].set_title('Predicted Halo Concentration from Vmax')
-cb = fig.colorbar(im)
-
-#Train Model for DMO
-model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
-model_dark.fit(Xtrain_dark.reshape(-1,1),ytrain_dark)
-y_pred_dark = model_dark.predict(Xtest_dark.reshape(-1,1))
-print(y_dark)
-print(y_pred_dark)
-#Plot predicted vs actual
-axs[1].hexbin(ytest_dark,y_pred_dark, gridsize = 50,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
-axs[1].set_xlabel(r'Concentration of DMO Halos')
-axs[1].set_ylabel(r'Predicted Concentration of DMO Halos')
-axs[1].set_xscale('log')
-axs[1].set_yscale('log')
-axs[1].set_xlim(3*10**0, 2*10)
-axs[1].set_ylim(3*10**0, 2*10)
-axs[1].set_title('Prediced Halo Concentration from Vmax')
-
 
 
 #Calculate the C_Bar/C_DMO ratio
@@ -150,18 +114,58 @@ X_ratio = pd.DataFrame([sorted_data['SubhaloVmax'],
 Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_conc_ratio,
                                                 random_state=1)
 
+
+
+#set up plotting params
+fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
+
+#Train Model for DM+Baryons
+model = RandomForestRegressor(n_estimators=1000,n_jobs=10)
+model.fit(Xtrain.reshape(-1,1),ytrain)
+y_pred = model.predict(Xtest.reshape(-1,1))
+print(y)
+print(y_pred)
+#Plot Predicted vs actual values
+im = axs[0].hexbin(ytest,y_pred, gridsize = 70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
+axs[0].set_xlabel(r'Concentration of Halos')
+axs[0].set_ylabel(r'Predicted Concentration of Halos')
+axs[0].set_xscale('log')
+axs[0].set_yscale('log')
+axs[0].set_xlim(3*10**0, 3*10)
+axs[0].set_ylim(3*10**0, 3*10)
+axs[0].set_title('Predicted Halo Concentration from Vmax')
+cb = fig.colorbar(im)
+
+#Train Model for DMO
+model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
+model_dark.fit(Xtrain_dark.reshape(-1,1),ytrain_dark)
+y_pred_dark = model_dark.predict(Xtest_dark.reshape(-1,1))
+print(y_dark)
+print(y_pred_dark)
+#Plot predicted vs actual
+axs[1].hexbin(ytest_dark,y_pred_dark, gridsize = 70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
+axs[1].set_xlabel(r'Concentration of DMO Halos')
+axs[1].set_ylabel(r'Predicted Concentration of DMO Halos')
+axs[1].set_xscale('log')
+axs[1].set_yscale('log')
+axs[1].set_xlim(4*10**0, 2*10)
+axs[1].set_ylim(4*10**0, 2*10)
+axs[1].set_title('Prediced Halo Concentration from Vmax')
+
+
+
 model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=10)
 model_ratio.fit(Xtrain_ratio,ytrain_ratio)
 y_pred_ratio = model_ratio.predict(Xtest_ratio)
 
 #Plot predicted vs actual
-plt.hexbin(ytest_ratio,y_pred_ratio, gridsize = 50,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
+plt.hexbin(ytest_ratio,y_pred_ratio, gridsize = 70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
 axs[2].set_xlabel(r'Ratio of $\frac{C_{B}}{C_{DMO}}$')
 axs[2].set_ylabel(r'Predicted Ratio of $\frac{C_{B}}{C_{DMO}}$')
 axs[2].set_xscale('log')
 axs[2].set_yscale('log')
-axs[2].set_xlim(3*10**0, 2*10)
-axs[2].set_ylim(3*10**0, 2*10)
+axs[2].set_xlim(3*10**(-1), 3*10**0)
+axs[2].set_ylim(3*10**(-1), 3*10**0)
 axs[2].set_title('Predicted Halo Concentration ratio from Vmax')
 #test
 fig.savefig('concentration_ratio_vmax_hex.jpg')
