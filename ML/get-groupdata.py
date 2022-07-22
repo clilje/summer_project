@@ -62,9 +62,9 @@ z = (groupcat.loadHeader(basePath, snapnum)['Redshift']).astype('float')  #redsh
 print(subhalos['SubhaloGrNr'])
 print(fof_halos['GroupPos'])
 print(fof_halos['GroupPos'][subhalos['SubhaloGrNr']])
-radial_distance = distancefromcentre(fof_halos['GroupPos'][subhalos['SubhaloGrNr']][0], 
-                                     fof_halos['GroupPos'][subhalos['SubhaloGrNr']][1], 
-                                     fof_halos['GroupPos'][subhalos['SubhaloGrNr']][2], 
+radial_distance = distancefromcentre(fof_halos['GroupPos'][subhalos['SubhaloGrNr']][:, 0], 
+                                     fof_halos['GroupPos'][subhalos['SubhaloGrNr']][:, 1], 
+                                     fof_halos['GroupPos'][subhalos['SubhaloGrNr']][:, 2], 
                                      subhalos['SubhaloPos'][:, 0], subhalos['SubhaloPos'][:, 1], 
                                      subhalos['SubhaloPos'][:, 2])
 
