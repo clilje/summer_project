@@ -194,8 +194,8 @@ conc_hist_dark = []
 
 #ML
 #Prepare mass to be binned
-bins_ML = np.logspace(-1.5,5.5,12)
-bins_dark_ML = np.logspace(-1.5,5.5,12)
+bins_ML = np.logspace(-1.5,5.5,10)
+bins_dark_ML = np.logspace(-1.5,5.5,10)
 #get lists for binning
 mean_mass_ML = []
 mean_concentration_ML =[]
@@ -242,7 +242,7 @@ for upperbound in bins:
     conc_index = np.searchsorted(true_indices, subhalo_index[true_indices][massindex])
     
     #ensure no error for stdev or mean
-    if conc_index.size ==0:
+    if conc_index.size ==1 or conc_index.size ==0:
         break
     
     #append all data to lists
@@ -271,7 +271,7 @@ for upperbound_dark in bins_dark:
     conc_index_dark = massindex_dark
     #ensure no error for stdev or mean
     #print(massindex_dark)
-    if conc_index_dark.size ==0:
+    if conc_index_dark.size == 0 or conc_index_dark.size ==1:
         break
     
     #append all data to lists
@@ -295,7 +295,7 @@ for upperbound_ML in bins_ML:
     #get indices for which concentration values correspond to this
     conc_index_ML = massindex_ML
     #ensure no error for stdev or mean
-    if conc_index.size ==0:
+    if conc_index_ML.size == 0 or conc_index_ML.size == 1:
         break
     
     #append all data to lists
@@ -314,7 +314,7 @@ for upperbound_dark_ML in bins_dark_ML:
     massindex_dark_ML = np.where(np.logical_and(mass_sorted_ML_dark<upperbound_dark_ML,mass_sorted_ML_dark>lowerbound_dark_ML))[0]
     conc_index_dark_ML = massindex_dark_ML
     #ensure no error for stdev or mean
-    if conc_index_dark_ML.size ==0:
+    if conc_index_dark_ML.size ==0 or conc_index_dark_ML.size ==1:
         break
     
     #append all data to lists
