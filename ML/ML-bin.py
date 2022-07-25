@@ -262,18 +262,18 @@ lowerbound_dark_ML = 0
 conc_hist_ML = []
 conc_hist_dark_ML = []
 
-subhalo_info_ML = pd.read_csv('../Statistics/50-1-subhalo-info.csv',usecols=['SubhaloMass','SubhaloGasMass'])
-subhalo_info_ML['Df_cat'] = pd.Categorical(subhalo_info_ML['SubhaloGasMass'],
-                                             categories = Xtest['SubhaloGasMass'],
+subhalo_info_ML = pd.read_csv('../Statistics/50-1-subhalo-info.csv',usecols=['SubhaloMass','SubhaloDMMass'])
+subhalo_info_ML['Df_cat'] = pd.Categorical(subhalo_info_ML['SubhaloDMMass'],
+                                             categories = Xtest['SubhaloDMMass'],
                                              ordered=True)
 #print(subhalo_info_dark.sort_values('Df_cat'))
 sorted_df_ML = subhalo_info_ML.sort_values('Df_cat').dropna()
 #print(sorted_df)
 mass_sorted_ML = sorted_df_ML['SubhaloMass']
 
-subhalo_info_ML_dark = pd.read_csv('../Statistics/50-1-subhalo-info-dark.csv',usecols=['SubhaloMass','SubhaloGasMass'])
-subhalo_info_ML_dark['Df_cat'] = pd.Categorical(subhalo_info_ML_dark['SubhaloGasMass'],
-                                             categories = Xtest_dark['SubhaloGasMass'],
+subhalo_info_ML_dark = pd.read_csv('../Statistics/50-1-subhalo-info-dark.csv',usecols=['SubhaloMass','SubhaloDMMass'])
+subhalo_info_ML_dark['Df_cat'] = pd.Categorical(subhalo_info_ML_dark['SubhaloDMMass'],
+                                             categories = Xtest_dark['SubhaloDMMass'],
                                              ordered=True)
 #print(subhalo_info_dark.sort_values('Df_cat'))
 sorted_df_ML_dark = subhalo_info_ML_dark.sort_values('Df_cat').dropna()
