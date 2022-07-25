@@ -52,23 +52,26 @@ true_indices_dark = fit_param_dark['Halo Number'].to_numpy().astype(int)
 
 #Import the Fit Parameters for DM+Baryons
 #Reorder according to DMO Halo Indices, cut all NaN
-fit_param = pd.read_csv('50-1_snap_99_fit_param.csv')
-fit_param['Df_cat'] = pd.Categorical(fit_param['Halo Number'],
-                                             categories = true_indices_dark,
-                                             ordered=True)
-sorted_df = fit_param.sort_values('Df_cat').dropna()
+#fit_param = pd.read_csv('50-1_snap_99_fit_param.csv')
+#print(fit_param)
+#print(fit_param_dark)
+#fit_param['Df_cat'] = pd.Categorical(fit_param['Halo Number'],
+#                                             categories = true_indices_dark,
+#                                             ordered=True)
+#sorted_df = fit_param.sort_values('Df_cat').dropna()
 #nfw_scalerad = sorted_df['NFW Scale Radius'].to_numpy()
 #virrad = sorted_df['Virial Radius'].to_numpy()
-true_indices = sorted_df['Halo Number'].to_numpy().astype(int)
+#true_indices = sorted_df['Halo Number'].to_numpy().astype(int)
 
 #Reorder DMO Halos according to leftover DM+Baryon indices, cut all NaN
-fit_param_dark['Df_cat'] = pd.Categorical(fit_param_dark['Halo Number'],
-                                             categories = true_indices,
-                                             ordered=True)
-sorted_df_dark = fit_param_dark.sort_values('Df_cat').dropna()
+#fit_param_dark['Df_cat'] = pd.Categorical(fit_param_dark['Halo Number'],
+#                                             categories = true_indices,
+#                                             ordered=True)
+sorted_df_dark = fit_param_dark
 nfw_scalerad_dark = sorted_df_dark['NFW Scale Radius'].to_numpy()
 virrad_dark = sorted_df_dark['Virial Radius'].to_numpy()
-
+#print(sorted_df)
+print(sorted_df_dark)
 '''
 #Reorder the input values according to leftover DM+Baryon indices, cut all NaN
 X['Df_cat'] = pd.Categorical(X['SubhaloIndex'],
@@ -92,7 +95,7 @@ sorted_X = pd.DataFrame([sorted_data['SubhaloDMMass'],
                          sorted_data['FoFDistanceCenter']]).T
 '''
 X_dark['Df_cat'] = pd.Categorical(X_dark['SubhaloIndex'],
-                                             categories = true_indices,
+                                             categories = true_indices_dark,
                                              ordered=True)
 sorted_data_dark = X_dark.sort_values('Df_cat').dropna().copy()
 sorted_X_dark = pd.DataFrame([sorted_data_dark['SubhaloDMMass'],
