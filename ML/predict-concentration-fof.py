@@ -73,12 +73,18 @@ X['Df_cat'] = pd.Categorical(X['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data = X.sort_values('Df_cat').dropna().copy()
-sorted_X = pd.DataFrame([sorted_data['SubhaloGasMass'],sorted_data['SubhaloStarMass'],
+'''sorted_X = pd.DataFrame([sorted_data['SubhaloGasMass'],sorted_data['SubhaloStarMass'],
                          sorted_data['SubhaloBHMass'],sorted_data['SubhaloDMMass'],
                          sorted_data['SubhaloSpinX'],sorted_data['SubhaloSpinY'],
                          sorted_data['SubhaloSpinZ'],sorted_data['SubhaloVelDisp'],
                          sorted_data['SubhaloVmax'],sorted_data['SubhaloBHMdot'],
                          sorted_data['SubhaloSFR'],sorted_data['FoFMass'],
+                         sorted_data['FoFDistanceCenter']]).T
+'''
+sorted_X = pd.DataFrame([sorted_data['SubhaloDMMass'],
+                         sorted_data['SubhaloSpinX'],sorted_data['SubhaloSpinY'],
+                         sorted_data['SubhaloSpinZ'],sorted_data['SubhaloVelDisp'],
+                         sorted_data['SubhaloVmax'],sorted_data['FoFMass'],
                          sorted_data['FoFDistanceCenter']]).T
 
 X_dark['Df_cat'] = pd.Categorical(X_dark['SubhaloIndex'],
@@ -140,6 +146,9 @@ fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
 model = RandomForestRegressor(n_estimators=1000,n_jobs=10)
 model.fit(Xtrain,ytrain)
 y_pred = model.predict(Xtest)
+importances = model.feature_importances_
+std = np.std([tree.feature_importances_ for tree in model.estimators_], axis=0)
+
 print(y)
 print(y_pred)
 #Plot Predicted vs actual values
@@ -157,6 +166,9 @@ cb = fig.colorbar(im)
 model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
 model_dark.fit(Xtrain_dark,ytrain_dark)
 y_pred_dark = model_dark.predict(Xtest_dark)
+importances_dark = model_dark.feature_importances_
+std_dark = np.std([tree_dark.feature_importances_ for tree_dark in model_dark.estimators_], axis=0)
+
 print(y_dark)
 print(y_pred_dark)
 #Plot predicted vs actual
@@ -174,6 +186,9 @@ axs[1].set_title('Prediced Halo Concentration from Mass Contents, Vmax, VelDisp,
 model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=10)
 model_ratio.fit(Xtrain_ratio,ytrain_ratio)
 y_pred_ratio = model_ratio.predict(Xtest_ratio)
+importances_ratio = model_ratio.feature_importances_
+std_ratio = np.std([tree_ratio.feature_importances_ for tree_ratio in model_ratio.estimators_], axis=0)
+
 
 #Plot predicted vs actual
 plt.hexbin(ytest_ratio,y_pred_ratio, gridsize = 70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
@@ -185,4 +200,43 @@ axs[2].set_xlim(3*10**(-1), 3*10**0)
 axs[2].set_ylim(3*10**(-1), 3*10**0)
 axs[2].set_title('Predicted Halo Concentration ratio from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
 fig.savefig('concentration_ratio_fof.jpg')
+
+
+fig.clf()
+
+
+forest_importances = pd.Series(importances, index=['SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
+                'FoFMass','FoFDistanceCenter'])
+
+forest_importances_dark = pd.Series(importances_dark, index=['SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
+                'FoFMass','FoFDistanceCenter'])
+
+forest_importances_ratio = pd.Series(importances_ratio, index=['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
+                'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
+                'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter',
+                'SubhaloDMMass - DMO','SubhaloSpinX- DMO','SubhaloSpinY- DMO','SubhaloSpinZ- DMO','SubhaloVelDisp- DMO', 
+                                     'SubhaloVmax- DMO','FoFMass- DMO','FoFDistanceCenter- DMO'])
+
+
+fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
+#Plot Predicted vs actual values
+forest_importances.plot.bar(yerr=std, ax=axs[0])
+axs[0].set_xlabel(r'Feature importances using MDI')
+axs[0].set_ylabel(r'Mean decrease in impurity')
+axs[0].set_title('Feature Importance DM+Baryons')
+
+
+
+#Plot predicted vs actual
+forest_importances_dark.plot.bar(yerr=std_dark, ax=axs[0])
+axs[1].set_xlabel(r'Feature importances using MDI')
+axs[1].set_ylabel(r'Mean decrease in impurity')
+axs[1].set_title('Feature Importance DMO')
+
+#Plot predicted vs actual
+forest_importances_ratio.plot.bar(yerr=std_ratio, ax=axs[0])
+axs[1].set_xlabel(r'Feature importances using MDI')
+axs[1].set_ylabel(r'Mean decrease in impurity')
+axs[1].set_title('Feature Importance Ratio')
+fig.savefig('feature-importance_fof.jpg')
 
