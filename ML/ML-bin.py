@@ -123,64 +123,12 @@ model.fit(Xtrain,ytrain)
 y_pred = model.predict(Xtest)
 print(y)
 print(y_pred)
-#Plot Predicted vs actual values
-#axs[0].scatter(ytest,y_pred, marker="x",color="black")
-#axs[0].set_xlabel(r'Concentration of Halos')
-#axs[0].set_ylabel(r'Predicted Concentration of Halos')
-#axs[0].set_xscale('log')
-#axs[0].set_yscale('log')
-#axs[0].set_title('Predicted Halo Concentration from Stellar, Gas, BH and DM Mass, VelDisp, VMax and Spin')
-
 #Train Model for DMO
 model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
 model_dark.fit(Xtrain_dark,ytrain_dark)
 y_pred_dark = model_dark.predict(Xtest_dark)
-#print(y_dark)
-#print(y_pred_dark)
-#Plot predicted vs actual
-#axs[1].scatter(ytest_dark,y_pred_dark, marker="x",color="black")
-#axs[1].set_xlabel(r'Concentration of DMO Halos')
-#axs[1].set_ylabel(r'Predicted Concentration of DMO Halos')
-#axs[1].set_xscale('log')
-#axs[1].set_yscale('log')
-#axs[1].set_title('Prediced Halo Concentration from DM Mass, VelDisp, VMax and Spin')
-"""
 
-#Calculate the C_Bar/C_DMO ratio
-y_conc_ratio = y/y_dark
 
-#Predict the ratio using ML
-X_ratio = pd.DataFrame([sorted_data['SubhaloGasMass'],sorted_data['SubhaloStarMass'],
-                         sorted_data['SubhaloBHMass'],sorted_data['SubhaloDMMass'],
-                         sorted_data['SubhaloSpinX'],sorted_data['SubhaloSpinY'],
-                         sorted_data['SubhaloSpinZ'],sorted_data['SubhaloVelDisp'],
-                         sorted_data['SubhaloVmax'],sorted_data['SubhaloBHMdot'],
-                         sorted_data['SubhaloSFR'],sorted_data['FoFMass'],
-                         sorted_data['FoFDistanceCenter'],
-                         sorted_data_dark['SubhaloDMMass'],
-                         sorted_data_dark['SubhaloSpinX'],sorted_data_dark['SubhaloSpinY'],
-                         sorted_data_dark['SubhaloSpinZ'],sorted_data_dark['SubhaloVelDisp'],
-                         sorted_data_dark['SubhaloVmax'],sorted_data_dark['FoFMass'],
-                         sorted_data_dark['FoFDistanceCenter']]).T
-"""
-"""
-Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_conc_ratio,
-                                                random_state=1)
-
-model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=10)
-model_ratio.fit(Xtrain_ratio,ytrain_ratio)
-y_pred_ratio = model_ratio.predict(Xtest_ratio)
-
-#Plot predicted vs actual
-axs[2].scatter(ytest_ratio,y_pred_ratio, marker="x",color="black")
-axs[2].set_xlabel(r'Ratio of $\frac{C_{B}}{C_{DMO}}$')
-axs[2].set_ylabel(r'Predicted Ratio of $\frac{C_{B}}{C_{DMO}}$')
-axs[2].set_xscale('log')
-axs[2].set_yscale('log')
-axs[2].set_title('Predicted Halo Concentration ratio from Stellar, Gas, BH and DM Mass, VelDisp, VMax and Spin')
-fig.savefig('concentration_ratio_fof.jpg')
-"""
-fig.clf()
 
 
 
@@ -212,7 +160,7 @@ true_indices_dark = fit_param_dark['Halo Number'].to_numpy().astype(int)
 
 
 #Get key info from group catalogue from file
-subhalo_info_dark = pd.read_csv('../Statistics/50-1-subhalo-info-dark.csv')
+subhalo_info_dark = pd.read_csv('50-1-subhalo-info-dark.csv')
 subhalo_info_dark['Df_cat'] = pd.Categorical(subhalo_info_dark['SubhaloIndex'],
                                              categories = true_indices_dark,
                                              ordered=True)
@@ -261,7 +209,7 @@ lowerbound_dark_ML = 0
 
 conc_hist_ML = []
 conc_hist_dark_ML = []
-
+"""
 subhalo_info_ML = pd.read_csv('50-1-subhalo-info.csv',usecols=['SubhaloMass','SubhaloDMMass'])
 subhalo_info_ML['Df_cat'] = pd.Categorical(subhalo_info_ML['SubhaloDMMass'],
                                              categories = Xtest['SubhaloDMMass'],
@@ -269,8 +217,11 @@ subhalo_info_ML['Df_cat'] = pd.Categorical(subhalo_info_ML['SubhaloDMMass'],
 #print(subhalo_info_dark.sort_values('Df_cat'))
 sorted_df_ML = subhalo_info_ML.sort_values('Df_cat').dropna()
 #print(sorted_df)
-mass_sorted_ML = sorted_df_ML['SubhaloMass']
+"""
+mass_sorted_ML = Xtest['SubhaloGasMass'].to_numpy()+Xtest['SubhaloBHMass'].to_numpy()+Xtest['SubhaloStarMass'].to_numpy()+Xtest['SubhaloDMMass'].to_numpy()
+mass_sorted_ML_dark =Xtest_dark['SubhaloDMMass'].to_numpy()
 
+"""
 subhalo_info_ML_dark = pd.read_csv('50-1-subhalo-info-dark.csv',usecols=['SubhaloMass','SubhaloDMMass'])
 subhalo_info_ML_dark['Df_cat'] = pd.Categorical(subhalo_info_ML_dark['SubhaloDMMass'],
                                              categories = Xtest_dark['SubhaloDMMass'],
@@ -279,7 +230,7 @@ subhalo_info_ML_dark['Df_cat'] = pd.Categorical(subhalo_info_ML_dark['SubhaloDMM
 sorted_df_ML_dark = subhalo_info_ML_dark.sort_values('Df_cat').dropna()
 #print(sorted_df)
 mass_sorted_ML_dark = sorted_df_ML_dark['SubhaloMass']
-
+"""
 
 
 #loop over bins
