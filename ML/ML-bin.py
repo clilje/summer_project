@@ -363,6 +363,7 @@ axs.append( fig.add_subplot(gs[4,2]) )
 #axsdsub = axsdown.add_subplot(6,2,(1,1))
 #plot data obtained in scatterplot
 offset = np.logspace(-3,3,10)
+
 axs[0].errorbar(np.array(mean_mass),mean_concentration,yerr=stdev,fmt='.', color='gold', label='Full Physics Run',markersize='10')
 axs[0].errorbar(np.array(mean_mass_dark)+np.logspace(-3,3,len(mean_mass_dark)),mean_concentration_dark,yerr=stdev_dark,fmt='x',color='darksalmon',label='DMO',markersize='10')
 
@@ -377,23 +378,38 @@ axs[0].set_ylabel(r'$c_{200}$')
 axs[0].set_title('Concentration Mass Relation')
 axs[0].legend(loc='lower right')
 
+i = 1
+while i < len(conc_hist) and i <12:
+    axs[i].hist(conc_hist[i-1][np.where(conc_hist[i-1]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=100)
 
-axs[1].hist(conc_hist[0][np.where(conc_hist[0]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=100)
-axs[1].hist(conc_hist_dark[0][np.where(conc_hist_dark[0]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=100)
-axs[1].hist(conc_hist_ML[0][np.where(conc_hist_ML[0]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=100)
-axs[1].hist(conc_hist_dark_ML[0][np.where(conc_hist_dark_ML[0]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=100)
+j = 1 
+while j < len(conc_hist_dark)and j <12:
+    axs[j].hist(conc_hist_dark[j-1][np.where(conc_hist_dark[j-1]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=100)
+
+x = 1
+while x < len(conc_hist_ML) and x <12:
+    axs[x].hist(conc_hist_ML[x-1][np.where(conc_hist_ML[x-1]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=100)
+
+y = 1
+while y < len(conc_hist_dark_ML) and y <12:
+    axs[y].hist(conc_hist_dark_ML[y-1][np.where(conc_hist_dark_ML[y-1]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=100)
+
+#axs[1].hist(conc_hist[0][np.where(conc_hist[0]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=100)
+#axs[1].hist(conc_hist_dark[0][np.where(conc_hist_dark[0]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=100)
+#axs[1].hist(conc_hist_ML[0][np.where(conc_hist_ML[0]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=100)
+#axs[1].hist(conc_hist_dark_ML[0][np.where(conc_hist_dark_ML[0]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=100)
 
 
 axs[1].set_xlabel(r'$c_{200}$')
 axs[1].set_ylabel(r'Number of Halos')
-#axs[1].set_xlim(0,30)
+axs[1].set_xlim(0,30)
 axs[1].set_title('Mass Bin '+str(round(mean_mass[0],5))+r' $10^{10} M_{\odot}$')
 axs[1].legend()
 
-axs[2].hist(conc_hist[1][np.where(conc_hist[1]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=100)
-axs[2].hist(conc_hist_dark[1][np.where(conc_hist_dark[1]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=100)
-axs[2].hist(conc_hist_ML[1][np.where(conc_hist_ML[1]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=100)
-axs[2].hist(conc_hist_dark_ML[1][np.where(conc_hist_dark_ML[1]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=100)
+#axs[2].hist(conc_hist[1][np.where(conc_hist[1]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=100)
+#axs[2].hist(conc_hist_dark[1][np.where(conc_hist_dark[1]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=100)
+#axs[2].hist(conc_hist_ML[1][np.where(conc_hist_ML[1]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=100)
+#axs[2].hist(conc_hist_dark_ML[1][np.where(conc_hist_dark_ML[1]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=100)
 
 axs[2].set_xlabel(r'$c_{200}$')
 axs[2].set_ylabel(r'Number of Halos')
@@ -401,79 +417,79 @@ axs[2].set_xlim(0,30)
 axs[2].set_title('Mass Bin '+str(round(mean_mass[1],4))+r' $10^{10} M_{\odot}$')
 axs[2].legend()
 
-axs[3].hist(conc_hist[2][np.where(conc_hist[2]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=100)
-axs[3].hist(conc_hist_dark[2][np.where(conc_hist_dark[2]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=100)
-axs[3].hist(conc_hist_ML[2][np.where(conc_hist_ML[2]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=100)
-axs[3].hist(conc_hist_dark_ML[2][np.where(conc_hist_dark_ML[2]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=100)
+#axs[3].hist(conc_hist[2][np.where(conc_hist[2]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=100)
+#axs[3].hist(conc_hist_dark[2][np.where(conc_hist_dark[2]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=100)
+#axs[3].hist(conc_hist_ML[2][np.where(conc_hist_ML[2]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=100)
+#axs[3].hist(conc_hist_dark_ML[2][np.where(conc_hist_dark_ML[2]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=100)
 
 axs[3].set_xlabel(r'$c_{200}$')
 axs[3].set_ylabel(r'Number of Halos')
 axs[3].set_title('Mass Bin '+str(round(mean_mass[2],4))+r' $10^{10} M_{\odot}$')
 axs[3].legend()
 
-axs[4].hist(conc_hist[3][np.where(conc_hist[3]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=100)
-axs[4].hist(conc_hist_dark[3][np.where(conc_hist_dark[3]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=100)
-axs[4].hist(conc_hist_ML[3][np.where(conc_hist_ML[3]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=100)
-axs[4].hist(conc_hist_dark_ML[3][np.where(conc_hist_dark_ML[3]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=100)
+#axs[4].hist(conc_hist[3][np.where(conc_hist[3]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=100)
+#axs[4].hist(conc_hist_dark[3][np.where(conc_hist_dark[3]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=100)
+#axs[4].hist(conc_hist_ML[3][np.where(conc_hist_ML[3]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=100)
+#axs[4].hist(conc_hist_dark_ML[3][np.where(conc_hist_dark_ML[3]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=100)
 
 axs[4].set_xlabel(r'$c_{200}$')
 axs[4].set_ylabel(r'Number of Halos')
 axs[4].set_title('Mass Bin '+str(round(mean_mass[3],4))+r' $10^{10} M_{\odot}$')
 axs[4].legend()
 
-axs[5].hist(conc_hist[4][np.where(conc_hist[4]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=100)
-axs[5].hist(conc_hist_dark[4][np.where(conc_hist_dark[4]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=100)
-axs[5].hist(conc_hist_ML[4][np.where(conc_hist_ML[4]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=100)
-axs[5].hist(conc_hist_dark_ML[4][np.where(conc_hist_dark_ML[4]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=100)
+#axs[5].hist(conc_hist[4][np.where(conc_hist[4]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=100)
+#axs[5].hist(conc_hist_dark[4][np.where(conc_hist_dark[4]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=100)
+#axs[5].hist(conc_hist_ML[4][np.where(conc_hist_ML[4]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=100)
+#axs[5].hist(conc_hist_dark_ML[4][np.where(conc_hist_dark_ML[4]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=100)
 
-axs[5].set_xlabel(r'$c_{200}$')
-axs[5].set_ylabel(r'Number of Halos')
-axs[5].set_title('Mass Bin '+str(round(mean_mass[4],4))+r' $10^{10} M_{\odot}$')
-axs[5].legend()
+#axs[5].set_xlabel(r'$c_{200}$')
+#axs[5].set_ylabel(r'Number of Halos')
+#axs[5].set_title('Mass Bin '+str(round(mean_mass[4],4))+r' $10^{10} M_{\odot}$')
+#axs[5].legend()
 
-axs[6].hist(conc_hist[5][np.where(conc_hist[5]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=100)
-axs[6].hist(conc_hist_dark[5][np.where(conc_hist_dark[5]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=100)
-axs[6].hist(conc_hist_ML[5][np.where(conc_hist_ML[5]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=100)
-axs[6].hist(conc_hist_dark_ML[5][np.where(conc_hist_dark_ML[5]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=100)
+#axs[6].hist(conc_hist[5][np.where(conc_hist[5]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=100)
+#axs[6].hist(conc_hist_dark[5][np.where(conc_hist_dark[5]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=100)
+#axs[6].hist(conc_hist_ML[5][np.where(conc_hist_ML[5]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=100)
+#axs[6].hist(conc_hist_dark_ML[5][np.where(conc_hist_dark_ML[5]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=100)
 
 axs[6].set_xlabel(r'$c_{200}$')
 axs[6].set_ylabel(r'Number of Halos')
 axs[6].set_title('Mass Bin '+str(round(mean_mass[5],4))+r' $10^{10} M_{\odot}$')
 axs[6].legend()
 
-axs[7].hist(conc_hist[6][np.where(conc_hist[6]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=100)
-axs[7].hist(conc_hist_dark[6][np.where(conc_hist_dark[6]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=100)
-axs[7].hist(conc_hist_ML[6][np.where(conc_hist_ML[6]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=100)
-axs[7].hist(conc_hist_dark_ML[6][np.where(conc_hist_dark_ML[6]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=100)
+#axs[7].hist(conc_hist[6][np.where(conc_hist[6]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=100)
+#axs[7].hist(conc_hist_dark[6][np.where(conc_hist_dark[6]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=100)
+#axs[7].hist(conc_hist_ML[6][np.where(conc_hist_ML[6]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=100)
+#axs[7].hist(conc_hist_dark_ML[6][np.where(conc_hist_dark_ML[6]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=100)
 
 axs[7].set_xlabel(r'$c_{200}$')
 axs[7].set_ylabel(r'Number of Halos')
 axs[7].legend()
 
-axs[8].hist(conc_hist[7][np.where(conc_hist[7]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=20)
-axs[8].hist(conc_hist_dark[7][np.where(conc_hist_dark[7]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=20)
-axs[8].hist(conc_hist_ML[7][np.where(conc_hist_ML[7]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=20)
-axs[8].hist(conc_hist_dark_ML[7][np.where(conc_hist_dark_ML[7]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=20)
+#axs[8].hist(conc_hist[7][np.where(conc_hist[7]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=20)
+#axs[8].hist(conc_hist_dark[7][np.where(conc_hist_dark[7]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=20)
+#axs[8].hist(conc_hist_ML[7][np.where(conc_hist_ML[7]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=20)
+#axs[8].hist(conc_hist_dark_ML[7][np.where(conc_hist_dark_ML[7]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=20)
 
 axs[8].set_xlabel(r'$c_{200}$')
 axs[8].set_ylabel(r'Number of Halos')
 axs[8].set_title('Mass Bin '+str(round(mean_mass[7],4))+r' $10^{10} M_{\odot}$')
 axs[8].legend()
 
-axs[9].hist(conc_hist[8][np.where(conc_hist[8]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=15)
-axs[9].hist(conc_hist_dark[8][np.where(conc_hist_dark[8]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=15)
-axs[9].hist(conc_hist_ML[8][np.where(conc_hist_ML[8]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=15)
-axs[9].hist(conc_hist_dark_ML[8][np.where(conc_hist_dark_ML[8]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=15)
+#axs[9].hist(conc_hist[8][np.where(conc_hist[8]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=15)
+#axs[9].hist(conc_hist_dark[8][np.where(conc_hist_dark[8]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=15)
+#axs[9].hist(conc_hist_ML[8][np.where(conc_hist_ML[8]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=15)
+#axs[9].hist(conc_hist_dark_ML[8][np.where(conc_hist_dark_ML[8]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=15)
 
 axs[9].set_xlabel(r'$c_{200}$')
 axs[9].set_ylabel(r'Number of Halos')
 axs[9].set_title('Mass Bin '+str(round(mean_mass[8],4))+r' $10^{10} M_{\odot}$')
 axs[9].legend()
-
-axs[10].hist(conc_hist[9][np.where(conc_hist[9]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=10)
-axs[10].hist(conc_hist_dark[9][np.where(conc_hist_dark[9]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=10)
-axs[10].hist(conc_hist_ML[9][np.where(conc_hist_ML[9]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=10)
-axs[10].hist(conc_hist_dark_ML[9][np.where(conc_hist_dark_ML[9]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=10)
+#
+#axs[10].hist(conc_hist[9][np.where(conc_hist[9]<30)[0]], alpha = 0.5, color='gold', label='Full Physics', density = True, bins=10)
+#axs[10].hist(conc_hist_dark[9][np.where(conc_hist_dark[9]<30)[0]], alpha = 0.5, color='darksalmon', label='DMO', density = True, bins=10)
+#axs[10].hist(conc_hist_ML[9][np.where(conc_hist_ML[9]<30)[0]], alpha = 0.5, color='indigo', label='ML Full Physics', density = True, bins=10)
+#axs[10].hist(conc_hist_dark_ML[9][np.where(conc_hist_dark_ML[9]<30)[0]], alpha = 0.5, color='darkslategrey', label='ML DMO', density = True, bins=10)
 
 axs[10].set_xlabel(r'$c_{200}$')
 axs[10].set_ylabel(r'Number of Halos')
@@ -486,13 +502,23 @@ fig.savefig('cmfunc-bins-ML')
 #fig.show()
 
 def fraction(binnum,cut):   
-    frac_bin = len(np.where(conc_hist[binnum]>cut)[0])/ len(conc_hist[binnum])
+    if binnum <= len(conc_hist):
+        frac_bin = len(np.where(conc_hist[binnum]>cut)[0])/ len(conc_hist[binnum])
+    else:
+        frac_bin = str('No halos in this bin')
+    if binnum <= len(conc_hist_dark):
+        frac_bin_dark = len(np.where(conc_hist_dark[binnum]>cut)[0])/len(conc_hist_dark[binnum])
+    else:
+        frac_bin_dark = str('No halos in this bin')
     
-    frac_bin_dark = len(np.where(conc_hist_dark[binnum]>cut)[0])/len(conc_hist_dark[binnum])
-    
-    frac_bin_ML = len(np.where(conc_hist_ML[binnum]>cut)[0])/ len(conc_hist_ML[binnum])
-    
-    frac_bin_dark_ML = len(np.where(conc_hist_dark_ML[binnum]>cut)[0])/len(conc_hist_dark_ML[binnum])
+    if binnum <= len(conc_hist_ML):
+        frac_bin_ML = len(np.where(conc_hist_ML[binnum]>cut)[0])/ len(conc_hist_ML[binnum])
+    else:
+        frac_bin_ML = str('No halos in this bin')
+    if binnum <= len(conc_hist_dark_ML):
+        frac_bin_dark_ML = len(np.where(conc_hist_dark_ML[binnum]>cut)[0])/len(conc_hist_dark_ML[binnum])
+    else:
+        frac_bin_dark_ML = str('No halos in this bin')
     return(frac_bin,frac_bin_dark,frac_bin_ML,frac_bin_dark_ML)
 
 
