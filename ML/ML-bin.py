@@ -330,10 +330,10 @@ for upperbound_dark_ML in bins_dark_ML:
 
 #Plotting concentration Histograms
 
-print(len(conc_hist))
-print(len(conc_hist_dark))
-print(max(conc_hist[1]))
-print(max(conc_hist_dark[1]))
+#print(len(conc_hist))
+#print(len(conc_hist_dark))
+#print(max(conc_hist[1]))
+#print(max(conc_hist_dark[1]))
 # open figure
 fig = plt.figure(figsize=(20,50))
 # add grid specifications
