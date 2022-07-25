@@ -186,13 +186,13 @@ fig.clf()
 
 
 #Get key info from group catalogue from file
-subhalo_info = pd.read_csv('../Statistics/50-1-subhalo-info.csv')
+subhalo_info = pd.read_csv('50-1-subhalo-info.csv')
 subhalo_index = subhalo_info['SubhaloIndex'].to_numpy().astype(int)
 full_mass = subhalo_info['SubhaloMass'].to_numpy()
 
 
 #Read in the optimal fit parameters as well as chisquare
-fit_param = pd.read_csv('../Statistics/HaloFitsInfo/50-1_snap_99_fit_param.csv')
+fit_param = pd.read_csv('50-1_snap_99_fit_param.csv')
 nfw_chisquare = fit_param['NFW ChiSquare'].to_numpy()
 nfw_scalerad = fit_param['NFW Scale Radius'].to_numpy()
 datapoint = fit_param['DataPoints'].to_numpy()
@@ -203,7 +203,7 @@ true_indices = fit_param['Halo Number'].to_numpy().astype(int)
 
 
 #Read in the optimal fit parameters as well as chisquare
-fit_param_dark = pd.read_csv('../Statistics/DM/HaloFitsInfo/50-1_snap_99_fit_param-dark.csv')
+fit_param_dark = pd.read_csv('50-1_snap_99_fit_param-dark.csv')
 nfw_chisquare_dark = fit_param_dark['NFW ChiSquare'].to_numpy()
 nfw_scalerad_dark = fit_param_dark['NFW Scale Radius'].to_numpy()
 datapoint_dark = fit_param_dark['DataPoints'].to_numpy()
@@ -262,7 +262,7 @@ lowerbound_dark_ML = 0
 conc_hist_ML = []
 conc_hist_dark_ML = []
 
-subhalo_info_ML = pd.read_csv('../Statistics/50-1-subhalo-info.csv',usecols=['SubhaloMass','SubhaloDMMass'])
+subhalo_info_ML = pd.read_csv('50-1-subhalo-info.csv',usecols=['SubhaloMass','SubhaloDMMass'])
 subhalo_info_ML['Df_cat'] = pd.Categorical(subhalo_info_ML['SubhaloDMMass'],
                                              categories = Xtest['SubhaloDMMass'],
                                              ordered=True)
@@ -271,7 +271,7 @@ sorted_df_ML = subhalo_info_ML.sort_values('Df_cat').dropna()
 #print(sorted_df)
 mass_sorted_ML = sorted_df_ML['SubhaloMass']
 
-subhalo_info_ML_dark = pd.read_csv('../Statistics/50-1-subhalo-info-dark.csv',usecols=['SubhaloMass','SubhaloDMMass'])
+subhalo_info_ML_dark = pd.read_csv('50-1-subhalo-info-dark.csv',usecols=['SubhaloMass','SubhaloDMMass'])
 subhalo_info_ML_dark['Df_cat'] = pd.Categorical(subhalo_info_ML_dark['SubhaloDMMass'],
                                              categories = Xtest_dark['SubhaloDMMass'],
                                              ordered=True)
@@ -531,7 +531,7 @@ axs[10].legend()
 
 
 fig.tight_layout()
-fig.savefig('cmfunc-bins')
+fig.savefig('cmfunc-bins-ML')
 #fig.show()
 
 def fraction(binnum,cut):   
