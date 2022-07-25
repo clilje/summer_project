@@ -205,7 +205,7 @@ fig.savefig('concentration_ratio_fof-final.jpg')
 fig.clf()
 
 
-forest_importances = pd.Series(importances, index=['SubhaloIndex','SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
+forest_importances = pd.Series(importances, index=['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
                 'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
                 'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter'])
 
