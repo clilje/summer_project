@@ -300,10 +300,10 @@ for upperbound_ML in bins_ML:
     
     #append all data to lists
     mean_mass_ML.append(((upperbound_ML-lowerbound_ML)/2)*h)
-    mean_concentration_ML.append(statistics.mean(y_pred[conc_index]))
-    stdev_ML.append(statistics.stdev(y_pred[conc_index]))
+    mean_concentration_ML.append(statistics.mean(y_pred[conc_index_ML]))
+    stdev_ML.append(statistics.stdev(y_pred[conc_index_ML]))
     
-    conc_hist_ML.append(y_pred[conc_index])
+    conc_hist_ML.append(y_pred[conc_index_ML])
     
     lowerbound_ML= upperbound_ML
     
