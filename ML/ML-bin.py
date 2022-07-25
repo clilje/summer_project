@@ -364,10 +364,10 @@ axs.append( fig.add_subplot(gs[4,2]) )
 #plot data obtained in scatterplot
 offset = np.logspace(-3,3,10)
 axs[0].errorbar(np.array(mean_mass),mean_concentration,yerr=stdev,fmt='.', color='gold', label='Full Physics Run',markersize='10')
-axs[0].errorbar(np.array(mean_mass_dark)+offset,mean_concentration_dark,yerr=stdev_dark,fmt='x',color='darksalmon',label='DMO',markersize='10')
+axs[0].errorbar(np.array(mean_mass_dark)+np.logspace(-3,3,len(mean_mass_dark)),mean_concentration_dark,yerr=stdev_dark,fmt='x',color='darksalmon',label='DMO',markersize='10')
 
-axs[0].errorbar(np.array(mean_mass_ML)+2*offset,mean_concentration_ML,yerr=stdev_ML,fmt='.', color='indigo', label='ML Full Physics Run',markersize='10')
-axs[0].errorbar(np.array(mean_mass_dark_ML)+3*offset,mean_concentration_dark_ML,yerr=stdev_dark_ML,fmt='x',color='darkslategrey',label='ML DMO',markersize='10')
+axs[0].errorbar(np.array(mean_mass_ML)+2*np.logspace(-3,3,len(mean_mass_ML)),mean_concentration_ML,yerr=stdev_ML,fmt='.', color='indigo', label='ML Full Physics Run',markersize='10')
+axs[0].errorbar(np.array(mean_mass_dark_ML)+3*np.logspace(-3,3,len(mean_mass_dark_ML)),mean_concentration_dark_ML,yerr=stdev_dark_ML,fmt='x',color='darkslategrey',label='ML DMO',markersize='10')
 
 axs[0].set_xscale('log')
 axs[0].set_yscale('log')
