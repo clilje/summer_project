@@ -73,7 +73,7 @@ X['Df_cat'] = pd.Categorical(X['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data = X.sort_values('Df_cat').dropna().copy()
-'''sorted_X = pd.DataFrame([sorted_data['SubhaloGasMass'],sorted_data['SubhaloStarMass'],
+sorted_X = pd.DataFrame([sorted_data['SubhaloGasMass'],sorted_data['SubhaloStarMass'],
                          sorted_data['SubhaloBHMass'],sorted_data['SubhaloDMMass'],
                          sorted_data['SubhaloSpinX'],sorted_data['SubhaloSpinY'],
                          sorted_data['SubhaloSpinZ'],sorted_data['SubhaloVelDisp'],
@@ -86,7 +86,7 @@ sorted_X = pd.DataFrame([sorted_data['SubhaloDMMass'],
                          sorted_data['SubhaloSpinZ'],sorted_data['SubhaloVelDisp'],
                          sorted_data['SubhaloVmax'],sorted_data['FoFMass'],
                          sorted_data['FoFDistanceCenter']]).T
-
+'''
 X_dark['Df_cat'] = pd.Categorical(X_dark['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
@@ -179,7 +179,7 @@ axs[1].set_xscale('log')
 axs[1].set_yscale('log')
 axs[1].set_xlim(4*10**0, 2*10)
 axs[1].set_ylim(4*10**0, 2*10)
-axs[1].set_title('Prediced Halo Concentration from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
+axs[1].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
 
 
 
@@ -199,14 +199,15 @@ axs[2].set_yscale('log')
 axs[2].set_xlim(3*10**(-1), 3*10**0)
 axs[2].set_ylim(3*10**(-1), 3*10**0)
 axs[2].set_title('Predicted Halo Concentration ratio from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
-fig.savefig('concentration_ratio_fof.jpg')
+fig.savefig('concentration_ratio_fof-final.jpg')
 
 
 fig.clf()
 
 
-forest_importances = pd.Series(importances, index=['SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
-                'FoFMass','FoFDistanceCenter'])
+forest_importances = pd.Series(importances, index=['SubhaloIndex','SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
+                'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
+                'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter'])
 
 forest_importances_dark = pd.Series(importances_dark, index=['SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
                 'FoFMass','FoFDistanceCenter'])
@@ -228,15 +229,15 @@ axs[0].set_title('Feature Importance DM+Baryons')
 
 
 #Plot predicted vs actual
-forest_importances_dark.plot.bar(yerr=std_dark, ax=axs[0])
+forest_importances_dark.plot.bar(yerr=std_dark, ax=axs[1])
 axs[1].set_xlabel(r'Feature importances using MDI')
 axs[1].set_ylabel(r'Mean decrease in impurity')
 axs[1].set_title('Feature Importance DMO')
 
 #Plot predicted vs actual
-forest_importances_ratio.plot.bar(yerr=std_ratio, ax=axs[0])
-axs[1].set_xlabel(r'Feature importances using MDI')
-axs[1].set_ylabel(r'Mean decrease in impurity')
-axs[1].set_title('Feature Importance Ratio')
-fig.savefig('feature-importance_fof.jpg')
+forest_importances_ratio.plot.bar(yerr=std_ratio, ax=axs[2])
+axs[2].set_xlabel(r'Feature importances using MDI')
+axs[2].set_ylabel(r'Mean decrease in impurity')
+axs[2].set_title('Feature Importance Ratio')
+fig.savefig('feature-importance_fof-final.jpg')
 
