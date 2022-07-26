@@ -174,4 +174,6 @@ while pool_result:
 # TODO: Save data
 print(all_trees)
 print(all_subhalo_ids)
-all_trees.to_csv('50-4-subhalo-history.csv',index_label=all_subhalo_ids)
+all_trees['index'] = all_subhalo_ids
+all_trees.set_index('index')
+all_trees.to_csv('50-4-subhalo-history.csv')
