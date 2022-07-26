@@ -48,7 +48,7 @@ def extract_trees(filepath):
 
             # TODO: Convert mass units
             arr_mass_type = np.array(tree['SubhaloMassType'])
-            arr_position = np.array(tree['SubhaloPosition'])
+            arr_position = np.array(tree['SubhaloPos'])
             arr['positionX'] = arr_position[:, 0]
             arr['positionY'] = arr_position[:, 1]
             arr['positionZ'] = arr_position[:, 2]
