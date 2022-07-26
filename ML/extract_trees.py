@@ -75,9 +75,9 @@ def extract_trees(filepath):
             arr['subhalo_id'] = np.array(tree['SubhaloNumber'])
             
             fof_number = np.array(tree['SubhaloGrNr'])
-            radial_distance = distancefromcentre(tree['GroupCM'][fof_number][:, 0], 
-                                                 tree['GroupCM'][fof_number][:, 1], 
-                                                 tree['GroupCM'][fof_number][:, 2], 
+            radial_distance = distancefromcentre(tree['GroupCM'][:, 0][fof_number], 
+                                                 tree['GroupCM'][:, 1][fof_number], 
+                                                 tree['GroupCM'][:, 2][fof_number], 
                                                  arr_position[:, 0], arr_position[:, 1], 
                                                  arr_position[:, 2])
 
