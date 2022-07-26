@@ -32,7 +32,8 @@ def extract_trees(filepath):
             arr['sfr'] = np.array(tree['SubhaloSFR'])
             arr['stellar_mass'] = arr_mass_type[:, 4]
             arr['stellar_metallicity'] = np.array(tree['SubhaloStarMetallicity'])
-
+            arr['particle_number'] = np.array(tree['SubhaloLen'])
+            
             arr['main_prog_index'] = np.array(tree['FirstProgenitor'])
             arr['snap_num'] = np.array(tree['SnapNum'])
             arr['subhalo_id'] = np.array(tree['SubhaloNumber'])
@@ -53,7 +54,7 @@ def extract_trees(filepath):
 
             valid = (arr['snap_num'] == max_snap)
             # TODO: Set mass cut
-            valid &= (arr['dm_mass'] > config.dm_mass_cut)
+            valid &= (arr['particle_number'] > 500)
             n_valid_sub_this_file = np.sum(valid)
             if n_valid_sub_this_file == 0:
                 continue
