@@ -5,9 +5,9 @@ import h5py
 import numpy as np
 import pandas as pd
 
-n_process = 5
+n_process = 10
 box_size = 50
-run = 4
+run = 1
 
 lhalotree_dir = f'/disk01/rmcg/downloaded/tng/tng{box_size}-{run}/merger_tree/lhalotree/'
 
