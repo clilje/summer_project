@@ -66,7 +66,7 @@ def extract_trees(filepath):
             arr['sfr'] = np.array(tree['SubhaloSFR'])
             arr['stellar_mass'] = arr_mass_type[:, 4]
             arr['vel_dispersion'] = np.array(tree['SubhaloVelDisp'])
-            arr['v_max'] = np.array(tree['SubhaloVmax'])
+            arr['v_max'] = np.array(tree['SubhaloVMax'])
             #arr['stellar_metallicity'] = np.array(tree['SubhaloStarMetallicity'])
             arr['particle_number'] = np.array(tree['SubhaloLen'])
             
@@ -75,12 +75,14 @@ def extract_trees(filepath):
             arr['subhalo_id'] = np.array(tree['SubhaloNumber'])
             
             fof_number = np.array(tree['SubhaloGrNr'])
-            radial_distance = distancefromcentre(tree['GroupPos'][fof_number][:, 0], 
-                                                 tree['GroupPos'][fof_number][:, 1], 
-                                                 tree['GroupPos'][fof_number][:, 2], 
+            radial_distance = distancefromcentre(tree['GroupCM'][fof_number][:, 0], 
+                                                 tree['GroupCM'][fof_number][:, 1], 
+                                                 tree['GroupCM'][fof_number][:, 2], 
                                                  arr_position[:, 0], arr_position[:, 1], 
                                                  arr_position[:, 2])
-            arr['fof_mass'] = np.array(tree['GroupMass'][fof_number])
+
+            group_mass = np.array(tree['GroupMassType'][fof_number])
+            arr['fof_mass'] = group_mass[:, 0]+group_mass[:, 1]+group_mass[:, 4]+group_mass[:, 5]
             arr['fof_distance'] = radial_distance
             
             arr_central_index = np.array(tree['FirstHaloInFOFGroup'])
