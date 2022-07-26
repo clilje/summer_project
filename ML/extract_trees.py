@@ -81,8 +81,8 @@ def extract_trees(filepath):
                                                  arr_position[:, 0], arr_position[:, 1], 
                                                  arr_position[:, 2])
 
-            group_mass = np.array(tree['GroupMassType'][fof_number])
-            arr['fof_mass'] = group_mass[:, 0]+group_mass[:, 1]+group_mass[:, 4]+group_mass[:, 5]
+            group_mass = np.array(tree['GroupMassType'])
+            arr['fof_mass'] = group_mass[:, 0][fof_number]+group_mass[:, 1][fof_number]+group_mass[:, 4][fof_number]+group_mass[:, 5][fof_number]
             arr['fof_distance'] = radial_distance
             
             arr_central_index = np.array(tree['FirstHaloInFOFGroup'])
