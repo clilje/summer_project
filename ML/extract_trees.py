@@ -176,4 +176,5 @@ print(all_trees)
 print(all_subhalo_ids)
 all_trees['index'] = all_subhalo_ids
 all_trees.set_index('index')
+print(all_trees)
 all_trees.to_csv('50-4-subhalo-history.csv')
