@@ -31,7 +31,7 @@ def distancefromcentre(cx, cy, cz, x, y, z, ):
 
 n_process = 50
 box_size = 50
-run = 4
+run = 1
 
 lhalotree_dir = f'/disk01/rmcg/downloaded/tng/tng{box_size}-{run}/merger_tree/lhalotree/'
 
