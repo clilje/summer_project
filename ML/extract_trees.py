@@ -53,7 +53,7 @@ def extract_trees(filepath):
             arr['positionY'] = arr_position[:, 1]
             arr['positionZ'] = arr_position[:, 2]
             arr['halfmass_rad'] = np.array(tree['SubhaloHalfmassRad'])
-            arr['mass'] = np.array(tree['SubhalMass'])
+            arr['mass'] = np.array(tree['SubhaloMass'])
             arr_spin = np.array(tree['SubhaloSpin'])
             arr['spinX'] = arr_spin[:, 0]
             arr['spinY'] = arr_spin[:, 1]
