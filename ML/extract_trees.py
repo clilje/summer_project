@@ -152,9 +152,9 @@ def extract_trees(filepath):
                     i_prog = arr['main_prog_index'][i_prog]
 
                 i_sub += 1
-
+                subhalo_ids.append(arr['subhalo_id'][i_halo])
             trees.append(pd.DataFrame(histories, columns=input_features))
-            subhalo_ids.append(arr['subhalo_id'][i_halo])
+            
     return pd.concat(trees, ignore_index=True), subhalo_ids
 
 
