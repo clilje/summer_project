@@ -5,7 +5,31 @@ import h5py
 import numpy as np
 import pandas as pd
 
-n_process = 10
+def distancefromcentre(cx, cy, cz, x, y, z, ):
+    """
+    
+
+    Parameters
+    ----------
+    cx : Halo centre x-coord float
+    cy : Halo centre y-coord float
+    cz : Halo centre z-coord float
+    x : Particle Position x-coord
+    y : Particle Position y-coord
+    z : Particle Position z-coord
+
+    Returns
+    -------
+    Distance between particle and halo centre
+
+    """
+    return (np.sqrt((np.power(np.subtract(x,cx), 2)+ np.power(np.subtract(y,cy), 2) + np.power(np.subtract(z,cz), 2)))) # distance between the centre and given point
+
+
+
+
+
+n_process = 50
 box_size = 50
 run = 1
 
@@ -24,29 +48,52 @@ def extract_trees(filepath):
 
             # TODO: Convert mass units
             arr_mass_type = np.array(tree['SubhaloMassType'])
+            arr_position = np.array(tree['SubhaloPosition'])
+            arr['positionX'] = arr_position[:, 0]
+            arr['positionY'] = arr_position[:, 1]
+            arr['positionZ'] = arr_position[:, 2]
+            arr['halfmass_rad'] = np.array(tree['SubhaloHalfmassRad'])
+            arr['mass'] = np.array(tree['SubhalMass'])
+            arr_spin = np.array(tree['SubhaloSpin'])
+            arr['spinX'] = arr_spin[:, 0]
+            arr['spinY'] = arr_spin[:, 1]
+            arr['spinZ'] = arr_spin[:, 2]
             arr['bh_mass'] = np.array(tree['SubhaloBHMass'])
             arr['bh_dot'] = np.array(tree['SubhaloBHMdot'])
             arr['dm_mass'] = arr_mass_type[:, 1]
             arr['gas_mass'] = arr_mass_type[:, 0]
-            arr['gas_metallicity'] = np.array(tree['SubhaloGasMetallicity'])
+            #arr['gas_metallicity'] = np.array(tree['SubhaloGasMetallicity'])
             arr['sfr'] = np.array(tree['SubhaloSFR'])
             arr['stellar_mass'] = arr_mass_type[:, 4]
-            arr['stellar_metallicity'] = np.array(tree['SubhaloStarMetallicity'])
+            arr['vel_dispersion'] = np.array(tree['SubhaloVelDisp'])
+            arr['v_max'] = np.array(tree['SubhaloVmax'])
+            #arr['stellar_metallicity'] = np.array(tree['SubhaloStarMetallicity'])
             arr['particle_number'] = np.array(tree['SubhaloLen'])
             
             arr['main_prog_index'] = np.array(tree['FirstProgenitor'])
             arr['snap_num'] = np.array(tree['SnapNum'])
             arr['subhalo_id'] = np.array(tree['SubhaloNumber'])
-
+            
+            fof_number = np.array(tree['SubhaloGrNr'])
+            radial_distance = distancefromcentre(tree['GroupPos'][fof_number][:, 0], 
+                                                 tree['GroupPos'][fof_number][:, 1], 
+                                                 tree['GroupPos'][fof_number][:, 2], 
+                                                 arr_position[:, 0], arr_position[:, 1], 
+                                                 arr_position[:, 2])
+            arr['fof_mass'] = np.array(tree['GroupMass'][fof_number])
+            arr['fof_distance'] = radial_distance
+            
             arr_central_index = np.array(tree['FirstHaloInFOFGroup'])
             arr['is_central'] = np.zeros(n_halo, dtype=bool)
             for i_halo, i_central in enumerate(arr_central_index):
                 arr['is_central'][i_halo] = (i_halo == i_central)
-
+            
             min_snap = 2
             max_snap = 99
-            input_properties = ['bh_mass', 'bh_dot', 'dm_mass', 'gas_mass', 'gas_metallicity',
-                                'sfr', 'stellar_mass', 'stellar_metallicity']
+            input_properties = ['positionX','positionY','positionZ','halfmass_rad','mass',
+                                'particle_number','gas_mass','dm_mass','stellar_mass', 'bh_mass', 
+                                'spinX','spinY','spinZ', 'vel_dispersion','v_max', 'bh_dot',
+                                'sfr', 'fof_mass','fof_distance']
 
             snapshots = list(range(max_snap, min_snap-1, -1))
             n_input, n_snap = len(input_properties), len(snapshots)
@@ -67,20 +114,37 @@ def extract_trees(filepath):
                     snap_num = arr['snap_num'][i_prog]
                     if snap_num < min_snap:
                         break
-
+                    
+                    positionX = arr['positionX'][i_prog]
+                    positionY = arr['positionY'][i_prog]
+                    positionZ = arr['positionZ'][i_prog]
+                    halfmass_rad = arr['halfmass_rad'][i_prog]
+                    mass = arr['mass'][i_prog]
+                    particle_number = arr['particle_number'][i_prog]
                     bh_mass = arr['bh_mass'][i_prog]
                     bh_dot = arr['bh_dot'][i_prog]
                     dm_mass = arr['dm_mass'][i_prog]
                     gas_mass = arr['gas_mass'][i_prog]
-                    gas_metallicity = arr['gas_metallicity'][i_prog]
+                    spinX = arr['spinX'][i_prog]
+                    spinY = arr['spinY'][i_prog]
+                    spinZ = arr['spinZ'][i_prog]
+                    vel_dispersion = arr['vel_dispersion'][i_prog]
+                    v_max = arr['v_max'][i_prog]
+                    fof_mass = arr['fof_mass'][i_prog]
+                    fof_distance = arr['fof_distance'][i_prog]
+                    #gas_metallicity = arr['gas_metallicity'][i_prog]
                     sfr = arr['sfr'][i_prog]
                     stellar_mass = arr['stellar_mass'][i_prog]
-                    stellar_metallicity = arr['stellar_metallicity'][i_prog]
+                    #stellar_metallicity = arr['stellar_metallicity'][i_prog]
 
                     i_start = (max_snap - snap_num) * n_input
                     # This has to line up with where input columns are defined
-                    data = [bh_mass, bh_dot, dm_mass, gas_mass, gas_metallicity,
-                            sfr, stellar_mass, stellar_metallicity]
+                    #data = [bh_mass, bh_dot, dm_mass, gas_mass, gas_metallicity,
+                    #        sfr, stellar_mass, stellar_metallicity]
+                    data = [positionX,positionY,positionZ,halfmass_rad,mass,
+                                        particle_number,gas_mass,dm_mass,stellar_mass, bh_mass, 
+                                        spinX,spinY,spinZ, vel_dispersion,v_max, bh_dot,
+                                        sfr, fof_mass,fof_distance]
                     histories[i_sub, i_start:i_start+n_input] = data
 
                     i_prog = arr['main_prog_index'][i_prog]
