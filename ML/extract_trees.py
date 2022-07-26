@@ -31,7 +31,7 @@ def distancefromcentre(cx, cy, cz, x, y, z, ):
 
 n_process = 50
 box_size = 50
-run = 1
+run = 4
 
 lhalotree_dir = f'/disk01/rmcg/downloaded/tng/tng{box_size}-{run}/merger_tree/lhalotree/'
 
@@ -74,7 +74,7 @@ def extract_trees(filepath):
             arr['snap_num'] = np.array(tree['SnapNum'])
             arr['subhalo_id'] = np.array(tree['SubhaloNumber'])
             
-            fof_number = np.array(tree['SubhaloGrNr'])
+            fof_number = np.array(tree['FirstHaloInFOFGroup'])
             radial_distance = distancefromcentre(tree['GroupCM'][:, 0][fof_number], 
                                                  tree['GroupCM'][:, 1][fof_number], 
                                                  tree['GroupCM'][:, 2][fof_number], 
@@ -174,4 +174,4 @@ while pool_result:
 # TODO: Save data
 print(all_trees)
 print(all_subhalo_ids)
-all_trees.to_csv('50-1-subhalo-history.csv',index_label=all_subhalo_ids)
+all_trees.to_csv('50-4-subhalo-history.csv',index_label=all_subhalo_ids)
