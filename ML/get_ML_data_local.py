@@ -129,6 +129,6 @@ model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=50)
 model_dark.fit(Xtrain_dark,ytrain_dark)
 y_pred_dark = model_dark.predict(Xtest_dark)
 
-data = pd.DataFrame([Xtest,y_pred,Xtest_dark,y_pred_dark], columns=['Xtest','y_predicted','Xtest_dark','y_predicted_dark'])
+data = pd.DataFrame(np.vstack(Xtest,y_pred,Xtest_dark,y_pred_dark), columns=['Xtest','y_predicted','Xtest_dark','y_predicted_dark'])
 data.to_csv('ML_data')
 
