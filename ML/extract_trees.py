@@ -45,7 +45,7 @@ def extract_trees(filepath):
         for i_tree, n_halo in enumerate(n_halos_in_tree):
             arr = {}
             tree = file[f'Tree{i_tree}']
-
+            print(tree.keys())
             # TODO: Convert mass units
             arr_mass_type = np.array(tree['SubhaloMassType'])
             arr_position = np.array(tree['SubhaloPos'])
