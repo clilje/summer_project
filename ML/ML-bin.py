@@ -118,13 +118,13 @@ Xtrain_dark, Xtest_dark, ytrain_dark, ytest_dark = train_test_split(sorted_X_dar
 fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
 
 #Train Model for DM+Baryons
-model = RandomForestRegressor(n_estimators=1000,n_jobs=10)
+model = RandomForestRegressor(n_estimators=1000,n_jobs=50)
 model.fit(Xtrain,ytrain)
 y_pred = model.predict(Xtest)
 print(y)
 print(y_pred)
 #Train Model for DMO
-model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
+model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=50)
 model_dark.fit(Xtrain_dark,ytrain_dark)
 y_pred_dark = model_dark.predict(Xtest_dark)
 
