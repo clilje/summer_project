@@ -53,7 +53,7 @@ def extract_trees(filepath):
             arr['positionY'] = arr_position[:, 1]
             arr['positionZ'] = arr_position[:, 2]
             arr['halfmass_rad'] = np.array(tree['SubhaloHalfmassRad'])
-            arr['mass'] = np.array(tree['SubhaloMass'])
+            #arr['mass'] = np.array(tree['SubhaloMass'])
             arr_spin = np.array(tree['SubhaloSpin'])
             arr['spinX'] = arr_spin[:, 0]
             arr['spinY'] = arr_spin[:, 1]
@@ -90,7 +90,7 @@ def extract_trees(filepath):
             
             min_snap = 2
             max_snap = 99
-            input_properties = ['positionX','positionY','positionZ','halfmass_rad','mass',
+            input_properties = ['positionX','positionY','positionZ','halfmass_rad',
                                 'particle_number','gas_mass','dm_mass','stellar_mass', 'bh_mass', 
                                 'spinX','spinY','spinZ', 'vel_dispersion','v_max', 'bh_dot',
                                 'sfr', 'fof_mass','fof_distance']
@@ -119,7 +119,7 @@ def extract_trees(filepath):
                     positionY = arr['positionY'][i_prog]
                     positionZ = arr['positionZ'][i_prog]
                     halfmass_rad = arr['halfmass_rad'][i_prog]
-                    mass = arr['mass'][i_prog]
+                    #mass = arr['mass'][i_prog]
                     particle_number = arr['particle_number'][i_prog]
                     bh_mass = arr['bh_mass'][i_prog]
                     bh_dot = arr['bh_dot'][i_prog]
@@ -141,7 +141,7 @@ def extract_trees(filepath):
                     # This has to line up with where input columns are defined
                     #data = [bh_mass, bh_dot, dm_mass, gas_mass, gas_metallicity,
                     #        sfr, stellar_mass, stellar_metallicity]
-                    data = [positionX,positionY,positionZ,halfmass_rad,mass,
+                    data = [positionX,positionY,positionZ,halfmass_rad,
                                         particle_number,gas_mass,dm_mass,stellar_mass, bh_mass, 
                                         spinX,spinY,spinZ, vel_dispersion,v_max, bh_dot,
                                         sfr, fof_mass,fof_distance]
