@@ -99,7 +99,7 @@ lowerbound = 0.01
 bins = [0.1,1,10]
 
 
-fig = plt.figure(figsize=(30,10))
+fig = plt.figure(figsize=(30,30))
 # add grid specifications
 gs = fig.add_gridspec(3, 3)
 # open axes/subplots
@@ -217,6 +217,7 @@ for upperbound in bins:
     i += 3
     
     lowerbound= upperbound
+fig.tight_layout()
 fig.savefig('ML-per-bin')
 
 
