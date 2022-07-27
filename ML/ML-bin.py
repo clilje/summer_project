@@ -109,8 +109,8 @@ sorted_X_dark = pd.DataFrame([sorted_data_dark['SubhaloIndex'],sorted_data_dark[
 
 
 #Get key info from group catalogue from file
-subhalo_info = pd.read_csv('50-1-subhalo-info.csv')
-subhalo_index = subhalo_info['SubhaloIndex'].to_numpy().astype(int)
+#subhalo_info = pd.read_csv('50-1-subhalo-info.csv')
+#subhalo_index = subhalo_info['SubhaloIndex'].to_numpy().astype(int)
 #full_mass = subhalo_info['SubhaloMass'].to_numpy()
 
 
@@ -153,8 +153,8 @@ subhalo_info_dark['Df_cat'] = pd.Categorical(subhalo_info_dark['SubhaloIndex'],
 sorted_df_dark = subhalo_info_dark.sort_values('Df_cat').dropna()
 #print(sorted_df)
 mass_sorted_dark = sorted_df_dark['SubhaloMass']
-#lists to store data
-numhalos = len(subhalo_index)
+#lists to store data#
+#numhalos = len(subhalo_index)
 print(sorted_df)
 print(sorted_df_dark)
 
@@ -178,9 +178,6 @@ conc_hist_dark = []
 conc_hist_ML = []
 conc_hist_dark_ML = []
 
-
-#sorted_X['SubhaloMass'] = sorted_X['SubhaloGasMass'].to_numpy()+sorted_X['SubhaloBHMass'].to_numpy()+sorted_X['SubhaloStarMass'].to_numpy()+sorted_X['SubhaloDMMass'].to_numpy()
-#sorted_X_dark['SubhaloMass'] =sorted_X_dark['SubhaloDMMass'].to_numpy()
 
 lowerbound = 0.01
 bins = [0.1,1,10]
@@ -224,6 +221,8 @@ for upperbound in bins:
     #mean_concentration.append(statistics.mean(concentration[conc_index]))
     #stdev.append(statistics.stdev(concentration[conc_index]))
     print(len(sorted_df['SubhaloSpinZ'][sorted_df.SubhaloMass.isin(mass_sorted[massindex])]))
+    print(len(sorted_df_dark['SubhaloSpinZ'][sorted_df_dark.SubhaloMass.isin(mass_sorted_dark[massindex_dark])]))
+
     conc_hist.append(concentration[massindex])
     conc_hist_dark.append(concentration_dark[massindex_dark])
     
@@ -312,6 +311,18 @@ for upperbound in bins:
     lowerbound= upperbound
 fig.savefig('ML-per-bin')
 #print(bins_dark)
+
+
+
+
+
+
+
+
+
+
+
+
 """
 for upperbound_dark in bins_dark:
     #get indices of mass lying inside bin
