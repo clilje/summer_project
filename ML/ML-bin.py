@@ -99,7 +99,7 @@ lowerbound = 0.01
 bins = [0.1,1,10]
 
 
-fig = plt.figure(figsize=(20,50))
+fig = plt.figure(figsize=(30,10))
 # add grid specifications
 gs = fig.add_gridspec(3, 3)
 # open axes/subplots
