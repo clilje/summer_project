@@ -204,6 +204,7 @@ y_dark = concentration_dark
 y_conc_ratio = y/y_dark
 sorted_X = sorted_data.drop(column_drop, axis=1)
 sorted_X_dark = sorted_data_dark.drop(column_drop_dark, axis=1)
+sorted_X_dark = sorted_X_dark.add_suffix('_DMO')
 #Predict the ratio using ML
 X_ratio = pd.concat([sorted_X,sorted_X_dark])
 
@@ -364,18 +365,25 @@ feature_names=['positionX','positionY','positionZ',
                     'spinZ','vel_dispersion','v_max',
                     'bh_dot','sfr','fof_mass',
                     'fof_distance']
+feature_names_dark= ['positionX_DMO','positionY_DMO','positionZ_DMO',
+                    'dm_mass_DMO','spinX_DMO','spinY_DMO',
+                    'spinZ_DMO','vel_dispersion_DMO','v_max_DMO']
+feature_names_ratio= ['positionX','positionY','positionZ',
+                    'gas_mass','dm_mass','stellar_mass',
+                    'bh_mass','spinX','spinY',
+                    'spinZ','vel_dispersion','v_max',
+                    'bh_dot','sfr','fof_mass',
+                    'fof_distance','positionX_DMO','positionY_DMO','positionZ_DMO',
+                    'dm_mass_DMO','spinX_DMO','spinY_DMO',
+                    'spinZ_DMO','vel_dispersion_DMO','v_max_DMO']
 fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
 #Plot Predicted vs actual values
 forest_importances =forest_importances.to_numpy()
 forest_std = forest_std.to_numpy
 for i in np.arange(0,len(feature_names),1):
-    axs[0].errorbar(to_keep,forest_importances[np.arange(i,len(forest_importances),16)], 
-                    yerr = forest_std[np.arange(i,len(forest_std),16)],
+    axs[0].errorbar(to_keep,forest_importances[np.arange(i,len(forest_importances),len(forest_importances)+1)], 
+                    yerr = forest_std[np.arange(i,len(forest_std),len(forest_std)+1)],
                     label=feature_names[i])
-
-axs[0].errorbar(to_keep,forest_importances[positionX_feature], yerr = std[positionX_feature],label='positionX')
-axs[0].errorbar(to_keep,forest_importances[positionY_feature], yerr = std[positionY_feature],label='positionY')
-axs[0].errorbar(to_keep,forest_importances[positionZ_feature], yerr = std[positionZ_feature],label='positionZ')
 
 #forest_importances.plot.bar(yerr=std, ax=axs[0])
 axs[0].set_xlabel(r'Snap Number')
@@ -386,7 +394,14 @@ axs[0].set_legend()
 
 
 #Plot predicted vs actual
-forest_importances_dark.plot.bar(yerr=std_dark, ax=axs[1])
+forest_importances_dark =forest_importances_dark.to_numpy()
+forest_std_dark = forest_std_dark.to_numpy
+for j in np.arange(0,len(feature_names_dark),1):
+    axs[0].errorbar(to_keep,forest_importances_dark[np.arange(j,len(forest_importances_dark),
+                                                              len(forest_importances_dark)+1)], 
+                    yerr = forest_std_dark[np.arange(i,len(forest_std_dark),len(forest_std_dark)+1)],
+                    label=feature_names_dark[i])
+#forest_importances_dark.plot.bar(yerr=std_dark, ax=axs[1])
 axs[1].set_xlabel(r'Feature importances using MDI')
 axs[1].set_ylabel(r'Mean decrease in impurity')
 axs[1].set_title('Feature Importance DMO')
