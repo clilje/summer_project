@@ -11,5 +11,5 @@ import h5py
 import numpy as np
 import pandas as pd
 
-data_csv = pd.read_csv('50-1-history.csv')
-print(data_csv.loc[[0]])
+data_csv = pd.read_csv('50-1-subhalo-history.csv')
+print(data_csv.loc[data_csv['index']==0])
