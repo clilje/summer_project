@@ -167,7 +167,15 @@ data_csv['Df_cat'] = pd.Categorical(data_csv['index'],
 sorted_data = data_csv.sort_values('Df_cat').dropna().copy()
 
 
+
+
+data_csv_dark['Df_cat'] = pd.Categorical(data_csv_dark['index'],
+                                             categories = sorted_data['index'],
+                                             ordered=True)
+sorted_data_dark = data_csv_dark.sort_values('Df_cat').dropna().copy()
+
 sorted_X = sorted_data.drop(column_drop, axis=1)
+sorted_X_dark = sorted_data_dark.drop(column_drop, axis=1)
 
 y = virrad/nfw_scalerad
 
@@ -258,11 +266,11 @@ forest_importances_ratio = pd.Series(importances_ratio, index=column_keep_ratio)
 
 fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
 #Plot Predicted vs actual values
-axs[0].errorbar()
+axs[0].errorbar(to_keep,)
 forest_importances.plot.bar(yerr=std, ax=axs[0])
-axs[0].set_xlabel(r'Feature importances using MDI')
+axs[0].set_xlabel(r'Snap Number')
 axs[0].set_ylabel(r'Mean decrease in impurity')
-axs[0].set_title('Feature Importance DM+Baryons')
+axs[0].set_title('Feature Importance using MDI DM+Baryons')
 
 
 
