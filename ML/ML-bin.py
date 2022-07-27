@@ -148,7 +148,8 @@ sorted_df = subhalo_info_dark.sort_values('Df_cat').dropna()
 mass_sorted = sorted_df['SubhaloMass']
 #lists to store data
 numhalos = len(subhalo_index)
-
+print(sorted_df)
+print(sorted_df_dark)
 
 #calculate concentration from given arrays
 concentration = virrad/nfw_scalerad
