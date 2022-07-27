@@ -53,50 +53,7 @@ print(sorted_data)
 print(sorted_Y)
 print(sorted_data_dark)
 print(sorted_Y_dark)
-#fit_param['Df_cat'] = pd.Categorical(fit_param['Halo Number'],
-#                                             categories = data_csv['index'],
-#                                             ordered=True)
-#sorted_df = fit_param.sort_values('Df_cat').dropna()
-#nfw_scalerad = sorted_df['NFW Scale Radius'].to_numpy()
-#virrad = sorted_df['Virial Radius'].to_numpy()
-#true_indices = sorted_df['Halo Number'].to_numpy().astype(int)
 
-#Reorder DMO Halos according to leftover DM+Baryon indices, cut all NaN
-#fit_param_dark['Df_cat'] = pd.Categorical(fit_param_dark['Halo Number'],
-#                                             categories = data_csv['index'],
-#                                             ordered=True)
-#sorted_df_dark = fit_param_dark.sort_values('Df_cat').dropna()
-#nfw_scalerad_dark = sorted_df_dark['NFW Scale Radius'].to_numpy()
-#virrad_dark = sorted_df_dark['Virial Radius'].to_numpy()
-
-
-#Reorder the input values according to leftover DM+Baryon indices, cut all NaN
-#data_csv['Df_cat'] = pd.Categorical(data_csv['index'],
-#                                             categories = true_indices,
-#                                             ordered=True)
-#sorted_data = data_csv.sort_values('Df_cat').dropna().copy()
-
-
-
-#data_csv_dark['Df_cat'] = pd.Categorical(data_csv_dark['index'],
-#                                             categories = true_indices,
-#                                             ordered=True)
-#sorted_data_dark = data_csv_dark.sort_values('Df_cat').dropna().copy()
-
-
-#fit_param_dark['Df_cat'] = pd.Categorical(fit_param_dark['Halo Number'],
-#                                             categories = sorted_data_dark['index'],
-#                                             ordered=True)
-#sorted_df_dark = fit_param_dark.sort_values('Df_cat').dropna()
-#nfw_scalerad_dark = sorted_df_dark['NFW Scale Radius'].to_numpy()
-#virrad_dark = sorted_df_dark['Virial Radius'].to_numpy()
-
-#fit_param['Df_cat'] = pd.Categorical(fit_param['Halo Number'],
-#                                             categories = sorted_data['index'],
-#                                             ordered=True)
-#sorted_df = fit_param.sort_values('Df_cat').dropna()
-#nfw_scalerad = sorted_df['NFW Scale Radius'].to_numpy()
-#virrad = sorted_df['Virial Radius'].to_numpy()
 
 all_snap = np.arange(2,100,1)
 to_keep = np.arange(9,100,10)
@@ -118,15 +75,16 @@ for i in to_drop:
     column_drop_dark.extend([str(i)+'positionX',str(i)+'positionY',str(i)+'positionZ',
                         str(i)+'dm_mass',str(i)+'spinX',str(i)+'spinY',
                         str(i)+'spinZ',str(i)+'vel_dispersion',str(i)+'v_max'])
-    column_keep.extend([str(i)+'positionX',str(i)+'positionY',str(i)+'positionZ',
-                        str(i)+'gas_mass',str(i)+'dm_mass',str(i)+'stellar_mass',
-                        str(i)+'bh_mass',str(i)+'spinX',str(i)+'spinY',
-                        str(i)+'spinZ',str(i)+'vel_dispersion',str(i)+'v_max',
-                        str(i)+'bh_dot',str(i)+'sfr',str(i)+'fof_mass',
-                        str(i)+'fof_distance'])
-    column_keep_dark.extend([str(i)+'positionX_DMO',str(i)+'positionY_DMO',str(i)+'positionZ_DMO',
-                        str(i)+'dm_mass_DMO',str(i)+'spinX_DMO',str(i)+'spinY_DMO',
-                        str(i)+'spinZ_DMO',str(i)+'vel_dispersion_DMO',str(i)+'v_max_DMO'])
+for j in np.flipud(to_keep):
+    column_keep.extend([str(j)+'positionX',str(j)+'positionY',str(j)+'positionZ',
+                        str(j)+'gas_mass',str(j)+'dm_mass',str(j)+'stellar_mass',
+                        str(j)+'bh_mass',str(j)+'spinX',str(j)+'spinY',
+                        str(j)+'spinZ',str(j)+'vel_dispersion',str(j)+'v_max',
+                        str(j)+'bh_dot',str(j)+'sfr',str(j)+'fof_mass',
+                        str(j)+'fof_distance'])
+    column_keep_dark.extend([str(j)+'positionX_DMO',str(j)+'positionY_DMO',str(j)+'positionZ_DMO',
+                        str(j)+'dm_mass_DMO',str(j)+'spinX_DMO',str(j)+'spinY_DMO',
+                        str(j)+'spinZ_DMO',str(j)+'vel_dispersion_DMO',str(j)+'v_max_DMO'])
 
 
 for x in all_snap:
@@ -168,30 +126,6 @@ Xtrain_dark, Xtest_dark, ytrain_dark, ytest_dark = train_test_split(sorted_X_dar
                                                 random_state=1)
 
 #Calculate the C_Bar/C_DMO ratio
-
-#fit_param['Df_cat'] = pd.Categorical(fit_param['Halo Number'],
-#                                             categories = sorted_data_dark['index'],
-#                                             ordered=True)
-#sorted_df = fit_param.sort_values('Df_cat').dropna()
-#nfw_scalerad = sorted_df['NFW Scale Radius'].to_numpy()
-#virrad = sorted_df['Virial Radius'].to_numpy()
-#data_csv['Df_cat'] = pd.Categorical(data_csv['index'],
-#                                             categories = sorted_data_dark['index'],
-#                                             ordered=True)
-#sorted_data = data_csv.sort_values('Df_cat').dropna().copy()
-
-
-
-
-#data_csv_dark['Df_cat'] = pd.Categorical(data_csv_dark['index'],
-#                                             categories = sorted_data['index'],
-#                                             ordered=True)
-#sorted_data_dark = data_csv_dark.sort_values('Df_cat').dropna().copy()
-
-#sorted_X = sorted_data.drop(column_drop, axis=1)
-#sorted_X_dark = sorted_data_dark.drop(column_drop_dark, axis=1)
-
-#y = virrad/nfw_scalerad
 
 sorted_data, sorted_data_dark = sorted_data.align(sorted_data_dark, join='inner', axis=0)
 sorted_Y, sorted_Y_dark = sorted_Y.align(sorted_Y_dark, join='inner', axis=0)
@@ -300,6 +234,13 @@ forest_std_dark = pd.Series(std_dark, index=column_keep_dark)
 forest_importances_ratio = pd.Series(importances_ratio, index=column_keep_ratio)
 forest_std_ratio = pd.Series(std_ratio, index=column_keep_ratio)
 
+
+forest_importances.to_csv('forest-importances.csv')
+forest_std.to_csv('forest-std.csv')
+forest_importances_dark.to_csv('forest-importances_dark.csv')
+forest_std_dark.to_csv('forest-std_dark.csv')
+forest_importances_ratio.to_csv('forest-importances_ratio.csv')
+forest_std_ratio.to_csv('forest-std_ratio.csv')
 """
 
 positionX_feature = list(filter(lambda x: 'positionX' in x, column_keep))
