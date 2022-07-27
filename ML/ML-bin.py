@@ -113,7 +113,7 @@ axs.append( fig.add_subplot(gs[1,2]) )
 axs.append( fig.add_subplot(gs[2,0]) )  
 axs.append( fig.add_subplot(gs[2,1]) )
 axs.append( fig.add_subplot(gs[2,2]) )
-
+print(len(axs))
 i = 0
 #loop over bins
 for upperbound in bins:
@@ -167,9 +167,6 @@ for upperbound in bins:
     Xtrain_dark, Xtest_dark, ytrain_dark, ytest_dark = train_test_split(bin_X_dark_final, concentration_dark[massindex_dark],
                                                     random_state=1)
     
-    #set up plotting params
-    fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
-    
     #Train Model for DM+Baryons
     model = RandomForestRegressor(n_estimators=1000,n_jobs=50)
     model.fit(Xtrain,ytrain)
@@ -217,7 +214,7 @@ for upperbound in bins:
     axs[i+2].set_ylabel(r'Mean decrease in impurity')
     axs[i+2].set_title('Feature Importance DMO')
         
-    i += 1
+    i += 3
     
     lowerbound= upperbound
 fig.savefig('ML-per-bin')
