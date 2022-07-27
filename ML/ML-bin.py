@@ -217,7 +217,7 @@ for upperbound in bins:
     axs[i+2].set_ylabel(r'Mean decrease in impurity')
     axs[i+2].set_title('Feature Importance DMO')
         
-    i += 3
+    i += 1
     
     lowerbound= upperbound
 fig.savefig('ML-per-bin')
