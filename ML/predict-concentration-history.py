@@ -48,7 +48,10 @@ fit_param = pd.read_csv('50-1_snap_99_fit_param.csv')
 
 sorted_data, sorted_Y = data_csv.align(fit_param, join='inner', axis=0)
 sorted_data_dark, sorted_Y_dark = data_csv_dark.align(fit_param_dark, join='inner', axis=0)
-
+print(sorted_data)
+print(sorted_Y)
+print(sorted_data_dark)
+print(sorted_Y_dark)
 #fit_param['Df_cat'] = pd.Categorical(fit_param['Halo Number'],
 #                                             categories = data_csv['index'],
 #                                             ordered=True)
