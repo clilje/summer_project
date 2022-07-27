@@ -30,22 +30,22 @@ p_crit = 127 #m_sun/(kpc^3)
 #get the input data from the Group Catalogues
 #DM + Baryons
 data_csv = pd.read_csv('50-1-subhalo-history.csv')
-data_csv.set_index('index')
+data_csv =data_csv.set_index('index')
 #DMO
 data_csv_dark = pd.read_csv('50-1-subhalo-history-dark.csv')
-data_csv_dark.set_index('index')
+data_csv_dark = data_csv_dark.set_index('index')
 
 #Get the nessecary data to calculate the concentration from the fit files
 
 #Prepare the dataframes to be resorted to match Halo Indices
 fit_param_dark = pd.read_csv('50-1_snap_99_fit_param-dark.csv')
-fit_param_dark.set_index('Halo Number')
+fit_param_dark = fit_param_dark.set_index('Halo Number')
 #true_indices_dark = fit_param_dark['Halo Number'].to_numpy().astype(int)
 
 #Import the Fit Parameters for DM+Baryons
 #Reorder according to DMO Halo Indices, cut all NaN
 fit_param = pd.read_csv('50-1_snap_99_fit_param.csv')
-fit_param.set_index('Halo Number')
+fit_param = fit_param.set_index('Halo Number')
 
 sorted_data, sorted_Y = data_csv.align(fit_param, join='inner', axis=0)
 sorted_data_dark, sorted_Y_dark = data_csv_dark.align(fit_param_dark, join='inner', axis=0)
