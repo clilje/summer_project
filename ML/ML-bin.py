@@ -198,12 +198,15 @@ for upperbound in bins:
     #ensure no error for stdev or mean
     #if conc_index.size ==1 or conc_index.size ==0:
     #    break
-    
+    print(len(massindex))
+    print(len(concentration[conc_index]))
+    print(len(massindex_dark))
+    print(len(concentration_dark[massindex_dark]))
     #append all data to lists
     mean_mass.append(((upperbound-lowerbound)/2)*h)
     #mean_concentration.append(statistics.mean(concentration[conc_index]))
     #stdev.append(statistics.stdev(concentration[conc_index]))
-    
+    print(len(sorted_X['SubhaloSpinZ'][sorted_X.SubhaloMass.isin(full_mass[massindex])]))
     conc_hist.append(concentration[conc_index])
     conc_hist_dark.append(concentration_dark[massindex_dark])
     
