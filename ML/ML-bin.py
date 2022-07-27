@@ -35,16 +35,16 @@ data_csv = pd.read_csv('50-1-subhalo-info.csv',usecols=['SubhaloIndex','SubhaloM
 column_names = ['SubhaloIndex','SubhaloMass','SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
                 'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
                 'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter']
-X = data_csv[column_names]
+#X = data_csv[column_names]
 
 #DMO
 data_csv_dark = pd.read_csv('50-1-subhalo-info-dark.csv',usecols=['SubhaloIndex','SubhaloMass','SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 
                      'SubhaloVmax','FoFMass','FoFDistanceCenter', ])
 column_names_dark = ['SubhaloIndex','SubhaloMass','SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 
                      'SubhaloVmax','FoFMass','FoFDistanceCenter']
-X_dark = data_csv_dark[column_names_dark]
+#X_dark = data_csv_dark[column_names_dark]
 
-
+"""
 #Get the nessecary data to calculate the concentration from the fit files
 
 #Prepare the dataframes to be resorted to match Halo Indices
@@ -93,20 +93,16 @@ sorted_X_dark = pd.DataFrame([sorted_data_dark['SubhaloIndex'],sorted_data_dark[
                          sorted_data_dark['SubhaloSpinZ'],sorted_data_dark['SubhaloVelDisp'],
                          sorted_data_dark['SubhaloVmax'],sorted_data_dark['FoFMass'],
                          sorted_data_dark['FoFDistanceCenter']]).T
-
+"""#
 
 #Calculate concentration from Re-indexed input arrays and set as expected value
-concentration = virrad/nfw_scalerad
-concentration_dark = virrad_dark/nfw_scalerad_dark
-
-y = concentration
-y_dark = concentration_dark
-print(y)
-print(y_dark)
+#concentration = virrad/nfw_scalerad
+#concentration_dark = virrad_dark/nfw_scalerad_dark
 
 
-print(sorted_X)
-print(sorted_X_dark)
+
+#print(sorted_X)
+#print(sorted_X_dark)
 
 
 
@@ -124,6 +120,17 @@ nfw_scalerad = fit_param['NFW Scale Radius'].to_numpy()
 datapoint = fit_param['DataPoints'].to_numpy()
 virrad = fit_param['Virial Radius'].to_numpy()
 true_indices = fit_param['Halo Number'].to_numpy().astype(int)
+
+subhalo_info = pd.read_csv('50-1-subhalo-info.csv')
+subhalo_info['Df_cat'] = pd.Categorical(subhalo_info['SubhaloIndex'],
+                                             categories = true_indices,
+                                             ordered=True)
+#print(subhalo_info_dark.sort_values('Df_cat'))
+sorted_df = subhalo_info.sort_values('Df_cat').dropna()
+#print(sorted_df)
+mass_sorted = sorted_df['SubhaloMass']
+
+
 
 #Similarly for DMO
 
@@ -143,9 +150,9 @@ subhalo_info_dark['Df_cat'] = pd.Categorical(subhalo_info_dark['SubhaloIndex'],
                                              categories = true_indices_dark,
                                              ordered=True)
 #print(subhalo_info_dark.sort_values('Df_cat'))
-sorted_df = subhalo_info_dark.sort_values('Df_cat').dropna()
+sorted_df_dark = subhalo_info_dark.sort_values('Df_cat').dropna()
 #print(sorted_df)
-mass_sorted = sorted_df['SubhaloMass']
+mass_sorted_dark = sorted_df_dark['SubhaloMass']
 #lists to store data
 numhalos = len(subhalo_index)
 print(sorted_df)
@@ -154,7 +161,16 @@ print(sorted_df_dark)
 #calculate concentration from given arrays
 concentration = virrad/nfw_scalerad
 concentration_dark = virrad_dark/nfw_scalerad_dark
+
+y = concentration
+y_dark = concentration_dark
+print(y)
+print(y_dark)
+
+
 #Prepare mass to be binned
+
+
 mean_mass = []
 conc_hist = []
 conc_hist_dark = []
@@ -207,32 +223,32 @@ for upperbound in bins:
     mean_mass.append(((upperbound-lowerbound)/2)*h)
     #mean_concentration.append(statistics.mean(concentration[conc_index]))
     #stdev.append(statistics.stdev(concentration[conc_index]))
-    print(len(sorted_X['SubhaloSpinZ'][sorted_X.SubhaloMass.isin(full_mass[massindex])]))
+    print(len(sorted_df['SubhaloSpinZ'][sorted_df.SubhaloMass.isin(full_mass[massindex])]))
     conc_hist.append(concentration[conc_index])
     conc_hist_dark.append(concentration_dark[massindex_dark])
     
-    bin_X_final = pd.DataFrame([sorted_X['SubhaloGasMass'][sorted_X.SubhaloMass.isin(full_mass[massindex])],
-                                sorted_X['SubhaloStarMass'][sorted_X.SubhaloMass.isin(full_mass[massindex])],
-                             sorted_X['SubhaloBHMass'][sorted_X.SubhaloMass.isin(full_mass[massindex])],
-                             sorted_X['SubhaloDMMass'][sorted_X.SubhaloMass.isin(full_mass[massindex])],
-                             sorted_X['SubhaloSpinX'][sorted_X.SubhaloMass.isin(full_mass[massindex])],
-                             sorted_X['SubhaloSpinY'][sorted_X.SubhaloMass.isin(full_mass[massindex])],
-                             sorted_X['SubhaloSpinZ'][sorted_X.SubhaloMass.isin(full_mass[massindex])],
-                             sorted_X['SubhaloVelDisp'][sorted_X.SubhaloMass.isin(full_mass[massindex])],
-                             sorted_X['SubhaloVmax'][sorted_X.SubhaloMass.isin(full_mass[massindex])],
-                             sorted_X['SubhaloBHMdot'][sorted_X.SubhaloMass.isin(full_mass[massindex])],
-                             sorted_X['SubhaloSFR'][sorted_X.SubhaloMass.isin(full_mass[massindex])],
-                             sorted_X['FoFMass'][sorted_X.SubhaloMass.isin(full_mass[massindex])],
-                             sorted_X['FoFDistanceCenter'][sorted_X.SubhaloMass.isin(full_mass[massindex])]]).T
+    bin_X_final = pd.DataFrame([sorted_df['SubhaloGasMass'][sorted_df.SubhaloMass.isin(full_mass[massindex])],
+                                sorted_df['SubhaloStarMass'][sorted_df.SubhaloMass.isin(full_mass[massindex])],
+                             sorted_df['SubhaloBHMass'][sorted_df.SubhaloMass.isin(full_mass[massindex])],
+                             sorted_df['SubhaloDMMass'][sorted_df.SubhaloMass.isin(full_mass[massindex])],
+                             sorted_df['SubhaloSpinX'][sorted_df.SubhaloMass.isin(full_mass[massindex])],
+                             sorted_df['SubhaloSpinY'][sorted_df.SubhaloMass.isin(full_mass[massindex])],
+                             sorted_df['SubhaloSpinZ'][sorted_df.SubhaloMass.isin(full_mass[massindex])],
+                             sorted_df['SubhaloVelDisp'][sorted_df.SubhaloMass.isin(full_mass[massindex])],
+                             sorted_df['SubhaloVmax'][sorted_df.SubhaloMass.isin(full_mass[massindex])],
+                             sorted_df['SubhaloBHMdot'][sorted_df.SubhaloMass.isin(full_mass[massindex])],
+                             sorted_df['SubhaloSFR'][sorted_df.SubhaloMass.isin(full_mass[massindex])],
+                             sorted_df['FoFMass'][sorted_df.SubhaloMass.isin(full_mass[massindex])],
+                             sorted_df['FoFDistanceCenter'][sorted_df.SubhaloMass.isin(full_mass[massindex])]]).T
     
-    bin_X_dark_final = pd.DataFrame([sorted_X_dark['SubhaloDMMass'][sorted_X_dark.SubhaloMass.isin(mass_sorted[massindex_dark])],
-                             sorted_X_dark['SubhaloSpinX'][sorted_X_dark.SubhaloMass.isin(mass_sorted[massindex_dark])],
-                             sorted_X_dark['SubhaloSpinY'][sorted_X_dark.SubhaloMass.isin(mass_sorted[massindex_dark])],
-                             sorted_X_dark['SubhaloSpinZ'][sorted_X_dark.SubhaloMass.isin(mass_sorted[massindex_dark])],
-                             sorted_X_dark['SubhaloVelDisp'][sorted_X_dark.SubhaloMass.isin(mass_sorted[massindex_dark])],
-                             sorted_X_dark['SubhaloVmax'][sorted_X_dark.SubhaloMass.isin(mass_sorted[massindex_dark])],
-                             sorted_X_dark['FoFMass'][sorted_X_dark.SubhaloMass.isin(mass_sorted[massindex_dark])],
-                             sorted_X_dark['FoFDistanceCenter'][sorted_X_dark.SubhaloMass.isin(mass_sorted[massindex_dark])]]).T
+    bin_X_dark_final = pd.DataFrame([sorted_df_dark['SubhaloDMMass'][sorted_df_dark.SubhaloMass.isin(mass_sorted[massindex_dark])],
+                             sorted_df_dark['SubhaloSpinX'][sorted_df_dark.SubhaloMass.isin(mass_sorted[massindex_dark])],
+                             sorted_df_dark['SubhaloSpinY'][sorted_df_dark.SubhaloMass.isin(mass_sorted[massindex_dark])],
+                             sorted_df_dark['SubhaloSpinZ'][sorted_df_dark.SubhaloMass.isin(mass_sorted[massindex_dark])],
+                             sorted_df_dark['SubhaloVelDisp'][sorted_df_dark.SubhaloMass.isin(mass_sorted[massindex_dark])],
+                             sorted_df_dark['SubhaloVmax'][sorted_df_dark.SubhaloMass.isin(mass_sorted[massindex_dark])],
+                             sorted_df_dark['FoFMass'][sorted_df_dark.SubhaloMass.isin(mass_sorted[massindex_dark])],
+                             sorted_df_dark['FoFDistanceCenter'][sorted_df_dark.SubhaloMass.isin(mass_sorted[massindex_dark])]]).T
         
         
     Xtrain, Xtest, ytrain, ytest = train_test_split(bin_X_final, concentration[conc_index],
