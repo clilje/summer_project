@@ -67,6 +67,28 @@ data_csv['Df_cat'] = pd.Categorical(data_csv['index'],
                                              ordered=True)
 sorted_data = data_csv.sort_values('Df_cat').dropna().copy()
 
+
+
+data_csv_dark['Df_cat'] = pd.Categorical(data_csv_dark['index'],
+                                             categories = true_indices,
+                                             ordered=True)
+sorted_data_dark = data_csv_dark.sort_values('Df_cat').dropna().copy()
+
+
+fit_param_dark['Df_cat'] = pd.Categorical(fit_param_dark['Halo Number'],
+                                             categories = sorted_data_dark['index'],
+                                             ordered=True)
+sorted_df_dark = fit_param_dark.sort_values('Df_cat').dropna()
+nfw_scalerad_dark = sorted_df_dark['NFW Scale Radius'].to_numpy()
+virrad_dark = sorted_df_dark['Virial Radius'].to_numpy()
+
+fit_param['Df_cat'] = pd.Categorical(fit_param['Halo Number'],
+                                             categories = sorted_data['index'],
+                                             ordered=True)
+sorted_df = fit_param.sort_values('Df_cat').dropna()
+nfw_scalerad = sorted_df['NFW Scale Radius'].to_numpy()
+virrad = sorted_df['Virial Radius'].to_numpy()
+
 all_snap = np.arange(2,100,1)
 to_keep = np.arange(9,100,10)
 
@@ -91,12 +113,6 @@ for x in all_snap:
 #ToDo: deleta all unnecessary columns to retain required data
 
 sorted_X = sorted_data.drop(column_drop, axis=1)
-
-data_csv_dark['Df_cat'] = pd.Categorical(data_csv_dark['index'],
-                                             categories = true_indices,
-                                             ordered=True)
-sorted_data_dark = data_csv_dark.sort_values('Df_cat').dropna().copy()
-
 sorted_X_dark = sorted_data_dark.drop(column_drop_dark, axis=1)
 sorted_X_dark = sorted_X_dark.add_suffix('_DMO')
 #Calculate concentration from Re-indexed input arrays and set as expected value
