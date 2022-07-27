@@ -94,8 +94,11 @@ to_keep = np.arange(9,100,10)
 
 to_drop = np.setdiff1d(all_snap, to_keep)
 
+
 column_drop = ['index','Df_cat']
 column_drop_dark = column_drop.copy()
+column_keep = ['index','Df_cat']
+column_keep_dark = column_keep.copy()
 for i in to_drop:
     column_drop.extend([str(i)+'positionX',str(i)+'positionY',str(i)+'positionZ',
                         str(i)+'gas_mass',str(i)+'dm_mass',str(i)+'stellar_mass',
@@ -106,11 +109,27 @@ for i in to_drop:
     column_drop_dark.extend([str(i)+'positionX',str(i)+'positionY',str(i)+'positionZ',
                         str(i)+'dm_mass',str(i)+'spinX',str(i)+'spinY',
                         str(i)+'spinZ',str(i)+'vel_dispersion',str(i)+'v_max'])
+    column_keep.extend([str(i)+'positionX',str(i)+'positionY',str(i)+'positionZ',
+                        str(i)+'gas_mass',str(i)+'dm_mass',str(i)+'stellar_mass',
+                        str(i)+'bh_mass',str(i)+'spinX',str(i)+'spinY',
+                        str(i)+'spinZ',str(i)+'vel_dispersion',str(i)+'v_max',
+                        str(i)+'bh_dot',str(i)+'sfr',str(i)+'fof_mass',
+                        str(i)+'fof_distance'])
+    column_keep_dark.extend([str(i)+'positionX_DMO',str(i)+'positionY_DMO',str(i)+'positionZ_DMO',
+                        str(i)+'dm_mass_DMO',str(i)+'spinX_DMO',str(i)+'spinY_DMO',
+                        str(i)+'spinZ_DMO',str(i)+'vel_dispersion_DMO',str(i)+'v_max_DMO'])
+
 
 for x in all_snap:
     column_drop.extend([str(x)+'halfmass_rad',str(x)+'particle_number'])
     column_drop_dark.extend([str(x)+'halfmass_rad',str(x)+'particle_number'])
+
+column_keep_ratio = column_keep.copy()
+column_keep_ratio.extend(column_keep_dark)
+
 #ToDo: deleta all unnecessary columns to retain required data
+
+
 
 sorted_X = sorted_data.drop(column_drop, axis=1)
 sorted_X_dark = sorted_data_dark.drop(column_drop_dark, axis=1)
@@ -135,6 +154,25 @@ Xtrain_dark, Xtest_dark, ytrain_dark, ytest_dark = train_test_split(sorted_X_dar
                                                 random_state=1)
 
 #Calculate the C_Bar/C_DMO ratio
+
+fit_param['Df_cat'] = pd.Categorical(fit_param['Halo Number'],
+                                             categories = sorted_data_dark['index'],
+                                             ordered=True)
+sorted_df = fit_param.sort_values('Df_cat').dropna()
+nfw_scalerad = sorted_df['NFW Scale Radius'].to_numpy()
+virrad = sorted_df['Virial Radius'].to_numpy()
+data_csv['Df_cat'] = pd.Categorical(data_csv['index'],
+                                             categories = sorted_data_dark['index'],
+                                             ordered=True)
+sorted_data = data_csv.sort_values('Df_cat').dropna().copy()
+
+
+sorted_X = sorted_data.drop(column_drop, axis=1)
+
+y = virrad/nfw_scalerad
+
+
+
 y_conc_ratio = y/y_dark
 
 #Predict the ratio using ML
@@ -211,22 +249,16 @@ fig.savefig('concentration_ratio_fof-final.jpg')
 fig.clf()
 
 """
-forest_importances = pd.Series(importances, index=['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
-                'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
-                'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter'])
+forest_importances = pd.Series(importances, index=column_keep)
 
-forest_importances_dark = pd.Series(importances_dark, index=['SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
-                'FoFMass','FoFDistanceCenter'])
+forest_importances_dark = pd.Series(importances_dark, index=column_keep_dark)
 
-forest_importances_ratio = pd.Series(importances_ratio, index=['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
-                'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
-                'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter',
-                'SubhaloDMMass - DMO','SubhaloSpinX- DMO','SubhaloSpinY- DMO','SubhaloSpinZ- DMO','SubhaloVelDisp- DMO', 
-                                     'SubhaloVmax- DMO','FoFMass- DMO','FoFDistanceCenter- DMO'])
+forest_importances_ratio = pd.Series(importances_ratio, index=column_keep_ratio)
 
 
 fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
 #Plot Predicted vs actual values
+axs[0].errorbar()
 forest_importances.plot.bar(yerr=std, ax=axs[0])
 axs[0].set_xlabel(r'Feature importances using MDI')
 axs[0].set_ylabel(r'Mean decrease in impurity')
