@@ -104,9 +104,9 @@ to_keep = np.arange(9,100,10)
 to_drop = np.setdiff1d(all_snap, to_keep)
 
 
-column_drop = ['index']
+column_drop = []
 column_drop_dark = column_drop.copy()
-column_keep = ['index']
+column_keep = []
 column_keep_dark = column_keep.copy()
 for i in to_drop:
     column_drop.extend([str(i)+'positionX',str(i)+'positionY',str(i)+'positionZ',
