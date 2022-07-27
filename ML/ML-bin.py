@@ -76,7 +76,7 @@ X['Df_cat'] = pd.Categorical(X['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data = X.sort_values('Df_cat').dropna().copy()
-sorted_X = pd.DataFrame([sorted_data['SubhaloGasMass'],sorted_data['SubhaloStarMass'],
+sorted_X = pd.DataFrame([sorted_data['SubhaloMass'],sorted_data['SubhaloGasMass'],sorted_data['SubhaloStarMass'],
                          sorted_data['SubhaloBHMass'],sorted_data['SubhaloDMMass'],
                          sorted_data['SubhaloSpinX'],sorted_data['SubhaloSpinY'],
                          sorted_data['SubhaloSpinZ'],sorted_data['SubhaloVelDisp'],
@@ -88,7 +88,7 @@ X_dark['Df_cat'] = pd.Categorical(X_dark['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data_dark = X_dark.sort_values('Df_cat').dropna().copy()
-sorted_X_dark = pd.DataFrame([sorted_data_dark['SubhaloDMMass'],
+sorted_X_dark = pd.DataFrame([sorted_data_dark['SubhaloMass'],sorted_data_dark['SubhaloDMMass'],
                          sorted_data_dark['SubhaloSpinX'],sorted_data_dark['SubhaloSpinY'],
                          sorted_data_dark['SubhaloSpinZ'],sorted_data_dark['SubhaloVelDisp'],
                          sorted_data_dark['SubhaloVmax'],sorted_data_dark['FoFMass'],
@@ -107,28 +107,6 @@ print(y_dark)
 
 print(sorted_X)
 print(sorted_X_dark)
-
-Xtrain, Xtest, ytrain, ytest = train_test_split(sorted_X, y,
-                                                random_state=1)
-
-Xtrain_dark, Xtest_dark, ytrain_dark, ytest_dark = train_test_split(sorted_X_dark, y_dark,
-                                                random_state=1)
-
-#set up plotting params
-fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
-
-#Train Model for DM+Baryons
-model = RandomForestRegressor(n_estimators=1000,n_jobs=50)
-model.fit(Xtrain,ytrain)
-y_pred = model.predict(Xtest)
-print(y)
-print(y_pred)
-#Train Model for DMO
-model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=50)
-model_dark.fit(Xtrain_dark,ytrain_dark)
-y_pred_dark = model_dark.predict(Xtest_dark)
-
-
 
 
 
@@ -176,86 +154,145 @@ numhalos = len(subhalo_index)
 concentration = virrad/nfw_scalerad
 concentration_dark = virrad_dark/nfw_scalerad_dark
 #Prepare mass to be binned
-bins = np.logspace(-1.5,5.5,12)
-bins_dark = np.logspace(-1.5,5.5,12)
-#get lists for binning
 mean_mass = []
-mean_concentration =[]
-stdev = []
-lowerbound = 0
-
-mean_mass_dark = []
-mean_concentration_dark =[]
-stdev_dark = []
-lowerbound_dark = 0
-
 conc_hist = []
 conc_hist_dark = []
 
-#ML
-#Prepare mass to be binned
-bins_ML = np.logspace(-1.5,5.5,10)
-bins_dark_ML = np.logspace(-1.5,5.5,10)
-#get lists for binning
-mean_mass_ML = []
-mean_concentration_ML =[]
-stdev_ML = []
-lowerbound_ML = 0
-
-mean_mass_dark_ML = []
-mean_concentration_dark_ML =[]
-stdev_dark_ML = []
-lowerbound_dark_ML = 0
-
 conc_hist_ML = []
 conc_hist_dark_ML = []
-"""
-subhalo_info_ML = pd.read_csv('50-1-subhalo-info.csv',usecols=['SubhaloMass','SubhaloDMMass'])
-subhalo_info_ML['Df_cat'] = pd.Categorical(subhalo_info_ML['SubhaloDMMass'],
-                                             categories = Xtest['SubhaloDMMass'],
-                                             ordered=True)
-#print(subhalo_info_dark.sort_values('Df_cat'))
-sorted_df_ML = subhalo_info_ML.sort_values('Df_cat').dropna()
-#print(sorted_df)
-"""
-mass_sorted_ML = Xtest['SubhaloGasMass'].to_numpy()+Xtest['SubhaloBHMass'].to_numpy()+Xtest['SubhaloStarMass'].to_numpy()+Xtest['SubhaloDMMass'].to_numpy()
-mass_sorted_ML_dark =Xtest_dark['SubhaloDMMass'].to_numpy()
-
-"""
-subhalo_info_ML_dark = pd.read_csv('50-1-subhalo-info-dark.csv',usecols=['SubhaloMass','SubhaloDMMass'])
-subhalo_info_ML_dark['Df_cat'] = pd.Categorical(subhalo_info_ML_dark['SubhaloDMMass'],
-                                             categories = Xtest_dark['SubhaloDMMass'],
-                                             ordered=True)
-#print(subhalo_info_dark.sort_values('Df_cat'))
-sorted_df_ML_dark = subhalo_info_ML_dark.sort_values('Df_cat').dropna()
-#print(sorted_df)
-mass_sorted_ML_dark = sorted_df_ML_dark['SubhaloMass']
-"""
 
 
+sorted_X['SubhaloMass'] = sorted_X['SubhaloGasMass'].to_numpy()+sorted_X['SubhaloBHMass'].to_numpy()+sorted_X['SubhaloStarMass'].to_numpy()+sorted_X['SubhaloDMMass'].to_numpy()
+sorted_X_dark['SubhaloMass'] =sorted_X_dark['SubhaloDMMass'].to_numpy()
+
+lowerbound = 0.01
+bins = [0.1,1,10]
+
+
+fig = plt.figure(figsize=(20,50))
+# add grid specifications
+gs = fig.add_gridspec(3, 3)
+# open axes/subplots
+axs = []
+axs.append( fig.add_subplot(gs[0,0]) )
+axs.append( fig.add_subplot(gs[0,1]) )   
+axs.append( fig.add_subplot(gs[0,2]) )  
+axs.append( fig.add_subplot(gs[1,0]) )
+axs.append( fig.add_subplot(gs[1,1]) )
+axs.append( fig.add_subplot(gs[1,2]) )
+axs.append( fig.add_subplot(gs[2,0]) )  
+axs.append( fig.add_subplot(gs[2,1]) )
+axs.append( fig.add_subplot(gs[2,2]) )
+
+i = 0
 #loop over bins
 for upperbound in bins:
     #get indices of mass lying inside bin
     massindex = np.where(np.logical_and(full_mass[true_indices]<upperbound,full_mass[true_indices]>lowerbound))[0]
+    mass_sorted = np.array(mass_sorted)
+    massindex_dark = np.where(np.logical_and(mass_sorted<upperbound,mass_sorted>lowerbound))[0]
     
     #get indices for which concentration values correspond to this
     conc_index = np.searchsorted(true_indices, subhalo_index[true_indices][massindex])
     
     #ensure no error for stdev or mean
-    if conc_index.size ==1 or conc_index.size ==0:
-        break
+    #if conc_index.size ==1 or conc_index.size ==0:
+    #    break
     
     #append all data to lists
     mean_mass.append(((upperbound-lowerbound)/2)*h)
-    mean_concentration.append(statistics.mean(concentration[conc_index]))
-    stdev.append(statistics.stdev(concentration[conc_index]))
+    #mean_concentration.append(statistics.mean(concentration[conc_index]))
+    #stdev.append(statistics.stdev(concentration[conc_index]))
     
     conc_hist.append(concentration[conc_index])
+    conc_hist_dark.append(concentration_dark[massindex_dark])
+    
+    
+    sorted_X['Df_cat'] = pd.Categorical(sorted_X['SubhaloMass'],
+                                                 categories = full_mass[massindex],
+                                                 ordered=True)
+    bin_X = sorted_X.sort_values('Df_cat').dropna().copy()
+    bin_X_final = pd.DataFrame([bin_X['SubhaloMass'],bin_X['SubhaloGasMass'],bin_X['SubhaloStarMass'],
+                             bin_X['SubhaloBHMass'],bin_X['SubhaloDMMass'],
+                             bin_X['SubhaloSpinX'],bin_X['SubhaloSpinY'],
+                             bin_X['SubhaloSpinZ'],bin_X['SubhaloVelDisp'],
+                             bin_X['SubhaloVmax'],bin_X['SubhaloBHMdot'],
+                             bin_X['SubhaloSFR'],bin_X['FoFMass'],
+                             bin_X['FoFDistanceCenter']]).T
+    
+    sorted_X_dark['Df_cat'] = pd.Categorical(sorted_X_dark['SubhaloMass'],
+                                                 categories = mass_sorted[massindex_dark],
+                                                 ordered=True)
+    bin_X_dark = sorted_X_dark.sort_values('Df_cat').dropna().copy()
+    bin_X_dark_final = pd.DataFrame([bin_X_dark['SubhaloDMMass'],
+                             bin_X_dark['SubhaloSpinX'],bin_X_dark['SubhaloSpinY'],
+                             bin_X_dark['SubhaloSpinZ'],bin_X_dark['SubhaloVelDisp'],
+                             bin_X_dark['SubhaloVmax'],bin_X_dark['FoFMass'],
+                             bin_X_dark['FoFDistanceCenter']]).T
+        
+        
+    Xtrain, Xtest, ytrain, ytest = train_test_split(bin_X_final, concentration[conc_index],
+                                                    random_state=1)
+    
+    Xtrain_dark, Xtest_dark, ytrain_dark, ytest_dark = train_test_split(bin_X_dark_final, concentration_dark[massindex_dark],
+                                                    random_state=1)
+    
+    #set up plotting params
+    fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
+    
+    #Train Model for DM+Baryons
+    model = RandomForestRegressor(n_estimators=1000,n_jobs=50)
+    model.fit(Xtrain,ytrain)
+    y_pred = model.predict(Xtest)
+    importances = model.feature_importances_
+    std = np.std([tree.feature_importances_ for tree in model.estimators_], axis=0)
+
+    print(y)
+    print(y_pred)
+    #Train Model for DMO
+    model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=50)
+    model_dark.fit(Xtrain_dark,ytrain_dark)
+    y_pred_dark = model_dark.predict(Xtest_dark)
+    importances_dark = model_dark.feature_importances_
+    std_dark = np.std([tree_dark.feature_importances_ for tree_dark in model_dark.estimators_], axis=0)
+
+
+    forest_importances = pd.Series(importances, index=['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
+                    'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
+                    'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter'])
+
+    forest_importances_dark = pd.Series(importances_dark, index=['SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
+                    'FoFMass','FoFDistanceCenter'])
+
+        
+    axs[i].hist(conc_hist[-1][np.where(conc_hist[-1]<30)[0]], alpha = 0.5, color='magenta', label='Full Physics', density = True, bins=100)
+    axs[i].hist(y_pred_dark[np.where(y_pred_dark<30)[0]], alpha = 0.5, color='green', label='ML DMO', density = True, bins=100)
+    axs[i].hist(y_pred[np.where(y_pred<30)[0]], alpha = 0.5, color='blue', label='ML Full Physics', density = True, bins=100)
+    axs[i].hist(conc_hist_dark[-1][np.where(conc_hist_dark[-1]<30)[0]], alpha = 0.5, color='red', label='DMO', density = True, bins=100)
+    
+
+    axs[i].set_xlabel(r'$c_{200}$')
+    axs[i].set_ylabel(r'Number of Halos')
+    axs[i].set_xlim(0,30)
+    axs[i].set_title('Mass Bin '+str(round(mean_mass[-1],5))+r' $10^{10} M_{\odot}$')
+    axs[i].legend()
+    
+    forest_importances.plot.bar(yerr=std, ax=axs[i+1])
+    axs[i+1].set_xlabel(r'Feature importances using MDI')
+    axs[i+1].set_ylabel(r'Mean decrease in impurity')
+    axs[i+1].set_title('Feature Importance DM+Baryons')
+    
+    forest_importances_dark.plot.bar(yerr=std_dark, ax=axs[i+2])
+    axs[i+2].set_xlabel(r'Feature importances using MDI')
+    axs[i+2].set_ylabel(r'Mean decrease in impurity')
+    axs[i+2].set_title('Feature Importance DMO')
+        
+    i += 3
     
     lowerbound= upperbound
-    
+fig.savefig('ML-per-bin')
 #print(bins_dark)
-
+"""
 for upperbound_dark in bins_dark:
     #get indices of mass lying inside bin
     #mass_sorted = []
@@ -282,9 +319,9 @@ for upperbound_dark in bins_dark:
     conc_hist_dark.append(concentration_dark[conc_index_dark])
     
     lowerbound_dark= upperbound_dark
+"""  
     
-    
-    
+"""
 #ML
 
 #loop over bins
@@ -576,3 +613,4 @@ print('Overall Fraction of halos with concentration above 30: '
       +str(bin0_ML+bin1_ML+bin2_ML+bin3_ML+bin4_ML+bin5_ML+bin6_ML+bin7_ML+bin8_ML+bin9_ML)+' ML DMO: '
       +str(bind0_ML+bind1_ML+bind2_ML+bind3_ML+bind4_ML+bind5_ML+bind6_ML+bind7_ML+bind8_ML+bind9_ML))
 
+"""
