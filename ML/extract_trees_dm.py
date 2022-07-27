@@ -94,7 +94,7 @@ def extract_trees(filepath):
             max_snap = 99
             input_properties = ['positionX','positionY','positionZ','halfmass_rad',
                                 'particle_number','dm_mass', 
-                                'spinX','spinY','spinZ', 'vel_dispersion']
+                                'spinX','spinY','spinZ', 'vel_dispersion','v_max']
 
             snapshots = list(range(max_snap, min_snap-1, -1))
             n_input, n_snap = len(input_properties), len(snapshots)
