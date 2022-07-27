@@ -207,30 +207,39 @@ for upperbound in bins:
     conc_hist.append(concentration[conc_index])
     conc_hist_dark.append(concentration_dark[massindex_dark])
     
-    indices = sorted_X.index[sorted_X['SubhaloMass']<upperbound and sorted_X['SubhaloMass']>lowerbound]
+    #indices = sorted_X.index[sorted_X['SubhaloMass']<upperbound and sorted_X['SubhaloMass']>lowerbound].to_list()
     #sorted_X['sort'] = pd.Categorical(sorted_X['SubhaloMass'],
     #                                             categories = full_mass[massindex],
     #                                             ordered=True)
-    #bin_X = sorted_X.sort_values('sort').dropna().copy()
-    bin_X_final = pd.DataFrame([sorted_X['SubhaloGasMass'][indices],sorted_X['SubhaloStarMass'][indices],
-                             sorted_X['SubhaloBHMass'][indices],sorted_X['SubhaloDMMass'][indices],
-                             sorted_X['SubhaloSpinX'][indices],sorted_X['SubhaloSpinY'][indices],
-                             sorted_X['SubhaloSpinZ'][indices],sorted_X['SubhaloVelDisp'][indices],
-                             sorted_X['SubhaloVmax'][indices],sorted_X['SubhaloBHMdot'][indices],
-                             sorted_X['SubhaloSFR'][indices],sorted_X['FoFMass'][indices],
-                             sorted_X['FoFDistanceCenter'][indices]]).T
+    #bin_X = sored_X.sort_values('sort').dropna().copy()
+    bin_X_final = pd.DataFrame([sorted_X['SubhaloGasMass'][(sorted_X['SubhaloMass']<upperbound) & (sorted_X['SubhaloMass']>lowerbound)],
+                                sorted_X['SubhaloStarMass'][(sorted_X['SubhaloMass']<upperbound) & (sorted_X['SubhaloMass']>lowerbound)],
+                             sorted_X['SubhaloBHMass'][(sorted_X['SubhaloMass']<upperbound) & (sorted_X['SubhaloMass']>lowerbound)],
+                             sorted_X['SubhaloDMMass'][(sorted_X['SubhaloMass']<upperbound) & (sorted_X['SubhaloMass']>lowerbound)],
+                             sorted_X['SubhaloSpinX'][(sorted_X['SubhaloMass']<upperbound) & (sorted_X['SubhaloMass']>lowerbound)],
+                             sorted_X['SubhaloSpinY'][(sorted_X['SubhaloMass']<upperbound) & (sorted_X['SubhaloMass']>lowerbound)],
+                             sorted_X['SubhaloSpinZ'][(sorted_X['SubhaloMass']<upperbound) & (sorted_X['SubhaloMass']>lowerbound)],
+                             sorted_X['SubhaloVelDisp'][(sorted_X['SubhaloMass']<upperbound) & (sorted_X['SubhaloMass']>lowerbound)],
+                             sorted_X['SubhaloVmax'][(sorted_X['SubhaloMass']<upperbound) & (sorted_X['SubhaloMass']>lowerbound)],
+                             sorted_X['SubhaloBHMdot'][(sorted_X['SubhaloMass']<upperbound) & (sorted_X['SubhaloMass']>lowerbound)],
+                             sorted_X['SubhaloSFR'][(sorted_X['SubhaloMass']<upperbound) & (sorted_X['SubhaloMass']>lowerbound)],
+                             sorted_X['FoFMass'][(sorted_X['SubhaloMass']<upperbound) & (sorted_X['SubhaloMass']>lowerbound)],
+                             sorted_X['FoFDistanceCenter'][(sorted_X['SubhaloMass']<upperbound) & (sorted_X['SubhaloMass']>lowerbound)]]).T
     
     #sorted_X_dark['sort'] = pd.Categorical(sorted_X_dark['SubhaloMass'],
     #                                             categories = mass_sorted[massindex_dark],
     #                                             ordered=True)
     #bin_X_dark = sorted_X_dark.sort_values('sort').dropna().copy()
-    indices_dark = sorted_X_dark.index[sorted_X_dark['SubhaloMass']<upperbound and sorted_X_dark['SubhaloMass']>lowerbound]
+    #indices_dark = sorted_X_dark.index[sorted_X_dark['SubhaloMass']<upperbound and sorted_X_dark['SubhaloMass']>lowerbound].to_list()
 
-    bin_X_dark_final = pd.DataFrame([sorted_X_dark['SubhaloDMMass'][indices_dark],
-                             sorted_X_dark['SubhaloSpinX'][indices_dark],sorted_X_dark['SubhaloSpinY'][indices_dark],
-                             sorted_X_dark['SubhaloSpinZ'][indices_dark],sorted_X_dark['SubhaloVelDisp'][indices_dark],
-                             sorted_X_dark['SubhaloVmax'][indices_dark],sorted_X_dark['FoFMass'][indices_dark],
-                             sorted_X_dark['FoFDistanceCenter'][indices_dark]]).T
+    bin_X_dark_final = pd.DataFrame([sorted_X_dark['SubhaloDMMass'][(sorted_X_dark['SubhaloMass']<upperbound) & (sorted_X_dark['SubhaloMass']>lowerbound)],
+                             sorted_X_dark['SubhaloSpinX'][(sorted_X_dark['SubhaloMass']<upperbound) & (sorted_X_dark['SubhaloMass']>lowerbound)],
+                             sorted_X_dark['SubhaloSpinY'][(sorted_X_dark['SubhaloMass']<upperbound) & (sorted_X_dark['SubhaloMass']>lowerbound)],
+                             sorted_X_dark['SubhaloSpinZ'][(sorted_X_dark['SubhaloMass']<upperbound) & (sorted_X_dark['SubhaloMass']>lowerbound)],
+                             sorted_X_dark['SubhaloVelDisp'][(sorted_X_dark['SubhaloMass']<upperbound) & (sorted_X_dark['SubhaloMass']>lowerbound)],
+                             sorted_X_dark['SubhaloVmax'][(sorted_X_dark['SubhaloMass']<upperbound) & (sorted_X_dark['SubhaloMass']>lowerbound)],
+                             sorted_X_dark['FoFMass'][(sorted_X_dark['SubhaloMass']<upperbound) & (sorted_X_dark['SubhaloMass']>lowerbound)],
+                             sorted_X_dark['FoFDistanceCenter'][(sorted_X_dark['SubhaloMass']<upperbound) & (sorted_X_dark['SubhaloMass']>lowerbound)]]).T
         
         
     Xtrain, Xtest, ytrain, ytest = train_test_split(bin_X_final, concentration[conc_index],
