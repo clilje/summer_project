@@ -207,6 +207,7 @@ sorted_X_dark = sorted_data_dark.drop(column_drop_dark, axis=1)
 sorted_X_dark = sorted_X_dark.add_suffix('_DMO')
 #Predict the ratio using ML
 X_ratio = pd.concat([sorted_X,sorted_X_dark])
+print(X_ratio)
 
 Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_conc_ratio,
                                                 random_state=1)
@@ -407,7 +408,14 @@ axs[1].set_ylabel(r'Mean decrease in impurity')
 axs[1].set_title('Feature Importance DMO')
 
 #Plot predicted vs actual
-forest_importances_ratio.plot.bar(yerr=std_ratio, ax=axs[2])
+forest_importances_ratio =forest_importances_ratio.to_numpy()
+forest_std_ratio = forest_std_ratio.to_numpy
+for j in np.arange(0,len(feature_names_ratio),1):
+    axs[0].errorbar(to_keep,forest_importances_ratio[np.arange(j,len(forest_importances_ratio),
+                                                              len(forest_importances_ratio)+1)], 
+                    yerr = forest_std_ratio[np.arange(i,len(forest_std_ratio),len(forest_std_ratio)+1)],
+                    label=feature_names_ratio[i])
+#forest_importances_ratio.plot.bar(yerr=std_ratio, ax=axs[2])
 axs[2].set_xlabel(r'Feature importances using MDI')
 axs[2].set_ylabel(r'Mean decrease in impurity')
 axs[2].set_title('Feature Importance Ratio')
