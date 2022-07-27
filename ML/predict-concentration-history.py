@@ -79,7 +79,7 @@ for i in to_drop:
                         str(i)+'gas_mass',str(i)+'dm_mass',str(i)+'stellar_mass',
                         str(i)+'bh_mass',str(i)+'spinX',str(i)+'spinY',
                         str(i)+'spinZ',str(i)+'vel_dispersion',str(i)+'v_max',
-                        str(i)+'bh_dot',str(i)+'sfr',str(i)+'fof_nass',
+                        str(i)+'bh_dot',str(i)+'sfr',str(i)+'fof_mass',
                         str(i)+'fof_distance'])
     column_drop_dark.extend([str(i)+'positionX',str(i)+'positionY',str(i)+'positionZ',
                         str(i)+'dm_mass',str(i)+'spinX',str(i)+'spinY',
@@ -89,6 +89,7 @@ for x in all_snap:
     column_drop.extend([str(x)+'halfmass_rad',str(x)+'particle_number'])
     column_drop_dark.extend([str(x)+'halfmass_rad',str(x)+'particle_number'])
 #ToDo: deleta all unnecessary columns to retain required data
+
 sorted_X = sorted_data.drop(column_drop, axis=1)
 
 data_csv_dark['Df_cat'] = pd.Categorical(data_csv_dark['SubhaloIndex'],
@@ -97,7 +98,7 @@ data_csv_dark['Df_cat'] = pd.Categorical(data_csv_dark['SubhaloIndex'],
 sorted_data_dark = data_csv_dark.sort_values('Df_cat').dropna().copy()
 
 sorted_X_dark = sorted_data_dark.drop(column_drop_dark, axis=1)
-
+sorted_X_dark = sorted_X_dark.add_suffix('_DMO')
 #Calculate concentration from Re-indexed input arrays and set as expected value
 concentration = virrad/nfw_scalerad
 concentration_dark = virrad_dark/nfw_scalerad_dark
@@ -121,18 +122,7 @@ Xtrain_dark, Xtest_dark, ytrain_dark, ytest_dark = train_test_split(sorted_X_dar
 y_conc_ratio = y/y_dark
 
 #Predict the ratio using ML
-X_ratio = pd.DataFrame([sorted_data['SubhaloGasMass'],sorted_data['SubhaloStarMass'],
-                         sorted_data['SubhaloBHMass'],sorted_data['SubhaloDMMass'],
-                         sorted_data['SubhaloSpinX'],sorted_data['SubhaloSpinY'],
-                         sorted_data['SubhaloSpinZ'],sorted_data['SubhaloVelDisp'],
-                         sorted_data['SubhaloVmax'],sorted_data['SubhaloBHMdot'],
-                         sorted_data['SubhaloSFR'],sorted_data['FoFMass'],
-                         sorted_data['FoFDistanceCenter'],
-                         sorted_data_dark['SubhaloDMMass'],
-                         sorted_data_dark['SubhaloSpinX'],sorted_data_dark['SubhaloSpinY'],
-                         sorted_data_dark['SubhaloSpinZ'],sorted_data_dark['SubhaloVelDisp'],
-                         sorted_data_dark['SubhaloVmax'],sorted_data_dark['FoFMass'],
-                         sorted_data_dark['FoFDistanceCenter']]).T
+X_ratio = pd.concat([sorted_X,sorted_X_dark])
 
 Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_conc_ratio,
                                                 random_state=1)
@@ -204,7 +194,7 @@ fig.savefig('concentration_ratio_fof-final.jpg')
 
 fig.clf()
 
-
+"""
 forest_importances = pd.Series(importances, index=['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
                 'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
                 'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter'])
@@ -241,3 +231,4 @@ axs[2].set_ylabel(r'Mean decrease in impurity')
 axs[2].set_title('Feature Importance Ratio')
 fig.savefig('feature-importance_fof-final.jpg')
 
+"""
