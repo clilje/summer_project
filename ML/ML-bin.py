@@ -220,8 +220,8 @@ for upperbound in bins:
     mean_mass.append(((upperbound-lowerbound)/2)*h)
     #mean_concentration.append(statistics.mean(concentration[conc_index]))
     #stdev.append(statistics.stdev(concentration[conc_index]))
-    print(len(sorted_df['SubhaloSpinZ'][sorted_df.SubhaloMass.isin(mass_sorted[massindex])]))
-    print(len(sorted_df_dark['SubhaloSpinZ'][sorted_df_dark.SubhaloMass.isin(mass_sorted_dark[massindex_dark])]))
+    print(len(sorted_df['SubhaloSpinZ'].iloc[sorted_df.SubhaloMass.isin(mass_sorted[massindex])]))
+    print(len(sorted_df_dark['SubhaloSpinZ'].iloc[sorted_df_dark.SubhaloMass.isin(mass_sorted_dark[massindex_dark])]))
 
     conc_hist.append(concentration[massindex])
     conc_hist_dark.append(concentration_dark[massindex_dark])
