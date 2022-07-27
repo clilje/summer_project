@@ -75,15 +75,15 @@ def extract_trees(filepath):
             arr['subhalo_id'] = np.array(tree['SubhaloNumber'])
             
             fof_number = np.array(tree['FirstHaloInFOFGroup'])
-            radial_distance = distancefromcentre(tree['GroupCM'][:, 0][fof_number], 
-                                                 tree['GroupCM'][:, 1][fof_number], 
-                                                 tree['GroupCM'][:, 2][fof_number], 
-                                                 arr_position[:, 0], arr_position[:, 1], 
-                                                 arr_position[:, 2])
+            #radial_distance = distancefromcentre(tree['GroupCM'][:, 0][fof_number], 
+            #                                     tree['GroupCM'][:, 1][fof_number], 
+            #                                     tree['GroupCM'][:, 2][fof_number], 
+            #                                     arr_position[:, 0], arr_position[:, 1], 
+            #                                     arr_position[:, 2])
 
-            group_mass = np.array(tree['GroupMassType'])
-            arr['fof_mass'] = group_mass[:, 1][fof_number]
-            arr['fof_distance'] = radial_distance
+            #group_mass = np.array(tree['GroupMassType'])
+            #arr['fof_mass'] = group_mass[:, 1][fof_number]
+            #arr['fof_distance'] = radial_distance
             
             arr_central_index = np.array(tree['FirstHaloInFOFGroup'])
             arr['is_central'] = np.zeros(n_halo, dtype=bool)
@@ -94,7 +94,7 @@ def extract_trees(filepath):
             max_snap = 99
             input_properties = ['positionX','positionY','positionZ','halfmass_rad',
                                 'particle_number','dm_mass', 
-                                'spinX','spinY','spinZ', 'vel_dispersion','fof_mass','fof_distance']
+                                'spinX','spinY','spinZ', 'vel_dispersion']
 
             snapshots = list(range(max_snap, min_snap-1, -1))
             n_input, n_snap = len(input_properties), len(snapshots)
@@ -131,8 +131,8 @@ def extract_trees(filepath):
                     spinZ = arr['spinZ'][i_prog]
                     vel_dispersion = arr['vel_dispersion'][i_prog]
                     v_max = arr['v_max'][i_prog]
-                    fof_mass = arr['fof_mass'][i_prog]
-                    fof_distance = arr['fof_distance'][i_prog]
+                    #fof_mass = arr['fof_mass'][i_prog]
+                    #fof_distance = arr['fof_distance'][i_prog]
                     #gas_metallicity = arr['gas_metallicity'][i_prog]
                     #sfr = arr['sfr'][i_prog]
                     #stellar_mass = arr['stellar_mass'][i_prog]
@@ -144,7 +144,7 @@ def extract_trees(filepath):
                     #        sfr, stellar_mass, stellar_metallicity]
                     data = [positionX,positionY,positionZ,halfmass_rad,
                                         particle_number,dm_mass,
-                                        spinX,spinY,spinZ, vel_dispersion,v_max,fof_mass,fof_distance]
+                                        spinX,spinY,spinZ, vel_dispersion,v_max]
                     histories[i_sub, i_start:i_start+n_input] = data
 
                     i_prog = arr['main_prog_index'][i_prog]
