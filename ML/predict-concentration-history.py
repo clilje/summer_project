@@ -202,6 +202,11 @@ virrad_dark = sorted_Y_dark['Virial Radius'].to_numpy()
 concentration = virrad/nfw_scalerad
 concentration_dark = virrad_dark/nfw_scalerad_dark
 
+print(sorted_data)
+print(sorted_Y)
+print(sorted_data_dark)
+print(sorted_Y_dark)
+
 y = concentration
 y_dark = concentration_dark
 y_conc_ratio = y/y_dark
@@ -209,7 +214,7 @@ sorted_X = sorted_data.drop(column_drop, axis=1)
 sorted_X_dark = sorted_data_dark.drop(column_drop_dark, axis=1)
 sorted_X_dark = sorted_X_dark.add_suffix('_DMO')
 #Predict the ratio using ML
-X_ratio = pd.concat([sorted_X.reset_index(drop=True, inplace=True),sorted_X_dark.reset_index(drop=True, inplace=True)],axis=1)
+X_ratio = pd.concat([sorted_X,sorted_X_dark.set_index(sorted_X.index)],axis=1)
 print(X_ratio)
 
 Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_conc_ratio,
