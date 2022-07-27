@@ -100,9 +100,9 @@ to_keep = np.arange(9,100,10)
 to_drop = np.setdiff1d(all_snap, to_keep)
 
 
-column_drop = ['index','Df_cat']
+column_drop = ['index']
 column_drop_dark = column_drop.copy()
-column_keep = ['index','Df_cat']
+column_keep = ['index']
 column_keep_dark = column_keep.copy()
 for i in to_drop:
     column_drop.extend([str(i)+'positionX',str(i)+'positionY',str(i)+'positionZ',
@@ -359,8 +359,8 @@ fof_distance_feature_ratio = list(filter(lambda x: 'fof_distance' in x, column_k
 fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
 #Plot Predicted vs actual values
 axs[0].errorbar(to_keep,forest_importances[positionX_feature], yerr = std[positionX_feature],label='positionX')
-axs[0].errorbar(to_keep,forest_importances[positionY_feature], yerr = std[positionY_feature],label='positionX')
-axs[0].errorbar(to_keep,forest_importances[positionZ_feature], yerr = std[positionZ_feature],label='positionX')
+axs[0].errorbar(to_keep,forest_importances[positionY_feature], yerr = std[positionY_feature],label='positionY')
+axs[0].errorbar(to_keep,forest_importances[positionZ_feature], yerr = std[positionZ_feature],label='positionZ')
 
 #forest_importances.plot.bar(yerr=std, ax=axs[0])
 axs[0].set_xlabel(r'Snap Number')
