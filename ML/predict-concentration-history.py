@@ -190,7 +190,7 @@ Xtrain_dark, Xtest_dark, ytrain_dark, ytest_dark = train_test_split(sorted_X_dar
 #y = virrad/nfw_scalerad
 
 sorted_data, sorted_data_dark = sorted_data.align(sorted_data_dark, join='inner', axis=0)
-sorted_Y, sorted_data_Y = sorted_Y.align(sorted_Y_dark, join='inner', axis=0)
+sorted_Y, sorted_Y_dark = sorted_Y.align(sorted_Y_dark, join='inner', axis=0)
 nfw_scalerad = sorted_Y['NFW Scale Radius'].to_numpy()
 virrad = sorted_Y['Virial Radius'].to_numpy()
 
@@ -279,17 +279,17 @@ fig.clf()
 
 
 forest_importances = pd.Series(importances, index=column_keep)
-forest_importances = pd.Series(std, index=column_keep)
+forest_std = pd.Series(std, index=column_keep)
 
 
 forest_importances_dark = pd.Series(importances_dark, index=column_keep_dark)
-forest_importances_dark = pd.Series(std_dark, index=column_keep_dark)
+forest_std_dark = pd.Series(std_dark, index=column_keep_dark)
 
 
 forest_importances_ratio = pd.Series(importances_ratio, index=column_keep_ratio)
-forest_importances_ratio = pd.Series(std_ratio, index=column_keep_ratio)
+forest_std_ratio = pd.Series(std_ratio, index=column_keep_ratio)
 
-
+"""
 
 positionX_feature = list(filter(lambda x: 'positionX' in x, column_keep))
 positionX_feature_dark = list(filter(lambda x: 'positionX' in x, column_keep_dark))
@@ -355,9 +355,24 @@ fof_mass_feature_ratio = list(filter(lambda x: 'fof_mass' in x, column_keep_rati
 fof_distance_feature = list(filter(lambda x: 'fof_distance' in x, column_keep))
 fof_distance_feature_dark = list(filter(lambda x: 'fof_distance' in x, column_keep_dark))
 fof_distance_feature_ratio = list(filter(lambda x: 'fof_distance' in x, column_keep_ratio))
+"""
 
+
+feature_names=['positionX','positionY','positionZ',
+                    'gas_mass','dm_mass','stellar_mass',
+                    'bh_mass','spinX','spinY',
+                    'spinZ','vel_dispersion','v_max',
+                    'bh_dot','sfr','fof_mass',
+                    'fof_distance']
 fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
 #Plot Predicted vs actual values
+forest_importances =forest_importances.to_numpy()
+forest_std = forest_std.to_numpy
+for i in np.arange(0,len(feature_names),1):
+    axs[0].errorbar(to_keep,forest_importances[np.arange(i,len(forest_importances),16)], 
+                    yerr = forest_std[np.arange(i,len(forest_std),16)],
+                    label=feature_names[i])
+
 axs[0].errorbar(to_keep,forest_importances[positionX_feature], yerr = std[positionX_feature],label='positionX')
 axs[0].errorbar(to_keep,forest_importances[positionY_feature], yerr = std[positionY_feature],label='positionY')
 axs[0].errorbar(to_keep,forest_importances[positionZ_feature], yerr = std[positionZ_feature],label='positionZ')
