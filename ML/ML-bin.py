@@ -76,7 +76,7 @@ X['Df_cat'] = pd.Categorical(X['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data = X.sort_values('Df_cat').dropna().copy()
-sorted_X = pd.DataFrame([sorted_data['SubhaloMass'],sorted_data['SubhaloGasMass'],sorted_data['SubhaloStarMass'],
+sorted_X = pd.DataFrame([sorted_data['SubhaloGasMass'],sorted_data['SubhaloStarMass'],
                          sorted_data['SubhaloBHMass'],sorted_data['SubhaloDMMass'],
                          sorted_data['SubhaloSpinX'],sorted_data['SubhaloSpinY'],
                          sorted_data['SubhaloSpinZ'],sorted_data['SubhaloVelDisp'],
@@ -88,7 +88,7 @@ X_dark['Df_cat'] = pd.Categorical(X_dark['SubhaloIndex'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data_dark = X_dark.sort_values('Df_cat').dropna().copy()
-sorted_X_dark = pd.DataFrame([sorted_data_dark['SubhaloMass'],sorted_data_dark['SubhaloDMMass'],
+sorted_X_dark = pd.DataFrame([sorted_data_dark['SubhaloDMMass'],
                          sorted_data_dark['SubhaloSpinX'],sorted_data_dark['SubhaloSpinY'],
                          sorted_data_dark['SubhaloSpinZ'],sorted_data_dark['SubhaloVelDisp'],
                          sorted_data_dark['SubhaloVmax'],sorted_data_dark['FoFMass'],
