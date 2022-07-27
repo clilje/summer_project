@@ -92,7 +92,7 @@ for x in all_snap:
 
 sorted_X = sorted_data.drop(column_drop, axis=1)
 
-data_csv_dark['Df_cat'] = pd.Categorical(data_csv_dark['SubhaloIndex'],
+data_csv_dark['Df_cat'] = pd.Categorical(data_csv_dark['index'],
                                              categories = true_indices,
                                              ordered=True)
 sorted_data_dark = data_csv_dark.sort_values('Df_cat').dropna().copy()
