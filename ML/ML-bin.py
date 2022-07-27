@@ -207,7 +207,7 @@ for upperbound in bins:
     conc_hist.append(concentration[conc_index])
     conc_hist_dark.append(concentration_dark[massindex_dark])
     
-    indices = sorted_X.index[sorted_X['SubhaloMass']==full_mass[massindex]]
+    indices = sorted_X.index[sorted_X['SubhaloMass']<upperbound | sorted_X['SubhaloMass']>lowerbound]
     #sorted_X['sort'] = pd.Categorical(sorted_X['SubhaloMass'],
     #                                             categories = full_mass[massindex],
     #                                             ordered=True)
@@ -224,7 +224,7 @@ for upperbound in bins:
     #                                             categories = mass_sorted[massindex_dark],
     #                                             ordered=True)
     #bin_X_dark = sorted_X_dark.sort_values('sort').dropna().copy()
-    indices_dark = sorted_X_dark.index[sorted_X_dark['SubhaloMass']==mass_sorted[massindex_dark]]
+    indices_dark = sorted_X_dark.index[sorted_X_dark['SubhaloMass']<upperbound | sorted_X_dark['SubhaloMass']>lowerbound]
 
     bin_X_dark_final = pd.DataFrame([sorted_X_dark['SubhaloDMMass'][indices_dark],
                              sorted_X_dark['SubhaloSpinX'][indices_dark],sorted_X_dark['SubhaloSpinY'][indices_dark],
