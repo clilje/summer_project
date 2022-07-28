@@ -89,7 +89,7 @@ data = np.vstack([num_halo, subhalos['SubhaloPos'][:, 0],subhalos['SubhaloPos'][
                   subhalos['SubhaloMass'], subhalos['SubhaloLen'], subhalos['SubhaloMassType'][:, 1], 
                   subhalos['SubhaloSpin'][:, 0],subhalos['SubhaloSpin'][:, 1],subhalos['SubhaloSpin'][:, 2],
                   subhalos['SubhaloVelDisp'],subhalos['SubhaloVmax'], 
-                  fof_halos['GroupMass'][subhalos['SubhaloGrNr']],radial_distance]).transpose()
+                  fof_halos['GroupMass'][subhalos['SubhaloGrNr']],radial_distance])
 dataFrame = pd.DataFrame(data, index=header)
 
     
