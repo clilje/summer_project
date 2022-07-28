@@ -78,8 +78,8 @@ print(sorted_Y_dark)
 
 
 all_snap = np.arange(2,100,1)
-#to_keep = np.arange(9,100,10)
-to_keep = np.array([99])
+to_keep = np.arange(9,100,10)
+#to_keep = np.array([99])
 to_drop = np.setdiff1d(all_snap, to_keep)
 
 
@@ -239,12 +239,12 @@ axs[2].set_yscale('log')
 axs[2].set_xlim(3*10**(-1), 3*10**0)
 axs[2].set_ylim(3*10**(-1), 3*10**0)
 axs[2].set_title('Predicted Halo Concentration ratio from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
-fig.savefig('concentration_ratio_fof-final.jpg')
+fig.savefig('concentration_ratio_history.jpg')
 
 
 fig.clf()
 
-"""
+
 forest_importances = pd.Series(importances, index=column_keep)
 forest_std = pd.Series(std, index=column_keep)
 
@@ -324,5 +324,4 @@ for j in np.arange(0,len(feature_names_ratio),1):
 axs[2].set_xlabel(r'Feature importances using MDI')
 axs[2].set_ylabel(r'Mean decrease in impurity')
 axs[2].set_title('Feature Importance Ratio')
-fig.savefig('feature-importance_fof-final.jpg')
-"""
+fig.savefig('feature-importance_history.jpg')
