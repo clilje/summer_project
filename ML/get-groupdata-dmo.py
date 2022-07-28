@@ -91,6 +91,7 @@ data = np.vstack([num_halo, subhalos['SubhaloPos'][:, 0],subhalos['SubhaloPos'][
                   subhalos['SubhaloVelDisp'],subhalos['SubhaloVmax'], 
                   fof_halos['GroupMass'][subhalos['SubhaloGrNr']],radial_distance])
 dataFrame = pd.DataFrame(data, index=header)
+print(dataFrame)
 
     
 sorter = matchingarr.astype(int)
