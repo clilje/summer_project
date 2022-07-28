@@ -50,12 +50,12 @@ data_csv_dark = data_csv_dark.set_index('index')
 sorter = matchingarr.astype(int)
 print(sorter)
 print(data_csv_dark)
-data_csv_dark_matched = data_csv_dark.reindex(sorter)
-print(data_csv_dark_matched)
-data_csv_dark_matched = data_csv_dark_matched.reset_index()
-print(data_csv_dark_matched)
-data_csv_dark_matched = data_csv_dark_matched.dropna()
-print(data_csv_dark_matched)
+data_csv_dark.reindex(sorter)
+print(data_csv_dark)
+data_csv_dark.reset_index()
+print(data_csv_dark)
+data_csv_dark.dropna()
+print(data_csv_dark)
 
 #Get the nessecary data to calculate the concentration from the fit files
 
