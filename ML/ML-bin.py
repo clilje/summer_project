@@ -227,6 +227,6 @@ for upperbound in bins:
     
     lowerbound= upperbound
 fig.tight_layout()
-fig.savefig('ML-per-bin')
+fig.savefig('ML-per-bin-newindex')
 
 

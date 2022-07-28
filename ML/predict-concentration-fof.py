@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import math
 import csv
 import pandas as pd
+import sklearn.metrics
 #import scikit-learn as sklearn
 from sklearn.ensemble import RandomForestRegressor
 import matplotlib
@@ -24,80 +25,110 @@ params = {'legend.fontsize': 'x-large',
 pylab.rcParams.update(params)
 
 
+def get_matching(sim_size, sim_res):
+    with h5py.File("/disk01/rmcg/downloaded/tng/tng"+str(sim_size)+"-"+str(sim_res)+"/subhalo_matching_to_dark.hdf5") as file:
+        #print(file.keys())
+        matchingarr = np.array(file['Snapshot_99/SubhaloIndexDark_LHaloTree'])
+        #print(matchingarr)
+    return(matchingarr)
+
+
+
 h = 0.6774
 p_crit = 127 #m_sun/(kpc^3)
+matchingarr = get_matching(50, 1)
+
 
 #get the input data from the Group Catalogues
 #DM + Baryons
-data_csv = pd.read_csv('50-1-subhalo-info.csv')
-column_names = ['SubhaloIndex','SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
-                'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
-                'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter']
-X = data_csv[column_names]
-
+data_csv = pd.read_csv('50-1-subhalo-history.csv')
+data_csv =data_csv.set_index('index')
 #DMO
-data_csv_dark = pd.read_csv('50-1-subhalo-info-dark.csv')
-column_names_dark = ['SubhaloIndex','SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 
-                     'SubhaloVmax','FoFMass','FoFDistanceCenter']
-X_dark = data_csv_dark[column_names_dark]
+data_csv_dark = pd.read_csv('50-1-subhalo-history-dark.csv')
+data_csv_dark['index'] = data_csv_dark['index'].astype(int)
+data_csv_dark = data_csv_dark.set_index('index')
 
+sorter = matchingarr.astype(int)
+print(sorter)
+print(data_csv_dark)
+data_csv_dark = data_csv_dark.reindex(sorter)
+print(data_csv_dark)
+data_csv_dark.reset_index(inplace=True,drop=True)
+print(data_csv_dark)
+data_csv_dark.dropna(inplace=True)
+print(data_csv_dark)
 
 #Get the nessecary data to calculate the concentration from the fit files
 
 #Prepare the dataframes to be resorted to match Halo Indices
 fit_param_dark = pd.read_csv('50-1_snap_99_fit_param-dark.csv')
-true_indices_dark = fit_param_dark['Halo Number'].to_numpy().astype(int)
+fit_param_dark = fit_param_dark.set_index('Halo Number')
+#true_indices_dark = fit_param_dark['Halo Number'].to_numpy().astype(int)
 
 #Import the Fit Parameters for DM+Baryons
 #Reorder according to DMO Halo Indices, cut all NaN
 fit_param = pd.read_csv('50-1_snap_99_fit_param.csv')
-fit_param['Df_cat'] = pd.Categorical(fit_param['Halo Number'],
-                                             categories = true_indices_dark,
-                                             ordered=True)
-sorted_df = fit_param.sort_values('Df_cat').dropna()
-nfw_scalerad = sorted_df['NFW Scale Radius'].to_numpy()
-virrad = sorted_df['Virial Radius'].to_numpy()
-true_indices = sorted_df['Halo Number'].to_numpy().astype(int)
+fit_param = fit_param.set_index('Halo Number')
 
-#Reorder DMO Halos according to leftover DM+Baryon indices, cut all NaN
-fit_param_dark['Df_cat'] = pd.Categorical(fit_param_dark['Halo Number'],
-                                             categories = true_indices,
-                                             ordered=True)
-sorted_df_dark = fit_param_dark.sort_values('Df_cat').dropna()
-nfw_scalerad_dark = sorted_df_dark['NFW Scale Radius'].to_numpy()
-virrad_dark = sorted_df_dark['Virial Radius'].to_numpy()
+sorted_data, sorted_Y = data_csv.align(fit_param, join='inner', axis=0)
+sorted_data_dark, sorted_Y_dark = data_csv_dark.align(fit_param_dark, join='inner', axis=0)
+print(sorted_data)
+print(sorted_Y)
+print(sorted_data_dark)
+print(sorted_Y_dark)
 
 
-#Reorder the input values according to leftover DM+Baryon indices, cut all NaN
-X['Df_cat'] = pd.Categorical(X['SubhaloIndex'],
-                                             categories = true_indices,
-                                             ordered=True)
-sorted_data = X.sort_values('Df_cat').dropna().copy()
-sorted_X = pd.DataFrame([sorted_data['SubhaloGasMass'],sorted_data['SubhaloStarMass'],
-                         sorted_data['SubhaloBHMass'],sorted_data['SubhaloDMMass'],
-                         sorted_data['SubhaloSpinX'],sorted_data['SubhaloSpinY'],
-                         sorted_data['SubhaloSpinZ'],sorted_data['SubhaloVelDisp'],
-                         sorted_data['SubhaloVmax'],sorted_data['SubhaloBHMdot'],
-                         sorted_data['SubhaloSFR'],sorted_data['FoFMass'],
-                         sorted_data['FoFDistanceCenter']]).T
-'''
-sorted_X = pd.DataFrame([sorted_data['SubhaloDMMass'],
-                         sorted_data['SubhaloSpinX'],sorted_data['SubhaloSpinY'],
-                         sorted_data['SubhaloSpinZ'],sorted_data['SubhaloVelDisp'],
-                         sorted_data['SubhaloVmax'],sorted_data['FoFMass'],
-                         sorted_data['FoFDistanceCenter']]).T
-'''
-X_dark['Df_cat'] = pd.Categorical(X_dark['SubhaloIndex'],
-                                             categories = true_indices,
-                                             ordered=True)
-sorted_data_dark = X_dark.sort_values('Df_cat').dropna().copy()
-sorted_X_dark = pd.DataFrame([sorted_data_dark['SubhaloDMMass'],
-                         sorted_data_dark['SubhaloSpinX'],sorted_data_dark['SubhaloSpinY'],
-                         sorted_data_dark['SubhaloSpinZ'],sorted_data_dark['SubhaloVelDisp'],
-                         sorted_data_dark['SubhaloVmax'],sorted_data_dark['FoFMass'],
-                         sorted_data_dark['FoFDistanceCenter']]).T
+all_snap = np.arange(2,100,1)
+#to_keep = np.arange(9,100,10)
+to_keep = np.array([99])
+to_drop = np.setdiff1d(all_snap, to_keep)
 
 
+column_drop = []
+column_drop_dark = column_drop.copy()
+column_keep = []
+column_keep_dark = column_keep.copy()
+for i in to_drop:
+    column_drop.extend([str(i)+'positionX',str(i)+'positionY',str(i)+'positionZ',
+                        str(i)+'gas_mass',str(i)+'dm_mass',str(i)+'stellar_mass',
+                        str(i)+'bh_mass',str(i)+'spinX',str(i)+'spinY',
+                        str(i)+'spinZ',str(i)+'vel_dispersion',str(i)+'v_max',
+                        str(i)+'bh_dot',str(i)+'sfr',str(i)+'fof_mass',
+                        str(i)+'fof_distance'])
+    column_drop_dark.extend([str(i)+'positionX',str(i)+'positionY',str(i)+'positionZ',
+                        str(i)+'dm_mass',str(i)+'spinX',str(i)+'spinY',
+                        str(i)+'spinZ',str(i)+'vel_dispersion',str(i)+'v_max'])
+for j in np.flipud(to_keep):
+    column_keep.extend([str(j)+'positionX',str(j)+'positionY',str(j)+'positionZ',
+                        str(j)+'gas_mass',str(j)+'dm_mass',str(j)+'stellar_mass',
+                        str(j)+'bh_mass',str(j)+'spinX',str(j)+'spinY',
+                        str(j)+'spinZ',str(j)+'vel_dispersion',str(j)+'v_max',
+                        str(j)+'bh_dot',str(j)+'sfr',str(j)+'fof_mass',
+                        str(j)+'fof_distance'])
+    column_keep_dark.extend([str(j)+'positionX_DMO',str(j)+'positionY_DMO',str(j)+'positionZ_DMO',
+                        str(j)+'dm_mass_DMO',str(j)+'spinX_DMO',str(j)+'spinY_DMO',
+                        str(j)+'spinZ_DMO',str(j)+'vel_dispersion_DMO',str(j)+'v_max_DMO'])
+
+
+for x in all_snap:
+    column_drop.extend([str(x)+'halfmass_rad',str(x)+'particle_number'])
+    column_drop_dark.extend([str(x)+'halfmass_rad',str(x)+'particle_number'])
+
+column_keep_ratio = column_keep.copy()
+column_keep_ratio.extend(column_keep_dark)
+
+#ToDo: deleta all unnecessary columns to retain required data
+
+
+nfw_scalerad = sorted_Y['NFW Scale Radius'].to_numpy()
+virrad = sorted_Y['Virial Radius'].to_numpy()
+
+nfw_scalerad_dark = sorted_Y_dark['NFW Scale Radius'].to_numpy()
+virrad_dark = sorted_Y_dark['Virial Radius'].to_numpy()
+
+sorted_X = sorted_data.drop(column_drop, axis=1)
+sorted_X_dark = sorted_data_dark.drop(column_drop_dark, axis=1)
+sorted_X_dark = sorted_X_dark.add_suffix('_DMO')
 #Calculate concentration from Re-indexed input arrays and set as expected value
 concentration = virrad/nfw_scalerad
 concentration_dark = virrad_dark/nfw_scalerad_dark
@@ -118,24 +149,35 @@ Xtrain_dark, Xtest_dark, ytrain_dark, ytest_dark = train_test_split(sorted_X_dar
                                                 random_state=1)
 
 #Calculate the C_Bar/C_DMO ratio
-y_conc_ratio = y/y_dark
 
+sorted_data, sorted_data_dark = sorted_data.align(sorted_data_dark, join='inner', axis=0)
+sorted_Y, sorted_Y_dark = sorted_Y.align(sorted_Y_dark, join='inner', axis=0)
+nfw_scalerad = sorted_Y['NFW Scale Radius'].to_numpy()
+virrad = sorted_Y['Virial Radius'].to_numpy()
+
+nfw_scalerad_dark = sorted_Y_dark['NFW Scale Radius'].to_numpy()
+virrad_dark = sorted_Y_dark['Virial Radius'].to_numpy()
+concentration = virrad/nfw_scalerad
+concentration_dark = virrad_dark/nfw_scalerad_dark
+
+print(sorted_data)
+print(sorted_Y)
+print(sorted_data_dark)
+print(sorted_Y_dark)
+
+y = concentration
+y_dark = concentration_dark
+y_conc_ratio = y/y_dark
+sorted_X = sorted_data.drop(column_drop, axis=1)
+sorted_X_dark = sorted_data_dark.drop(column_drop_dark, axis=1)
+sorted_X_dark = sorted_X_dark.add_suffix('_DMO')
 #Predict the ratio using ML
-X_ratio = pd.DataFrame([sorted_data['SubhaloGasMass'],sorted_data['SubhaloStarMass'],
-                         sorted_data['SubhaloBHMass'],sorted_data['SubhaloDMMass'],
-                         sorted_data['SubhaloSpinX'],sorted_data['SubhaloSpinY'],
-                         sorted_data['SubhaloSpinZ'],sorted_data['SubhaloVelDisp'],
-                         sorted_data['SubhaloVmax'],sorted_data['SubhaloBHMdot'],
-                         sorted_data['SubhaloSFR'],sorted_data['FoFMass'],
-                         sorted_data['FoFDistanceCenter'],
-                         sorted_data_dark['SubhaloDMMass'],
-                         sorted_data_dark['SubhaloSpinX'],sorted_data_dark['SubhaloSpinY'],
-                         sorted_data_dark['SubhaloSpinZ'],sorted_data_dark['SubhaloVelDisp'],
-                         sorted_data_dark['SubhaloVmax'],sorted_data_dark['FoFMass'],
-                         sorted_data_dark['FoFDistanceCenter']]).T
+X_ratio = pd.concat([sorted_X,sorted_X_dark.set_index(sorted_X.index)],axis=1)
+print(X_ratio)
 
 Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_conc_ratio,
                                                 random_state=1)
+
 
 
 
@@ -199,7 +241,7 @@ axs[2].set_yscale('log')
 axs[2].set_xlim(3*10**(-1), 3*10**0)
 axs[2].set_ylim(3*10**(-1), 3*10**0)
 axs[2].set_title('Predicted Halo Concentration ratio from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
-fig.savefig('concentration_ratio_fof-final.jpg')
+fig.savefig('concentration_ratio_fof-new-match.jpg')
 
 
 fig.clf()
@@ -218,6 +260,14 @@ forest_importances_ratio = pd.Series(importances_ratio, index=['SubhaloGasMass',
                 'SubhaloDMMass - DMO','SubhaloSpinX- DMO','SubhaloSpinY- DMO','SubhaloSpinZ- DMO','SubhaloVelDisp- DMO', 
                                      'SubhaloVmax- DMO','FoFMass- DMO','FoFDistanceCenter- DMO'])
 
+
+print('R_2')
+print(sklearn.metrics.r2_score(ytest, y_pred))
+print(sklearn.metrics.r2_score(ytest_dark, y_pred_dark))
+
+print('Mean squared error')
+print(sklearn.metrics.mean_squared_error(ytest, y_pred))
+print(sklearn.metrics.mean_squared_error(ytest_dark, y_pred_dark))
 
 fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
 #Plot Predicted vs actual values
@@ -239,5 +289,5 @@ forest_importances_ratio.plot.bar(yerr=std_ratio, ax=axs[2])
 axs[2].set_xlabel(r'Feature importances using MDI')
 axs[2].set_ylabel(r'Mean decrease in impurity')
 axs[2].set_title('Feature Importance Ratio')
-fig.savefig('feature-importance_fof-final.jpg')
+fig.savefig('feature-importance_fof-new-match.jpg')
 
