@@ -56,8 +56,8 @@ print(sorted_Y_dark)
 
 
 all_snap = np.arange(2,100,1)
-to_keep = np.arange(9,100,10)
-
+#to_keep = np.arange(9,100,10)
+to_keep = np.array([99])
 to_drop = np.setdiff1d(all_snap, to_keep)
 
 
@@ -222,7 +222,7 @@ fig.savefig('concentration_ratio_fof-final.jpg')
 
 fig.clf()
 
-
+"""
 forest_importances = pd.Series(importances, index=column_keep)
 forest_std = pd.Series(std, index=column_keep)
 
@@ -241,73 +241,6 @@ forest_importances_dark.to_csv('forest-importances_dark.csv')
 forest_std_dark.to_csv('forest-std_dark.csv')
 forest_importances_ratio.to_csv('forest-importances_ratio.csv')
 forest_std_ratio.to_csv('forest-std_ratio.csv')
-"""
-
-positionX_feature = list(filter(lambda x: 'positionX' in x, column_keep))
-positionX_feature_dark = list(filter(lambda x: 'positionX' in x, column_keep_dark))
-positionX_feature_ratio = list(filter(lambda x: 'positionX' in x, column_keep_ratio))
-
-positionY_feature = list(filter(lambda x: 'positionY' in x, column_keep))
-positionY_feature_dark = list(filter(lambda x: 'positionY' in x, column_keep_dark))
-positionY_feature_ratio = list(filter(lambda x: 'positionY' in x, column_keep_ratio))
-
-positionZ_feature = list(filter(lambda x: 'positionZ' in x, column_keep))
-positionZ_feature_dark = list(filter(lambda x: 'positionZ' in x, column_keep_dark))
-positionZ_feature_ratio = list(filter(lambda x: 'positionZ' in x, column_keep_ratio))
-
-gas_mass_feature = list(filter(lambda x: 'gas_mass' in x, column_keep))
-gas_mass_feature_dark = list(filter(lambda x: 'gas_mass' in x, column_keep_dark))
-gas_mass_feature_ratio = list(filter(lambda x: 'gas_mass' in x, column_keep_ratio))
-
-dm_mass_feature = list(filter(lambda x: 'dm_mass' in x, column_keep))
-dm_mass_feature_dark = list(filter(lambda x: 'dm_mass' in x, column_keep_dark))
-dm_mass_feature_ratio = list(filter(lambda x: 'dm_mass' in x, column_keep_ratio))
-
-stellar_mass_feature = list(filter(lambda x: 'stellar_mass' in x, column_keep))
-stellar_mass_feature_dark = list(filter(lambda x: 'stellar_mass' in x, column_keep_dark))
-stellar_mass_feature_ratio = list(filter(lambda x: 'stellar_mass' in x, column_keep_ratio))
-
-bh_mass_feature = list(filter(lambda x: 'bh_mass' in x, column_keep))
-bh_mass_feature_dark = list(filter(lambda x: 'bh_mass' in x, column_keep_dark))
-bh_mass_feature_ratio = list(filter(lambda x: 'bh_mass' in x, column_keep_ratio))
-
-spinX_feature = list(filter(lambda x: 'spinX' in x, column_keep))
-spinX_feature_dark = list(filter(lambda x: 'spinX' in x, column_keep_dark))
-spinX_feature_ratio = list(filter(lambda x: 'spinX' in x, column_keep_ratio))
-
-spinY_feature = list(filter(lambda x: 'spinY' in x, column_keep))
-spinY_feature_dark = list(filter(lambda x: 'spinY' in x, column_keep_dark))
-spinY_feature_ratio = list(filter(lambda x: 'spinY' in x, column_keep_ratio))
-
-spinZ_feature = list(filter(lambda x: 'spinZ' in x, column_keep))
-spinZ_feature_dark = list(filter(lambda x: 'spinZ' in x, column_keep_dark))
-spinZ_feature_ratio = list(filter(lambda x: 'spinZ' in x, column_keep_ratio))
-
-vel_dispersion_feature = list(filter(lambda x: 'vel_dispersion' in x, column_keep))
-vel_dispersion_feature_dark = list(filter(lambda x: 'vel_dispersion' in x, column_keep_dark))
-vel_dispersion_feature_ratio = list(filter(lambda x: 'vel_dispersion' in x, column_keep_ratio))
-
-v_max_feature = list(filter(lambda x: 'v_max' in x, column_keep))
-v_max_feature_dark = list(filter(lambda x: 'v_max' in x, column_keep_dark))
-v_max_feature_ratio = list(filter(lambda x: 'v_max' in x, column_keep_ratio))
-
-bh_dot_feature = list(filter(lambda x: 'bh_dot' in x, column_keep))
-bh_dot_feature_dark = list(filter(lambda x: 'bh_dot' in x, column_keep_dark))
-bh_dot_feature_ratio = list(filter(lambda x: 'bh_dot' in x, column_keep_ratio))
-
-
-sfr_feature = list(filter(lambda x: 'sfr' in x, column_keep))
-sfr_feature_dark = list(filter(lambda x: 'sfr' in x, column_keep_dark))
-sfr_feature_ratio = list(filter(lambda x: 'sfr' in x, column_keep_ratio))
-
-fof_mass_feature = list(filter(lambda x: 'fof_mass' in x, column_keep))
-fof_mass_feature_dark = list(filter(lambda x: 'fof_mass' in x, column_keep_dark))
-fof_mass_feature_ratio = list(filter(lambda x: 'fof_mass' in x, column_keep_ratio))
-
-fof_distance_feature = list(filter(lambda x: 'fof_distance' in x, column_keep))
-fof_distance_feature_dark = list(filter(lambda x: 'fof_distance' in x, column_keep_dark))
-fof_distance_feature_ratio = list(filter(lambda x: 'fof_distance' in x, column_keep_ratio))
-"""
 
 
 feature_names=['positionX','positionY','positionZ',
@@ -332,8 +265,8 @@ fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
 forest_importances =forest_importances.to_numpy()
 forest_std = forest_std.to_numpy
 for i in np.arange(0,len(feature_names),1):
-    axs[0].errorbar(to_keep,forest_importances[np.arange(i,len(forest_importances),len(forest_importances)+1)], 
-                    yerr = forest_std[np.arange(i,len(forest_std),len(forest_std)+1)],
+    axs[0].errorbar(to_keep,forest_importances[np.arange(i,(forest_importances.size),(forest_importances.size)+1)], 
+                    yerr = forest_std[np.arange(i,(forest_std.size),(forest_std.size)+1)],
                     label=feature_names[i])
 
 #forest_importances.plot.bar(yerr=std, ax=axs[0])
@@ -348,9 +281,9 @@ axs[0].set_legend()
 forest_importances_dark =forest_importances_dark.to_numpy()
 forest_std_dark = forest_std_dark.to_numpy
 for j in np.arange(0,len(feature_names_dark),1):
-    axs[0].errorbar(to_keep,forest_importances_dark[np.arange(j,len(forest_importances_dark),
-                                                              len(forest_importances_dark)+1)], 
-                    yerr = forest_std_dark[np.arange(i,len(forest_std_dark),len(forest_std_dark)+1)],
+    axs[0].errorbar(to_keep,forest_importances_dark[np.arange(j,(forest_importances_dark.size),
+                                                              (forest_importances_dark.size)+1)], 
+                    yerr = forest_std_dark[np.arange(i,(forest_std_dark.size),(forest_std_dark.size)+1)],
                     label=feature_names_dark[i])
 #forest_importances_dark.plot.bar(yerr=std_dark, ax=axs[1])
 axs[1].set_xlabel(r'Feature importances using MDI')
@@ -361,12 +294,13 @@ axs[1].set_title('Feature Importance DMO')
 forest_importances_ratio =forest_importances_ratio.to_numpy()
 forest_std_ratio = forest_std_ratio.to_numpy
 for j in np.arange(0,len(feature_names_ratio),1):
-    axs[0].errorbar(to_keep,forest_importances_ratio[np.arange(j,len(forest_importances_ratio),
-                                                              len(forest_importances_ratio)+1)], 
-                    yerr = forest_std_ratio[np.arange(i,len(forest_std_ratio),len(forest_std_ratio)+1)],
+    axs[0].errorbar(to_keep,forest_importances_ratio[np.arange(j,(forest_importances_ratio.size),
+                                                              (forest_importances_ratio.size)+1)], 
+                    yerr = forest_std_ratio[np.arange(i,(forest_std_ratio.size),(forest_std_ratio.size)+1)],
                     label=feature_names_ratio[i])
 #forest_importances_ratio.plot.bar(yerr=std_ratio, ax=axs[2])
 axs[2].set_xlabel(r'Feature importances using MDI')
 axs[2].set_ylabel(r'Mean decrease in impurity')
 axs[2].set_title('Feature Importance Ratio')
 fig.savefig('feature-importance_fof-final.jpg')
+"""
