@@ -14,6 +14,7 @@ import statistics
 #import scikit-learn as sklearn
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
+import sklearn.metrics
 import matplotlib.pylab as pylab
 params = {'legend.fontsize': 'x-large',
           'figure.figsize': (30, 10),
@@ -131,8 +132,8 @@ for upperbound in bins:
     
     sorted_df_inter = sorted_df.reset_index()
     sorted_df_inter_dark = sorted_df_dark.reset_index()
-    print(len(sorted_df_inter['SubhaloSpinZ'][sorted_df_inter.SubhaloMass.isin(mass_sorted[massindex])]))
-    print(len(sorted_df_inter_dark['SubhaloSpinZ'][sorted_df_inter_dark.SubhaloMass.isin(mass_sorted_dark[massindex_dark])]))
+    #print(len(sorted_df_inter['SubhaloSpinZ'][sorted_df_inter.SubhaloMass.isin(mass_sorted[massindex])]))
+    #print(len(sorted_df_inter_dark['SubhaloSpinZ'][sorted_df_inter_dark.SubhaloMass.isin(mass_sorted_dark[massindex_dark])]))
 
     conc_hist.append(concentration[massindex])
     conc_hist_dark.append(concentration_dark[massindex_dark])
@@ -183,7 +184,15 @@ for upperbound in bins:
     importances_dark = model_dark.feature_importances_
     std_dark = np.std([tree_dark.feature_importances_ for tree_dark in model_dark.estimators_], axis=0)
 
-
+    
+    print('R_2')
+    print(sklearn.metrics.r2_score(ytest, y_pred))
+    print(sklearn.metrics.r2_score(ytest_dark, y_pred_dark))
+    
+    print('Mean squared error')
+    print(sklearn.metrics.mean_squared_error(ytest, y_pred))
+    print(sklearn.metrics.mean_squared_error(ytest_dark, y_pred_dark))
+    
     forest_importances = pd.Series(importances, index=['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
                     'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
                     'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter'])
