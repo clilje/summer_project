@@ -12,6 +12,7 @@ import math
 import csv
 from pathlib import Path
 import sys
+import pandas as pd
 sys.path.insert(1, '/home/clilje/summer_project')
 from illustris_python import groupcat,lhalotree,snapshot,sublink,util
 
@@ -35,7 +36,13 @@ def distancefromcentre(cx, cy, cz, x, y, z, ):
     """
     return (np.sqrt((np.power(np.subtract(x,cx), 2)+ np.power(np.subtract(y,cy), 2) + np.power(np.subtract(z,cz), 2)))) # distance between the centre and given point
 
-
+def get_matching(sim_size, sim_res):
+    with h5py.File("/disk01/rmcg/downloaded/tng/tng"+str(sim_size)+"-"+str(sim_res)+"/subhalo_matching_to_dark.hdf5") as file:
+        #print(file.keys())
+        matchingarr = np.array(file['Snapshot_99/SubhaloIndexDark_LHaloTree'])
+        #print(matchingarr)
+    return(matchingarr)
+matchingarr = get_matching(50, 1)
 
 size = 50
 res = 1
@@ -70,17 +77,29 @@ radial_distance = distancefromcentre(fof_halos['GroupPos'][subhalos['SubhaloGrNr
 #print(groupcat.loadHeader(basePath, snapnum))
 print(subhalos['SubhaloMassType'])
 
-with open('50-1-subhalo-info-dark.csv', 'w', encoding='UTF8', newline='') as subfile:
-    header = ['SubhaloIndex','SubhaloPosX','SubhaloPosY','SubhaloPosZ','SubhaloHalfmassRad','SubhaloMass',
-              'SubhaloLen', 'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp','SubhaloVmax',
-              'FoFMass','FoFDistanceCenter']
-    fwriter = csv.writer(subfile, delimiter=',')
-    # Write the header
-    fwriter.writerow(header)
-    data = np.vstack([num_halo, subhalos['SubhaloPos'][:, 0],subhalos['SubhaloPos'][:, 1],
-                      subhalos['SubhaloPos'][:, 2], subhalos['SubhaloHalfmassRad'], 
-                      subhalos['SubhaloMass'], subhalos['SubhaloLen'], subhalos['SubhaloMassType'][:, 1], 
-                      subhalos['SubhaloSpin'][:, 0],subhalos['SubhaloSpin'][:, 1],subhalos['SubhaloSpin'][:, 2],
-                      subhalos['SubhaloVelDisp'],subhalos['SubhaloVmax'], 
-                      fof_halos['GroupMass'][subhalos['SubhaloGrNr']],radial_distance]).transpose()
-    fwriter.writerows(data)
+
+header = ['SubhaloIndex','SubhaloPosX','SubhaloPosY','SubhaloPosZ','SubhaloHalfmassRad','SubhaloMass',
+          'SubhaloLen', 'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp','SubhaloVmax',
+          'FoFMass','FoFDistanceCenter']
+#fwriter = csv.writer(subfile, delimiter=',')
+## Write the header
+#fwriter.writerow(header)
+data = np.vstack([num_halo, subhalos['SubhaloPos'][:, 0],subhalos['SubhaloPos'][:, 1],
+                  subhalos['SubhaloPos'][:, 2], subhalos['SubhaloHalfmassRad'], 
+                  subhalos['SubhaloMass'], subhalos['SubhaloLen'], subhalos['SubhaloMassType'][:, 1], 
+                  subhalos['SubhaloSpin'][:, 0],subhalos['SubhaloSpin'][:, 1],subhalos['SubhaloSpin'][:, 2],
+                  subhalos['SubhaloVelDisp'],subhalos['SubhaloVmax'], 
+                  fof_halos['GroupMass'][subhalos['SubhaloGrNr']],radial_distance]).transpose()
+dataFrame = pd.DataFrame(data, index=header)
+
+    
+sorter = matchingarr.astype(int)
+print(sorter)
+#print(data_csv_dark)
+data_csv_dark = dataFrame.reindex(sorter)
+print(data_csv_dark)
+data_csv_dark.reset_index(inplace=True,drop=True)
+print(data_csv_dark)
+data_csv_dark.dropna(inplace=True)
+print(data_csv_dark)
+data_csv_dark.to_csv('50-1-subhalo-info-dark')
