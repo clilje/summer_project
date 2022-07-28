@@ -47,9 +47,8 @@ data_csv_dark = pd.read_csv('50-1-subhalo-history-dark.csv')
 data_csv_dark = data_csv_dark.set_index('index')
 
 sorter = matchingarr
-data_csv_dark_matched = data_csv.set_index('index')
-print(data_csv_dark_matched)
-data_csv_dark_matched = data_csv_dark_matched.reindex([sorter])
+print(data_csv_dark)
+data_csv_dark_matched = data_csv_dark.reindex([sorter])
 print(data_csv_dark_matched)
 data_csv_dark_matched = data_csv_dark_matched.reset_index()
 print(data_csv_dark_matched)
