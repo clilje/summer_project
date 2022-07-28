@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import math
 import csv
 import pandas as pd
+import h5py
 #import scikit-learn as sklearn
 from sklearn.ensemble import RandomForestRegressor
 import matplotlib
@@ -23,9 +24,19 @@ params = {'legend.fontsize': 'x-large',
          'ytick.labelsize':'x-large'}
 pylab.rcParams.update(params)
 
+def get_matching(sim_size, sim_res):
+    with h5py.File("/disk01/rmcg/downloaded/tng/tng"+str(sim_size)+"-"+str(sim_res)+"/subhalo_matching_to_dark.hdf5") as file:
+        #print(file.keys())
+        matchingarr = np.array(file['Snapshot_99/SubhaloIndexDark_LHaloTree'])
+        #print(matchingarr)
+    return(matchingarr)
+
+
 
 h = 0.6774
 p_crit = 127 #m_sun/(kpc^3)
+matchingarr = get_matching(50, 1)
+
 
 #get the input data from the Group Catalogues
 #DM + Baryons
@@ -34,6 +45,16 @@ data_csv =data_csv.set_index('index')
 #DMO
 data_csv_dark = pd.read_csv('50-1-subhalo-history-dark.csv')
 data_csv_dark = data_csv_dark.set_index('index')
+
+sorter = matchingarr
+data_csv_dark_matched = data_csv.set_index('index')
+print(data_csv_dark_matched)
+data_csv_dark_matched = data_csv_dark_matched.reindex([sorter])
+print(data_csv_dark_matched)
+data_csv_dark_matched = data_csv_dark_matched.reset_index()
+print(data_csv_dark_matched)
+data_csv_dark_matched = data_csv_dark_matched.dropna()
+print(data_csv_dark_matched)
 
 #Get the nessecary data to calculate the concentration from the fit files
 
