@@ -33,19 +33,22 @@ p_crit = 127 #m_sun/(kpc^3)
 
 #Read in the optimal fit parameters as well as chisquare
 fit_param = pd.read_csv('50-1_snap_99_fit_param.csv')
-nfw_chisquare = fit_param['NFW ChiSquare'].to_numpy()
-nfw_scalerad = fit_param['NFW Scale Radius'].to_numpy()
-datapoint = fit_param['DataPoints'].to_numpy()
-virrad = fit_param['Virial Radius'].to_numpy()
-true_indices = fit_param['Halo Number'].to_numpy().astype(int)
+fit_param['Halo Number'] = fit_param['Halo Number'].astype(int)
+fit_param = fit_param.set_index('Halo Number')
+
+
 
 subhalo_info = pd.read_csv('50-1-subhalo-info.csv')
-subhalo_info['Df_cat'] = pd.Categorical(subhalo_info['SubhaloIndex'],
-                                             categories = true_indices,
-                                             ordered=True)
+subhalo_info['SubhaloIndex'] = subhalo_info['SubhaloIndex'].astype(int)
+subhalo_info = subhalo_info.set_index('SubhaloIndex')
+#subhalo_info['Df_cat'] = pd.Categorical(subhalo_info['SubhaloIndex'],
+#                                             categories = true_indices,
+#                                             ordered=True)
 #print(subhalo_info_dark.sort_values('Df_cat'))
-sorted_df = subhalo_info.sort_values('Df_cat').dropna()
+#sorted_df = subhalo_info.sort_values('Df_cat').dropna()
 #print(sorted_df)
+sorted_fit, sorted_df = fit_param.align(subhalo_info, join='inner', axis=0)
+
 mass_sorted = sorted_df['SubhaloMass'].to_numpy()
 
 
@@ -54,22 +57,41 @@ mass_sorted = sorted_df['SubhaloMass'].to_numpy()
 
 #Read in the optimal fit parameters as well as chisquare
 fit_param_dark = pd.read_csv('50-1_snap_99_fit_param-dark.csv')
-nfw_chisquare_dark = fit_param_dark['NFW ChiSquare'].to_numpy()
-nfw_scalerad_dark = fit_param_dark['NFW Scale Radius'].to_numpy()
-datapoint_dark = fit_param_dark['DataPoints'].to_numpy()
-virrad_dark = fit_param_dark['Virial Radius'].to_numpy()
-true_indices_dark = fit_param_dark['Halo Number'].to_numpy().astype(int)
+fit_param_dark['Halo Number'] = fit_param_dark['Halo Number'].astype(int)
+fit_param_dark = fit_param.set_index('Halo Number')
+
 
 
 #Get key info from group catalogue from file
 subhalo_info_dark = pd.read_csv('50-1-subhalo-info-dark')
-subhalo_info_dark['Df_cat'] = pd.Categorical(subhalo_info_dark['SubhaloIndex'],
-                                             categories = true_indices_dark,
-                                             ordered=True)
+subhalo_info_dark = subhalo_info_dark.set_index('SubhaloIndex')
+#subhalo_info_dark['Df_cat'] = pd.Categorical(subhalo_info_dark['SubhaloIndex'],
+#                                             categories = true_indices_dark,
+#                                             ordered=True)
 #print(subhalo_info_dark.sort_values('Df_cat'))
-sorted_df_dark = subhalo_info_dark.sort_values('Df_cat').dropna()
+#sorted_df_dark = subhalo_info_dark.sort_values('Df_cat').dropna()
 #print(sorted_df)
+sorted_fit_dark, sorted_df_dark = fit_param_dark.align(subhalo_info_dark, join='inner', axis=0)
+
 mass_sorted_dark = sorted_df_dark['SubhaloMass'].to_numpy()
+
+
+nfw_chisquare = sorted_fit['NFW ChiSquare'].to_numpy()
+nfw_scalerad = sorted_fit['NFW Scale Radius'].to_numpy()
+datapoint = sorted_fit['DataPoints'].to_numpy()
+virrad = sorted_fit['Virial Radius'].to_numpy()
+true_indices = sorted_fit['Halo Number'].to_numpy().astype(int)
+
+
+
+nfw_chisquare_dark = sorted_fit_dark['NFW ChiSquare'].to_numpy()
+nfw_scalerad_dark = sorted_fit_dark['NFW Scale Radius'].to_numpy()
+datapoint_dark = sorted_fit_dark['DataPoints'].to_numpy()
+virrad_dark = sorted_fit_dark['Virial Radius'].to_numpy()
+true_indices_dark = sorted_fit_dark['Halo Number'].to_numpy().astype(int)
+
+
+
 #lists to store data#
 #numhalos = len(subhalo_index)
 print(sorted_df)
