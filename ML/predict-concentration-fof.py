@@ -93,30 +93,28 @@ column_drop_dark = column_drop.copy()
 column_keep = []
 column_keep_dark = column_keep.copy()
 for i in to_drop:
-    column_drop.extend([str(i)+'positionX',str(i)+'positionY',str(i)+'positionZ',
-                        str(i)+'gas_mass',str(i)+'dm_mass',str(i)+'stellar_mass',
+    column_drop.extend([str(i)+'gas_mass',str(i)+'dm_mass',str(i)+'stellar_mass',
                         str(i)+'bh_mass',str(i)+'spinX',str(i)+'spinY',
                         str(i)+'spinZ',str(i)+'vel_dispersion',str(i)+'v_max',
                         str(i)+'bh_dot',str(i)+'sfr',str(i)+'fof_mass',
                         str(i)+'fof_distance'])
-    column_drop_dark.extend([str(i)+'positionX',str(i)+'positionY',str(i)+'positionZ',
-                        str(i)+'dm_mass',str(i)+'spinX',str(i)+'spinY',
+    column_drop_dark.extend([str(i)+'dm_mass',str(i)+'spinX',str(i)+'spinY',
                         str(i)+'spinZ',str(i)+'vel_dispersion',str(i)+'v_max'])
 for j in np.flipud(to_keep):
-    column_keep.extend([str(j)+'positionX',str(j)+'positionY',str(j)+'positionZ',
-                        str(j)+'gas_mass',str(j)+'dm_mass',str(j)+'stellar_mass',
+    column_keep.extend([str(j)+'gas_mass',str(j)+'dm_mass',str(j)+'stellar_mass',
                         str(j)+'bh_mass',str(j)+'spinX',str(j)+'spinY',
                         str(j)+'spinZ',str(j)+'vel_dispersion',str(j)+'v_max',
                         str(j)+'bh_dot',str(j)+'sfr',str(j)+'fof_mass',
                         str(j)+'fof_distance'])
-    column_keep_dark.extend([str(j)+'positionX_DMO',str(j)+'positionY_DMO',str(j)+'positionZ_DMO',
-                        str(j)+'dm_mass_DMO',str(j)+'spinX_DMO',str(j)+'spinY_DMO',
+    column_keep_dark.extend([str(j)+'dm_mass_DMO',str(j)+'spinX_DMO',str(j)+'spinY_DMO',
                         str(j)+'spinZ_DMO',str(j)+'vel_dispersion_DMO',str(j)+'v_max_DMO'])
 
 
 for x in all_snap:
-    column_drop.extend([str(x)+'halfmass_rad',str(x)+'particle_number'])
-    column_drop_dark.extend([str(x)+'halfmass_rad',str(x)+'particle_number'])
+    column_drop.extend([str(i)+'positionX',str(i)+'positionY',str(i)+'positionZ',
+                        str(x)+'halfmass_rad',str(x)+'particle_number'])
+    column_drop_dark.extend([str(i)+'positionX',str(i)+'positionY',str(i)+'positionZ',
+                             str(x)+'halfmass_rad',str(x)+'particle_number'])
 
 column_keep_ratio = column_keep.copy()
 column_keep_ratio.extend(column_keep_dark)
