@@ -66,6 +66,8 @@ fit_param_dark = fit_param_dark.set_index(['Halo Number'])
 
 #Get key info from group catalogue from file
 subhalo_info_dark = pd.read_csv('50-1-subhalo-info-dark')
+subhalo_info_dark['SubhaloIndex'] = subhalo_info_dark['SubhaloIndex'].astype(int)
+
 subhalo_info_dark = subhalo_info_dark.set_index('SubhaloIndex')
 #subhalo_info_dark['Df_cat'] = pd.Categorical(subhalo_info_dark['SubhaloIndex'],
 #                                             categories = true_indices_dark,
