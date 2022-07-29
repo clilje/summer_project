@@ -82,7 +82,7 @@ nfw_chisquare = sorted_fit['NFW ChiSquare'].to_numpy()
 nfw_scalerad = sorted_fit['NFW Scale Radius'].to_numpy()
 datapoint = sorted_fit['DataPoints'].to_numpy()
 virrad = sorted_fit['Virial Radius'].to_numpy()
-true_indices = sorted_fit['Halo Number'].to_numpy().astype(int)
+#true_indices = sorted_fit['Halo Number'].to_numpy().astype(int)
 
 
 
@@ -90,7 +90,7 @@ nfw_chisquare_dark = sorted_fit_dark['NFW ChiSquare'].to_numpy()
 nfw_scalerad_dark = sorted_fit_dark['NFW Scale Radius'].to_numpy()
 datapoint_dark = sorted_fit_dark['DataPoints'].to_numpy()
 virrad_dark = sorted_fit_dark['Virial Radius'].to_numpy()
-true_indices_dark = sorted_fit_dark['Halo Number'].to_numpy().astype(int)
+#true_indices_dark = sorted_fit_dark['Halo Number'].to_numpy().astype(int)
 
 
 
