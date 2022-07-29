@@ -33,7 +33,9 @@ p_crit = 127 #m_sun/(kpc^3)
 
 #Read in the optimal fit parameters as well as chisquare
 fit_param = pd.read_csv('50-1_snap_99_fit_param.csv')
+print(fit_param)
 fit_param['Halo Number'] = fit_param['Halo Number'].astype(int)
+print(fit_param)
 fit_param = fit_param.set_index('Halo Number')
 
 
