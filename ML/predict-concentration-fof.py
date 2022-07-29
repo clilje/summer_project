@@ -43,6 +43,7 @@ matchingarr = get_matching(50, 1)
 #get the input data from the Group Catalogues
 #DM + Baryons
 data_csv = pd.read_csv('50-1-subhalo-history.csv')
+data_csv['index'] = data_csv['index'].astype(int)
 data_csv =data_csv.set_index('index')
 #DMO
 data_csv_dark = pd.read_csv('50-1-subhalo-history-dark.csv')
@@ -63,12 +64,14 @@ print(data_csv_dark)
 
 #Prepare the dataframes to be resorted to match Halo Indices
 fit_param_dark = pd.read_csv('50-1_snap_99_fit_param-dark.csv')
+fit_param_dark['Halo Number'] = fit_param_dark['Halo Number'].astype(int)
 fit_param_dark = fit_param_dark.set_index('Halo Number')
 #true_indices_dark = fit_param_dark['Halo Number'].to_numpy().astype(int)
 
 #Import the Fit Parameters for DM+Baryons
 #Reorder according to DMO Halo Indices, cut all NaN
 fit_param = pd.read_csv('50-1_snap_99_fit_param.csv')
+fit_param['Halo Number'] = fit_param['Halo Number'].astype(int)
 fit_param = fit_param.set_index('Halo Number')
 
 sorted_data, sorted_Y = data_csv.align(fit_param, join='inner', axis=0)
@@ -173,7 +176,7 @@ sorted_X = sorted_data.drop(column_drop, axis=1)
 sorted_X_dark = sorted_data_dark.drop(column_drop_dark, axis=1)
 sorted_X_dark = sorted_X_dark.add_suffix('_DMO')
 #Predict the ratio using ML
-X_ratio = pd.concat([sorted_X,sorted_X_dark.set_index(sorted_X.index)],axis=1)
+X_ratio = pd.concat([sorted_X,sorted_X_dark],axis=1)
 print(X_ratio)
 
 Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_conc_ratio,

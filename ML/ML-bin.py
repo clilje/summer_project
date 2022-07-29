@@ -40,7 +40,7 @@ fit_param = fit_param.set_index('Halo Number')
 
 subhalo_info = pd.read_csv('50-1-subhalo-info.csv')
 subhalo_info['SubhaloIndex'] = subhalo_info['SubhaloIndex'].astype(int)
-subhalo_info = subhalo_info.set_index('SubhaloIndex')
+subhalo_info = subhalo_info.set_index(['SubhaloIndex'])
 #subhalo_info['Df_cat'] = pd.Categorical(subhalo_info['SubhaloIndex'],
 #                                             categories = true_indices,
 #                                             ordered=True)
@@ -57,8 +57,8 @@ mass_sorted = sorted_df['SubhaloMass'].to_numpy()
 
 #Read in the optimal fit parameters as well as chisquare
 fit_param_dark = pd.read_csv('50-1_snap_99_fit_param-dark.csv')
-fit_param_dark['Halo Number'] = fit_param_dark['Halo Number'].astype(int)
-fit_param_dark = fit_param.set_index('Halo Number')
+fit_param_dark['Halo Number']=fit_param_dark['Halo Number'].astype(int)
+fit_param_dark = fit_param.set_index(['Halo Number'])
 
 
 
