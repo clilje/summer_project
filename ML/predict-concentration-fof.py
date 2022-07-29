@@ -153,30 +153,32 @@ Xtrain_dark, Xtest_dark, ytrain_dark, ytest_dark = train_test_split(sorted_X_dar
                                                 random_state=1)
 
 #Calculate the C_Bar/C_DMO ratio
-
-sorted_data, sorted_data_dark = sorted_data.align(sorted_data_dark, join='inner', axis=0)
-sorted_Y, sorted_Y_dark = sorted_Y.align(sorted_Y_dark, join='inner', axis=0)
-nfw_scalerad = sorted_Y['NFW Scale Radius'].to_numpy()
-virrad = sorted_Y['Virial Radius'].to_numpy()
-
-nfw_scalerad_dark = sorted_Y_dark['NFW Scale Radius'].to_numpy()
-virrad_dark = sorted_Y_dark['Virial Radius'].to_numpy()
-concentration = virrad/nfw_scalerad
-concentration_dark = virrad_dark/nfw_scalerad_dark
-
 print(sorted_data)
-print(sorted_Y)
 print(sorted_data_dark)
-print(sorted_Y_dark)
+sorted_data_dark_ratio, sorted_data_ratio = sorted_data_dark.align(sorted_data, join='inner', axis=0)
+sorted_Y_dark_ratio, sorted_Y_ratio = sorted_Y_dark.align(sorted_Y, join='inner', axis=0)
+nfw_scalerad_ratio = sorted_Y_ratio['NFW Scale Radius'].to_numpy()
+virrad_ratio = sorted_Y_ratio['Virial Radius'].to_numpy()
 
-y = concentration
-y_dark = concentration_dark
-y_conc_ratio = y/y_dark
-sorted_X = sorted_data.drop(column_drop, axis=1)
-sorted_X_dark = sorted_data_dark.drop(column_drop_dark, axis=1)
-sorted_X_dark = sorted_X_dark.add_suffix('_DMO')
+nfw_scalerad_dark_ratio = sorted_Y_dark_ratio['NFW Scale Radius'].to_numpy()
+virrad_dark_ratio = sorted_Y_dark_ratio['Virial Radius'].to_numpy()
+concentration_ratio = virrad_ratio/nfw_scalerad_ratio
+concentration_dark_ratio = virrad_dark_ratio/nfw_scalerad_dark_ratio
+
+print(sorted_data_ratio)
+print(sorted_Y_ratio)
+print(sorted_data_dark_ratio)
+print(sorted_Y_dark_ratio)
+
+y_ratio = concentration_ratio
+y_dark_ratio = concentration_dark_ratio
+y_conc_ratio = y_ratio/y_dark_ratio
+
+sorted_X_ratio = sorted_data_ratio.drop(column_drop, axis=1)
+sorted_X_dark_ratio = sorted_data_dark_ratio.drop(column_drop_dark, axis=1)
+sorted_X_dark_ratio = sorted_X_dark_ratio.add_suffix('_DMO')
 #Predict the ratio using ML
-X_ratio = pd.concat([sorted_X,sorted_X_dark],axis=1)
+X_ratio = pd.concat([sorted_X_ratio,sorted_X_dark_ratio],axis=1)
 print(X_ratio)
 
 Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_conc_ratio,
