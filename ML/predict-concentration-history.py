@@ -48,14 +48,14 @@ data_csv_dark['index'] = data_csv_dark['index'].astype(int)
 data_csv_dark = data_csv_dark.set_index('index')
 
 sorter = matchingarr.astype(int)
-print(sorter)
-print(data_csv_dark)
+#print(sorter)
+#print(data_csv_dark)
 data_csv_dark = data_csv_dark.reindex(sorter)
-print(data_csv_dark)
+#print(data_csv_dark)
 data_csv_dark.reset_index(inplace=True,drop=True)
-print(data_csv_dark)
+#print(data_csv_dark)
 data_csv_dark.dropna(inplace=True)
-print(data_csv_dark)
+#print(data_csv_dark)
 
 #Get the nessecary data to calculate the concentration from the fit files
 
@@ -71,10 +71,10 @@ fit_param = fit_param.set_index('Halo Number')
 
 sorted_data, sorted_Y = data_csv.align(fit_param, join='inner', axis=0)
 sorted_data_dark, sorted_Y_dark = data_csv_dark.align(fit_param_dark, join='inner', axis=0)
-print(sorted_data)
-print(sorted_Y)
-print(sorted_data_dark)
-print(sorted_Y_dark)
+#print(sorted_data)
+#print(sorted_Y)
+#print(sorted_data_dark)
+#print(sorted_Y_dark)
 
 
 all_snap = np.arange(2,100,1)
@@ -134,12 +134,12 @@ concentration_dark = virrad_dark/nfw_scalerad_dark
 
 y = concentration
 y_dark = concentration_dark
-print(y)
-print(y_dark)
+#print(y)
+#print(y_dark)
 
 
-print(sorted_X)
-print(sorted_X_dark)
+#print(sorted_X)
+#print(sorted_X_dark)
 
 Xtrain, Xtest, ytrain, ytest = train_test_split(sorted_X, y,
                                                 random_state=1)
@@ -148,30 +148,34 @@ Xtrain_dark, Xtest_dark, ytrain_dark, ytest_dark = train_test_split(sorted_X_dar
                                                 random_state=1)
 
 #Calculate the C_Bar/C_DMO ratio
-
-sorted_data, sorted_data_dark = sorted_data.align(sorted_data_dark, join='inner', axis=0)
-sorted_Y, sorted_Y_dark = sorted_Y.align(sorted_Y_dark, join='inner', axis=0)
-nfw_scalerad = sorted_Y['NFW Scale Radius'].to_numpy()
-virrad = sorted_Y['Virial Radius'].to_numpy()
-
-nfw_scalerad_dark = sorted_Y_dark['NFW Scale Radius'].to_numpy()
-virrad_dark = sorted_Y_dark['Virial Radius'].to_numpy()
-concentration = virrad/nfw_scalerad
-concentration_dark = virrad_dark/nfw_scalerad_dark
-
 print(sorted_data)
 print(sorted_Y)
 print(sorted_data_dark)
 print(sorted_Y_dark)
 
-y = concentration
-y_dark = concentration_dark
+sorted_data_ratio, sorted_data_dark_ratio = sorted_data.align(sorted_data_dark, join='inner', axis=0)
+sorted_Y_ratio, sorted_Y_dark_ratio = sorted_Y.align(sorted_Y_dark, join='inner', axis=0)
+nfw_scalerad = sorted_Y_ratio['NFW Scale Radius'].to_numpy()
+virrad = sorted_Y_ratio['Virial Radius'].to_numpy()
+
+nfw_scalerad_dark = sorted_Y_dark_ratio['NFW Scale Radius'].to_numpy()
+virrad_dark = sorted_Y_dark_ratio['Virial Radius'].to_numpy()
+concentration_ratio = virrad/nfw_scalerad
+concentration_dark_ratio= virrad_dark/nfw_scalerad_dark
+
+print(sorted_data_ratio)
+print(sorted_Y_ratio)
+print(sorted_data_dark_ratio)
+print(sorted_Y_dark_ratio)
+
+y = concentration_ratio
+y_dark = concentration_dark_ratio
 y_conc_ratio = y/y_dark
-sorted_X = sorted_data.drop(column_drop, axis=1)
-sorted_X_dark = sorted_data_dark.drop(column_drop_dark, axis=1)
-sorted_X_dark = sorted_X_dark.add_suffix('_DMO')
+sorted_X_ratio = sorted_data_ratio.drop(column_drop, axis=1)
+sorted_X_dark_ratio = sorted_data_dark_ratio.drop(column_drop_dark, axis=1)
+sorted_X_dark_ratio = sorted_X_dark_ratio.add_suffix('_DMO')
 #Predict the ratio using ML
-X_ratio = pd.concat([sorted_X,sorted_X_dark.set_index(sorted_X.index)],axis=1)
+X_ratio = pd.concat([sorted_X_ratio,sorted_X_dark_ratio.set_index(sorted_X_ratio.index)],axis=1)
 print(X_ratio)
 
 Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_conc_ratio,
