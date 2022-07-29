@@ -60,7 +60,7 @@ mass_sorted = sorted_df['SubhaloMass'].to_numpy()
 #Read in the optimal fit parameters as well as chisquare
 fit_param_dark = pd.read_csv('50-1_snap_99_fit_param-dark.csv')
 fit_param_dark['Halo Number']=fit_param_dark['Halo Number'].astype(int)
-fit_param_dark = fit_param.set_index(['Halo Number'])
+fit_param_dark = fit_param_dark.set_index(['Halo Number'])
 
 
 
