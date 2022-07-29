@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 import math
 import csv
 import pandas as pd
+import h5py
 import sklearn.metrics
 #import scikit-learn as sklearn
 from sklearn.ensemble import RandomForestRegressor
@@ -251,14 +252,13 @@ forest_importances = pd.Series(importances, index=['SubhaloGasMass', 'SubhaloSta
                 'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
                 'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter'])
 
-forest_importances_dark = pd.Series(importances_dark, index=['SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
-                'FoFMass','FoFDistanceCenter'])
+forest_importances_dark = pd.Series(importances_dark, index=['SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax'])
 
 forest_importances_ratio = pd.Series(importances_ratio, index=['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
                 'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
                 'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter',
                 'SubhaloDMMass - DMO','SubhaloSpinX- DMO','SubhaloSpinY- DMO','SubhaloSpinZ- DMO','SubhaloVelDisp- DMO', 
-                                     'SubhaloVmax- DMO','FoFMass- DMO','FoFDistanceCenter- DMO'])
+                                     'SubhaloVmax- DMO'])
 
 
 print('R_2')
