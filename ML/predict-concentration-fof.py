@@ -111,11 +111,10 @@ for j in np.flipud(to_keep):
 
 
 for x in all_snap:
-    column_drop.extend([str(i)+'positionX',str(i)+'positionY',str(i)+'positionZ',
+    column_drop.extend([str(x)+'positionX',str(x)+'positionY',str(x)+'positionZ',
                         str(x)+'halfmass_rad',str(x)+'particle_number'])
-    column_drop_dark.extend([str(i)+'positionX',str(i)+'positionY',str(i)+'positionZ',
+    column_drop_dark.extend([str(x)+'positionX',str(x)+'positionY',str(x)+'positionZ',
                              str(x)+'halfmass_rad',str(x)+'particle_number'])
-
 column_keep_ratio = column_keep.copy()
 column_keep_ratio.extend(column_keep_dark)
 
@@ -189,7 +188,7 @@ Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio,
 fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
 
 #Train Model for DM+Baryons
-model = RandomForestRegressor(n_estimators=1000,n_jobs=10)
+model = RandomForestRegressor(n_estimators=1000,n_jobs=50)
 model.fit(Xtrain,ytrain)
 y_pred = model.predict(Xtest)
 importances = model.feature_importances_
@@ -209,7 +208,7 @@ axs[0].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp
 cb = fig.colorbar(im)
 
 #Train Model for DMO
-model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=10)
+model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=50)
 model_dark.fit(Xtrain_dark,ytrain_dark)
 y_pred_dark = model_dark.predict(Xtest_dark)
 importances_dark = model_dark.feature_importances_
@@ -229,7 +228,7 @@ axs[1].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp
 
 
 
-model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=10)
+model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=50)
 model_ratio.fit(Xtrain_ratio,ytrain_ratio)
 y_pred_ratio = model_ratio.predict(Xtest_ratio)
 importances_ratio = model_ratio.feature_importances_
