@@ -154,11 +154,17 @@ print(sorted_data)
 print(sorted_data_dark)
 sorted_data_dark_ratio, sorted_data_ratio = sorted_data_dark.align(sorted_data, join='inner', axis=0)
 sorted_Y_dark_ratio, sorted_Y_ratio = sorted_Y_dark.align(sorted_Y, join='inner', axis=0)
+sorted_data_ratio, sorted_Y_dark_ratio = sorted_data_ratio.align(sorted_Y_dark_ratio, join='inner', axis=0) 
+sorted_data_dark_ratio, sorted_Y_ratio = sorted_data_dark_ratio.align(sorted_Y_ratio, join='inner', axis=0) 
+sorted_data_ratio, sorted_Y_ratio = sorted_data_ratio.align(sorted_Y_ratio, join='inner', axis=0)
+sorted_data_dark_ratio, sorted_Y_dark_ratio = sorted_data_dark_ratio.align(sorted_Y_dark_ratio, join='inner', axis=0) 
+ 
 nfw_scalerad_ratio = sorted_Y_ratio['NFW Scale Radius'].to_numpy()
 virrad_ratio = sorted_Y_ratio['Virial Radius'].to_numpy()
 
 nfw_scalerad_dark_ratio = sorted_Y_dark_ratio['NFW Scale Radius'].to_numpy()
 virrad_dark_ratio = sorted_Y_dark_ratio['Virial Radius'].to_numpy()
+
 concentration_ratio = virrad_ratio/nfw_scalerad_ratio
 concentration_dark_ratio = virrad_dark_ratio/nfw_scalerad_dark_ratio
 
