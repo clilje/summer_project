@@ -8,6 +8,7 @@ Created on Mon Jul 18 15:22:05 2022
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+import matplotlib
 import csv
 import pandas as pd
 import statistics
@@ -128,17 +129,21 @@ bins = [0.1,1,10]
 
 fig = plt.figure(figsize=(30,30))
 # add grid specifications
-gs = fig.add_gridspec(3, 3)
+gs = fig.add_gridspec(3, 4)
 # open axes/subplots
 axs = []
 axs.append( fig.add_subplot(gs[0,0]) )
 axs.append( fig.add_subplot(gs[0,1]) )   
 axs.append( fig.add_subplot(gs[0,2]) )  
+axs.append( fig.add_subplot(gs[0,3]))
 axs.append( fig.add_subplot(gs[1,0]) )
 axs.append( fig.add_subplot(gs[1,1]) )
 axs.append( fig.add_subplot(gs[1,2]) )
+
+axs.append( fig.add_subplot(gs[1,3]))
 axs.append( fig.add_subplot(gs[2,0]) )  
 axs.append( fig.add_subplot(gs[2,1]) )
+axs.append( fig.add_subplot(gs[2,3]))
 axs.append( fig.add_subplot(gs[2,2]) )
 print(len(axs))
 i = 0
@@ -227,29 +232,33 @@ for upperbound in bins:
                     'FoFMass','FoFDistanceCenter'])
 
         
-    axs[i].hist(conc_hist[-1][np.where(conc_hist[-1]<30)[0]], alpha = 0.5, color='magenta', label='Full Physics', density = True, bins=100)
-    axs[i].hist(y_pred_dark[np.where(y_pred_dark<30)[0]], alpha = 0.5, color='green', label='ML DMO', density = True, bins=100)
-    axs[i].hist(y_pred[np.where(y_pred<30)[0]], alpha = 0.5, color='blue', label='ML Full Physics', density = True, bins=100)
-    axs[i].hist(conc_hist_dark[-1][np.where(conc_hist_dark[-1]<30)[0]], alpha = 0.5, color='red', label='DMO', density = True, bins=100)
-    
+    #axs[i].hist(conc_hist[-1][np.where(conc_hist[-1]<30)[0]], alpha = 0.5, color='magenta', label='Full Physics', density = True, bins=100)
+    #axs[i].hist(y_pred_dark[np.where(y_pred_dark<30)[0]], alpha = 0.5, color='green', label='ML DMO', density = True, bins=100)
+    #axs[i].hist(y_pred[np.where(y_pred<30)[0]], alpha = 0.5, color='blue', label='ML Full Physics', density = True, bins=100)
+    #axs[i].hist(conc_hist_dark[-1][np.where(conc_hist_dark[-1]<30)[0]], alpha = 0.5, color='red', label='DMO', density = True, bins=100)
+    axs[i].hexbin(ytest, y_pred, gridsize=70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
+    axs[i+1].hexbin(ytest_dark, y_pred_dark, gridsize=70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
 
-    axs[i].set_xlabel(r'$c_{200}$')
-    axs[i].set_ylabel(r'Number of Halos')
-    axs[i].set_xlim(0,30)
-    axs[i].set_title('Mass Bin '+str(round(mean_mass[-1],5))+r' $10^{10} M_{\odot}$')
-    axs[i].legend()
+    axs[i].set_xlabel(r'Data $c_{200}$')
+    axs[i].set_ylabel(r'Predicted $c_{200}$')
+    axs[i].set_title('Mass Bin '+str(round(mean_mass[-1],5))+r' $10^{10} M_{\odot}$ Full Physics')
+    #axs[i].legend()
+    axs[i+1].set_xlabel(r'Data $c_{200}$')
+    axs[i+1].set_ylabel(r'Predicted $c_{200}$')
+    axs[i+1].set_title('Mass Bin '+str(round(mean_mass[-1],5))+r' $10^{10} M_{\odot}$ DMO')
+    #axs[i+1].legend()
     
-    forest_importances.plot.bar(yerr=std, ax=axs[i+1])
-    axs[i+1].set_xlabel(r'Feature importances using MDI')
-    axs[i+1].set_ylabel(r'Mean decrease in impurity')
-    axs[i+1].set_title('Feature Importance DM+Baryons')
-    
-    forest_importances_dark.plot.bar(yerr=std_dark, ax=axs[i+2])
+    forest_importances.plot.bar(yerr=std, ax=axs[i+2])
     axs[i+2].set_xlabel(r'Feature importances using MDI')
     axs[i+2].set_ylabel(r'Mean decrease in impurity')
-    axs[i+2].set_title('Feature Importance DMO')
+    axs[i+2].set_title('Feature Importance DM+Baryons')
+    
+    forest_importances_dark.plot.bar(yerr=std_dark, ax=axs[i+3])
+    axs[i+3].set_xlabel(r'Feature importances using MDI')
+    axs[i+3].set_ylabel(r'Mean decrease in impurity')
+    axs[i+3].set_title('Feature Importance DMO')
         
-    i += 3
+    i += 4
     
     lowerbound= upperbound
 fig.tight_layout()
