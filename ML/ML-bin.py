@@ -241,11 +241,17 @@ for upperbound in bins:
 
     axs[i].set_xlabel(r'Data $c_{200}$')
     axs[i].set_ylabel(r'Predicted $c_{200}$')
+    
+    axs[i].set_xlim(10**0, 2*10)
+    axs[i].set_ylim(10**0, 2*10)
     axs[i].set_title('Mass Bin '+str(round(mean_mass[-1],5))+r' $10^{10} M_{\odot}$ Full Physics')
     #axs[i].legend()
     axs[i+1].set_xlabel(r'Data $c_{200}$')
     axs[i+1].set_ylabel(r'Predicted $c_{200}$')
     axs[i+1].set_title('Mass Bin '+str(round(mean_mass[-1],5))+r' $10^{10} M_{\odot}$ DMO')
+    
+    axs[i+1].set_xlim(10**0, 2*10)
+    axs[i+1].set_ylim(10**0, 2*10)
     #axs[i+1].legend()
     
     forest_importances.plot.bar(yerr=std, ax=axs[i+2])
