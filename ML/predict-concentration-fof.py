@@ -14,6 +14,7 @@ import h5py
 import sklearn.metrics
 #import scikit-learn as sklearn
 from sklearn.ensemble import RandomForestRegressor
+import sklearn.metrics
 import matplotlib
 from sklearn.model_selection import train_test_split
 import matplotlib.pylab as pylab
@@ -189,12 +190,12 @@ X_ratio = pd.concat([sorted_X,sorted_X_dark],axis=1)
 print(X_ratio)
 
 Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_ratio,
-                                                random_state=1)
+                                                random_state=42)
 
 
 
 #set up plotting params
-fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
+fig, axs = plt.subplots(1,4,constrained_layout=True, figsize=(30, 10))
 
 #Train Model for DM+Baryons
 model = RandomForestRegressor(n_estimators=1000,n_jobs=50)
@@ -257,25 +258,39 @@ axs[2].set_yscale('log')
 axs[2].set_xlim(3*10**(-1), 3*10**0)
 axs[2].set_ylim(3*10**(-1), 3*10**0)
 axs[2].set_title('Predicted Halo Concentration ratio from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
-"""
-y_ratio = ytest/ytest_dark
-y_pred_ratio = y_pred/y_pred_dark
-plt.hexbin(y_ratio,y_pred_ratio, gridsize = 70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
-axs[2].set_xlabel(r'Ratio of $\frac{C_{B}}{C_{DMO}}$')
-axs[2].set_ylabel(r'Predicted Ratio of $\frac{C_{B}}{C_{DMO}}$')
-axs[2].set_xscale('log')
-axs[2].set_yscale('log')
-axs[2].set_xlim(3*10**(-1), 3*10**0)
-axs[2].set_ylim(3*10**(-1), 3*10**0)
-axs[2].set_title('Predicted Halo Concentration ratio combined from other predictions')
-"""
+
+y_ratio_calc = ytest/ytest_dark
+y_pred_ratio_calc = y_pred/y_pred_dark
+plt.hexbin(y_ratio_calc,y_pred_ratio_calc, gridsize = 70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
+axs[3].set_xlabel(r'Ratio of $\frac{C_{B}}{C_{DMO}}$')
+axs[3].set_ylabel(r'Predicted Ratio of $\frac{C_{B}}{C_{DMO}}$')
+axs[3].set_xscale('log')
+axs[3].set_yscale('log')
+axs[3].set_xlim(3*10**(-1), 3*10**0)
+axs[3].set_ylim(3*10**(-1), 3*10**0)
+axs[3].set_title('Predicted Halo Concentration ratio combined from other predictions')
+
+
+
+
+print('R_2')
+print('FP: '+str(sklearn.metrics.r2_score(ytest, y_pred)))
+print('DMO: '+str(sklearn.metrics.r2_score(ytest_dark, y_pred_dark)))
+print('Ratio ML: '+str(sklearn.metrics.r2_score(ytest_ratio, y_pred_ratio)))
+print('Ratio Calculated: '+str(sklearn.metrics.r2_score(y_ratio, y_pred_ratio_calc)))
+
+print('Mean squared error')
+print('FP: '+str(sklearn.metrics.mean_squared_error(ytest, y_pred)))
+print('DMO: '+str(sklearn.metrics.mean_squared_error(ytest_dark, y_pred_dark)))
+print('Ratio ML: '+str(sklearn.metrics.mean_squared_error(ytest_ratio, y_pred_ratio)))
+print('Ratio Calculated: '+str(sklearn.metrics.mean_squared_error(y_ratio, y_pred_ratio_calc)))
 fig.savefig('concentration_ratio_fof-combined-index.jpg')
 
 
 fig.clf()
 
 
-forest_importances = pd.Series(importances, index=['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
+forest_importances = pd.Series(importances, index=['Index','SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
                 'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
                 'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter'])
 
@@ -285,16 +300,8 @@ forest_importances_ratio = pd.Series(importances_ratio, index=['SubhaloGasMass',
                 'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
                 'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter',
                 'SubhaloDMMass - DMO','SubhaloSpinX- DMO','SubhaloSpinY- DMO','SubhaloSpinZ- DMO','SubhaloVelDisp- DMO', 
-                                     'SubhaloVmax- DMO'])
+                                     'SubhaloVmax- DMO','Index'])
 
-
-print('R_2')
-print(sklearn.metrics.r2_score(ytest, y_pred))
-print(sklearn.metrics.r2_score(ytest_dark, y_pred_dark))
-
-print('Mean squared error')
-print(sklearn.metrics.mean_squared_error(ytest, y_pred))
-print(sklearn.metrics.mean_squared_error(ytest_dark, y_pred_dark))
 
 fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
 #Plot Predicted vs actual values
