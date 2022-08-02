@@ -209,7 +209,7 @@ for upperbound in bins:
                                                     random_state=1)
     
     #Train Model for DM+Baryons
-    model = GradientBoostingRegressor(n_estimators=1000,n_jobs=50)
+    model = GradientBoostingRegressor(n_estimators=1000)
     model.fit(Xtrain,ytrain)
     y_pred = model.predict(Xtest)
     importances = model.feature_importances_
@@ -218,7 +218,7 @@ for upperbound in bins:
     #print(y)
     #print(y_pred)
     #Train Model for DMO
-    model_dark = GradientBoostingRegressor(n_estimators=1000,n_jobs=50)
+    model_dark = GradientBoostingRegressor(n_estimators=1000)
     model_dark.fit(Xtrain_dark,ytrain_dark)
     y_pred_dark = model_dark.predict(Xtest_dark)
     importances_dark = model_dark.feature_importances_
@@ -252,6 +252,8 @@ for upperbound in bins:
                     'FoFMass','FoFDistanceCenter'])
 
         
+    print(min(y_pred))
+    print(min(y_pred_dark))
     #axs[i].hist(conc_hist[-1][np.where(conc_hist[-1]<30)[0]], alpha = 0.5, color='magenta', label='Full Physics', density = True, bins=100)
     #axs[i].hist(y_pred_dark[np.where(y_pred_dark<30)[0]], alpha = 0.5, color='green', label='ML DMO', density = True, bins=100)
     #axs[i].hist(y_pred[np.where(y_pred<30)[0]], alpha = 0.5, color='blue', label='ML Full Physics', density = True, bins=100)
