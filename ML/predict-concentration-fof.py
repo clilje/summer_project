@@ -283,7 +283,7 @@ print('Mean squared error')
 print('FP: '+str(sklearn.metrics.mean_squared_error(ytest, y_pred)))
 print('DMO: '+str(sklearn.metrics.mean_squared_error(ytest_dark, y_pred_dark)))
 print('Ratio ML: '+str(sklearn.metrics.mean_squared_error(ytest_ratio, y_pred_ratio)))
-print('Ratio Calculated: '+str(sklearn.metrics.mean_squared_error(y_ratio, y_pred_ratio_calc)))
+print('Ratio Calculated: '+str(sklearn.metrics.mean_squared_error(y_ratio_calc, y_pred_ratio_calc)))
 fig.savefig('concentration_ratio_fof-combined-index.jpg')
 
 
