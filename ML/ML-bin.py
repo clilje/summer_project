@@ -211,20 +211,21 @@ for upperbound in bins:
     
     Xtrain_dark, Xtest_dark, ytrain_dark, ytest_dark = train_test_split(bin_X_dark_final, concentration_dark[massindex_dark],
                                                     random_state=1)
-    Xtrain = np.log10(Xtrain)
-    Xtest = np.log10(Xtest)
+    #Xtrain = np.log10(Xtrain)
+    #Xtest = np.log10(Xtest)
     ytrain = np.log10(ytrain)
     ytest = np.log10(ytest)
-    Xtrain_dark = np.log10(Xtrain_dark)
-    Xtest_dark = np.log10(Xtest_dark)
+    #Xtrain_dark = np.log10(Xtrain_dark)
+    #Xtest_dark = np.log10(Xtest_dark)
     ytrain_dark = np.log10(ytrain_dark)
     ytest_dark = np.log10(ytest_dark)
+    
     #Train Model for DM+Baryons
     model = RandomForestRegressor(n_estimators=1000, n_jobs=50)
     model.fit(Xtrain,ytrain)
     y_pred = model.predict(Xtest)
     importances = model.feature_importances_
-    #std = np.std([tree.feature_importances_ for tree in model.estimators_], axis=0)
+    std = np.std([tree.feature_importances_ for tree in model.estimators_], axis=0)
 
     #print(y)
     #print(y_pred)
@@ -233,7 +234,7 @@ for upperbound in bins:
     model_dark.fit(Xtrain_dark,ytrain_dark)
     y_pred_dark = model_dark.predict(Xtest_dark)
     importances_dark = model_dark.feature_importances_
-    #std_dark = np.std([tree_dark.feature_importances_ for tree_dark in model_dark.estimators_], axis=0)
+    std_dark = np.std([tree_dark.feature_importances_ for tree_dark in model_dark.estimators_], axis=0)
     
     print('Bin Mass'+str(upperbound))
     print('Sklearn Values:')

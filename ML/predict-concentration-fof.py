@@ -162,7 +162,7 @@ sorted_data_ratio, sorted_Y_dark_ratio = sorted_data_ratio.align(sorted_Y_dark_r
 sorted_data_dark_ratio, sorted_Y_ratio = sorted_data_dark_ratio.align(sorted_Y_ratio, join='inner', axis=0) 
 sorted_data_ratio, sorted_Y_ratio = sorted_data_ratio.align(sorted_Y_ratio, join='inner', axis=0)
 sorted_data_dark_ratio, sorted_Y_dark_ratio = sorted_data_dark_ratio.align(sorted_Y_dark_ratio, join='inner', axis=0) 
- 
+
 nfw_scalerad_ratio = sorted_Y_ratio['NFW Scale Radius'].to_numpy()
 virrad_ratio = sorted_Y_ratio['Virial Radius'].to_numpy()
 
@@ -176,21 +176,20 @@ print(sorted_data_ratio)
 print(sorted_Y_ratio)
 print(sorted_data_dark_ratio)
 print(sorted_Y_dark_ratio)
+"""
+y_ratio = y/y_dark
+#y_dark_ratio = concentration_dark_ratio
+#y_conc_ratio = y_ratio/y_dark_ratio
 
-y_ratio = concentration_ratio
-y_dark_ratio = concentration_dark_ratio
-y_conc_ratio = y_ratio/y_dark_ratio
-
-sorted_X_ratio = sorted_data_ratio.drop(column_drop, axis=1)
-sorted_X_dark_ratio = sorted_data_dark_ratio.drop(column_drop_dark, axis=1)
-sorted_X_dark_ratio = sorted_X_dark_ratio.add_suffix('_DMO')
+#sorted_X_ratio = sorted_data_ratio.drop(column_drop, axis=1)
+#sorted_X_dark_ratio = sorted_data_dark_ratio.drop(column_drop_dark, axis=1)
+#sorted_X_dark_ratio = sorted_X_dark_ratio.add_suffix('_DMO')
 #Predict the ratio using ML
-X_ratio = pd.concat([sorted_X_ratio,sorted_X_dark_ratio],axis=1)
+X_ratio = pd.concat([sorted_X,sorted_X_dark],axis=1)
 print(X_ratio)
 
-Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_conc_ratio,
+Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_ratio,
                                                 random_state=1)
-"""
 
 
 
@@ -237,15 +236,18 @@ axs[1].set_ylim(4*10**0, 2*10)
 axs[1].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
 
 print(Xtest['index'][0:100])
+print(y_pred[0:100])
 print(Xtest_dark['Halo Number_DMO'][0:100])
+print(y_pred[0:100])
+print(Xtest_ratio['index'][0:100])
+print(Xtest_ratio['Halo Number_DMO'][0:100])
 
-"""
 model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=50)
 model_ratio.fit(Xtrain_ratio,ytrain_ratio)
 y_pred_ratio = model_ratio.predict(Xtest_ratio)
 importances_ratio = model_ratio.feature_importances_
 std_ratio = np.std([tree_ratio.feature_importances_ for tree_ratio in model_ratio.estimators_], axis=0)
-
+print(y_pred_ratio[0:100])
 #Plot predicted vs actual
 plt.hexbin(ytest_ratio,y_pred_ratio, gridsize = 70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
 axs[2].set_xlabel(r'Ratio of $\frac{C_{B}}{C_{DMO}}$')
@@ -266,12 +268,13 @@ axs[2].set_yscale('log')
 axs[2].set_xlim(3*10**(-1), 3*10**0)
 axs[2].set_ylim(3*10**(-1), 3*10**0)
 axs[2].set_title('Predicted Halo Concentration ratio combined from other predictions')
+"""
 fig.savefig('concentration_ratio_fof-combined-index.jpg')
 
 
 fig.clf()
 
-"""
+
 forest_importances = pd.Series(importances, index=['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
                 'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
                 'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter'])
