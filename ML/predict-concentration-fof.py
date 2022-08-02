@@ -76,6 +76,9 @@ fit_param = fit_param.set_index('Halo Number')
 
 sorted_data, sorted_Y = data_csv.align(fit_param, join='inner', axis=0)
 sorted_data_dark, sorted_Y_dark = data_csv_dark.align(fit_param_dark, join='inner', axis=0)
+sorted_data, sorted_data_dark = sorted_data.align(sorted_data_dark, join='inner', axis=0)
+sorted_Y, sorted_Y_dark = sorted_Y.align(sorted_Y_dark, join='inner', axis=0)
+
 print(sorted_data)
 print(sorted_Y)
 print(sorted_data_dark)

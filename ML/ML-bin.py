@@ -13,7 +13,7 @@ import csv
 import pandas as pd
 import statistics
 #import scikit-learn as sklearn
-from sklearn.ensemble import ExtraTreesRegressor
+from sklearn.ensemble import GradientBoostingRegressor
 from sklearn.model_selection import train_test_split
 import sklearn.metrics
 import matplotlib.pylab as pylab
@@ -209,7 +209,7 @@ for upperbound in bins:
                                                     random_state=1)
     
     #Train Model for DM+Baryons
-    model = ExtraTreesRegressor(n_estimators=1000,n_jobs=50)
+    model = GradientBoostingRegressor(n_estimators=1000,n_jobs=50)
     model.fit(Xtrain,ytrain)
     y_pred = model.predict(Xtest)
     importances = model.feature_importances_
@@ -218,7 +218,7 @@ for upperbound in bins:
     #print(y)
     #print(y_pred)
     #Train Model for DMO
-    model_dark = ExtraTreesRegressor(n_estimators=1000,n_jobs=50)
+    model_dark = GradientBoostingRegressor(n_estimators=1000,n_jobs=50)
     model_dark.fit(Xtrain_dark,ytrain_dark)
     y_pred_dark = model_dark.predict(Xtest_dark)
     importances_dark = model_dark.feature_importances_
@@ -288,6 +288,6 @@ for upperbound in bins:
     
     lowerbound= upperbound
 fig.tight_layout()
-fig.savefig('ML-per-bin-newforest')
+fig.savefig('ML-per-bin-gradientboost')
 
 
