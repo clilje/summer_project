@@ -156,8 +156,8 @@ axs.append( fig.add_subplot(gs[1,2]) )
 axs.append( fig.add_subplot(gs[1,3]))
 axs.append( fig.add_subplot(gs[2,0]) )  
 axs.append( fig.add_subplot(gs[2,1]) )
-axs.append( fig.add_subplot(gs[2,3]))
-axs.append( fig.add_subplot(gs[2,2]) )
+axs.append( fig.add_subplot(gs[2,2]))
+axs.append( fig.add_subplot(gs[2,3]) )
 #print(len(axs))
 i = 0
 #loop over bins
@@ -264,8 +264,8 @@ for upperbound in bins:
                     'FoFMass','FoFDistanceCenter'])
 
         
-    print(min(y_pred))
-    print(min(y_pred_dark))
+    print(np.max(ytrain))
+    print(np.max(ytest))
     #axs[i].hist(conc_hist[-1][np.where(conc_hist[-1]<30)[0]], alpha = 0.5, color='magenta', label='Full Physics', density = True, bins=100)
     #axs[i].hist(y_pred_dark[np.where(y_pred_dark<30)[0]], alpha = 0.5, color='green', label='ML DMO', density = True, bins=100)
     #axs[i].hist(y_pred[np.where(y_pred<30)[0]], alpha = 0.5, color='blue', label='ML Full Physics', density = True, bins=100)
@@ -279,16 +279,16 @@ for upperbound in bins:
     axs[i].set_xlabel(r'Data $c_{200}$')
     axs[i].set_ylabel(r'Predicted $c_{200}$')
     
-    axs[i].set_xlim(10**0, 2*10)
-    axs[i].set_ylim(10**0, 2*10)
+    axs[i].set_xlim(0, 2)
+    axs[i].set_ylim(0, 2)
     axs[i].set_title('Mass Bin '+str(round(mean_mass[-1],5))+r' $10^{10} M_{\odot}$ Full Physics')
     #axs[i].legend()
     axs[i+1].set_xlabel(r'Data $c_{200}$')
     axs[i+1].set_ylabel(r'Predicted $c_{200}$')
     axs[i+1].set_title('Mass Bin '+str(round(mean_mass[-1],5))+r' $10^{10} M_{\odot}$ DMO')
     
-    axs[i+1].set_xlim(10**0, 2*10)
-    axs[i+1].set_ylim(10**0, 2*10)
+    axs[i+1].set_xlim(0, 2)
+    axs[i+1].set_ylim(0, 2)
     #axs[i+1].legend()
     
     forest_importances.plot.bar(yerr=std, ax=axs[i+2])
