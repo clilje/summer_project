@@ -213,7 +213,7 @@ for upperbound in bins:
     model.fit(Xtrain,ytrain)
     y_pred = model.predict(Xtest)
     importances = model.feature_importances_
-    std = np.std([tree.feature_importances_ for tree in model.estimators_], axis=0)
+    #std = np.std([tree.feature_importances_ for tree in model.estimators_], axis=0)
 
     #print(y)
     #print(y_pred)
@@ -222,7 +222,7 @@ for upperbound in bins:
     model_dark.fit(Xtrain_dark,ytrain_dark)
     y_pred_dark = model_dark.predict(Xtest_dark)
     importances_dark = model_dark.feature_importances_
-    std_dark = np.std([tree_dark.feature_importances_ for tree_dark in model_dark.estimators_], axis=0)
+    #std_dark = np.std([tree_dark.feature_importances_ for tree_dark in model_dark.estimators_], axis=0)
     
     print('Bin Mass'+str(upperbound))
     print('Sklearn Values:')
@@ -274,12 +274,14 @@ for upperbound in bins:
     axs[i+1].set_ylim(10**0, 2*10)
     #axs[i+1].legend()
     
-    forest_importances.plot.bar(yerr=std, ax=axs[i+2])
+    #forest_importances.plot.bar(yerr=std, ax=axs[i+2])
+    forest_importances.plot.bar(ax=axs[i+2])
     axs[i+2].set_xlabel(r'Feature importances using MDI')
     axs[i+2].set_ylabel(r'Mean decrease in impurity')
     axs[i+2].set_title('Feature Importance DM+Baryons')
     
-    forest_importances_dark.plot.bar(yerr=std_dark, ax=axs[i+3])
+    #forest_importances_dark.plot.bar(yerr=std_dark, ax=axs[i+3])
+    forest_importances_dark.plot.bar(ax=axs[i+3])
     axs[i+3].set_xlabel(r'Feature importances using MDI')
     axs[i+3].set_ylabel(r'Mean decrease in impurity')
     axs[i+3].set_title('Feature Importance DMO')
