@@ -13,7 +13,7 @@ import csv
 import pandas as pd
 import statistics
 #import scikit-learn as sklearn
-from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 import sklearn.metrics
 import matplotlib.pylab as pylab
@@ -27,11 +27,15 @@ pylab.rcParams.update(params)
 
 
 def r_2(y_data, y_pred):
+    y_data = np.log10(y_data)
+    y_pred = np.log10(y_pred)
     ss_res = np.sum(np.square(y_data-y_pred))
     ss_tot = np.sum(np.square(y_data-np.mean(y_data)))
     return(1-(ss_res/ss_tot))
 
 def MSE(y_data, y_pred):
+    y_data = np.log10(y_data)
+    y_pred = np.log10(y_pred)
     return((1/len(y_data))*np.sum(np.square(y_data-y_pred)))
 
 
@@ -209,7 +213,7 @@ for upperbound in bins:
                                                     random_state=1)
     
     #Train Model for DM+Baryons
-    model = GradientBoostingRegressor(n_estimators=1000)
+    model = RandomForestRegressor(n_estimators=1000, n_jobs=50)
     model.fit(Xtrain,ytrain)
     y_pred = model.predict(Xtest)
     importances = model.feature_importances_
@@ -218,7 +222,7 @@ for upperbound in bins:
     #print(y)
     #print(y_pred)
     #Train Model for DMO
-    model_dark = GradientBoostingRegressor(n_estimators=1000)
+    model_dark = RandomForestRegressor(n_estimators=1000, n_jobs=50)
     model_dark.fit(Xtrain_dark,ytrain_dark)
     y_pred_dark = model_dark.predict(Xtest_dark)
     importances_dark = model_dark.feature_importances_
