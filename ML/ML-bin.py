@@ -265,7 +265,9 @@ for upperbound in bins:
 
         
     print(np.max(ytrain))
+    print(np.mean(ytrain))
     print(np.max(ytest))
+    print(np.mean(ytest))
     #axs[i].hist(conc_hist[-1][np.where(conc_hist[-1]<30)[0]], alpha = 0.5, color='magenta', label='Full Physics', density = True, bins=100)
     #axs[i].hist(y_pred_dark[np.where(y_pred_dark<30)[0]], alpha = 0.5, color='green', label='ML DMO', density = True, bins=100)
     #axs[i].hist(y_pred[np.where(y_pred<30)[0]], alpha = 0.5, color='blue', label='ML Full Physics', density = True, bins=100)
