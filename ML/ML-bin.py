@@ -270,8 +270,11 @@ for upperbound in bins:
     #axs[i].hist(y_pred_dark[np.where(y_pred_dark<30)[0]], alpha = 0.5, color='green', label='ML DMO', density = True, bins=100)
     #axs[i].hist(y_pred[np.where(y_pred<30)[0]], alpha = 0.5, color='blue', label='ML Full Physics', density = True, bins=100)
     #axs[i].hist(conc_hist_dark[-1][np.where(conc_hist_dark[-1]<30)[0]], alpha = 0.5, color='red', label='DMO', density = True, bins=100)
-    axs[i].hexbin(ytest, y_pred, gridsize=70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
-    axs[i+1].hexbin(ytest_dark, y_pred_dark, gridsize=70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
+    #axs[i].hexbin(ytest, y_pred, gridsize=70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
+    axs[i].hexbin(ytest, y_pred, gridsize=70,norm=matplotlib.colors.LogNorm())
+    
+    #axs[i+1].hexbin(ytest_dark, y_pred_dark, gridsize=70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
+    axs[i+1].hexbin(ytest_dark, y_pred_dark, gridsize=70,norm=matplotlib.colors.LogNorm())
 
     axs[i].set_xlabel(r'Data $c_{200}$')
     axs[i].set_ylabel(r'Predicted $c_{200}$')
