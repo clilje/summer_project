@@ -26,6 +26,15 @@ params = {'legend.fontsize': 'x-large',
 pylab.rcParams.update(params)
 
 
+def r_2(y_data, y_pred):
+    ss_res = np.sum(np.square(y_data-y_pred))
+    ss_tot = np.sum(np.square(y_data-np.mean(y_data)))
+    return(1-(ss_res/ss_tot))
+
+def MSE(y_data, y_pred):
+    return((1/len(y_data))*np.sum(np.square(y_data-np.mean(y_data))))
+
+
 h = 0.6774
 p_crit = 127 #m_sun/(kpc^3)
 
@@ -34,9 +43,9 @@ p_crit = 127 #m_sun/(kpc^3)
 
 #Read in the optimal fit parameters as well as chisquare
 fit_param = pd.read_csv('50-1_snap_99_fit_param.csv')
-print(fit_param)
+#print(fit_param)
 fit_param['Halo Number'] = fit_param['Halo Number'].astype(int)
-print(fit_param)
+#print(fit_param)
 fit_param = fit_param.set_index('Halo Number')
 
 
@@ -99,8 +108,8 @@ virrad_dark = sorted_fit_dark['Virial Radius'].to_numpy()
 
 #lists to store data#
 #numhalos = len(subhalo_index)
-print(sorted_df)
-print(sorted_df_dark)
+#print(sorted_df)
+#print(sorted_df_dark)
 
 #calculate concentration from given arrays
 concentration = np.array(virrad/nfw_scalerad)
@@ -108,8 +117,8 @@ concentration_dark = np.array(virrad_dark/nfw_scalerad_dark)
 
 y = concentration
 y_dark = concentration_dark
-print(y)
-print(y_dark)
+#print(y)
+#print(y_dark)
 
 
 #Prepare mass to be binned
@@ -145,7 +154,7 @@ axs.append( fig.add_subplot(gs[2,0]) )
 axs.append( fig.add_subplot(gs[2,1]) )
 axs.append( fig.add_subplot(gs[2,3]))
 axs.append( fig.add_subplot(gs[2,2]) )
-print(len(axs))
+#print(len(axs))
 i = 0
 #loop over bins
 for upperbound in bins:
@@ -154,10 +163,10 @@ for upperbound in bins:
     mass_sorted = np.array(mass_sorted)
     massindex_dark = np.where(np.logical_and(mass_sorted_dark<upperbound,mass_sorted_dark>lowerbound))[0]
     
-    print(len(massindex))
-    print(len(concentration[massindex]))
-    print(len(massindex_dark))
-    print(len(concentration_dark[massindex_dark]))
+    #print(len(massindex))
+    #print(len(concentration[massindex]))
+    #print(len(massindex_dark))
+    #print(len(concentration_dark[massindex_dark]))
     #append all data to lists
     mean_mass.append(((upperbound-lowerbound)/2)*h)
     
@@ -206,16 +215,17 @@ for upperbound in bins:
     importances = model.feature_importances_
     std = np.std([tree.feature_importances_ for tree in model.estimators_], axis=0)
 
-    print(y)
-    print(y_pred)
+    #print(y)
+    #print(y_pred)
     #Train Model for DMO
     model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=50)
     model_dark.fit(Xtrain_dark,ytrain_dark)
     y_pred_dark = model_dark.predict(Xtest_dark)
     importances_dark = model_dark.feature_importances_
     std_dark = np.std([tree_dark.feature_importances_ for tree_dark in model_dark.estimators_], axis=0)
-
     
+    print('Bin Mass'+str(upperbound))
+    print('Sklearn Values:')
     print('R_2')
     print(sklearn.metrics.r2_score(ytest, y_pred))
     print(sklearn.metrics.r2_score(ytest_dark, y_pred_dark))
@@ -223,6 +233,16 @@ for upperbound in bins:
     print('Mean squared error')
     print(sklearn.metrics.mean_squared_error(ytest, y_pred))
     print(sklearn.metrics.mean_squared_error(ytest_dark, y_pred_dark))
+    
+    print('Clara values: ')
+    print('R_2')
+    print('FP: '+str(r_2(ytest, y_pred)))
+    print('DMO: '+str(r_2(ytest_dark, y_pred_dark)))
+    
+    print('Mean squared error')
+    print('FP: '+str(MSE(ytest, y_pred)))
+    print('DMO: '+str(MSE(ytest_dark, y_pred_dark)))
+    
     
     forest_importances = pd.Series(importances, index=['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
                     'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
