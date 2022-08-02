@@ -27,15 +27,15 @@ pylab.rcParams.update(params)
 
 
 def r_2(y_data, y_pred):
-    y_data = np.log10(y_data)
-    y_pred = np.log10(y_pred)
+    #y_data = np.log10(y_data)
+    #y_pred = np.log10(y_pred)
     ss_res = np.sum(np.square(y_data-y_pred))
     ss_tot = np.sum(np.square(y_data-np.mean(y_data)))
     return(1-(ss_res/ss_tot))
 
 def MSE(y_data, y_pred):
-    y_data = np.log10(y_data)
-    y_pred = np.log10(y_pred)
+    #y_data = np.log10(y_data)
+    #y_pred = np.log10(y_pred)
     return((1/len(y_data))*np.sum(np.square(y_data-y_pred)))
 
 
@@ -211,7 +211,14 @@ for upperbound in bins:
     
     Xtrain_dark, Xtest_dark, ytrain_dark, ytest_dark = train_test_split(bin_X_dark_final, concentration_dark[massindex_dark],
                                                     random_state=1)
-    
+    Xtrain = np.log10(Xtrain)
+    Xtest = np.log10(Xtest)
+    ytrain = np.log10(ytrain)
+    ytest = np.log10(ytest)
+    Xtrain_dark = np.log10(Xtrain_dark)
+    Xtest_dark = np.log10(Xtest_dark)
+    ytrain_dark = np.log10(ytrain_dark)
+    ytest_dark = np.log10(ytest_dark)
     #Train Model for DM+Baryons
     model = RandomForestRegressor(n_estimators=1000, n_jobs=50)
     model.fit(Xtrain,ytrain)
@@ -280,14 +287,14 @@ for upperbound in bins:
     axs[i+1].set_ylim(10**0, 2*10)
     #axs[i+1].legend()
     
-    #forest_importances.plot.bar(yerr=std, ax=axs[i+2])
-    forest_importances.plot.bar(ax=axs[i+2])
+    forest_importances.plot.bar(yerr=std, ax=axs[i+2])
+    #forest_importances.plot.bar(ax=axs[i+2])
     axs[i+2].set_xlabel(r'Feature importances using MDI')
     axs[i+2].set_ylabel(r'Mean decrease in impurity')
     axs[i+2].set_title('Feature Importance DM+Baryons')
     
-    #forest_importances_dark.plot.bar(yerr=std_dark, ax=axs[i+3])
-    forest_importances_dark.plot.bar(ax=axs[i+3])
+    forest_importances_dark.plot.bar(yerr=std_dark, ax=axs[i+3])
+    #forest_importances_dark.plot.bar(ax=axs[i+3])
     axs[i+3].set_xlabel(r'Feature importances using MDI')
     axs[i+3].set_ylabel(r'Mean decrease in impurity')
     axs[i+3].set_title('Feature Importance DMO')
