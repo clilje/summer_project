@@ -237,7 +237,7 @@ axs[1].set_ylim(4*10**0, 2*10)
 axs[1].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
 
 print(Xtest['index'][0:100])
-print(Xtest_dark['Halo Number'][0:100])
+print(Xtest_dark['Halo Number_DMO'][0:100])
 
 """
 model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=50)
