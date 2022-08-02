@@ -44,7 +44,7 @@ matchingarr = get_matching(50, 1)
 #DM + Baryons
 data_csv = pd.read_csv('50-1-subhalo-history.csv')
 data_csv['index'] = data_csv['index'].astype(int)
-data_csv =data_csv.set_index('index')
+data_csv =data_csv.set_index('index', drop=False)
 #DMO
 data_csv_dark = pd.read_csv('50-1-subhalo-history-dark.csv')
 data_csv_dark['index'] = data_csv_dark['index'].astype(int)
@@ -58,6 +58,7 @@ print(data_csv_dark)
 data_csv_dark.reset_index(inplace=True,drop=True)
 print(data_csv_dark)
 data_csv_dark.dropna(inplace=True)
+data_csv['index'] = data_csv.index
 print(data_csv_dark)
 
 #Get the nessecary data to calculate the concentration from the fit files
@@ -147,11 +148,11 @@ print(sorted_X)
 print(sorted_X_dark)
 
 Xtrain, Xtest, ytrain, ytest = train_test_split(sorted_X, y,
-                                                random_state=1)
+                                                random_state=42)
 
 Xtrain_dark, Xtest_dark, ytrain_dark, ytest_dark = train_test_split(sorted_X_dark, y_dark,
-                                                random_state=1)
-
+                                                random_state=42)
+"""
 #Calculate the C_Bar/C_DMO ratio
 print(sorted_data)
 print(sorted_data_dark)
@@ -189,7 +190,7 @@ print(X_ratio)
 
 Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_conc_ratio,
                                                 random_state=1)
-
+"""
 
 
 
@@ -235,6 +236,8 @@ axs[1].set_xlim(4*10**0, 2*10)
 axs[1].set_ylim(4*10**0, 2*10)
 axs[1].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
 
+print(Xtest['index'][0:100])
+print(Xtest_dark['index'][0:100])
 
 """
 model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=50)
@@ -263,12 +266,12 @@ axs[2].set_yscale('log')
 axs[2].set_xlim(3*10**(-1), 3*10**0)
 axs[2].set_ylim(3*10**(-1), 3*10**0)
 axs[2].set_title('Predicted Halo Concentration ratio combined from other predictions')
-fig.savefig('concentration_ratio_fof-combined.jpg')
+fig.savefig('concentration_ratio_fof-combined-index.jpg')
 
 
 fig.clf()
 
-
+"""
 forest_importances = pd.Series(importances, index=['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
                 'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
                 'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter'])
@@ -311,4 +314,4 @@ axs[2].set_xlabel(r'Feature importances using MDI')
 axs[2].set_ylabel(r'Mean decrease in impurity')
 axs[2].set_title('Feature Importance Ratio')
 fig.savefig('feature-importance_fof-new-match.jpg')
-
+"""
