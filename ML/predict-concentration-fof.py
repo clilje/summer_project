@@ -58,7 +58,7 @@ print(data_csv_dark)
 data_csv_dark.reset_index(inplace=True,drop=True)
 print(data_csv_dark)
 data_csv_dark.dropna(inplace=True)
-data_csv['index'] = data_csv.index
+data_csv['Halo Number'] = data_csv.index
 print(data_csv_dark)
 
 #Get the nessecary data to calculate the concentration from the fit files
@@ -237,7 +237,7 @@ axs[1].set_ylim(4*10**0, 2*10)
 axs[1].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
 
 print(Xtest['index'][0:100])
-print(Xtest_dark['index'][0:100])
+print(Xtest_dark['Halo Number'][0:100])
 
 """
 model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=50)
