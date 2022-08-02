@@ -233,14 +233,13 @@ axs[1].set_ylim(4*10**0, 2*10)
 axs[1].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
 
 
-
+"""
 model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=50)
 model_ratio.fit(Xtrain_ratio,ytrain_ratio)
 y_pred_ratio = model_ratio.predict(Xtest_ratio)
 importances_ratio = model_ratio.feature_importances_
 std_ratio = np.std([tree_ratio.feature_importances_ for tree_ratio in model_ratio.estimators_], axis=0)
 
-"""
 #Plot predicted vs actual
 plt.hexbin(ytest_ratio,y_pred_ratio, gridsize = 70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
 axs[2].set_xlabel(r'Ratio of $\frac{C_{B}}{C_{DMO}}$')
