@@ -38,26 +38,26 @@ h = 0.6774
 p_crit = 127 #m_sun/(kpc^3)
 matchingarr = get_matching(50, 1)
 
-
 #get the input data from the Group Catalogues
 #DM + Baryons
 data_csv = pd.read_csv('50-1-subhalo-history.csv')
 data_csv['index'] = data_csv['index'].astype(int)
-data_csv =data_csv.set_index('index')
+data_csv =data_csv.set_index('index', drop=False)
 #DMO
 data_csv_dark = pd.read_csv('50-1-subhalo-history-dark.csv')
 data_csv_dark['index'] = data_csv_dark['index'].astype(int)
 data_csv_dark = data_csv_dark.set_index('index')
 
 sorter = matchingarr.astype(int)
-#print(sorter)
-#print(data_csv_dark)
+print(sorter)
+print(data_csv_dark)
 data_csv_dark = data_csv_dark.reindex(sorter)
-#print(data_csv_dark)
+print(data_csv_dark)
 data_csv_dark.reset_index(inplace=True,drop=True)
-#print(data_csv_dark)
+print(data_csv_dark)
 data_csv_dark.dropna(inplace=True)
-#print(data_csv_dark)
+data_csv_dark['Halo Number'] = data_csv_dark.index
+print(data_csv_dark)
 
 #Get the nessecary data to calculate the concentration from the fit files
 
@@ -71,20 +71,22 @@ fit_param_dark = fit_param_dark.set_index('Halo Number')
 #Reorder according to DMO Halo Indices, cut all NaN
 fit_param = pd.read_csv('50-1_snap_99_fit_param.csv')
 fit_param['Halo Number'] = fit_param['Halo Number'].astype(int)
-
 fit_param = fit_param.set_index('Halo Number')
 
 sorted_data, sorted_Y = data_csv.align(fit_param, join='inner', axis=0)
 sorted_data_dark, sorted_Y_dark = data_csv_dark.align(fit_param_dark, join='inner', axis=0)
-#print(sorted_data)
-#print(sorted_Y)
-#print(sorted_data_dark)
-#print(sorted_Y_dark)
+sorted_data, sorted_data_dark = sorted_data.align(sorted_data_dark, join='inner', axis=0)
+sorted_Y, sorted_Y_dark = sorted_Y.align(sorted_Y_dark, join='inner', axis=0)
+
+print(sorted_data)
+print(sorted_Y)
+print(sorted_data_dark)
+print(sorted_Y_dark)
 
 
 all_snap = np.arange(2,100,1)
-to_keep = np.arange(9,100,10)
-#to_keep = np.array([99])
+#to_keep = np.arange(9,100,10)
+to_keep = np.array([99])
 to_drop = np.setdiff1d(all_snap, to_keep)
 
 
@@ -115,7 +117,6 @@ for x in all_snap:
                         str(x)+'halfmass_rad',str(x)+'particle_number'])
     column_drop_dark.extend([str(x)+'positionX',str(x)+'positionY',str(x)+'positionZ',
                              str(x)+'halfmass_rad',str(x)+'particle_number'])
-
 column_keep_ratio = column_keep.copy()
 column_keep_ratio.extend(column_keep_dark)
 
@@ -137,52 +138,34 @@ concentration_dark = virrad_dark/nfw_scalerad_dark
 
 y = concentration
 y_dark = concentration_dark
-#print(y)
-#print(y_dark)
+print(y)
+print(y_dark)
 
 
-#print(sorted_X)
-#print(sorted_X_dark)
+print(sorted_X)
+print(sorted_X_dark)
 
 Xtrain, Xtest, ytrain, ytest = train_test_split(sorted_X, y,
-                                                random_state=1)
+                                                random_state=42)
 
 Xtrain_dark, Xtest_dark, ytrain_dark, ytest_dark = train_test_split(sorted_X_dark, y_dark,
-                                                random_state=1)
+                                                random_state=42)
 
-#Calculate the C_Bar/C_DMO ratio
-print(sorted_data)
-print(sorted_Y)
-print(sorted_data_dark)
-print(sorted_Y_dark)
 
-sorted_data_ratio, sorted_data_dark_ratio = sorted_data.align(sorted_data_dark, join='inner', axis=0)
-sorted_Y_ratio, sorted_Y_dark_ratio = sorted_Y.align(sorted_Y_dark, join='inner', axis=0)
-nfw_scalerad = sorted_Y_ratio['NFW Scale Radius'].to_numpy()
-virrad = sorted_Y_ratio['Virial Radius'].to_numpy()
+y_ratio = y/y_dark
+#y_dark_ratio = concentration_dark_ratio
+#y_conc_ratio = y_ratio/y_dark_ratio
 
-nfw_scalerad_dark = sorted_Y_dark_ratio['NFW Scale Radius'].to_numpy()
-virrad_dark = sorted_Y_dark_ratio['Virial Radius'].to_numpy()
-concentration_ratio = virrad/nfw_scalerad
-concentration_dark_ratio= virrad_dark/nfw_scalerad_dark
-
-print(sorted_data_ratio)
-print(sorted_Y_ratio)
-print(sorted_data_dark_ratio)
-print(sorted_Y_dark_ratio)
-
-y = concentration_ratio
-y_dark = concentration_dark_ratio
-y_conc_ratio = y/y_dark
-sorted_X_ratio = sorted_data_ratio.drop(column_drop, axis=1)
-sorted_X_dark_ratio = sorted_data_dark_ratio.drop(column_drop_dark, axis=1)
-sorted_X_dark_ratio = sorted_X_dark_ratio.add_suffix('_DMO')
+#sorted_X_ratio = sorted_data_ratio.drop(column_drop, axis=1)
+#sorted_X_dark_ratio = sorted_data_dark_ratio.drop(column_drop_dark, axis=1)
+#sorted_X_dark_ratio = sorted_X_dark_ratio.add_suffix('_DMO')
 #Predict the ratio using ML
-X_ratio = pd.concat([sorted_X_ratio,sorted_X_dark_ratio],axis=1)
+X_ratio = pd.concat([sorted_X,sorted_X_dark],axis=1)
 print(X_ratio)
 
-Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_conc_ratio,
-                                                random_state=1)
+Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_ratio,
+                                                random_state=42)
+
 
 
 
@@ -336,6 +319,7 @@ for i in np.arange(8,12,1):
                  facecolor=cmap(i), # The fill color
                  color=cmap(i),       # The outline color
                  alpha=0.2)          # Transparency of the fill
+
 #forest_importances.plot.bar(yerr=std, ax=axs[0])
 axs[0,0].set_xlabel(r'Snap Number')
 axs[0,0].set_ylabel(r'Mean decrease in impurity')
