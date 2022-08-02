@@ -58,7 +58,7 @@ print(data_csv_dark)
 data_csv_dark.reset_index(inplace=True,drop=True)
 print(data_csv_dark)
 data_csv_dark.dropna(inplace=True)
-data_csv['Halo Number'] = data_csv.index
+data_csv_dark['Halo Number'] = data_csv_dark.index
 print(data_csv_dark)
 
 #Get the nessecary data to calculate the concentration from the fit files
