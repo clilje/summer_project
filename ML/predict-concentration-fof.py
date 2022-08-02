@@ -240,7 +240,7 @@ y_pred_ratio = model_ratio.predict(Xtest_ratio)
 importances_ratio = model_ratio.feature_importances_
 std_ratio = np.std([tree_ratio.feature_importances_ for tree_ratio in model_ratio.estimators_], axis=0)
 
-
+"""
 #Plot predicted vs actual
 plt.hexbin(ytest_ratio,y_pred_ratio, gridsize = 70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
 axs[2].set_xlabel(r'Ratio of $\frac{C_{B}}{C_{DMO}}$')
@@ -250,7 +250,18 @@ axs[2].set_yscale('log')
 axs[2].set_xlim(3*10**(-1), 3*10**0)
 axs[2].set_ylim(3*10**(-1), 3*10**0)
 axs[2].set_title('Predicted Halo Concentration ratio from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
-fig.savefig('concentration_ratio_fof-new-match.jpg')
+"""
+y_ratio = ytest/ytest_dark
+y_pred_ratio = y_pred/y_pred_dark
+plt.hexbin(y_ratio,y_pred_ratio, gridsize = 70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
+axs[2].set_xlabel(r'Ratio of $\frac{C_{B}}{C_{DMO}}$')
+axs[2].set_ylabel(r'Predicted Ratio of $\frac{C_{B}}{C_{DMO}}$')
+axs[2].set_xscale('log')
+axs[2].set_yscale('log')
+axs[2].set_xlim(3*10**(-1), 3*10**0)
+axs[2].set_ylim(3*10**(-1), 3*10**0)
+axs[2].set_title('Predicted Halo Concentration ratio combined from other predictions')
+fig.savefig('concentration_ratio_fof-combined.jpg')
 
 
 fig.clf()
