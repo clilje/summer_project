@@ -86,7 +86,7 @@ print(sorted_Y_dark)
 
 
 all_snap = np.arange(2,100,1)
-to_keep = np.arange(9,100,10)
+to_keep = np.arange(49,100,5)
 #to_keep = np.array([99])
 to_drop = np.setdiff1d(all_snap, to_keep)
 
@@ -206,7 +206,7 @@ axs[1].set_xlim(0, 2)
 axs[1].set_ylim(0, 2)
 axs[1].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
 
-
+"""
 
 model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=50)
 model_ratio.fit(Xtrain_ratio,ytrain_ratio)
@@ -233,24 +233,24 @@ axs[3].set_ylabel(r'Predicted Log of Ratio of $\frac{C_{B}}{C_{DMO}}$')
 axs[3].set_xlim(0, 2)
 axs[3].set_ylim(0, 2)
 axs[3].set_title('Predicted Halo Concentration ratio calculated from two left panels')
-
+"""
 
 
 print('R_2')
 print('FP: '+str(sklearn.metrics.r2_score(ytest, y_pred)))
 print('DMO: '+str(sklearn.metrics.r2_score(ytest_dark, y_pred_dark)))
-print('Ratio ML: '+str(sklearn.metrics.r2_score(ytest_ratio, y_pred_ratio)))
-print('Ratio Calculated: '+str(sklearn.metrics.r2_score(ytest_ratio_calc, y_pred_ratio_calc)))
+#print('Ratio ML: '+str(sklearn.metrics.r2_score(ytest_ratio, y_pred_ratio)))
+#print('Ratio Calculated: '+str(sklearn.metrics.r2_score(ytest_ratio_calc, y_pred_ratio_calc)))
 
 print('Mean squared error')
 print('FP: '+str(sklearn.metrics.mean_squared_error(ytest, y_pred)))
 print('DMO: '+str(sklearn.metrics.mean_squared_error(ytest_dark, y_pred_dark)))
-print('Ratio ML: '+str(sklearn.metrics.mean_squared_error(ytest_ratio, y_pred_ratio)))
-print('Ratio Calculated: '+str(sklearn.metrics.mean_squared_error(ytest_ratio_calc, y_pred_ratio_calc)))
+#print('Ratio ML: '+str(sklearn.metrics.mean_squared_error(ytest_ratio, y_pred_ratio)))
+#print('Ratio Calculated: '+str(sklearn.metrics.mean_squared_error(ytest_ratio_calc, y_pred_ratio_calc)))
 fig.savefig('concentration_ratio_history0801.jpg')
 
 
-fig.clf()
+#fig.clf()
 
 
 forest_importances = pd.Series(importances, index=column_keep)
@@ -261,24 +261,24 @@ forest_quantiles_upper = pd.Series(quantiles_upper, index=column_keep)
 forest_importances_dark = pd.Series(importances_dark, index=column_keep_dark)
 forest_quantiles_lower_dark = pd.Series(quantiles_lower_dark, index=column_keep_dark)
 forest_quantiles_upper_dark = pd.Series(quantiles_upper_dark, index=column_keep_dark)
-
+"""
 forest_importances_ratio = pd.Series(importances_ratio, index=column_keep_ratio)
 forest_quantiles_lower_ratio = pd.Series(quantiles_lower_ratio, index=column_keep_ratio)
 forest_quantiles_upper_ratio = pd.Series(quantiles_upper_ratio, index=column_keep_ratio)
 
 
+"""
+forest_importances.to_csv('forest-importances-sub.csv')
+forest_quantiles_lower.to_csv('forest_quantiles_lower-sub.csv')
+forest_quantiles_upper.to_csv('forest_quantiles_upper-sub.csv')
+forest_importances_dark.to_csv('forest-importances_dark-sub.csv')
+forest_quantiles_lower_dark.to_csv('forest_quantiles_lower_dark-sub.csv')
+forest_quantiles_upper_dark.to_csv('forest_quantiles_upper_dark-sub.csv')
+#forest_importances_ratio.to_csv('forest-importances_ratio.csv')
+#forest_quantiles_lower_ratio.to_csv('forest_quantiles_lower_ratio.csv')
+#forest_quantiles_upper_ratio.to_csv('forest_quantiles_upper_ratio.csv')
 
-forest_importances.to_csv('forest-importances.csv')
-forest_quantiles_lower.to_csv('forest_quantiles_lower.csv')
-forest_quantiles_upper.to_csv('forest_quantiles_upper.csv')
-forest_importances_dark.to_csv('forest-importances_dark.csv')
-forest_quantiles_lower_dark.to_csv('forest_quantiles_lower_dark.csv')
-forest_quantiles_upper_dark.to_csv('forest_quantiles_upper_dark.csv')
-forest_importances_ratio.to_csv('forest-importances_ratio.csv')
-forest_quantiles_lower_ratio.to_csv('forest_quantiles_lower_ratio.csv')
-forest_quantiles_upper_ratio.to_csv('forest_quantiles_upper_ratio.csv')
-
-
+"""
 feature_names=['index','gas_mass','dm_mass','stellar_mass',
                     'bh_mass','spinX','spinY',
                     'spinZ','vel_dispersion','v_max',
@@ -438,3 +438,4 @@ axs[2,2].set_title('Feature Importance Ratio')
 axs[2,2].legend()
 
 fig.savefig('feature-importance_history-0801.jpg')
+"""
