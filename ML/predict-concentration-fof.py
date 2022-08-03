@@ -171,8 +171,16 @@ Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio,
 
 
 
+#log all concentration values
+ytrain = np.log10(ytrain)
+ytest = np.log10(ytest)
+ytrain_dark = np.log10(ytrain_dark)
+ytest_dark = np.log10(ytest_dark)
+ytrain_ratio = np.log10(ytrain_ratio)
+ytest_ratio = np.log10(ytest_ratio)
+
 #set up plotting params
-fig, axs = plt.subplots(1,4,constrained_layout=True, figsize=(30, 10))
+fig, axs = plt.subplots(1,4,constrained_layout=True, figsize=(40, 10))
 
 #Train Model for DM+Baryons
 model = RandomForestRegressor(n_estimators=1000,n_jobs=50)
@@ -184,13 +192,11 @@ std = np.std([tree.feature_importances_ for tree in model.estimators_], axis=0)
 print(y)
 print(y_pred)
 #Plot Predicted vs actual values
-im = axs[0].hexbin(ytest,y_pred, gridsize = 70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
-axs[0].set_xlabel(r'Concentration of Halos')
-axs[0].set_ylabel(r'Predicted Concentration of Halos')
-axs[0].set_xscale('log')
-axs[0].set_yscale('log')
-axs[0].set_xlim(3*10**0, 3*10)
-axs[0].set_ylim(3*10**0, 3*10)
+im = axs[0].hexbin(ytest,y_pred, gridsize = 70,norm=matplotlib.colors.LogNorm())
+axs[0].set_xlabel(r'Log Concentration of Halos')
+axs[0].set_ylabel(r'Predicted Log Concentration of Halos')
+axs[0].set_xlim(0, 3)
+axs[0].set_ylim(0, 3)
 axs[0].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
 cb = fig.colorbar(im)
 
@@ -204,13 +210,11 @@ std_dark = np.std([tree_dark.feature_importances_ for tree_dark in model_dark.es
 print(y_dark)
 print(y_pred_dark)
 #Plot predicted vs actual
-axs[1].hexbin(ytest_dark,y_pred_dark, gridsize = 70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
-axs[1].set_xlabel(r'Concentration of DMO Halos')
-axs[1].set_ylabel(r'Predicted Concentration of DMO Halos')
-axs[1].set_xscale('log')
-axs[1].set_yscale('log')
-axs[1].set_xlim(4*10**0, 2*10)
-axs[1].set_ylim(4*10**0, 2*10)
+axs[1].hexbin(ytest_dark,y_pred_dark, gridsize = 70,norm=matplotlib.colors.LogNorm())
+axs[1].set_xlabel(r'Log Concentration of Halos')
+axs[1].set_ylabel(r'Predicted Log Concentration of Halos')
+axs[1].set_xlim(0, 3)
+axs[1].set_ylim(0, 3)
 axs[1].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
 
 print(Xtest['index'][0:100])
@@ -227,24 +231,20 @@ importances_ratio = model_ratio.feature_importances_
 std_ratio = np.std([tree_ratio.feature_importances_ for tree_ratio in model_ratio.estimators_], axis=0)
 print(y_pred_ratio[0:100])
 #Plot predicted vs actual
-plt.hexbin(ytest_ratio,y_pred_ratio, gridsize = 70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
-axs[2].set_xlabel(r'Ratio of $\frac{C_{B}}{C_{DMO}}$')
-axs[2].set_ylabel(r'Predicted Ratio of $\frac{C_{B}}{C_{DMO}}$')
-axs[2].set_xscale('log')
-axs[2].set_yscale('log')
-axs[2].set_xlim(3*10**(-1), 3*10**0)
-axs[2].set_ylim(3*10**(-1), 3*10**0)
+axs[2].hexbin(ytest_ratio,y_pred_ratio, gridsize = 70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
+axs[2].set_xlabel(r'Log Concentration of Halos')
+axs[2].set_ylabel(r'Predicted Log Concentration of Halos')
+axs[2].set_xlim(0, 3)
+axs[2].set_ylim(0, 3)
 axs[2].set_title('Predicted Halo Concentration ratio from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
 
 y_ratio_calc = ytest/ytest_dark
 y_pred_ratio_calc = y_pred/y_pred_dark
-plt.hexbin(y_ratio_calc,y_pred_ratio_calc, gridsize = 70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
-axs[3].set_xlabel(r'Ratio of $\frac{C_{B}}{C_{DMO}}$')
-axs[3].set_ylabel(r'Predicted Ratio of $\frac{C_{B}}{C_{DMO}}$')
-axs[3].set_xscale('log')
-axs[3].set_yscale('log')
-axs[3].set_xlim(3*10**(-1), 3*10**0)
-axs[3].set_ylim(3*10**(-1), 3*10**0)
+axs[3].hexbin(y_ratio_calc,y_pred_ratio_calc, gridsize = 70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
+axs[3].set_xlabel(r'Log Concentration of Halos')
+axs[3].set_ylabel(r'Predicted Log Concentration of Halos')
+axs[3].set_xlim(0, 3)
+axs[3].set_ylim(0, 3)
 axs[3].set_title('Predicted Halo Concentration ratio combined from other predictions')
 
 
