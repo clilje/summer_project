@@ -220,11 +220,11 @@ quantiles_upper_ratio = np.quantile([tree_ratio.feature_importances_ for tree_ra
 
 #Plot predicted vs actual
 plt.hexbin(ytest_ratio,y_pred_ratio, gridsize = 70,norm=matplotlib.colors.LogNorm())
-plt.set_xlabel(r'Log of Ratio of $\frac{C_{B}}{C_{DMO}}$')
-plt.set_ylabel(r'Predicted Log of Ratio of $\frac{C_{B}}{C_{DMO}}$')
-plt.set_xlim(0, 2)
-plt.set_ylim(0, 2)
-plt.set_title('Predicted Halo Concentration ratio from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
+plt.xlabel(r'Log of Ratio of $\frac{C_{B}}{C_{DMO}}$')
+plt.ylabel(r'Predicted Log of Ratio of $\frac{C_{B}}{C_{DMO}}$')
+plt.xlim(0, 2)
+plt.ylim(0, 2)
+plt.title('Predicted Halo Concentration ratio from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
 '''
 ytest_ratio_calc = ytest/ytest_dark
 y_pred_ratio_calc = y_pred/y_pred_dark
