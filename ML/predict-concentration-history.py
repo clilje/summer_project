@@ -208,7 +208,7 @@ axs[1].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp
 
 '''
 
-model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=50, max_depth=30)
+model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=50, max_depth=22)
 model_ratio.fit(Xtrain_ratio,ytrain_ratio)
 y_pred_ratio = model_ratio.predict(Xtest_ratio)
 y_pred_ratio_train = model_ratio.predict(Xtrain_ratio)
@@ -251,7 +251,7 @@ print('Ratio ML: '+str(sklearn.metrics.mean_squared_error(ytest_ratio, y_pred_ra
 print('Ratio ML Train: '+str(sklearn.metrics.mean_squared_error(ytrain_ratio, y_pred_ratio_train)))
 #print('Ratio Calculated: '+str(sklearn.metrics.mean_squared_error(ytest_ratio_calc, y_pred_ratio_calc)))
 
-plt.savefig('concentration_ratio_depth_30.jpg')
+plt.savefig('concentration_ratio_depth_22.jpg')
 '''
 fig.savefig('concentration_ratio_history0801.jpg')
 
