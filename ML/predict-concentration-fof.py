@@ -231,7 +231,7 @@ importances_ratio = model_ratio.feature_importances_
 std_ratio = np.std([tree_ratio.feature_importances_ for tree_ratio in model_ratio.estimators_], axis=0)
 print(y_pred_ratio[0:100])
 #Plot predicted vs actual
-axs[2].hexbin(ytest_ratio,y_pred_ratio, gridsize = 70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
+axs[2].hexbin(ytest_ratio,y_pred_ratio, gridsize = 70,norm=matplotlib.colors.LogNorm())
 axs[2].set_xlabel(r'Log Concentration of Halos')
 axs[2].set_ylabel(r'Predicted Log Concentration of Halos')
 axs[2].set_xlim(0, 3)
@@ -240,7 +240,7 @@ axs[2].set_title('Predicted Halo Concentration ratio from Mass Contents, Vmax, V
 
 y_ratio_calc = ytest/ytest_dark
 y_pred_ratio_calc = y_pred/y_pred_dark
-axs[3].hexbin(y_ratio_calc,y_pred_ratio_calc, gridsize = 70,xscale ='log',yscale='log',norm=matplotlib.colors.LogNorm())
+axs[3].hexbin(y_ratio_calc,y_pred_ratio_calc, gridsize = 70,norm=matplotlib.colors.LogNorm())
 axs[3].set_xlabel(r'Log Concentration of Halos')
 axs[3].set_ylabel(r'Predicted Log Concentration of Halos')
 axs[3].set_xlim(0, 3)
