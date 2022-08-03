@@ -208,7 +208,7 @@ axs[1].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp
 
 '''
 
-model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=50)
+model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=50, max_depth=15)
 model_ratio.fit(Xtrain_ratio,ytrain_ratio)
 y_pred_ratio = model_ratio.predict(Xtest_ratio)
 y_pred_ratio_train = model_ratio.predict(Xtrain_ratio)
@@ -217,15 +217,15 @@ importances_ratio = model_ratio.feature_importances_
 quantiles_lower_ratio = np.quantile([tree_ratio.feature_importances_ for tree_ratio in model_ratio.estimators_],0.25, axis=0)
 quantiles_upper_ratio = np.quantile([tree_ratio.feature_importances_ for tree_ratio in model_ratio.estimators_],0.75, axis=0)
 
-'''
-#Plot predicted vs actual
-axs[2].hexbin(ytest_ratio,y_pred_ratio, gridsize = 70,norm=matplotlib.colors.LogNorm())
-axs[2].set_xlabel(r'Log of Ratio of $\frac{C_{B}}{C_{DMO}}$')
-axs[2].set_ylabel(r'Predicted Log of Ratio of $\frac{C_{B}}{C_{DMO}}$')
-axs[2].set_xlim(0, 2)
-axs[2].set_ylim(0, 2)
-axs[2].set_title('Predicted Halo Concentration ratio from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
 
+#Plot predicted vs actual
+plt.hexbin(ytest_ratio,y_pred_ratio, gridsize = 70,norm=matplotlib.colors.LogNorm())
+plt.set_xlabel(r'Log of Ratio of $\frac{C_{B}}{C_{DMO}}$')
+plt.set_ylabel(r'Predicted Log of Ratio of $\frac{C_{B}}{C_{DMO}}$')
+plt.set_xlim(0, 2)
+plt.set_ylim(0, 2)
+plt.set_title('Predicted Halo Concentration ratio from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
+'''
 ytest_ratio_calc = ytest/ytest_dark
 y_pred_ratio_calc = y_pred/y_pred_dark
 axs[3].hexbin(ytest_ratio_calc,y_pred_ratio_calc, gridsize = 70,norm=matplotlib.colors.LogNorm())
@@ -251,6 +251,7 @@ print('Ratio ML: '+str(sklearn.metrics.mean_squared_error(ytest_ratio, y_pred_ra
 print('Ratio ML Train: '+str(sklearn.metrics.mean_squared_error(ytrain_ratio, y_pred_ratio_train)))
 #print('Ratio Calculated: '+str(sklearn.metrics.mean_squared_error(ytest_ratio_calc, y_pred_ratio_calc)))
 
+plt.savefig('concentration_ratio_overfit.jpg')
 '''
 fig.savefig('concentration_ratio_history0801.jpg')
 
