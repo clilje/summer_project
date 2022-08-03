@@ -56,7 +56,7 @@ print(data_csv_dark)
 data_csv_dark.reset_index(inplace=True,drop=True)
 print(data_csv_dark)
 data_csv_dark.dropna(inplace=True)
-data_csv_dark['Halo Number'] = data_csv_dark.index
+data_csv_dark['index'] = data_csv_dark.index
 print(data_csv_dark)
 
 #Get the nessecary data to calculate the concentration from the fit files
@@ -85,8 +85,8 @@ print(sorted_Y_dark)
 
 
 all_snap = np.arange(2,100,1)
-#to_keep = np.arange(9,100,10)
-to_keep = np.array([99])
+to_keep = np.arange(9,100,10)
+#to_keep = np.array([99])
 to_drop = np.setdiff1d(all_snap, to_keep)
 
 
@@ -103,13 +103,13 @@ for i in to_drop:
     column_drop_dark.extend([str(i)+'dm_mass',str(i)+'spinX',str(i)+'spinY',
                         str(i)+'spinZ',str(i)+'vel_dispersion',str(i)+'v_max'])
 for j in np.flipud(to_keep):
-    column_keep.extend([str(j)+'gas_mass',str(j)+'dm_mass',str(j)+'stellar_mass',
+    column_keep.extend(['index',str(j)+'gas_mass',str(j)+'dm_mass',str(j)+'stellar_mass',
                         str(j)+'bh_mass',str(j)+'spinX',str(j)+'spinY',
                         str(j)+'spinZ',str(j)+'vel_dispersion',str(j)+'v_max',
                         str(j)+'bh_dot',str(j)+'sfr',str(j)+'fof_mass',
                         str(j)+'fof_distance'])
     column_keep_dark.extend([str(j)+'dm_mass_DMO',str(j)+'spinX_DMO',str(j)+'spinY_DMO',
-                        str(j)+'spinZ_DMO',str(j)+'vel_dispersion_DMO',str(j)+'v_max_DMO'])
+                        str(j)+'spinZ_DMO',str(j)+'vel_dispersion_DMO',str(j)+'v_max_DMO','index_DMO'])
 
 
 for x in all_snap:
@@ -214,8 +214,6 @@ print(y_pred_dark)
 axs[1].hexbin(ytest_dark,y_pred_dark, gridsize = 70, norm=matplotlib.colors.LogNorm())
 axs[1].set_xlabel(r'Log Concentration of DMO Halos')
 axs[1].set_ylabel(r'Predicted Log Concentration of DMO Halos')
-axs[1].set_xscale('log')
-axs[1].set_yscale('log')
 axs[1].set_xlim(0, 2)
 axs[1].set_ylim(0, 2)
 axs[1].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
