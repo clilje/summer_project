@@ -153,31 +153,8 @@ Xtrain, Xtest, ytrain, ytest = train_test_split(sorted_X, y,
 
 Xtrain_dark, Xtest_dark, ytrain_dark, ytest_dark = train_test_split(sorted_X_dark, y_dark,
                                                 random_state=42)
-"""
-#Calculate the C_Bar/C_DMO ratio
-print(sorted_data)
-print(sorted_data_dark)
-sorted_data_dark_ratio, sorted_data_ratio = sorted_data_dark.align(sorted_data, join='inner', axis=0)
-sorted_Y_dark_ratio, sorted_Y_ratio = sorted_Y_dark.align(sorted_Y, join='inner', axis=0)
-sorted_data_ratio, sorted_Y_dark_ratio = sorted_data_ratio.align(sorted_Y_dark_ratio, join='inner', axis=0) 
-sorted_data_dark_ratio, sorted_Y_ratio = sorted_data_dark_ratio.align(sorted_Y_ratio, join='inner', axis=0) 
-sorted_data_ratio, sorted_Y_ratio = sorted_data_ratio.align(sorted_Y_ratio, join='inner', axis=0)
-sorted_data_dark_ratio, sorted_Y_dark_ratio = sorted_data_dark_ratio.align(sorted_Y_dark_ratio, join='inner', axis=0) 
 
-nfw_scalerad_ratio = sorted_Y_ratio['NFW Scale Radius'].to_numpy()
-virrad_ratio = sorted_Y_ratio['Virial Radius'].to_numpy()
 
-nfw_scalerad_dark_ratio = sorted_Y_dark_ratio['NFW Scale Radius'].to_numpy()
-virrad_dark_ratio = sorted_Y_dark_ratio['Virial Radius'].to_numpy()
-
-concentration_ratio = virrad_ratio/nfw_scalerad_ratio
-concentration_dark_ratio = virrad_dark_ratio/nfw_scalerad_dark_ratio
-
-print(sorted_data_ratio)
-print(sorted_Y_ratio)
-print(sorted_data_dark_ratio)
-print(sorted_Y_dark_ratio)
-"""
 y_ratio = y/y_dark
 #y_dark_ratio = concentration_dark_ratio
 #y_conc_ratio = y_ratio/y_dark_ratio
