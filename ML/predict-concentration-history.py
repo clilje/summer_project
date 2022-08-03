@@ -14,6 +14,7 @@ import statistics
 import h5py
 #import scikit-learn as sklearn
 from sklearn.ensemble import RandomForestRegressor
+import sklearn.metrics
 import matplotlib
 from sklearn.model_selection import train_test_split
 import matplotlib.pylab as pylab
@@ -247,6 +248,18 @@ axs[3].set_ylim(0, 3)
 axs[3].set_title('Predicted Halo Concentration ratio calculated from two left panels')
 
 
+
+print('R_2')
+print('FP: '+str(sklearn.metrics.r2_score(ytest, y_pred)))
+print('DMO: '+str(sklearn.metrics.r2_score(ytest_dark, y_pred_dark)))
+print('Ratio ML: '+str(sklearn.metrics.r2_score(ytest_ratio, y_pred_ratio)))
+print('Ratio Calculated: '+str(sklearn.metrics.r2_score(ytest_ratio_calc, y_pred_ratio_calc)))
+
+print('Mean squared error')
+print('FP: '+str(sklearn.metrics.mean_squared_error(ytest, y_pred)))
+print('DMO: '+str(sklearn.metrics.mean_squared_error(ytest_dark, y_pred_dark)))
+print('Ratio ML: '+str(sklearn.metrics.mean_squared_error(ytest_ratio, y_pred_ratio)))
+print('Ratio Calculated: '+str(sklearn.metrics.mean_squared_error(ytest_ratio_calc, y_pred_ratio_calc)))
 fig.savefig('concentration_ratio_history0801.jpg')
 
 
