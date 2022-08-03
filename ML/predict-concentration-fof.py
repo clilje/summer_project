@@ -106,13 +106,13 @@ for i in to_drop:
     column_drop_dark.extend([str(i)+'dm_mass',str(i)+'spinX',str(i)+'spinY',
                         str(i)+'spinZ',str(i)+'vel_dispersion',str(i)+'v_max'])
 for j in np.flipud(to_keep):
-    column_keep.extend([str(j)+'gas_mass',str(j)+'dm_mass',str(j)+'stellar_mass',
+    column_keep.extend(['index',str(j)+'gas_mass',str(j)+'dm_mass',str(j)+'stellar_mass',
                         str(j)+'bh_mass',str(j)+'spinX',str(j)+'spinY',
                         str(j)+'spinZ',str(j)+'vel_dispersion',str(j)+'v_max',
                         str(j)+'bh_dot',str(j)+'sfr',str(j)+'fof_mass',
                         str(j)+'fof_distance'])
     column_keep_dark.extend([str(j)+'dm_mass_DMO',str(j)+'spinX_DMO',str(j)+'spinY_DMO',
-                        str(j)+'spinZ_DMO',str(j)+'vel_dispersion_DMO',str(j)+'v_max_DMO'])
+                        str(j)+'spinZ_DMO',str(j)+'vel_dispersion_DMO',str(j)+'v_max_DMO','index_DMO'])
 
 
 for x in all_snap:
@@ -267,17 +267,11 @@ fig.savefig('concentration_ratio_fof-combined-index.jpg')
 fig.clf()
 
 
-forest_importances = pd.Series(importances, index=['Index','SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
-                'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
-                'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter'])
+forest_importances = pd.Series(importances, index=column_keep)
 
-forest_importances_dark = pd.Series(importances_dark, index=['SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax','index'])
+forest_importances_dark = pd.Series(importances_dark, index=column_keep_dark)
 
-forest_importances_ratio = pd.Series(importances_ratio, index=['Index','SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
-                'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
-                'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter', 
-                'SubhaloDMMass - DMO','SubhaloSpinX- DMO','SubhaloSpinY- DMO','SubhaloSpinZ- DMO','SubhaloVelDisp- DMO', 
-                                     'SubhaloVmax- DMO','Index- DMO'])
+forest_importances_ratio = pd.Series(importances_ratio, index=column_keep_ratio)
 
 
 fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))
