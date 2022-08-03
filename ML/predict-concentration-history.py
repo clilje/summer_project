@@ -141,7 +141,8 @@ y = concentration
 y_dark = concentration_dark
 print(y)
 print(y_dark)
-
+y = np.log10(y)
+y_dark  = np.log10(y_dark)
 
 print(sorted_X)
 print(sorted_X_dark)
@@ -167,14 +168,6 @@ print(X_ratio)
 Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio, y_ratio,
                                                 random_state=42)
 
-
-#log all concentration values
-ytrain = np.log10(ytrain)
-ytest = np.log10(ytest)
-ytrain_dark = np.log10(ytrain_dark)
-ytest_dark = np.log10(ytest_dark)
-ytrain_ratio = np.log10(ytrain_ratio)
-ytest_ratio = np.log10(ytest_ratio)
 
 #set up plotting params
 fig, axs = plt.subplots(1,4,constrained_layout=True, figsize=(40, 10))
