@@ -271,13 +271,13 @@ forest_importances = pd.Series(importances, index=['Index','SubhaloGasMass', 'Su
                 'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
                 'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter'])
 
-forest_importances_dark = pd.Series(importances_dark, index=['SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax'])
+forest_importances_dark = pd.Series(importances_dark, index=['SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax','index'])
 
-forest_importances_ratio = pd.Series(importances_ratio, index=['SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
+forest_importances_ratio = pd.Series(importances_ratio, index=['Index','SubhaloGasMass', 'SubhaloStarMass','SubhaloBHMass',
                 'SubhaloDMMass','SubhaloSpinX','SubhaloSpinY','SubhaloSpinZ','SubhaloVelDisp', 'SubhaloVmax',
-                'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter',
+                'SubhaloBHMdot','SubhaloSFR','FoFMass','FoFDistanceCenter', 
                 'SubhaloDMMass - DMO','SubhaloSpinX- DMO','SubhaloSpinY- DMO','SubhaloSpinZ- DMO','SubhaloVelDisp- DMO', 
-                                     'SubhaloVmax- DMO','Index'])
+                                     'SubhaloVmax- DMO','Index- DMO'])
 
 
 fig, axs = plt.subplots(1,3,constrained_layout=True, figsize=(30, 10))

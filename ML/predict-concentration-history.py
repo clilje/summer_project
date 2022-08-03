@@ -286,15 +286,15 @@ feature_names=['index','gas_mass','dm_mass','stellar_mass',
                     'spinZ','vel_dispersion','v_max',
                     'bh_dot','sfr','fof_mass',
                     'fof_distance']
-feature_names_dark= ['index','dm_mass_DMO','spinX_DMO','spinY_DMO',
-                    'spinZ_DMO','vel_dispersion_DMO','v_max_DMO']
+feature_names_dark= ['dm_mass_DMO','spinX_DMO','spinY_DMO',
+                    'spinZ_DMO','vel_dispersion_DMO','v_max_DMO','index']
 feature_names_ratio= ['index','gas_mass','dm_mass','stellar_mass',
                     'bh_mass','spinX','spinY',
                     'spinZ','vel_dispersion','v_max',
                     'bh_dot','sfr','fof_mass',
-                    'fof_distance','index_dmo',
+                    'fof_distance',
                     'dm_mass_DMO','spinX_DMO','spinY_DMO',
-                    'spinZ_DMO','vel_dispersion_DMO','v_max_DMO']
+                    'spinZ_DMO','vel_dispersion_DMO','v_max_DMO','index_dmo']
 fig, axs = plt.subplots(3,3,constrained_layout=True, figsize=(30, 30))
 #Plot Predicted vs actual values
 
