@@ -13,7 +13,7 @@ import pandas as pd
 import statistics
 import h5py
 #import scikit-learn as sklearn
-from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import ExtraTreesRegressor
 import sklearn.metrics
 import matplotlib
 from sklearn.model_selection import train_test_split
@@ -167,7 +167,7 @@ Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio,
 fig, axs = plt.subplots(1,4,constrained_layout=True, figsize=(40, 10))
 
 #Train Model for DM+Baryons
-model = RandomForestRegressor(n_estimators=1000,n_jobs=50)
+model = ExtraTreesRegressor(n_estimators=1000,n_jobs=50)
 model.fit(Xtrain,ytrain)
 y_pred = model.predict(Xtest)
 ytrain_pred = model.predict(Xtrain)
@@ -189,10 +189,10 @@ axs[0].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp
 cb = fig.colorbar(im)
 
 #Train Model for DMO
-model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=50)
+model_dark = ExtraTreesRegressor(n_estimators=1000,n_jobs=50)
 model_dark.fit(Xtrain_dark,ytrain_dark)
 y_pred_dark = model_dark.predict(Xtest_dark)
-ytrain_pred_dark = model_dark.predict(Xtest_dark)
+ytrain_pred_dark = model_dark.predict(Xtrain_dark)
 importances_dark = model_dark.feature_importances_
 #std_dark = np.std([tree_dark.feature_importances_ for tree_dark in model_dark.estimators_], axis=0)
 quantiles_lower_dark = np.quantile([tree_dark.feature_importances_ for tree_dark in model_dark.estimators_],0.25, axis=0)

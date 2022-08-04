@@ -208,7 +208,7 @@ axs[1].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp
 
 '''
 
-model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=50, max_depth=18)
+model_ratio = RandomForestRegressor(n_estimators=2000,n_jobs=50)
 model_ratio.fit(Xtrain_ratio,ytrain_ratio)
 y_pred_ratio = model_ratio.predict(Xtest_ratio)
 y_pred_ratio_train = model_ratio.predict(Xtrain_ratio)
