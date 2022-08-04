@@ -115,7 +115,7 @@ for j in np.flipud(to_keep):
 
 for x in all_snap:
     column_drop.extend([str(x)+'positionX',str(x)+'positionY',str(x)+'positionZ',
-                        str(x)+'halfmass_rad',str(x)+'particle_number',str(j)+'dm_mass'])
+                        str(x)+'halfmass_rad',str(x)+'particle_number',str(x)+'dm_mass'])
     column_drop_dark.extend([str(x)+'positionX',str(x)+'positionY',str(x)+'positionZ',
                              str(x)+'halfmass_rad',str(x)+'particle_number'])
 column_keep_ratio = column_keep.copy()
