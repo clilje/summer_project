@@ -140,7 +140,7 @@ number_halos_FP = len(sorted_data.index.to_numpy())
 number_halos_DMO = len(sorted_data_dark.index.to_numpy())
 for x in to_keep:
     FP_number.append(len(np.where(sorted_X[str(x)+'dm_mass'].to_numpy() != 0)[0]))
-    DMO_number.append(len(len(np.where(sorted_X_dark[str(x)+'dm_mass_DMO'].to_numpy() != 0)[0])))
+    DMO_number.append((len(np.where(sorted_X_dark[str(x)+'dm_mass_DMO'].to_numpy() != 0)[0])))
                       
 FP_number = np.array(FP_number)/number_halos_FP
 DMO_number = np.array(DMO_number)/number_halos_DMO
