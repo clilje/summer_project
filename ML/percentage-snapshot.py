@@ -144,9 +144,10 @@ for x in to_keep:
                       
 FP_number = np.array(FP_number)/number_halos_FP
 DMO_number = np.array(DMO_number)/number_halos_DMO
-plt.plot(to_keep, FP_number, label='Full Physics', marker='.')
-plt.plot(to_keep, DMO_number,label='DMO', marker='.')
-plt.yscale('log')
+plt.scatter(to_keep, FP_number, label='Full Physics', marker='.')
+plt.scatter(to_keep, DMO_number,label='DMO', marker='.')
+#plt.yscale('log')
 plt.xlabel('Snapshot number')
 plt.ylabel('Percentage of halos traced back')
+plt.legend()
 plt.savefig('halo-percentage')
