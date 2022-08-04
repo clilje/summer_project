@@ -104,7 +104,7 @@ for i in to_drop:
     column_drop_dark.extend([str(i)+'dm_mass',str(i)+'spinX',str(i)+'spinY',
                         str(i)+'spinZ',str(i)+'vel_dispersion',str(i)+'v_max'])
 for j in np.flipud(to_keep):
-    column_keep.extend([str(j)+'gas_mass',str(j)+'stellar_mass',
+    column_keep.extend([str(j)+'gas_mass',str(j)+'dm_mass',str(j)+'stellar_mass',
                         str(j)+'bh_mass',str(j)+'spinX',str(j)+'spinY',
                         str(j)+'spinZ',str(j)+'vel_dispersion',str(j)+'v_max',
                         str(j)+'bh_dot',str(j)+'sfr',str(j)+'fof_mass',
@@ -115,7 +115,7 @@ for j in np.flipud(to_keep):
 
 for x in all_snap:
     column_drop.extend([str(x)+'positionX',str(x)+'positionY',str(x)+'positionZ',
-                        str(x)+'halfmass_rad',str(x)+'particle_number',str(x)+'dm_mass'])
+                        str(x)+'halfmass_rad',str(x)+'particle_number'])
     column_drop_dark.extend([str(x)+'positionX',str(x)+'positionY',str(x)+'positionZ',
                              str(x)+'halfmass_rad',str(x)+'particle_number'])
 column_keep_ratio = column_keep.copy()
@@ -167,12 +167,13 @@ Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio,
 fig, axs = plt.subplots(1,4,constrained_layout=True, figsize=(40, 10))
 
 #Train Model for DM+Baryons
-model = RandomForestRegressor(n_estimators=1000,n_jobs=50)
+model = RandomForestRegressor(n_estimators=1000,n_jobs=50, max_depth=15)
 model.fit(Xtrain,ytrain)
 y_pred = model.predict(Xtest)
 ytrain_pred = model.predict(Xtrain)
-importances = model.feature_importances_
+#importances = model.feature_importances_
 quantiles_lower = np.quantile([tree.feature_importances_ for tree in model.estimators_],0.25, axis=0)
+importances = np.median([tree.feature_importances_ for tree in model.estimators_], axis=0)
 quantiles_upper = np.quantile([tree.feature_importances_ for tree in model.estimators_],0.75, axis=0)
 
 
@@ -189,15 +190,15 @@ axs[0].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp
 cb = fig.colorbar(im)
 
 #Train Model for DMO
-model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=50)
+model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=50, max_depth=15)
 model_dark.fit(Xtrain_dark,ytrain_dark)
 y_pred_dark = model_dark.predict(Xtest_dark)
 ytrain_pred_dark = model_dark.predict(Xtrain_dark)
-importances_dark = model_dark.feature_importances_
+#importances_dark = model_dark.feature_importances_
 #std_dark = np.std([tree_dark.feature_importances_ for tree_dark in model_dark.estimators_], axis=0)
 quantiles_lower_dark = np.quantile([tree_dark.feature_importances_ for tree_dark in model_dark.estimators_],0.25, axis=0)
 quantiles_upper_dark = np.quantile([tree_dark.feature_importances_ for tree_dark in model_dark.estimators_],0.75, axis=0)
-
+importances_dark = np.median([tree_dark.feature_importances_ for tree_dark in model_dark.estimators_], axis=0)
 print(y_dark)
 print(y_pred_dark)
 #Plot predicted vs actual
@@ -208,16 +209,15 @@ axs[1].set_xlim(0, 2)
 axs[1].set_ylim(0, 2)
 axs[1].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp, Spin, FoF Properties')
 
-"""
 
-model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=50)
+model_ratio = RandomForestRegressor(n_estimators=1000,n_jobs=50, max_depth=15)
 model_ratio.fit(Xtrain_ratio,ytrain_ratio)
 y_pred_ratio = model_ratio.predict(Xtest_ratio)
-importances_ratio = model_ratio.feature_importances_
+#importances_ratio = model_ratio.feature_importances_
 #std_ratio = np.std([tree_ratio.feature_importances_ for tree_ratio in model_ratio.estimators_], axis=0)
 quantiles_lower_ratio = np.quantile([tree_ratio.feature_importances_ for tree_ratio in model_ratio.estimators_],0.25, axis=0)
 quantiles_upper_ratio = np.quantile([tree_ratio.feature_importances_ for tree_ratio in model_ratio.estimators_],0.75, axis=0)
-
+importances_ratio = np.median([tree_ratio.feature_importances_ for tree_ratio in model_ratio.estimators_], axis=0)
 
 #Plot predicted vs actual
 axs[2].hexbin(ytest_ratio,y_pred_ratio, gridsize = 70,norm=matplotlib.colors.LogNorm())
@@ -235,7 +235,7 @@ axs[3].set_ylabel(r'Predicted Log of Ratio of $\frac{C_{B}}{C_{DMO}}$')
 axs[3].set_xlim(0, 2)
 axs[3].set_ylim(0, 2)
 axs[3].set_title('Predicted Halo Concentration ratio calculated from two left panels')
-"""
+
 
 
 print('R_2')
@@ -244,8 +244,8 @@ print('Test DMO: '+str(sklearn.metrics.r2_score(ytest_dark, y_pred_dark)))
 
 print('Train FP: '+str(sklearn.metrics.r2_score(ytrain, ytrain_pred)))
 print('Train DMO: '+str(sklearn.metrics.r2_score(ytrain_dark, ytrain_pred_dark)))
-#print('Ratio ML: '+str(sklearn.metrics.r2_score(ytest_ratio, y_pred_ratio)))
-#print('Ratio Calculated: '+str(sklearn.metrics.r2_score(ytest_ratio_calc, y_pred_ratio_calc)))
+print('Ratio ML: '+str(sklearn.metrics.r2_score(ytest_ratio, y_pred_ratio)))
+print('Ratio Calculated: '+str(sklearn.metrics.r2_score(ytest_ratio_calc, y_pred_ratio_calc)))
 
 print('Mean squared error')
 print('Test FP: '+str(sklearn.metrics.mean_squared_error(ytest, y_pred)))
@@ -253,9 +253,9 @@ print('Test DMO: '+str(sklearn.metrics.mean_squared_error(ytest_dark, y_pred_dar
 
 print('Test FP: '+str(sklearn.metrics.mean_squared_error(ytrain, ytrain_pred)))
 print('Test DMO: '+str(sklearn.metrics.mean_squared_error(ytrain_dark, ytrain_pred_dark)))
-#print('Ratio ML: '+str(sklearn.metrics.mean_squared_error(ytest_ratio, y_pred_ratio)))
-#print('Ratio Calculated: '+str(sklearn.metrics.mean_squared_error(ytest_ratio_calc, y_pred_ratio_calc)))
-fig.savefig('concentration_ratio_history0801.jpg')
+print('Ratio ML: '+str(sklearn.metrics.mean_squared_error(ytest_ratio, y_pred_ratio)))
+print('Ratio Calculated: '+str(sklearn.metrics.mean_squared_error(ytest_ratio_calc, y_pred_ratio_calc)))
+fig.savefig('concentration_ratio_history-depth15.jpg')
 
 
 #fig.clf()
@@ -269,22 +269,22 @@ forest_quantiles_upper = pd.Series(quantiles_upper, index=column_keep)
 forest_importances_dark = pd.Series(importances_dark, index=column_keep_dark)
 forest_quantiles_lower_dark = pd.Series(quantiles_lower_dark, index=column_keep_dark)
 forest_quantiles_upper_dark = pd.Series(quantiles_upper_dark, index=column_keep_dark)
-"""
+
 forest_importances_ratio = pd.Series(importances_ratio, index=column_keep_ratio)
 forest_quantiles_lower_ratio = pd.Series(quantiles_lower_ratio, index=column_keep_ratio)
 forest_quantiles_upper_ratio = pd.Series(quantiles_upper_ratio, index=column_keep_ratio)
 
 
-"""
-forest_importances.to_csv('forest-importances-noDMO.csv')
-forest_quantiles_lower.to_csv('forest_quantiles_lower-noDMO.csv')
-forest_quantiles_upper.to_csv('forest_quantiles_upper-noDMO.csv')
-forest_importances_dark.to_csv('forest-importances_dark-noDMO.csv')
-forest_quantiles_lower_dark.to_csv('forest_quantiles_lower_dark-noDMO.csv')
-forest_quantiles_upper_dark.to_csv('forest_quantiles_upper_dark-noDMO.csv')
-#forest_importances_ratio.to_csv('forest-importances_ratio.csv')
-#forest_quantiles_lower_ratio.to_csv('forest_quantiles_lower_ratio.csv')
-#forest_quantiles_upper_ratio.to_csv('forest_quantiles_upper_ratio.csv')
+
+forest_importances.to_csv('forest-importances-15.csv')
+forest_quantiles_lower.to_csv('forest_quantiles_lower-15.csv')
+forest_quantiles_upper.to_csv('forest_quantiles_upper-15.csv')
+forest_importances_dark.to_csv('forest-importances_dark-15.csv')
+forest_quantiles_lower_dark.to_csv('forest_quantiles_lower_dark-15.csv')
+forest_quantiles_upper_dark.to_csv('forest_quantiles_upper_dark-15.csv')
+forest_importances_ratio.to_csv('forest-importances_ratio-15.csv')
+forest_quantiles_lower_ratio.to_csv('forest_quantiles_lower_ratio-15.csv')
+forest_quantiles_upper_ratio.to_csv('forest_quantiles_upper_ratio-15.csv')
 
 """
 feature_names=['index','gas_mass','dm_mass','stellar_mass',
