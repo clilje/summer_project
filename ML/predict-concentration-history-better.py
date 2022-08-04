@@ -13,7 +13,7 @@ import pandas as pd
 import statistics
 import h5py
 #import scikit-learn as sklearn
-from sklearn.ensemble import ExtraTreesRegressor
+from sklearn.ensemble import RandomForestRegressor
 import sklearn.metrics
 import matplotlib
 from sklearn.model_selection import train_test_split
@@ -104,7 +104,7 @@ for i in to_drop:
     column_drop_dark.extend([str(i)+'dm_mass',str(i)+'spinX',str(i)+'spinY',
                         str(i)+'spinZ',str(i)+'vel_dispersion',str(i)+'v_max'])
 for j in np.flipud(to_keep):
-    column_keep.extend([str(j)+'gas_mass',str(j)+'dm_mass',str(j)+'stellar_mass',
+    column_keep.extend([str(j)+'gas_mass',str(j)+'stellar_mass',
                         str(j)+'bh_mass',str(j)+'spinX',str(j)+'spinY',
                         str(j)+'spinZ',str(j)+'vel_dispersion',str(j)+'v_max',
                         str(j)+'bh_dot',str(j)+'sfr',str(j)+'fof_mass',
@@ -115,7 +115,7 @@ for j in np.flipud(to_keep):
 
 for x in all_snap:
     column_drop.extend([str(x)+'positionX',str(x)+'positionY',str(x)+'positionZ',
-                        str(x)+'halfmass_rad',str(x)+'particle_number'])
+                        str(x)+'halfmass_rad',str(x)+'particle_number',str(j)+'dm_mass'])
     column_drop_dark.extend([str(x)+'positionX',str(x)+'positionY',str(x)+'positionZ',
                              str(x)+'halfmass_rad',str(x)+'particle_number'])
 column_keep_ratio = column_keep.copy()
@@ -167,7 +167,7 @@ Xtrain_ratio, Xtest_ratio, ytrain_ratio, ytest_ratio = train_test_split(X_ratio,
 fig, axs = plt.subplots(1,4,constrained_layout=True, figsize=(40, 10))
 
 #Train Model for DM+Baryons
-model = ExtraTreesRegressor(n_estimators=1000,n_jobs=50)
+model = RandomForestRegressor(n_estimators=1000,n_jobs=50)
 model.fit(Xtrain,ytrain)
 y_pred = model.predict(Xtest)
 ytrain_pred = model.predict(Xtrain)
@@ -189,7 +189,7 @@ axs[0].set_title('Predicted Halo Concentration from Mass Contents, Vmax, VelDisp
 cb = fig.colorbar(im)
 
 #Train Model for DMO
-model_dark = ExtraTreesRegressor(n_estimators=1000,n_jobs=50)
+model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=50)
 model_dark.fit(Xtrain_dark,ytrain_dark)
 y_pred_dark = model_dark.predict(Xtest_dark)
 ytrain_pred_dark = model_dark.predict(Xtrain_dark)
@@ -276,12 +276,12 @@ forest_quantiles_upper_ratio = pd.Series(quantiles_upper_ratio, index=column_kee
 
 
 """
-forest_importances.to_csv('forest-importances.csv')
-forest_quantiles_lower.to_csv('forest_quantiles_lower.csv')
-forest_quantiles_upper.to_csv('forest_quantiles_upper.csv')
-forest_importances_dark.to_csv('forest-importances_dark.csv')
-forest_quantiles_lower_dark.to_csv('forest_quantiles_lower_dark.csv')
-forest_quantiles_upper_dark.to_csv('forest_quantiles_upper_dark.csv')
+forest_importances.to_csv('forest-importances-noDMO.csv')
+forest_quantiles_lower.to_csv('forest_quantiles_lower-noDMO.csv')
+forest_quantiles_upper.to_csv('forest_quantiles_upper-noDMO.csv')
+forest_importances_dark.to_csv('forest-importances_dark-noDMO.csv')
+forest_quantiles_lower_dark.to_csv('forest_quantiles_lower_dark-noDMO.csv')
+forest_quantiles_upper_dark.to_csv('forest_quantiles_upper_dark-noDMO.csv')
 #forest_importances_ratio.to_csv('forest-importances_ratio.csv')
 #forest_quantiles_lower_ratio.to_csv('forest_quantiles_lower_ratio.csv')
 #forest_quantiles_upper_ratio.to_csv('forest_quantiles_upper_ratio.csv')
