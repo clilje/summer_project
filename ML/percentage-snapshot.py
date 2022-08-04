@@ -104,7 +104,7 @@ for i in to_drop:
     column_drop_dark.extend([str(i)+'dm_mass',str(i)+'spinX',str(i)+'spinY',
                         str(i)+'spinZ',str(i)+'vel_dispersion',str(i)+'v_max'])
 for j in np.flipud(to_keep):
-    column_keep.extend([str(j)+'gas_mass',str(j)+'stellar_mass',
+    column_keep.extend([str(j)+'gas_mass',str(j)+'dm_mass',str(j)+'stellar_mass',
                         str(j)+'bh_mass',str(j)+'spinX',str(j)+'spinY',
                         str(j)+'spinZ',str(j)+'vel_dispersion',str(j)+'v_max',
                         str(j)+'bh_dot',str(j)+'sfr',str(j)+'fof_mass',
@@ -115,7 +115,7 @@ for j in np.flipud(to_keep):
 
 for x in all_snap:
     column_drop.extend([str(x)+'positionX',str(x)+'positionY',str(x)+'positionZ',
-                        str(x)+'halfmass_rad',str(x)+'particle_number',str(x)+'dm_mass'])
+                        str(x)+'halfmass_rad',str(x)+'particle_number'])
     column_drop_dark.extend([str(x)+'positionX',str(x)+'positionY',str(x)+'positionZ',
                              str(x)+'halfmass_rad',str(x)+'particle_number'])
 column_keep_ratio = column_keep.copy()
@@ -134,13 +134,13 @@ sorted_X = sorted_data.drop(column_drop, axis=1)
 sorted_X_dark = sorted_data_dark.drop(column_drop_dark, axis=1)
 sorted_X_dark = sorted_X_dark.add_suffix('_DMO')
 
-FP_number = np.array([])
-DMO_number = np.array([])
+FP_number = []
+DMO_number = []
 number_halos_FP = len(sorted_data.index.to_numpy())
 number_halos_DMO = len(sorted_data_dark.index.to_numpy())
 for x in to_keep:
     FP_number.append(len(np.where(sorted_X[str(x)+'dm_mass'].to_numpy() != 0)[0]))
-    DMO_number.append(len(len(np.where(sorted_X_dark[str(x)+'dm_mass_DMO'].to_numpy() != 0)[0]))
+    DMO_number.append(len(len(np.where(sorted_X_dark[str(x)+'dm_mass_DMO'].to_numpy() != 0)[0])))
                       
 FP_number = np.array(FP_number)/number_halos_FP
 DMO_number = np.array(DMO_number)/number_halos_DMO
