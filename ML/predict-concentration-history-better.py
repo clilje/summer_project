@@ -86,7 +86,7 @@ print(sorted_Y_dark)
 
 
 all_snap = np.arange(2,100,1)
-to_keep = np.arange(49,100,5)
+to_keep = np.arange(9,100,10)
 #to_keep = np.array([99])
 to_drop = np.setdiff1d(all_snap, to_keep)
 
@@ -170,6 +170,7 @@ fig, axs = plt.subplots(1,4,constrained_layout=True, figsize=(40, 10))
 model = RandomForestRegressor(n_estimators=1000,n_jobs=50)
 model.fit(Xtrain,ytrain)
 y_pred = model.predict(Xtest)
+ytrain_pred = model.predict(Xtrain)
 importances = model.feature_importances_
 quantiles_lower = np.quantile([tree.feature_importances_ for tree in model.estimators_],0.25, axis=0)
 quantiles_upper = np.quantile([tree.feature_importances_ for tree in model.estimators_],0.75, axis=0)
@@ -191,6 +192,7 @@ cb = fig.colorbar(im)
 model_dark = RandomForestRegressor(n_estimators=1000,n_jobs=50)
 model_dark.fit(Xtrain_dark,ytrain_dark)
 y_pred_dark = model_dark.predict(Xtest_dark)
+ytrain_pred_dark = model_dark.predict(Xtest_dark)
 importances_dark = model_dark.feature_importances_
 #std_dark = np.std([tree_dark.feature_importances_ for tree_dark in model_dark.estimators_], axis=0)
 quantiles_lower_dark = np.quantile([tree_dark.feature_importances_ for tree_dark in model_dark.estimators_],0.25, axis=0)
@@ -237,14 +239,20 @@ axs[3].set_title('Predicted Halo Concentration ratio calculated from two left pa
 
 
 print('R_2')
-print('FP: '+str(sklearn.metrics.r2_score(ytest, y_pred)))
-print('DMO: '+str(sklearn.metrics.r2_score(ytest_dark, y_pred_dark)))
+print('Test FP: '+str(sklearn.metrics.r2_score(ytest, y_pred)))
+print('Test DMO: '+str(sklearn.metrics.r2_score(ytest_dark, y_pred_dark)))
+
+print('Train FP: '+str(sklearn.metrics.r2_score(ytrain, ytrain_pred)))
+print('Train DMO: '+str(sklearn.metrics.r2_score(ytrain_dark, ytrain_pred_dark)))
 #print('Ratio ML: '+str(sklearn.metrics.r2_score(ytest_ratio, y_pred_ratio)))
 #print('Ratio Calculated: '+str(sklearn.metrics.r2_score(ytest_ratio_calc, y_pred_ratio_calc)))
 
 print('Mean squared error')
-print('FP: '+str(sklearn.metrics.mean_squared_error(ytest, y_pred)))
-print('DMO: '+str(sklearn.metrics.mean_squared_error(ytest_dark, y_pred_dark)))
+print('Test FP: '+str(sklearn.metrics.mean_squared_error(ytest, y_pred)))
+print('Test DMO: '+str(sklearn.metrics.mean_squared_error(ytest_dark, y_pred_dark)))
+
+print('Test FP: '+str(sklearn.metrics.mean_squared_error(ytrain, ytrain_pred)))
+print('Test DMO: '+str(sklearn.metrics.mean_squared_error(ytrain_dark, ytrain_pred_dark)))
 #print('Ratio ML: '+str(sklearn.metrics.mean_squared_error(ytest_ratio, y_pred_ratio)))
 #print('Ratio Calculated: '+str(sklearn.metrics.mean_squared_error(ytest_ratio_calc, y_pred_ratio_calc)))
 fig.savefig('concentration_ratio_history0801.jpg')
@@ -268,12 +276,12 @@ forest_quantiles_upper_ratio = pd.Series(quantiles_upper_ratio, index=column_kee
 
 
 """
-forest_importances.to_csv('forest-importances-sub.csv')
-forest_quantiles_lower.to_csv('forest_quantiles_lower-sub.csv')
-forest_quantiles_upper.to_csv('forest_quantiles_upper-sub.csv')
-forest_importances_dark.to_csv('forest-importances_dark-sub.csv')
-forest_quantiles_lower_dark.to_csv('forest_quantiles_lower_dark-sub.csv')
-forest_quantiles_upper_dark.to_csv('forest_quantiles_upper_dark-sub.csv')
+forest_importances.to_csv('forest-importances.csv')
+forest_quantiles_lower.to_csv('forest_quantiles_lower.csv')
+forest_quantiles_upper.to_csv('forest_quantiles_upper.csv')
+forest_importances_dark.to_csv('forest-importances_dark.csv')
+forest_quantiles_lower_dark.to_csv('forest_quantiles_lower_dark.csv')
+forest_quantiles_upper_dark.to_csv('forest_quantiles_upper_dark.csv')
 #forest_importances_ratio.to_csv('forest-importances_ratio.csv')
 #forest_quantiles_lower_ratio.to_csv('forest_quantiles_lower_ratio.csv')
 #forest_quantiles_upper_ratio.to_csv('forest_quantiles_upper_ratio.csv')
