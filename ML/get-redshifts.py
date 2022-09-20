@@ -51,11 +51,11 @@ for i in snapnum:
               'SubhaloSpin','SubhaloVelDisp','SubhaloVmax','SubhaloBHMdot', 'SubhaloSFR','SubhaloGrNr']
     foffields = ['GroupPos','GroupMass']
     
-    subhalos = groupcat.loadSubhalos(basePath,99,fields=fields)
-    fof_halos = groupcat.loadHalos(basePath,99,fields=foffields)
+    subhalos = groupcat.loadSubhalos(basePath,i,fields=fields)
+    fof_halos = groupcat.loadHalos(basePath,i,fields=foffields)
     num_halo = np.arange(len(np.array(subhalos['SubhaloMass'])))
     
-    a = (groupcat.loadHeader(basePath, snapnum)['Time']).astype('int')  #scalefactor
-    z = (groupcat.loadHeader(basePath, snapnum)['Redshift']).astype('float')  #redshift
+    a = (groupcat.loadHeader(basePath, i)['Time']).astype('int')  #scalefactor
+    z = (groupcat.loadHeader(basePath, i)['Redshift']).astype('float')  #redshift
     print(i)
     print(z)
