@@ -86,4 +86,5 @@ lhalotree_dir = '/disk01/rmcg/downloaded/tng/tng50-1/merger_tree/lhalotree/trees
 with h5py.File(lhalotree_dir, 'r') as file:
     redshifts_halos_in_tree = np.array(file['/Header/Redshifts'])
 print(redshifts_halos_in_tree)
-redshifts_halos_in_tree.to_csv('redshifts.csv')
+data = pd.DataFrame(redshifts_halos_in_tree)
+data.to_csv('redshifts.csv')
