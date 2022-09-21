@@ -81,7 +81,7 @@ for i in snapnum:
     print(z)
 """
 
-lhalotree_dir = '/disk01/rmcg/downloaded/tng/tng50-1/merger_tree/lhalotree/'
+lhalotree_dir = '/disk01/rmcg/downloaded/tng/tng50-1/merger_tree/lhalotree/trees_sf1_099.0.hdf5'
 with h5py.File(lhalotree_dir, 'r') as file:
     redshifts_halos_in_tree = np.array(file['/Header/Redshifts'])
 print(redshifts_halos_in_tree)
