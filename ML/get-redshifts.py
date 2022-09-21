@@ -8,6 +8,7 @@ This file was actually used to create the group catalogue file of all halos.
 import h5py
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
 import math
 import csv
 from pathlib import Path
@@ -85,3 +86,4 @@ lhalotree_dir = '/disk01/rmcg/downloaded/tng/tng50-1/merger_tree/lhalotree/trees
 with h5py.File(lhalotree_dir, 'r') as file:
     redshifts_halos_in_tree = np.array(file['/Header/Redshifts'])
 print(redshifts_halos_in_tree)
+redshifts_halos_in_tree.to_csv('redshifts.csv')
